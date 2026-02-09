@@ -1,0 +1,50 @@
+<?php
+	/**
+	 * Plugin Name: RentalForge
+	 * Description: RentalForge is a WooCommerce-based WordPress rental plugin that helps you manage equipment and tool bookings, availability, and rentals from a single dashboard.
+	 * Version: 1.0
+	 * Author: ABP-WP
+	 * Author URI: https://abp-wp.com
+	 * Text Domain: abprf-rental-forge
+	 * Domain Path: /languages
+	 * WC requires at least: 8.0.0
+	 *  WC tested up to: latest
+	 *  Requires PHP: 7.4
+	 *  Requires MySQL: 5.7+
+	 *  License: GPLv3
+	 *  License URI: https://www.gnu.org/licenses/gpl-3.0.html
+	 */
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit; // Exit if accessed directly
+	}
+	if ( ! class_exists( 'ABPRF_Rental_Forge' ) ) {
+		class ABPRF_Rental_Forge {
+			public function __construct() {
+				$this->load_plugin();
+			}
+
+			private function load_plugin(): void {
+				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+				if ( ! defined( 'ABPRF_DIR' ) ) {
+					define( 'ABPRF_DIR', dirname( __FILE__ ) );
+				}
+				if ( ! defined( 'ABPRF_URL' ) ) {
+					define( 'ABPRF_URL', plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) ) );
+				}
+				if ( ! defined( 'ABPRF_BASE' ) ) {
+					define( 'ABPRF_BASE', basename( __FILE__ ) );
+				}
+				if ( ! defined( 'ABPRF_BLANK_IMG_URL' ) ) {
+					define( 'ABPRF_BLANK_IMG_URL', ABPRF_URL . '/assets/images/blank_image.png' );
+				}
+				if ( ! defined( 'ABPRF_PLUGIN_FILE' ) ) {
+					define( 'ABPRF_PLUGIN_FILE', __FILE__ );
+				}
+				require_once ABPRF_DIR . '/includes/ABPRF_Dependencies.php';
+				if ( ! defined( 'ABPRF_Date_Format' ) ) {
+					define( 'ABPRF_Date_Format', ABPRF_LIB_Function::get_options( 'abprf_layout', 'date_format', 'D d M , yy' ) );
+				}
+			}
+		}
+		new ABPRF_Rental_Forge();
+	}
