@@ -13,11 +13,11 @@
 				add_action('wp_ajax_abprf_import_additional_service', array($this, 'abprf_import_additional_service'));
 			}
 			public function additional_service_global($abprf_configuration): void {
-				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('Transportation', 'abprf-rental-forge');
+				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
 				$label = $label . ' ' . __(' : ', 'abprf-rental-forge') . ' ' . __('Additional services', 'abprf-rental-forge');
 				$additional_services = ABPRF_LIB_Function::get_option('abprf_additional', ABPRF_Static_Array::static_additional());
 				?>
-                <div class="tabsItem additional_configuration" data-tabs="#abprf_additional">
+                <div class="tab_item additional_configuration" data-tabs="#abprf_additional">
                     <h3 class="_abprf"><?php echo esc_html($label); ?></h3>
 					<?php ABPRF_LIB_Layout::info_text('additional_services'); ?>
                     <div class="_divider_xs"></div>
@@ -35,13 +35,12 @@
 			public function additional_configuration($abprf_infos): void {
 				$abprf_configuration = array_key_exists('abprf_configuration', $abprf_infos) ? $abprf_infos['abprf_configuration'] : [];
 				$post_title = array_key_exists('post_title', $abprf_infos) ? $abprf_infos['post_title'] : '';
-				$transport_icon = isset($abprf_configuration['transport_icon']) && $abprf_configuration['transport_icon'] ? $abprf_configuration['transport_icon'] : 'fas fa-bus';
+				$equipment_icon = isset($abprf_configuration['equipment_icon']) && $abprf_configuration['equipment_icon'] ? $abprf_configuration['equipment_icon'] : 'fas fa-hammer';
 				$additional_services = array_key_exists('additional_services', $abprf_infos) ? $abprf_infos['additional_services'] : array();
 				$display = array_key_exists('display_additional_services', $abprf_infos) ? $abprf_infos['display_additional_services'] : 'on';
-				$single_additional = array_key_exists('display_single_additional', $abprf_infos) ? $abprf_infos['display_single_additional'] : 'on';
 				?>
-                <div class="tabsItem additional_configuration" data-tabs="#abprf_additional_service">
-                    <h4 class="_abprf_color_theme"><span class="<?php echo esc_attr($transport_icon); ?> _mar_r_xs"></span> <?php echo esc_html($post_title . ' ' . __(' : ', 'abprf-rental-forge') . ' ' . __('Additional services Configuration', 'abprf-rental-forge')); ?></h4>
+                <div class="tab_item additional_configuration" data-tabs="#abprf_additional_service">
+                    <h4 class="_abprf_color_theme"><span class="<?php echo esc_attr($equipment_icon); ?> _mar_r_xs"></span> <?php echo esc_html($post_title . ' ' . __(' : ', 'abprf-rental-forge') . ' ' . __('Additional services Configuration', 'abprf-rental-forge')); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="_setting_item">
                         <div class="_f_equal_f_wrap">
@@ -57,14 +56,6 @@
 						<?php ABPRF_LIB_Layout::info_text('display_additional_services'); ?>
                     </div>
                     <div class="<?php echo esc_attr($display == 'on' ? 'rf_active' : ''); ?>" data-collapse="#display_additional_services">
-                        <div class="_setting_item">
-                            <div class="_fa_center">
-								<?php ABPRF_LIB_Layout::switch_checkbox('display_single_additional', $single_additional); ?>
-                                <span class="_fs_label_mar_lr_xs"><?php esc_html_e('Single Additional Form', 'abprf-rental-forge'); ?></span>
-                            </div>
-                            <div class="_divider_xs"></div>
-							<?php ABPRF_LIB_Layout::info_text('display_single_additional'); ?>
-                        </div>
                         <div class="abprf_additional_content">
 							<?php $this->additional_service($additional_services); ?>
                         </div>

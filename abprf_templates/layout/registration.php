@@ -41,7 +41,7 @@
 				?>
                 <div class="abprf_registration_item _section_xs">
                     <form class="" action="" method="post">
-                        <input type="hidden" name="transport_id" value="<?php  echo esc_attr($post_id); ?>"/>
+                        <input type="hidden" name="equipment_id" value="<?php  echo esc_attr($post_id); ?>"/>
                         <input type="hidden" name='origin_place' value='<?php  echo esc_attr($origin_place); ?>'/>
                         <input type="hidden" name='origin_time' value='<?php echo esc_attr($origin_time); ?>'/>
                         <input type="hidden" name='transport_bp' value='<?php echo  esc_attr($bp); ?>'/>
@@ -50,7 +50,6 @@
                         <input type="hidden" name='dp_time' value='<?php  echo esc_attr($dp_time); ?>'/>
                         <input type="hidden" name='seat_type' value='<?php echo  esc_attr($seat_type); ?>'/>
                         <input type="hidden" name='display_single_form' value='<?php  echo esc_attr(array_key_exists('display_single_form', $abprf_infos) ? $abprf_infos['display_single_form'] : 'on'); ?>'/>
-                        <input type="hidden" name='display_single_additional' value='<?php  echo esc_attr(array_key_exists('display_single_additional', $abprf_infos) ? $abprf_infos['display_single_additional'] : 'on'); ?>'/>
                         <input type="hidden" name='checkout_system' value='<?php  echo esc_attr((is_admin() && str_contains(wp_get_referer(), 'add_order')) ? 'default' : ABPRF_LIB_Function::get_options('abprf_layout', 'checkout_system', 'default')); ?>'/>
 						<?php ABPRF_Layout::hidden_search_form($form_data); ?>
 						<?php wp_nonce_field('abprf_registration_nonce'); ?>
@@ -73,13 +72,13 @@
 											do_action('abptm_selection_item');
 										}
 										do_action('abptm_pickup_drop', $abprf_infos, $form_data);
-										do_action('abptm_traveller_form', $abprf_infos, $form_data); ?>
+										do_action('abprf_client_form', $abprf_infos, $form_data); ?>
                                 </div>
 								<?php do_action('abprf_total_price', $post_id); ?>
                             </div>
                         </div>
                     </form>
-					<?php do_action('abptm_hidden_form', $abprf_infos, $form_data); ?>
+					<?php do_action('abprf_hidden_form', $abprf_infos, $form_data); ?>
                 </div>
 				<?php
 			}

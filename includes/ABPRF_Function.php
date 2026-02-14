@@ -8,7 +8,7 @@
 			//=========== Template Related==================//
 			public static function details_template_path($post_id): string {
 				$post_id = $post_id ?? get_the_id();
-				$template_name = ABPRF_LIB_Function::get_post_info($post_id, 'abptm_template', 'default');
+				$template_name = ABPRF_LIB_Function::get_post_info($post_id, 'abprf_template', 'default');
 				$file_name = 'details_theme/' . $template_name . '.php';
 				$dir = ABPRF_DIR . '/abprf_registration_item/' . $file_name;
 				if (!file_exists($dir)) {
@@ -23,7 +23,7 @@
 			}
 			//=============================//
 			public static function get_cpt(): string { return 'abprf_post'; }
-			//============== Transport Function===============//
+			//============== Equipment Function===============//
 			public static function route_for_price($routing_infos, $price_infos, $ticket_types): array {
 				$full_price = [];
 				if (sizeof($routing_infos) > 0) {
@@ -69,10 +69,10 @@
 				if ($post_id > 0) {
 					$route_lists = self::get_route($post_id, $bp, $bp_point);
 				} else {
-					$transport_ids = ABPRF_Query::get_transport_id($bp_point);
-					if (sizeof($transport_ids) > 0) {
-						foreach ($transport_ids as $transport_id) {
-							$routes = self::get_route($transport_id, $bp, $bp_point);
+					$equipment_ids = ABPRF_Query::get_equipment_id($bp_point);
+					if (sizeof($equipment_ids) > 0) {
+						foreach ($equipment_ids as $equipment_id) {
+							$routes = self::get_route($equipment_id, $bp, $bp_point);
 							$route_lists = array_merge($route_lists, $routes);
 						}
 					}
@@ -115,7 +115,7 @@
 					$all_dates = self::get_bus_dates($post_id, $bp);
 				} else {
 					if ($bp) {
-						$bus_ids = ABPRF_Query::get_transport_id($bp, $dp);
+						$bus_ids = ABPRF_Query::get_equipment_id($bp, $dp);
 						if (sizeof($bus_ids) > 0) {
 							foreach ($bus_ids as $bus_id) {
 								$dates = self::get_bus_dates($bus_id, $bp);
@@ -304,7 +304,7 @@
 						$ticket_types[$key] = ABPRF_Function::get_ticket_type($key);
 					}
 				} else {
-					$ticket_infos = array_key_exists('abptm_ticket_info', $abprf_infos) ? $abprf_infos['abptm_ticket_info'] : ABPRF_LIB_Function::get_post_info($post_id, 'abptm_ticket_info', []);
+					$ticket_infos = array_key_exists('equipment_infos', $abprf_infos) ? $abprf_infos['equipment_infos'] : ABPRF_LIB_Function::get_post_info($post_id, 'equipment_infos', []);
 					if (sizeof($ticket_infos) > 0) {
 						foreach ($ticket_infos as $key => $ticket_info) {
 							$ticket_types[$key] = is_array($ticket_info) && array_key_exists('name', $ticket_info) ? $ticket_info['name'] : '';
@@ -384,18 +384,18 @@
 			//=============================//
 			public static function get_transport_list_details($bp, $dp, $bp_date): array {
 				$list_infos = [];
-				$transport_ids = ABPRF_Query::get_transport_id($bp, $dp);
-				if (sizeof($transport_ids) > 0) {
-					foreach ($transport_ids as $transport_id) {
-						$full_infos = ABPRF_Function::get_route_full_info($transport_id, $bp, $bp_date);
+				$equipment_ids = ABPRF_Query::get_equipment_id($bp, $dp);
+				if (sizeof($equipment_ids) > 0) {
+					foreach ($equipment_ids as $equipment_id) {
+						$full_infos = ABPRF_Function::get_route_full_info($equipment_id, $bp, $bp_date);
 						if (sizeof($full_infos) > 0) {
 							foreach ($full_infos as $full_info) {
 								if ($full_info['stop'] == $bp) {
-									$list_infos[$transport_id]['id'] = $transport_id;
-									$list_infos[$transport_id]['time'] = $full_info['time'];
+									$list_infos[$equipment_id]['id'] = $equipment_id;
+									$list_infos[$equipment_id]['time'] = $full_info['time'];
 								}
 								if ($full_info['stop'] == $dp) {
-									$list_infos[$transport_id]['dp_time'] = $full_info['time'];
+									$list_infos[$equipment_id]['dp_time'] = $full_info['time'];
 								}
 							}
 						}
@@ -417,7 +417,7 @@
 				$post_id_form = $post_id_url = 0;
 				$transport_bp_form = $transport_bp_url = $transport_dp_form = $transport_dp_url = $bp_date_form = $bp_date_url = $return_date_form = $return_date_url = '';
 				$single_post_form = $single_post_url = false;
-				if (isset($_POST['abptm_search_form_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['abptm_search_form_nonce'])), 'abptm_search_form_nonce')) {
+				if (isset($_POST['abprf_search_form_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['abprf_search_form_nonce'])), 'abprf_search_form_nonce')) {
 					$post_id_form = isset($_POST['_post_id']) ? sanitize_text_field(wp_unslash($_POST['_post_id'])) : $post_id_form;
 					$transport_bp_form = isset($_POST['_bp']) ? sanitize_text_field(wp_unslash($_POST['_bp'])) : '';
 					$transport_dp_form = isset($_POST['_dp']) ? sanitize_text_field(wp_unslash($_POST['_dp'])) : '';
@@ -425,7 +425,7 @@
 					$return_date_form = isset($_POST['_r_date']) ? sanitize_text_field(wp_unslash($_POST['_r_date'])) : '';
 					$single_post_form = isset($_POST['single_post']) && sanitize_text_field(wp_unslash($_POST['single_post']));
 				}
-				if (isset($_GET['abptm_search_form_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['abptm_search_form_nonce'])), 'abptm_search_form_nonce')) {
+				if (isset($_GET['abprf_search_form_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['abprf_search_form_nonce'])), 'abprf_search_form_nonce')) {
 					$post_id_url = isset($_GET['_post_id']) ? sanitize_text_field(wp_unslash($_GET['_post_id'])) : $post_id_url;
 					$transport_bp_url = isset($_GET['_bp']) ? sanitize_text_field(wp_unslash($_GET['_bp'])) : '';
 					$transport_dp_url = isset($_GET['_dp']) ? sanitize_text_field(wp_unslash($_GET['_dp'])) : '';

@@ -17,41 +17,40 @@
 				$abprf_configuration = ABPRF_LIB_Function::get_option('abprf_configuration');
 				$this->add_cpt($abprf_configuration);
 				$this->taxonomy_category($abprf_configuration);
-				$this->taxonomy_organizer($abprf_configuration);
 			}
 			public function add_cpt($abprf_configuration): void {
 				$cpt = ABPRF_Function::get_cpt();
-				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('Transportation', 'abprf-rental-forge');
-				$slug = isset($abprf_configuration['slug']) && $abprf_configuration['slug'] ? $abprf_configuration['slug'] : 'transport';
-				$icon = isset($abprf_configuration['icon']) && $abprf_configuration['icon'] ? $abprf_configuration['icon'] : 'dashicons-car';
+				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
+				$slug = isset($abprf_configuration['slug']) && $abprf_configuration['slug'] ? $abprf_configuration['slug'] : 'rental-forge';
+				$icon = isset($abprf_configuration['icon']) && $abprf_configuration['icon'] ? $abprf_configuration['icon'] : 'dashicons-hammer';
 				$labels = [
 					'name' => esc_html($label),
 					'singular_name' => esc_html($label),
 					'menu_name' => esc_html($label),
 					'name_admin_bar' => esc_html($label),
-					'archives' => __('Transport List', 'abprf-rental-forge'),
-					'attributes' => __('Transport List', 'abprf-rental-forge'),
-					'parent_item_colon' => __('Transport Item:', 'abprf-rental-forge'),
-					'all_items' => __('All Transport', 'abprf-rental-forge'),
-					'add_new_item' => __('Add New Transport', 'abprf-rental-forge'),
-					'add_new' => __('Add New Transport', 'abprf-rental-forge'),
-					'new_item' => __('New Transport', 'abprf-rental-forge'),
-					'edit_item' => __('Edit Transport', 'abprf-rental-forge'),
-					'update_item' => __('Update Transport', 'abprf-rental-forge'),
-					'view_item' => __('View Transport', 'abprf-rental-forge'),
-					'view_items' => __('View Transport', 'abprf-rental-forge'),
-					'search_items' => __('Search Transport', 'abprf-rental-forge'),
-					'not_found' => __('Transport Not Found', 'abprf-rental-forge'),
-					'not_found_in_trash' => __('Transport Not found in Trash', 'abprf-rental-forge'),
-					'featured_image' => __('Transport Image', 'abprf-rental-forge'),
-					'set_featured_image' => __('Transport Image', 'abprf-rental-forge'),
-					'remove_featured_image' => __('Remove TransportImage', 'abprf-rental-forge'),
-					'use_featured_image' => __('Use image Transport as featured image', 'abprf-rental-forge'),
-					'insert_into_item' => __('Insert  Transport', 'abprf-rental-forge'),
-					'uploaded_to_this_item' => __('Uploaded  Transport', 'abprf-rental-forge'),
-					'items_list' => __('Transport List', 'abprf-rental-forge'),
-					'items_list_navigation' => __('Transport list navigation', 'abprf-rental-forge'),
-					'filter_items_list' => __('Filter Transport List', 'abprf-rental-forge')
+					'archives' => __('Equipment Group List', 'abprf-rental-forge'),
+					'attributes' => __('Equipment Group List', 'abprf-rental-forge'),
+					'parent_item_colon' => __('Equipment Group Item:', 'abprf-rental-forge'),
+					'all_items' => __('Equipment Groups', 'abprf-rental-forge'),
+					'add_new_item' => __('Add Equipment Group', 'abprf-rental-forge'),
+					'add_new' => __('Add Equipment Group', 'abprf-rental-forge'),
+					'new_item' => __('Add Equipment Group', 'abprf-rental-forge'),
+					'edit_item' => __('Edit Equipment', 'abprf-rental-forge'),
+					'update_item' => __('Update Equipment', 'abprf-rental-forge'),
+					'view_item' => __('View Equipment', 'abprf-rental-forge'),
+					'view_items' => __('View Equipment', 'abprf-rental-forge'),
+					'search_items' => __('Search Equipment', 'abprf-rental-forge'),
+					'not_found' => __('Equipment Not Found', 'abprf-rental-forge'),
+					'not_found_in_trash' => __('Equipment Not found in Trash', 'abprf-rental-forge'),
+					'featured_image' => __('Equipment Groups Image', 'abprf-rental-forge'),
+					'set_featured_image' => __('Equipment Groups Image', 'abprf-rental-forge'),
+					'remove_featured_image' => __('Remove Equipment Groups Image', 'abprf-rental-forge'),
+					'use_featured_image' => __('Use image Equipment Group as featured image', 'abprf-rental-forge'),
+					'insert_into_item' => __('Insert  Equipment Group', 'abprf-rental-forge'),
+					'uploaded_to_this_item' => __('Uploaded  Equipment Group', 'abprf-rental-forge'),
+					'items_list' => __('Equipment Groups List', 'abprf-rental-forge'),
+					'items_list_navigation' => __('Category list navigation', 'abprf-rental-forge'),
+					'filter_items_list' => __('Filter Equipment Group List', 'abprf-rental-forge')
 				];
 				$rewrite = array(
 					'slug' => esc_html($slug),
@@ -77,9 +76,9 @@
 				register_post_type($cpt, $args);
 			}
 			public function taxonomy_category($abprf_configuration): void {
-				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('Transportation', 'abprf-rental-forge');
+				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
 				$category_text = isset($abprf_configuration['category_label']) && $abprf_configuration['category_label'] ? $abprf_configuration['category_label'] : __('Category', 'abprf-rental-forge');
-				$category_slug = isset($abprf_configuration['cat_slug']) && $abprf_configuration['cat_slug'] ? $abprf_configuration['cat_slug'] : 'transport_category';
+				$category_slug = isset($abprf_configuration['cat_slug']) && $abprf_configuration['cat_slug'] ? $abprf_configuration['cat_slug'] : 'rental_category';
 				$full_text = $label . ' ' . $category_text;
 				$label_category = array(
 					'name' => $full_text,
@@ -117,50 +116,9 @@
 				];
 				register_taxonomy('abprf_category', 'abprf_post', $args);
 			}
-			public function taxonomy_organizer($abprf_configuration): void {
-				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('Transportation', 'abprf-rental-forge');
-				$organizer_text = isset($abprf_configuration['organizer_label']) && $abprf_configuration['organizer_label'] ? $abprf_configuration['organizer_label'] : __('Organizer', 'abprf-rental-forge');
-				$org_slug = isset($abprf_configuration['org_slug']) && $abprf_configuration['org_slug'] ? $abprf_configuration['org_slug'] : 'transport_organizer';
-				$full_text = $label . ' ' . $organizer_text;
-				$label_organizer = array(
-					'name' => $full_text,
-					'singular_name' => $full_text,
-					'menu_name' => $organizer_text,
-					'all_items' => __('All', 'abprf-rental-forge') . ' ' . $full_text,
-					'parent_item' => __('Parent', 'abprf-rental-forge') . ' ' . $full_text,
-					'parent_item_colon' => __('Parent', 'abprf-rental-forge') . ' ' . $full_text,
-					'new_item_name' => __('New type name of', 'abprf-rental-forge') . ' ' . $label,
-					'add_new_item' => __('Add New', 'abprf-rental-forge') . ' ' . $full_text,
-					'edit_item' => __('Edit', 'abprf-rental-forge') . ' ' . $full_text,
-					'update_item' => __('Update', 'abprf-rental-forge') . ' ' . $full_text,
-					'view_item' => __('View', 'abprf-rental-forge') . ' ' . $full_text,
-					'add_or_remove_items' => __('Add / Remove', 'abprf-rental-forge') . ' ' . $full_text,
-					'popular_items' => __('Popular', 'abprf-rental-forge') . ' ' . $full_text,
-					'search_items' => __('Search', 'abprf-rental-forge') . ' ' . $full_text,
-					'no_terms' => __('No', 'abprf-rental-forge') . ' ' . $full_text,
-					'items_list' => $full_text . ' ' . __('List', 'abprf-rental-forge'),
-					'items_list_navigation' => $full_text . ' ' . __('List navigation', 'abprf-rental-forge'),
-					'separate_items_with_commas' => __('Separated with commas', 'abprf-rental-forge'),
-					'choose_from_most_used' => __('Choose from the most used', 'abprf-rental-forge'),
-					'not_found' => __('Not Found !', 'abprf-rental-forge'),
-				);
-				$args = [
-					'hierarchical' => true,
-					"public" => true,
-					'labels' => $label_organizer,
-					'show_ui' => true,
-					'show_admin_column' => true,
-					'query_var' => true,
-					'rewrite' => ['slug' => $org_slug],
-					'show_in_rest' => true,
-					'rest_base' => 'abprf_organizer',
-					'meta_box_cb' => false,
-				];
-				register_taxonomy('abprf_organizer', 'abprf_post', $args);
-			}
 			public function activation() {
 				$this->taxonomy_cpt();
-				$this->create_order_table();
+				//$this->create_order_table();
 				flush_rewrite_rules();
 			}
 			public function create_order_table() {
@@ -187,7 +145,7 @@
 			public function activation_redirect($plugin): void {
 				if ($plugin == plugin_basename(__FILE__)) {
 					if ( ABPRF_LIB_Function::check_wc() < 2) {
-						wp_safe_redirect( admin_url( 'admin.php?page=configuration' ) );
+						wp_safe_redirect( admin_url( 'admin.php?page=rf_configuration' ) );
 						exit;
 					}
 				}
@@ -196,13 +154,11 @@
 				$abprf_configuration = ABPRF_LIB_Function::get_option('abprf_configuration');
 				$date = $column['date'];
 				unset($column['taxonomy-abprf_category']);
-				unset($column['taxonomy-abprf_organizer']);
 				unset($column['date']);
-				$column['transport_id'] = __('Transport ID', 'abprf-rental-forge');
+				$column['equipment_id'] = __('Equipment Groups ID', 'abprf-rental-forge');
 				$column['total_seat'] = __('Total Ticket', 'abprf-rental-forge');
 				$column['seat_type'] = __('Seat Plan', 'abprf-rental-forge');
 				$column['category'] = isset($abprf_configuration['category_label']) && $abprf_configuration['category_label'] ? esc_html($abprf_configuration['category_label']) : __('Category', 'abprf-rental-forge');
-				$column['organizer'] = isset($abprf_configuration['organizer_label']) && $abprf_configuration['organizer_label'] ? esc_html($abprf_configuration['organizer_label']) : __('Organizer', 'abprf-rental-forge');
 				$column['abprf_admin'] = __('Author', 'abprf-rental-forge');
 				$column['date'] = $date;
 				return $column;
@@ -210,14 +166,14 @@
 			public function custom_column($column, $post_id): void {
 				$abprf_infos = ABPRF_LIB_Function::get_all_meta($post_id);
 				$seat_type = array_key_exists('seat_type', $abprf_infos) ? $abprf_infos['seat_type'] : '';
-				$transport_id = array_key_exists('transport_id', $abprf_infos) ? $abprf_infos['transport_id'] : '';
+				$equipment_id = array_key_exists('equipment_id', $abprf_infos) ? $abprf_infos['equipment_id'] : '';
 				$total_seat = array_key_exists('total_seat', $abprf_infos) ? $abprf_infos['total_seat'] : '';
 				$seat_type_text = $seat_type == 'seat_plan' ? __('Seat Plan', 'abprf-rental-forge') : __('Ticket', 'abprf-rental-forge');
 				$category = array_key_exists('category', $abprf_infos) ? $abprf_infos['category'] : '';
 				$organizer = array_key_exists('organizer', $abprf_infos) ? $abprf_infos['organizer'] : '';
 				switch ($column) {
-					case 'transport_id':
-						echo esc_html($transport_id);
+					case 'equipment_id':
+						echo esc_html($equipment_id);
 						break;
 					case 'total_seat':
 						echo esc_html($total_seat);
@@ -240,7 +196,7 @@
 			public function clone_transport($actions, $post) {
 				$post_id = $post->ID;
 				if (current_user_can('edit_posts') && ABPRF_Function::get_cpt() == get_post_type($post_id)) {
-					$actions['abprf_clone'] = '<a href="' . wp_nonce_url('admin.php?action=abprf_clone&post=' . $post->ID, basename(__FILE__), 'abprf_clone_nonce') . '" title="' . __('Clone Transport', 'abprf-rental-forge') . '" rel="permalink">' . __('Clone Transport', 'abprf-rental-forge') . '</a>';
+					$actions['abprf_clone'] = '<a href="' . wp_nonce_url('admin.php?action=abprf_clone&post=' . $post->ID, basename(__FILE__), 'abprf_clone_nonce') . '" title="' . __('Clone Equipment', 'abprf-rental-forge') . '" rel="permalink">' . __('Clone Equipment', 'abprf-rental-forge') . '</a>';
 				}
 				return $actions;
 			}

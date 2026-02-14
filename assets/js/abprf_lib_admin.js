@@ -25,7 +25,7 @@ function load_sortable_datepicker(parent, item) {
         $(document).find('.abprf_sortable').sortable({
             handle: $(this).find('.abprf_sortable_handle'),
             stop: function (event, ui) {
-                ui.item.trigger('abprf_trigger');
+                ui.item.trigger('rf_trigger');
             }
         });
     });
@@ -85,7 +85,7 @@ function load_sortable_datepicker(parent, item) {
         if (confirm('Are You Sure , Remove this Item ? \n\n 1. Ok : To Remove Item . \n 2. Cancel : To Cancel .')) {
             let parent = $(this).closest('.abprf_insert_item');
             $(this).closest('.abprf_delete_area ').slideUp(250).remove();
-            parent.trigger('abprf_trigger');
+            parent.trigger('rf_trigger');
         }
     });
     //=========Add Setting Item==============//
@@ -96,13 +96,13 @@ function load_sortable_datepicker(parent, item) {
             item = parent.find('.abprf_d_none').first().find('.abprf_hidden_item').html();
         }
         load_sortable_datepicker(parent, item);
-        $(this).trigger('abprf_trigger');
+        $(this).trigger('rf_trigger');
     });
 }(jQuery));
 (function ($) {
     "use strict";
     //=================select icon=========================//
-    $(document).on('click', '.abprf_icon_image_selection_area button.abptm_add_icon', function () {
+    $(document).on('click', '.abprf_icon_image_selection_area button.abprf_add_icon', function () {
         let target_popup = $('.abprf_popup_icon');
         target_popup.find('.iconItem').click(function () {
             let parent = $('[data-active-popup]').closest('.abprf_icon_image_selection_area');
@@ -139,7 +139,7 @@ function load_sortable_datepicker(parent, item) {
             target_popup.find('.iconItem').removeClass('rf_active');
         });
     });
-    $(document).on('click', '.abprf_icon_image_selection_area .abptm_delete_icon', function () {
+    $(document).on('click', '.abprf_icon_image_selection_area .abprf_delete_icon', function () {
         let parent = $(this).closest('.abprf_icon_image_selection_area');
         parent.find('input[type="hidden"]').val('');
         parent.find('[data-add-icon]').removeAttr('class');
@@ -147,7 +147,7 @@ function load_sortable_datepicker(parent, item) {
         parent.find('.abprf_select_image_icon_content').slideDown('fast');
     });
     //=================select Single image=========================//
-    $(document).on('click', 'button.abptm_select_image', function () {
+    $(document).on('click', 'button.abprf_select_image', function () {
         let $this = $(this);
         let parent = $this.closest('.abprf_icon_image_selection_area');
         wp.media.editor.send.attachment = function (props, attachment) {
@@ -162,7 +162,7 @@ function load_sortable_datepicker(parent, item) {
         wp.media.editor.open($this);
         return false;
     });
-    $(document).on('click', '.abprf_icon_image_selection_area .abptm_delete_image', function () {
+    $(document).on('click', '.abprf_icon_image_selection_area .abprf_delete_image', function () {
         let parent = $(this).closest('.abprf_icon_image_selection_area');
         parent.find('input[type="hidden"]').val('');
         parent.find('img').attr('src', '');

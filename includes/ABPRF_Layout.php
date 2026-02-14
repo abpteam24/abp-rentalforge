@@ -39,7 +39,7 @@
 				<?php
 				if ($bp || $post_id) {
 					$all_dates = ABPRF_Function::get_dates($post_id, $bp);
-					do_action('abptm_load_date_picker', '#abptm_bp_date', $all_dates);
+					do_action('abprf_load_date_picker', '#abptm_bp_date', $all_dates);
 				}
 			}
 			public static function return_date($bp, $dp, $bp_date, $return_date = ''): void {
@@ -65,7 +65,7 @@
 								$date_list[] = $date;
 							}
 						}
-						do_action('abptm_load_date_picker', '#abptm_return_date', $date_list);
+						do_action('abprf_load_date_picker', '#abptm_return_date', $date_list);
 					}
 				}
 			}
@@ -223,31 +223,31 @@
 			//=============================//
 			public static function filter_transport($post_id = 0): void {
 				$abprf_configuration = ABPRF_LIB_Function::get_option('abprf_configuration');
-				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('Transportation', 'abprf-rental-forge');
-				$transport_ids = ABPRF_Query::get_transport_id();
+				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
+				$equipment_ids = ABPRF_Query::get_equipment_id();
 				$value = $post_id > 0 ? $post_id : '';
 				$display_category = $post_id > 0 ? ABPRF_LIB_Function::get_post_info($post_id, 'display_category', 'on') : '';
 				$category = $post_id > 0 ? ABPRF_LIB_Function::get_post_info($post_id, 'category') : '';
 				$post_title = $post_id > 0 ? (get_the_title($post_id) . ' ' . ($category && $display_category == 'on' ? ' -  ' . $category : '')) : '';
-				$transport_icon = isset($abprf_configuration['transport_icon']) && $abprf_configuration['transport_icon'] ? $abprf_configuration['transport_icon'] : 'fas fa-bus';
+				$equipment_icon = isset($abprf_configuration['equipment_icon']) && $abprf_configuration['equipment_icon'] ? $abprf_configuration['equipment_icon'] : 'fas fa-hammer';
 				?>
                 <div class="_input_item dropdown_area">
                     <label>
-                        <span><i class="<?php echo esc_attr($transport_icon); ?> _mar_r_xs"></i><?php esc_html_e('Rental', 'abprf-rental-forge'); ?></span>
+                        <span><i class="<?php echo esc_attr($equipment_icon); ?> _mar_r_xs"></i><?php esc_html_e('Rental', 'abprf-rental-forge'); ?></span>
                         <input type="hidden" name="_post_id" value="<?php echo esc_attr($value); ?>"/>
                         <input type="text" class="_form_control_full_width" name="" placeholder="<?php echo esc_attr($label); ?>" value="<?php echo esc_attr($post_title); ?>"/>
                     </label>
-					<?php if (sizeof($transport_ids) > 0) { ?>
+					<?php if (sizeof($equipment_ids) > 0) { ?>
                         <ul class="_abprf dropdown_input">
-							<?php foreach ($transport_ids as $transport_id) {
-								$display_id = ABPRF_LIB_Function::get_post_info($transport_id, 'display_transport_id', 'on');
-								$id = ABPRF_LIB_Function::get_post_info($transport_id, 'transport_id');
-								$display_category = ABPRF_LIB_Function::get_post_info($transport_id, 'display_category', 'on');
-								$category = ABPRF_LIB_Function::get_post_info($transport_id, 'category');
+							<?php foreach ($equipment_ids as $equipment_id) {
+								$display_id = ABPRF_LIB_Function::get_post_info($equipment_id, 'display_equipment_id', 'on');
+								$id = ABPRF_LIB_Function::get_post_info($equipment_id, 'equipment_id');
+								$display_category = ABPRF_LIB_Function::get_post_info($equipment_id, 'display_category', 'on');
+								$category = ABPRF_LIB_Function::get_post_info($equipment_id, 'category');
 								?>
-                                <li data-value="<?php echo esc_attr(get_the_title($transport_id) . ' ' . $id . ' ' . $category); ?>">
-                                    <span class="<?php echo esc_attr($transport_icon); ?>"></span>
-                                    <span data-id="<?php echo esc_attr($transport_id); ?>" data-text><?php echo esc_html(get_the_title($transport_id) . ' ' . ($category && $display_category == 'on' ? ' -  ' . $category : '')); ?></span>
+                                <li data-value="<?php echo esc_attr(get_the_title($equipment_id) . ' ' . $id . ' ' . $category); ?>">
+                                    <span class="<?php echo esc_attr($equipment_icon); ?>"></span>
+                                    <span data-id="<?php echo esc_attr($equipment_id); ?>" data-text><?php echo esc_html(get_the_title($equipment_id) . ' ' . ($category && $display_category == 'on' ? ' -  ' . $category : '')); ?></span>
 									<?php if ($id && $display_id == 'on') { ?>
                                         <span class="_abprf_color_gray"><?php echo esc_html(' - ' . $id); ?></span>
 									<?php } ?>

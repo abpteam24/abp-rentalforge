@@ -224,6 +224,11 @@ function abprf_input_value_change(currentTarget) {
         parent.find('input[type="text"]').datepicker("setDate", '');
         parent.find('input[type="hidden"]').val('').trigger('change');
     });
+    $(document).on('click', '.abprf_area .time_close_icon', function (e) {
+        e.preventDefault();
+        let parent = $(this).closest('label');
+        parent.find('input[type="time"]').val('').trigger('rf_trigger');
+    });
 }(jQuery));
 //==============================================================================Collapse & Tabs & Modal / Popup=================//
 function abprf_load_tabs() {
@@ -396,7 +401,7 @@ function abprf_load_tabs() {
                     value = value + (value ? separator : '') + currentValue;
                 }
             }).promise().done(function () {
-                parent.find('input[type="hidden"]').val(value).trigger('abprf_trigger');
+                parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
             });
         });
     });
@@ -412,16 +417,16 @@ function abprf_load_tabs() {
             }).promise().done(function () {
                 $this.addClass('rf_active');
                 abprf_data_change($this);
-                parent.find('input[type="hidden"]').val(value).trigger('abprf_trigger');
+                parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
             });
         }
     });
     //=======================================================Switch button ==============//
     $(document).on('click', 'div.abprf_area  [data-switch]', function () {
         if ($(this).hasClass('rf_active')) {
-            $(this).removeClass('rf_active').find('input[type="hidden"]').val('off').trigger('abprf_trigger');
+            $(this).removeClass('rf_active').find('input[type="hidden"]').val('off').trigger('rf_trigger');
         } else {
-            $(this).addClass('rf_active').find('input[type="hidden"]').val('on').trigger('abprf_trigger');
+            $(this).addClass('rf_active').find('input[type="hidden"]').val('on').trigger('rf_trigger');
         }
     });
     //=======================================================validation ==============//
@@ -483,7 +488,7 @@ function abprf_load_tabs() {
         }
         parent.find('.dropdown_input').slideUp(250);
         parent.find('input[type="text"]').val(text);
-        parent.find('input[type="hidden"]').val(value).trigger('abprf_trigger');
+        parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
     });
     $(document).on({
         keyup: function () {
@@ -518,7 +523,7 @@ function abprf_load_tabs() {
             $('body').find('.dropdown_input').slideUp(250);
             let parent = $this.closest('.dropdown_area');
             if ($this.hasClass('abprf_allow')) {
-                parent.find('input[type="hidden"]').val($this.val()).trigger('abprf_trigger');
+                parent.find('input[type="hidden"]').val($this.val()).trigger('rf_trigger');
             } else {
                 if (target.closest('.dropdown_area').length === 0) {
                     let current_val = parent.find('input[type="text"]').val();
@@ -535,7 +540,7 @@ function abprf_load_tabs() {
                     }).promise().done(function () {
                         if (exit < 1) {
                             parent.find('input[type="text"]').val('');
-                            parent.find('input[type="hidden"]').val('').trigger('abprf_trigger');
+                            parent.find('input[type="hidden"]').val('').trigger('rf_trigger');
                         }
                     });
                 }

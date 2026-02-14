@@ -1,6 +1,6 @@
 (function ($) {
     "use strict";
-    $(document).on("abprf_trigger", "#abprf_search_area [name='_post_id']", function () {
+    $(document).on("rf_trigger", "#abprf_search_area [name='_post_id']", function () {
         let $this = $(this);
         let parent = $this.closest('#abprf_search_area');
         let target = parent.find('.abptm_bp');
@@ -22,7 +22,7 @@
             }
         });
     });
-    $(document).on("abprf_trigger", "#abprf_search_area [name='_bp']", function () {
+    $(document).on("rf_trigger", "#abprf_search_area [name='_bp']", function () {
         let $this = $(this);
         let bp = $this.val();
         if (bp) {
@@ -49,7 +49,7 @@
             });
         }
     });
-    $(document).on("abprf_trigger", "#abprf_search_area [name='_dp']", function () {
+    $(document).on("rf_trigger", "#abprf_search_area [name='_dp']", function () {
         let $this = $(this);
         let parent = $this.closest('#abprf_search_area');
         let bp = parent.find("[name='_bp']").val();
@@ -191,7 +191,7 @@
         let parent = $(this).closest('div.abprf_registration_item');
         all_management(parent);
     });
-    $(document).on('change', 'div.abprf_registration_item [name="ticket_qty[]"]', function () {
+    $(document).on('change', 'div.abprf_registration_item [name="equipment_qty[]"]', function () {
         let parent = $(this).closest('div.abprf_registration_item');
         all_management(parent);
     })
@@ -271,7 +271,7 @@
                 total = total + parseFloat($(this).attr('data-price'));
             });
         } else {
-            parent.find('[name="ticket_qty[]"]').each(function () {
+            parent.find('[name="equipment_qty[]"]').each(function () {
                 let qty = parseInt($(this).val());
                 let price = parseFloat($(this).attr('data-price'));
                 price = price && price >= 0 ? price : 0;
@@ -297,7 +297,7 @@
                 qty++;
             });
         } else {
-            parent.find('[name="ticket_qty[]"]').each(function () {
+            parent.find('[name="equipment_qty[]"]').each(function () {
                 qty = qty + parseInt($(this).val());
             });
         }
@@ -379,7 +379,7 @@
         });
     }
     function traveller_management(parent, qty) {
-        let target = parent.find('.abptm_passenger_info');
+        let target = parent.find('.abprf_client_info');
         let single_attendee = parent.find('[name="display_single_form"]').val();
         if (single_attendee === 'on') {
             if (qty > 0) {

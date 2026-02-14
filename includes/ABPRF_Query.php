@@ -226,7 +226,7 @@
 				}
 				return $results;
 			}
-			public static function get_transport_id($bp = '', $dp = '', $cat = '', $org = ''): array {
+			public static function get_equipment_id($bp = '', $dp = '', $cat = '', $org = ''): array {
 				$bus_ids = [];
 				$bp_query = !empty($bp) ? array('key' => 'abptm_bp', 'value' => $bp, 'compare' => 'LIKE') : '';
 				$dp_query = !empty($dp) ? array('key' => 'abptm_dp', 'value' => $dp, 'compare' => 'LIKE') : '';

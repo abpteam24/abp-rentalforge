@@ -12,7 +12,7 @@
 	$full_infos = array_key_exists('all_info', $form_data) ? $form_data['all_info'] : [];
 	$abprf_infos = $abprf_infos ?? [];
 	$seat_type = array_key_exists('seat_type', $abprf_infos) ? $abprf_infos['seat_type'] : 'seat_plan';
-	$ticket_infos = array_key_exists('abptm_ticket_info', $abprf_infos) ? $abprf_infos['abptm_ticket_info'] : [];
+	$ticket_infos = array_key_exists('equipment_infos', $abprf_infos) ? $abprf_infos['equipment_infos'] : [];
 	$ticket_sold = array_key_exists('booking_info', $abprf_infos) && array_key_exists('ticket', $abprf_infos['booking_info']) ? $abprf_infos['booking_info']['ticket'] : [];
 	if ($bp && $dp && $bp_date && $post_id > 0 && sizeof($full_infos) > 0 && $seat_type == 'ticket_type' && sizeof($ticket_infos) > 0) { ?>
         <div class="abptm_ticket_area">
@@ -54,7 +54,7 @@
                                         <input type="hidden" name="ticket_id[]" value="<?php echo esc_attr($key); ?>"/>
                                     </h6>
 									<?php if ($available > 0) {
-										$input_info = ['name' => 'ticket_qty[]', 'price' => $price, 'available' => $available, 'max_qty' => $max_qty,];
+										$input_info = ['name' => 'equipment_qty[]', 'price' => $price, 'available' => $available, 'max_qty' => $max_qty,];
 										ABPRF_LIB_Layout::quantity_input($input_info);
 									} else { ?>
                                         <span class="_color_warning"> <?php esc_html_e('Not Available !', 'abprf-rental-forge'); ?></span>

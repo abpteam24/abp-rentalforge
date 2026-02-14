@@ -14,11 +14,11 @@
             }
         });
     });
-    $(document).on('click', 'button.rf_active_wc', function () {
+    $(document).on('click', 'button.abprf_active_wc', function () {
         let parent = $(this).closest('.abprf_tools');
         $.ajax({
             type: 'POST', url: abprf_admin_ajax.ajax_url, data: {
-                "action": "rf_active_wc", 'nonce': abprf_admin_ajax.nonce
+                "action": "abprf_active_wc", 'nonce': abprf_admin_ajax.nonce
             }, beforeSend: function () {
                 abprf_spinner(parent);
             }, success: function () {
@@ -27,11 +27,11 @@
         });
     });
     //==========page create=================//
-    $(document).on('click', 'button.abprf_create_transport_search_page', function () {
+    $(document).on('click', 'button.abprf_create_equipment_list_page', function () {
         let parent = $(this).closest('.abprf_tools');
         $.ajax({
             type: 'POST', url: abprf_admin_ajax.ajax_url, data: {
-                "action": "abprf_create_transport_search_page", 'nonce': abprf_admin_ajax.nonce
+                "action": "abprf_create_equipment_list_page", 'nonce': abprf_admin_ajax.nonce
             }, beforeSend: function () {
                 abprf_spinner(parent);
             }, success: function () {
@@ -39,11 +39,11 @@
             }
         });
     });
-    $(document).on('click', 'button.abprf_create_search_result_page', function () {
+    $(document).on('click', 'button.abprf_create_equipment_group_page', function () {
         let parent = $(this).closest('.abprf_tools');
         $.ajax({
             type: 'POST', url: abprf_admin_ajax.ajax_url, data: {
-                "action": "abprf_create_search_result_page", 'nonce': abprf_admin_ajax.nonce
+                "action": "abprf_create_equipment_group_page", 'nonce': abprf_admin_ajax.nonce
             }, beforeSend: function () {
                 abprf_spinner(parent);
             }, success: function () {
@@ -52,11 +52,11 @@
         });
     });
     //==========Dummy data configuration=================//
-    $(document).on('click', 'button.abprf_import_bus', function () {
+    $(document).on('click', 'button.abprf_import_dummy', function () {
         let parent = $(this).closest('.abprf_tools');
         $.ajax({
             type: 'POST', url: abprf_admin_ajax.ajax_url, data: {
-                "action": "abprf_import_bus", 'nonce': abprf_admin_ajax.nonce
+                "action": "abprf_import_dummy", 'nonce': abprf_admin_ajax.nonce
             }, beforeSend: function () {
                 abprf_spinner(parent);
             }, success: function () {

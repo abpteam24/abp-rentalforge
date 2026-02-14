@@ -5,14 +5,13 @@
 	if (!class_exists('ABPRF_Hooks')) {
 		class ABPRF_Hooks {
 			public function __construct() {
-				add_action('abptm_title', [$this, 'title']);
+				add_action('abprf_title', [$this, 'title']);
 				add_action('abprf_category', [$this, 'category'], 10, 2);
-				add_action('abprf_organizer', [$this, 'organizer']);
 				add_action('abptm_capacity', [$this, 'capacity'], 10, 2);
 				add_action('abptm_route_direction', [$this, 'route_direction']);
 				add_action('abptm_the_content', [$this, 'the_content']);
 				//=============================//
-				add_action('abptm_search_form', [$this, 'search_form'], 10, 3);
+				add_action('abprf_search_form', [$this, 'search_form'], 10, 3);
 				add_action('abptm_registration', [$this, 'registration']);
 				add_action('abptm_details_info', [$this, 'details_info'], 10, 2);
 				add_action('abptm_selection_item', [$this, 'selection_item']);
@@ -24,7 +23,7 @@
 				add_action('abptm_search_list', [$this, 'search_list'], 10, 2);
 				//=================================//
 				add_action('abptm_next_prev_day', [$this, 'next_prev_day']);
-				add_action('abptm_hidden_form', [$this, 'hidden_form'], 10, 2);
+				add_action('abprf_hidden_form', [$this, 'hidden_form'], 10, 2);
 				//=================================//
 				add_action('abptm_display_cart_item', [$this, 'display_cart_item']);
 				//=================================//
@@ -32,7 +31,6 @@
 			}
 			public function title($abprf_infos = []): void { include ABPRF_Function::template_path('layout/title.php'); }
 			public function category($abprf_infos = [], $ribbon = false): void { include ABPRF_Function::template_path('layout/category.php'); }
-			public function organizer($abprf_infos = []): void { include ABPRF_Function::template_path('layout/organizer.php'); }
 			public function capacity($abprf_infos = [], $ribbon = false): void { include ABPRF_Function::template_path('layout/capacity.php'); }
 			public function route_direction($abprf_infos = []): void { include ABPRF_Function::template_path('layout/route_direction.php'); }
 			public function the_content($abprf_infos = []): void { include ABPRF_Function::template_path('layout/the_content.php'); }

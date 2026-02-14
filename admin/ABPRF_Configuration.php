@@ -48,11 +48,11 @@
 			public function configuration_menu(): void {
 				if (in_array('woocommerce/woocommerce.php', get_option('active_plugins'))) {
 					$label = __('Configuration', 'abprf-rental-forge');
-					add_submenu_page('edit.php?post_type=abprf_post', $label, $label, 'manage_options', 'configuration', array($this, 'configuration'));
+					add_submenu_page('edit.php?post_type=abprf_post', $label, $label, 'manage_options', 'rf_configuration', array($this, 'configuration'));
 				} else {
 					$abprf_configuration = ABPRF_LIB_Function::get_option('abprf_configuration');
-					$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('Transportation', 'abprf-rental-forge');
-					add_menu_page($label, $label, 'manage_options', 'configuration', array($this, 'configuration'), 'dashicons-car', 6);
+					$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
+					add_menu_page($label, $label, 'manage_options', 'rf_configuration', array($this, 'configuration'), 'dashicons-hammer', 6);
 				}
 			}
 			public function configuration(): void {
@@ -64,7 +64,7 @@
                             <div class="abprf_tabs tab_left">
                                 <ul class="_abprf tab_lists">
                                     <li class="_color_theme_padding_xs_fs_h3_text_center"><?php esc_html_e('Configuration', 'abprf-rental-forge'); ?></li>
-                                    <li data-tabs-target="#abprf_tools"><span class="fas fa-tools"></span><?php esc_html_e('Tools & Info', 'abprf-rental-forge'); ?></li>
+                                    <li data-tabs-target="#abprf_tools"><span class="fas fa-tools"></span><?php esc_html_e('Status  & Information', 'abprf-rental-forge'); ?></li>
 									<?php foreach ($this->configuration_section($abprf_configuration) as $tab) { ?>
                                         <li data-tabs-target="#<?php echo esc_attr($tab['id']); ?>"><span class="<?php echo esc_attr(array_key_exists('icon', $tab) ? $tab['icon'] : ''); ?>"></span><?php echo esc_html($tab['menu']); ?></li>
 									<?php } ?>
@@ -82,15 +82,15 @@
 				<?php
 			}
 			public function show_tab_content($abprf_configuration): void {
-				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('Transportation', 'abprf-rental-forge');
+				$plugin_label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
 				$all_fields = $this->configuration_data($abprf_configuration);
 				foreach ($this->configuration_section($abprf_configuration) as $form) {
 					$section_id = $form['id'];
 					$fields = array_key_exists($section_id, $all_fields) ? $all_fields[$section_id] : array();
 					if (sizeof($fields) > 0) {
 						?>
-                        <div class="tabsItem" data-tabs="#<?php echo esc_attr($section_id); ?>">
-                            <h3 class="_abprf"><?php echo esc_html($label . __(' : ', 'abprf-rental-forge') . $form['menu'] . ' ' . __('Configuration', 'abprf-rental-forge')); ?></h3>
+                        <div class="tab_item" data-tabs="#<?php echo esc_attr($section_id); ?>">
+                            <h3 class="_abprf"><?php echo esc_html($plugin_label . __(' : ', 'abprf-rental-forge') . $form['menu'] . ' ' . __('Configuration', 'abprf-rental-forge')); ?></h3>
                             <div class="_divider_xs"></div>
                             <form method="post" action="options.php">
 								<?php settings_fields($section_id);
@@ -136,21 +136,20 @@
 				}
 			}
 			public function configuration_section($abprf_configuration): array {
-				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('Transportation', 'abprf-rental-forge');
-				$transport_icon = isset($abprf_configuration['transport_icon']) && $abprf_configuration['transport_icon'] ? $abprf_configuration['transport_icon'] : 'fas fa-bus';
-				$stops = apply_filters('abprf_stops_after', array(array('id' => 'abprf_stops', 'icon' => 'fas fa-map-pin', 'menu' => __('Stops List', 'abprf-rental-forge'))));
-				$additional = apply_filters('abprf_slider_after', array(
-					array('id' => 'abprf_additional', 'icon' => 'fas fa-hand-holding-usd', 'menu' => __('Additional services', 'abprf-rental-forge')),
+				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
+				$equipment_icon = isset($abprf_configuration['equipment_icon']) && $abprf_configuration['equipment_icon'] ? $abprf_configuration['equipment_icon'] : 'fas fa-hammer';
+				$additional = apply_filters('abprf_additional_after', array(array('id' => 'abprf_additional', 'icon' => 'fas fa-hand-holding-usd', 'menu' => __('Additional services', 'abprf-rental-forge'))));
+				$configuration = apply_filters('abprf_slider_after', array(
 					array('id' => 'abprf_configuration', 'icon' => 'fas fa-globe', 'menu' => $label),
-					array('id' => 'abprf_rental', 'icon' => $transport_icon, 'menu' => __('Rental', 'abprf-rental-forge')),
+					array('id' => 'abprf_rental', 'icon' => $equipment_icon, 'menu' => __('Rental', 'abprf-rental-forge')),
 					array('id' => 'abprf_layout', 'icon' => 'fas fa-layer-group', 'menu' => __('Layout', 'abprf-rental-forge')),
 					array('id' => 'abprf_slider', 'icon' => 'fas fa-photo-video', 'menu' => __('Slider', 'abprf-rental-forge')),
 				));
-				$contact = apply_filters('abptm_contact_after', array(
-					array('id' => 'abptm_contact', 'icon' => 'fas fa-id-card-alt', 'menu' => __('Contact Information', 'abprf-rental-forge')),
+				$contact = apply_filters('abprf_contact_after', array(
+					array('id' => 'abprf_contact', 'icon' => 'fas fa-id-card-alt', 'menu' => __('Contact Information', 'abprf-rental-forge')),
 					array('id' => 'abprf_css_var', 'icon' => 'fas fa-drafting-compass', 'menu' => __('CSS Value', 'abprf-rental-forge')),
 				));
-				return array_merge($stops, $additional, $contact);
+				return array_merge($additional, $configuration, $contact);
 			}
 			public function configuration_data($abprf_configuration) {
 				$current_date = current_time('Y-m-d');
@@ -161,28 +160,28 @@
 							'label' => __('Label', 'abprf-rental-forge'),
 							'desc' => __('This is where you may modify the dashboard menu label if you would like.', 'abprf-rental-forge'),
 							'type' => 'text',
-							'default' => __('Transportation', 'abprf-rental-forge'),
+							'default' => __('RentalForge', 'abprf-rental-forge'),
 						),
 						array(
 							'name' => 'slug',
 							'label' => __('Slug', 'abprf-rental-forge'),
 							'desc' => __('Please input the desired slug name. Do not forget, once you modify this slug, you must refresh the permalink by going to', 'abprf-rental-forge') . ' ' . '<strong class="_abprf_color_theme">' . __('configuration-> Permalinks', 'abprf-rental-forge') . '</strong> ' . __('and clicking on the Save configuration button.', 'abprf-rental-forge'),
 							'type' => 'text',
-							'default' => 'transport'
+							'default' => 'rental-forge'
 						),
 						array(
 							'name' => 'icon',
 							'label' => __('Dashboard Menu Icon', 'abprf-rental-forge'),
 							'desc' => __('You can modify the icon in the dashboard menu from this location. The only icons that can be used on the dashboard are Dashicons. Kindly visit the ', 'abprf-rental-forge') . ' ' . '<a class="_abprf" href=https://developer.wordpress.org/resource/dashicons/ target=_blank>' . __('Dashicons Library,', 'abprf-rental-forge') . '</a>' . ' ' . __('retrieve your icon code, and paste it in this location. ', 'abprf-rental-forge'),
 							'type' => 'text',
-							'default' => 'dashicons-car'
+							'default' => 'dashicons-hammer'
 						),
 						array(
-							'name' => 'transport_icon',
-							'label' => __('Transport Icon', 'abprf-rental-forge'),
-							'desc' => __('If you wish to alter the transportation symbol, you can do so from this location. ', 'abprf-rental-forge'),
+							'name' => 'equipment_icon',
+							'label' => __('Equipment Groups Icon', 'abprf-rental-forge'),
+							'desc' => __('If you wish to alter the Equipment Groups you can do so from this location. ', 'abprf-rental-forge'),
 							'type' => 'fontawesome',
-							'default' => 'fas fa-bus'
+							'default' => 'fas fa-hammer'
 						),
 						array(
 							'name' => 'category_label',
@@ -196,22 +195,8 @@
 							'label' => __('Category Slug', 'abprf-rental-forge'),
 							'desc' => __('Please input the desired slug name for the category. Do not forget, after updating this slug, you must refresh permalinks. Simply navigate to  ', 'abprf-rental-forge') . '<strong class="_abprf_color_theme">' . __('configuration-> Permalinks', 'abprf-rental-forge') . '</strong> ' . __('and click on the Save Configuration button. ', 'abprf-rental-forge'),
 							'type' => 'text',
-							'default' => 'transport_category'
-						),
-						array(
-							'name' => 'organizer_label',
-							'label' => __('Organizer Label', 'abprf-rental-forge'),
-							'desc' => __('You can modify the Organizer label in the dashboard menu within this section. ', 'abprf-rental-forge'),
-							'type' => 'text',
-							'default' => __('Organizer', 'abprf-rental-forge')
-						),
-						array(
-							'name' => 'org_slug',
-							'label' => __('Organizer Slug', 'abprf-rental-forge'),
-							'desc' => __('Please input the desired slug name for the Organizer. Do not forget, after updating this slug, you must refresh permalinks. Simply navigate to  ', 'abprf-rental-forge') . '<strong class="_abprf_color_theme">' . __('configuration-> Permalinks', 'abprf-rental-forge') . '</strong> ' . __('and click on the Save Configuration button. ', 'abprf-rental-forge'),
-							'type' => 'text',
-							'default' => 'transport_organizer'
-						),
+							'default' => 'rental_category'
+						)
 					)),
 					'abprf_rental' => apply_filters('abprf_rental_filter', array(
 						array(
@@ -225,13 +210,13 @@
 						array(
 							'name' => 'periodic_start_date',
 							'label' => __('Sale Start after', 'abprf-rental-forge'),
-							'desc' => __('If you want to begin selling tickets after a specific date, please choose that date. Otherwise, sales will proceed without restriction. ', 'abprf-rental-forge'),
+							'desc' => __('If you want to begin selling tools after a specific date, please choose that date. Otherwise, sales will proceed without restriction. ', 'abprf-rental-forge'),
 							'type' => 'datepicker',
 						),
 						array(
 							'name' => 'periodic_end_date',
 							'label' => __('Sale close after', 'abprf-rental-forge'),
-							'desc' => __('If you wish to stop ticket sales after a certain date, please indicate the chosen date. Otherwise, sales will proceed indefinitely. ', 'abprf-rental-forge'),
+							'desc' => __('If you wish to stop tools sales after a certain date, please indicate the chosen date. Otherwise, sales will proceed indefinitely. ', 'abprf-rental-forge'),
 							'type' => 'datepicker',
 						),
 						array(
@@ -247,7 +232,7 @@
 						array(
 							'name' => 'ticket_sale_close_before',
 							'label' => __('Buffer time in MIN', 'abprf-rental-forge'),
-							'desc' => __('Enter the time in minutes to close ticket sales before the transport starts. If not specified, it will default to 0 (e.g. 1 hour equals 60 minutes). ', 'abprf-rental-forge'),
+							'desc' => __('Enter the time in minutes to close  rent before current time. If not specified, it will default to 0 (e.g. 1 hour equals 60 minutes). ', 'abprf-rental-forge'),
 							'type' => 'number',
 							'placeholder' => '60',
 							'min' => 0,
@@ -278,20 +263,6 @@
 							)
 						),
 						array(
-							'name' => 'enable_transport_search',
-							'label' => __('Enable Transport search by name ?', 'abprf-rental-forge'),
-							'desc' => __('If you do not want to enable transport search by name, please switch ', 'abprf-rental-forge') . ' ' . ABPRF_LIB_Layout::off() . ' ' . __('or to make it show, select', 'abprf-rental-forge') . ' ' . ABPRF_LIB_Layout::on() . ' ' . __('. Default is', 'abprf-rental-forge') . ' ' . ABPRF_LIB_Layout::off(),
-							'type' => 'button_switch',
-							'default' => 'off'
-						),
-						array(
-							'name' => 'enable_return',
-							'label' => __('Enable Return  Search?', 'abprf-rental-forge'),
-							'desc' => __('If you want to avoid returning search results, make sure to turn the search function ', 'abprf-rental-forge') . ' ' . ABPRF_LIB_Layout::off() . ' ' . __(' Alternatively, to make it visible, choose the option ', 'abprf-rental-forge') . ' ' . ABPRF_LIB_Layout::on() . ' ' . __('. The default setting is ', 'abprf-rental-forge') . ' ' . ABPRF_LIB_Layout::on(),
-							'type' => 'button_switch',
-							'default' => 'on'
-						),
-						array(
 							'name' => 'checkout_system',
 							'label' => __('Checkout System', 'abprf-rental-forge'),
 							'desc' => __('If you want to Only Added in cart by ajax on a single page, please select Only Add to cart by ajax. If you want to directly checkout with just one click, please select direct checkout . If you want to directly cart with just one click, please select direct cart. Default WooCommerce checkout system.', 'abprf-rental-forge'),
@@ -304,15 +275,8 @@
 								'checkout' => __('Direct Checkout', 'abprf-rental-forge'),
 							),
 						),
-						array(
-							'name' => 'redirect_search',
-							'label' => __('Search result Redirect to', 'abprf-rental-forge'),
-							'desc' => __('If you want to redirect the search result page, please select the page below.', 'abprf-rental-forge'),
-							'type' => 'pages',
-							'default' => '',
-						),
 					)),
-					'abptm_contact' => apply_filters('abptm_contact_filter', array(
+					'abprf_contact' => apply_filters('abprf_contact_filter', array(
 						array(
 							'name' => 'name',
 							'label' => __('Company Name', 'abprf-rental-forge'),
@@ -654,7 +618,7 @@
                             <span class="_fs_label"><?php echo esc_html($label); ?></span>
 							<?php self::description($args); ?>
                         </div>
-						<?php do_action('abptm_add_icon', $name, $value, 1); ?>
+						<?php do_action('abprf_add_icon', $name, $value, 1); ?>
                     </div>
                 </div>
 				<?php
@@ -664,7 +628,7 @@
                 <div class="_setting_item">
                     <div class="_f_equal_max_500_f_wrap_fa_center">
                         <span class="_fs_label_pad_r_xs"><?php echo esc_html($label); ?></span>
-                        <div><?php do_action('abptm_add_icon', $name, $value); ?></div>
+                        <div><?php do_action('abprf_add_icon', $name, $value); ?></div>
                     </div>
 					<?php self::description($args); ?>
                 </div>

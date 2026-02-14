@@ -24,7 +24,6 @@
 						<?php do_action('abprf_title', $abprf_infos); ?>
                         <div class="_d_flex_mar_t_xs">
 							<?php do_action('abprf_category', $abprf_infos); ?>
-							<?php do_action('abprf_organizer', $abprf_infos); ?>
 							<?php do_action('abprf_capacity', $abprf_infos); ?>
                         </div>
                         <div class="_divider_xs"></div>
@@ -36,7 +35,7 @@
 				<?php do_action('abptm_the_content', $abprf_infos); ?>
                 <div id="abprf_area" class="_abprf_row details_page_registration">
 					<?php if ($sale_continue == 'on') { ?>
-						<?php do_action('abptm_search_form', $abprf_infos, [], $form_data); ?>
+						<?php do_action('abprf_search_form', $abprf_infos, [], $form_data); ?>
                         <div class=" abprf_rental_result">
 							<?php ABPRF_Layout::transport_list($form_data); ?>
                         </div>

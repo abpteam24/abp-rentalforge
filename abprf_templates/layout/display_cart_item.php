@@ -5,7 +5,6 @@
 	$cart_item = $cart_item ?? [];
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$post_id = array_key_exists('post_id', $cart_item) ? $cart_item['post_id'] : 0;
-	$display_single_additional = ABPRF_LIB_Function::get_post_info($post_id, 'display_single_additional', 'on');
 	$origin = array_key_exists('origin', $cart_item) ? $cart_item['origin'] : '';
 	$origin_time = array_key_exists('origin_time', $cart_item) ? $cart_item['origin_time'] : '';
 	$bp = array_key_exists('bp', $cart_item) ? $cart_item['bp'] : '';
@@ -56,37 +55,11 @@
                             <span><?php echo esc_html(' ( ') . wp_kses_post(wc_price($ticket_info['price'])) . esc_html(' X ') . esc_html($ticket_info['qty']) . esc_html(' ) = ') . wp_kses_post(wc_price($ticket_info['price'] * $ticket_info['qty'])); ?></span>
                         </li>
 						<?php
-							if ($display_single_additional != 'on' && sizeof($additional_info) > 0 && array_key_exists($key, $additional_info)) {
-								$additional_infos = $additional_info[$key];
-								if (sizeof($additional_infos) > 0) {
-									foreach ($additional_infos as $additional) {
-										if (is_array($additional) && sizeof($additional) > 0) {
-											$icon_image = array_key_exists('icon', $additional) && $additional['icon'] ? $additional['icon'] : '';
-											$icon = $image = "";
-											if ($icon_image) {
-												if (preg_match('/\s/', $icon_image)) {
-													$icon = $icon_image;
-												} else {
-													$image = $icon_image;
-												}
-											}
-											$name = array_key_exists('name', $additional) && $additional['name'] ? $additional['name'] : ''; ?>
-                                            <li>
-												<?php if ($image) { ?>
-                                                    <div class="_w_25"><?php ABPRF_LIB_Layout::bg_image('', $image); ?></div><?php }
-													if ($icon) { ?><span class="<?php echo esc_attr($icon); ?> _mar_r_xs"></span><?php } ?>
-                                                <span class="_fs_label_mar_r_xs"><?php echo esc_html($name . __(' : ', 'abprf-rental-forge')); ?></span>
-												<?php echo wp_kses_post(wc_price($additional['price'])) . esc_html(' X ') . esc_html($additional['qty']) . esc_html('  = ') . wp_kses_post(wc_price($additional['price'] * $additional['qty'])); ?>
-                                            </li>
-										<?php }
-									}
-								}
-							}
-							do_action('abptm_cart_display_traveller_info', $cart_item, $key);
+							do_action('abprf_cart_display_client_info', $cart_item, $key);
 							$ticket_count++; ?>
                     </ul>
 				<?php }
-					if ($display_single_additional == 'on' && sizeof($additional_info) > 0) {
+					if (sizeof($additional_info) > 0) {
 						$additional_infos = current($additional_info);
 						if (sizeof($additional_infos) > 0) { ?>
                             <div class="_divider_xs"></div>
@@ -115,7 +88,7 @@
                             </ul>
 						<?php }
 					}
-					do_action('abptm_cart_display_traveller_info', $cart_item);
+					do_action('abprf_cart_display_client_info', $cart_item);
 				?>
             </div>
 		<?php } ?>

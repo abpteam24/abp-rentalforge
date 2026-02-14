@@ -10,12 +10,12 @@
 			public function gallery_settings($abprf_infos): void {
 				$abprf_configuration = array_key_exists('abprf_configuration', $abprf_infos) ? $abprf_infos['abprf_configuration'] : [];
 				$post_title = array_key_exists('post_title', $abprf_infos) ? $abprf_infos['post_title'] : '';
-				$transport_icon = isset($abprf_configuration['transport_icon']) && $abprf_configuration['transport_icon'] ? $abprf_configuration['transport_icon'] : 'fas fa-bus';
+				$equipment_icon = isset($abprf_configuration['equipment_icon']) && $abprf_configuration['equipment_icon'] ? $abprf_configuration['equipment_icon'] : 'fas fa-hammer';
 				$display_slider = array_key_exists('display_slider', $abprf_infos) ? $abprf_infos['display_slider'] : 'on';
 				$abprf_sliders = array_key_exists('abprf_sliders', $abprf_infos) ? $abprf_infos['abprf_sliders'] : [];
 				?>
-                <div class="tabsItem" data-tabs="#abprf_slider">
-                    <h4 class="_abprf_color_theme"><span class="<?php echo esc_attr($transport_icon); ?> _mar_r_xs"></span> <?php echo esc_html($post_title . ' ' . __(' : ', 'abprf-rental-forge') . ' ' . __('Slider Configuration', 'abprf-rental-forge')); ?></h4>
+                <div class="tab_item" data-tabs="#abprf_slider">
+                    <h4 class="_abprf_color_theme"><span class="<?php echo esc_attr($equipment_icon); ?> _mar_r_xs"></span> <?php echo esc_html($post_title . ' ' . __(' : ', 'abprf-rental-forge') . ' ' . __('Slider Configuration', 'abprf-rental-forge')); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="_setting_item">
                         <div class="_fa_center">

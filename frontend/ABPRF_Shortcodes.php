@@ -5,8 +5,8 @@
 	if (!class_exists('ABPRF_Shortcodes')) {
 		class ABPRF_Shortcodes {
 			public function __construct() {
-				add_shortcode('abptm-search', array($this, 'abptm_search'));
-				add_shortcode('abptm-list', array($this, 'abptm_list'));
+				add_shortcode('abprf-equipment', array($this, 'abptm_search'));
+				add_shortcode('abprf-list', array($this, 'abptm_list'));
 				add_shortcode('abptm-route', array($this, 'abptm_route'));
 			}
 			public function abptm_search($attribute): bool|string {
@@ -19,7 +19,7 @@
 				?>
                 <div id="abprf_area" class="abprf_area">
                     <div class="abprf_container">
-						<?php do_action('abptm_search_form', [], $params, $form_data); ?>
+						<?php do_action('abprf_search_form', [], $params, $form_data); ?>
                         <div class=" abprf_rental_result">
 							<?php ABPRF_Layout::transport_list($form_data); ?>
                         </div>
@@ -61,17 +61,16 @@
 							$to = array_key_exists('to', $params) ? $params['to'] : '';
 							$cat = array_key_exists('cat', $params) ? $params['cat'] : '';
 							$show_post = array_key_exists('post', $params) && $params['post'] ? $params['post'] : 50;
-							$transports = ABPRF_Query::get_transport_id($from, $to, $cat);
+							$transports = ABPRF_Query::get_equipment_id($from, $to, $cat);
 							if (sizeof($transports) > 0) {
 								$post_count = 0;
 								$args['total'] = sizeof($transports);
 								$args['page_item'] = $show_post;
-								$redirect_search = ABPRF_LIB_Function::get_options('abprf_layout', 'redirect_search');
 								$all_route = [];
 								$dummy_route = [];
 								$count = 0;
-								foreach ($transports as $transport_id) {
-									$direction = ABPRF_LIB_Function::get_post_info($transport_id, 'route_direction', []);
+								foreach ($transports as $equipment_id) {
+									$direction = ABPRF_LIB_Function::get_post_info($equipment_id, 'route_direction', []);
 									if (sizeof($direction) > 0) {
 										$start = current($direction);
 										$end = end($direction);

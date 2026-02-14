@@ -52,11 +52,12 @@
 	div.abprf_popup_icon .popup_icon_menu li.active:hover {color: #FFF;}
 	div.abprf_popup_icon .popup_all_icon { width: 100%;padding: 10px;background-color: #FFF; max-height: calc(100vh - var(--rf_gap) - var(--rf_gap) - 60px); overflow: hidden auto; }
 	div.abprf_popup_icon .popup_all_icon .popupTabItem {width: 100%;}
-	div.abprf_popup_icon .popup_all_icon .itemIconArea { width: 100%; display: -webkit-flex;display: flex; -webkit-flex-wrap: wrap;flex-wrap: wrap; }
+	div.abprf_popup_icon .popup_all_icon .item_icon_area { width: 100%; display: -webkit-flex;display: flex; -webkit-flex-wrap: wrap;flex-wrap: wrap; }
 	div.abprf_popup_icon .iconItem {
-		width: 60px;height: 60px;font-size: 30px;margin: 7px;cursor: pointer; border: 2px solid #FFF;background-color: #F2F2F2;
-		-webkit-box-shadow: 0 1px 4px 1px #DBDBDB; box-shadow: 0 1px 4px 1px #DBDBDB;
+		min-width: 100px;font-size: 30px;margin: var(--rf_gap_xxs);padding:var(--rf_gap_xxs);cursor: pointer; border: 2px solid #FFF;background-color: #F2F2F2;
+		-webkit-box-shadow: 0 1px 4px 1px #DBDBDB; box-shadow: 0 1px 4px 1px #DBDBDB;text-align: center;
 	}
+	div.abprf_popup_icon .iconItem i{font-size: var(--rf_fs_small);margin-top: var(--rf_gap_xxs);}
 	div.abprf_popup_icon .iconItem.active,
 	div.abprf_popup_icon .iconItem:hover {border-color: var(--rf_color_theme);color: var(--rf_color_theme);border-radius: var(--rf_gap_xxs);}
 	/*=============================*/
@@ -79,13 +80,12 @@
 /******************************************************************** configuration  custom************************************************/
 @media only screen and (min-width: 10px) {
 
-	#abprf_configuration div.abprf_ticketing { position: relative;}
-	#abprf_configuration div.passenger_form_content [class*="_form_control"],
-	#abprf_configuration div.abprf_stops [class*="_form_control"],
+	#abprf_configuration div.abprf_equipment_configuration { position: relative;}
+	#abprf_configuration div.client_form_content [class*="_form_control"],
 	#abprf_configuration div.additional_configuration [class*="_form_control"],
 	#abprf_configuration div.abprf_traveller_pattern [class*="_form_control"],
 	#abprf_configuration div.abprf_pricing [class*="_form_control"],
-	#abprf_configuration div.abprf_ticketing [class*="_form_control"],
+	#abprf_configuration div.abprf_equipment_configuration [class*="_form_control"],
 	#abprf_configuration div.abprf_date_range [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
 	/**************************************************************************************************************************/
 	#abprf_configuration table th._text_table_center {text-align: center;vertical-align: middle;}

@@ -25,7 +25,7 @@
 		get_header();
 		the_post();
 	}
-	printf('%s',  do_shortcode( "[abptm-list cat='".esc_attr(get_queried_object()->name)."']" ));
+	printf('%s',  do_shortcode( "[abprf-list cat='".esc_attr(get_queried_object()->name)."']" ));
 	if ( wp_is_block_theme() ) {
 		?>
 		<footer class="wp-block-template-part">

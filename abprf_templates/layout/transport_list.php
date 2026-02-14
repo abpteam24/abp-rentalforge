@@ -8,19 +8,19 @@
 	$dp = array_key_exists('dp', $form_data) ? $form_data['dp'] : '';
 	$bp_date = array_key_exists('j_date', $form_data) ? $form_data['j_date'] : '';
 	$transport_item = $transport_item ?? [];
-	$transport_id = is_array($transport_item) && array_key_exists('id', $transport_item) ? $transport_item['id'] : 0;
+	$equipment_id = is_array($transport_item) && array_key_exists('id', $transport_item) ? $transport_item['id'] : 0;
 	$bp_time = is_array($transport_item) && array_key_exists('time', $transport_item) ? $transport_item['time'] : '';
 	$dp_time = is_array($transport_item) && array_key_exists('dp_time', $transport_item) ? $transport_item['dp_time'] : '';
-	$sale_continue = ABPRF_LIB_Function::get_post_info($transport_id, 'sale_continue', 'on');
-	if ($transport_id && $transport_id > 0 && $sale_continue == 'on') {
-		$full_infos = ABPRF_Function::get_route_full_info($transport_id, $bp, $bp_date);
+	$sale_continue = ABPRF_LIB_Function::get_post_info($equipment_id, 'sale_continue', 'on');
+	if ($equipment_id && $equipment_id > 0 && $sale_continue == 'on') {
+		$full_infos = ABPRF_Function::get_route_full_info($equipment_id, $bp, $bp_date);
 		$origin_time = sizeof($full_infos) > 0 ? current($full_infos)['time'] : '';
 		$collapse_id = '#' . uniqid();
-		$abprf_infos = ABPRF_LIB_Function::get_all_meta($transport_id);
-		$abprf_infos['post_id'] = $transport_id;
+		$abprf_infos = ABPRF_LIB_Function::get_all_meta($equipment_id);
+		$abprf_infos['post_id'] = $equipment_id;
 		$seat_type = array_key_exists('seat_type', $abprf_infos) ? $abprf_infos['seat_type'] : 'seat_plan';
 		$seat_ticket_key = $seat_type == 'seat_plan' ? 'seat' : 'ticket';
-		$abprf_infos['booking_info'] = ABPRF_Query::get_sold_info($transport_id, $bp, $dp, $origin_time, $seat_type);
+		$abprf_infos['booking_info'] = ABPRF_Query::get_sold_info($equipment_id, $bp, $dp, $origin_time, $seat_type);
 		$sold_seats = sizeof(array_key_exists('seat', $abprf_infos['booking_info']) ? $abprf_infos['booking_info']['seat'] : []);
 		$total_seat = array_key_exists('total_seat', $abprf_infos) ? $abprf_infos['total_seat'] : '';
 		$available_seat = $total_seat - $sold_seats;
@@ -28,7 +28,7 @@
 		?>
         <div class="_section_xs_pad_zero transportation_item">
             <form class="_fd_column">
-                <input type="hidden" name="post_id" value="<?php echo esc_attr($transport_id); ?>"/>
+                <input type="hidden" name="post_id" value="<?php echo esc_attr($equipment_id); ?>"/>
                 <input type="hidden" name="bp" value="<?php echo esc_attr($bp); ?>"/>
                 <input type="hidden" name="dp" value="<?php echo esc_attr($dp); ?>"/>
                 <input type="hidden" name="j_date" value="<?php echo esc_attr($bp_date); ?>"/>
@@ -36,14 +36,14 @@
                 <div class="transportation_item_content">
 					<?php do_action('abprf_category', $abprf_infos, true);
 						if ($display_slider == 'on') {
-							do_action('abprf_slider_only', $transport_id, 'transport_slider');
+							do_action('abprf_slider_only', $equipment_id, 'transport_slider');
 						} else {
-							ABPRF_LIB_Layout::bg_image($transport_id, '', ABPRF_BLANK_IMG_URL);
+							ABPRF_LIB_Layout::bg_image($equipment_id, '', ABPRF_BLANK_IMG_URL);
 						}
 					?>
                     <div class="transport_details">
                         <div class="details_left">
-                            <a class="_abprf" href="<?php echo esc_url(get_the_permalink($transport_id) . '?_bp= ' . $bp . '&_dp=' . $dp . '&_j_date=' . $bp_date); ?>" target="_blank"><?php do_action('abprf_title', $abprf_infos); ?></a>
+                            <a class="_abprf" href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $bp . '&_dp=' . $dp . '&_j_date=' . $bp_date); ?>" target="_blank"><?php do_action('abprf_title', $abprf_infos); ?></a>
                             <div class="details_item">
                                 <div class="item_left">
                                     <p class="_abprf"><span class="fas fa-map-marker-alt _mar_r_xs"></span><?php echo esc_html(__('From : ', 'abprf-rental-forge') . $bp); ?></p>
@@ -69,7 +69,7 @@
                         </div>
                         <div class="details_right">
 							<?php if ($seat_type == 'seat_plan') {
-								$item_price = ABPRF_Function::get_price($transport_id, $bp, $dp);
+								$item_price = ABPRF_Function::get_price($equipment_id, $bp, $dp);
 								echo '<h3 class="_abprf_color_theme_text_center">' . wp_kses_post(wc_price($item_price)) . '</h3>';
 							}
 								if ($available_seat > 0) { ?>

@@ -51,7 +51,7 @@
 	div.abptm_seat_plan_area th:hover div.ticket_type_list {display: block;}
 	div.ticket_type_list ul li:hover {background-color: var(--rf_color_theme);color: var(--rf_color_theme_alter);cursor: pointer;}
 }
-/******************************************************************** Transport List ************************************************/
+/******************************************************************** Equipment Groups List ************************************************/
 @media only screen and (min-width: 10px) {
 	div.transportation_item_content {display: -webkit-flex;display: flex;position: relative;}
 	div.transportation_item div.transportation_item_content > div.abprf_bg_img {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);height: auto;}

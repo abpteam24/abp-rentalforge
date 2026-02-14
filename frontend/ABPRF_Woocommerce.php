@@ -44,7 +44,7 @@
 					$cart_item['total_price'] = $total_price;
 					$cart_item['line_total'] = $total_price;
 					$cart_item['line_subtotal'] = $total_price;
-					$cart_item = apply_filters('abptm_add_cart_item_data', $cart_item, $post_id);
+					$cart_item = apply_filters('abprf_add_cart_item_data', $cart_item, $post_id);
 				}
 				return $cart_item;
 			}
@@ -117,7 +117,7 @@
 						}
 					} else {
 						$id = isset($_POST['ticket_id']) ? array_map('sanitize_text_field', wp_unslash($_POST['ticket_id'])) : [];
-						$qty = isset($_POST['ticket_qty']) ? array_map('sanitize_text_field', wp_unslash($_POST['ticket_qty'])) : [];
+						$qty = isset($_POST['equipment_qty']) ? array_map('sanitize_text_field', wp_unslash($_POST['equipment_qty'])) : [];
 						$types = isset($_POST['ticket_types']) ? array_map('sanitize_text_field', wp_unslash($_POST['ticket_types'])) : [];
 						$count = count($id);
 						if ($count > 0) {
@@ -191,7 +191,6 @@
 			}
 			public function display_cart_item_block($cart_item): array {
 				$post_id = array_key_exists('post_id', $cart_item) ? $cart_item['post_id'] : 0;
-				$display_single_additional = ABPRF_LIB_Function::get_post_info($post_id, 'display_single_additional', 'on');
 				$additional_info = array_key_exists('additional_info', $cart_item) ? $cart_item['additional_info'] : [];
 				$origin = array_key_exists('origin', $cart_item) ? $cart_item['origin'] : '';
 				$origin_time = array_key_exists('origin_time', $cart_item) ? $cart_item['origin_time'] : '';
@@ -224,19 +223,9 @@
 					foreach ($ticket_infos as $key => $ticket_info) {
 						$seat_text = $seat_type == 'seat_plan' ? (__('Seat', 'abprf-rental-forge') . ' ' . ($ticket_info['dd'] ? '( ' . __('Upper Deck', 'abprf-rental-forge') . ' )' : '')) : __('Ticket', 'abprf-rental-forge');
 						$item_data[] = array('name' => esc_html($seat_text), 'value' => esc_html($ticket_info['seat'] . ' ' . ABPRF_Function::get_seat_type($ticket_info['type'])) . ' (' . wp_kses_post(wc_price($ticket_info['price'])) . esc_html(' X ') . esc_html($ticket_info['qty']) . esc_html(' ) = ') . wp_kses_post(wc_price($ticket_info['price'] * $ticket_info['qty'])));
-						if ($display_single_additional != 'on' && sizeof($additional_info) > 0 && array_key_exists($key, $additional_info)) {
-							$additional_infos = $additional_info[$key];
-							if (sizeof($additional_infos) > 0) {
-								foreach ($additional_infos as $additional) {
-									if (is_array($additional)) {
-										$item_data[] = array('name' => esc_html(array_key_exists('name', $additional) && $additional['name'] ? $additional['name'] : ''), 'value' => wp_kses_post(wc_price($additional['price'])) . esc_html(' X ') . esc_html($additional['qty']) . esc_html('  = ') . wp_kses_post(wc_price($additional['price'] * $additional['qty'])));
-									}
-								}
-							}
-						}
-						$item_data = apply_filters('abptm_cart_traveller_info', $item_data, $cart_item, $key);
+						$item_data = apply_filters('abprf_cart_client_info', $item_data, $cart_item, $key);
 					}
-					if ($display_single_additional == 'on' && sizeof($additional_info) > 0) {
+					if (sizeof($additional_info) > 0) {
 						$additional_infos = current($additional_info);
 						if (sizeof($additional_infos) > 0) {
 							foreach ($additional_infos as $additional) {
@@ -246,7 +235,7 @@
 							}
 						}
 					}
-					$item_data = apply_filters('abptm_cart_traveller_info', $item_data, $cart_item);
+					$item_data = apply_filters('abprf_cart_client_info', $item_data, $cart_item);
 				}
 				return $item_data;
 			}
@@ -355,7 +344,7 @@
 					$item_info['additional_info'] = $additional_infos;
 					$item_info['qty'] = $qty;
 					$item_info['item_total'] = $item_total;
-					$item_info = apply_filters('abptm_checkout_create_order_line_item', $item_info, $cart_item);
+					$item_info = apply_filters('abprf_checkout_create_order_line_item', $item_info, $cart_item);
 					$item->add_meta_data('_abprf_items', $item_info);
 				}
 			}
@@ -407,10 +396,7 @@
 													}
 												}
 											}
-											$others = [
-												'single_form' => ABPRF_LIB_Function::get_post_info($post_id, 'display_single_form', 'on'),
-												'single_additional' => ABPRF_LIB_Function::get_post_info($post_id, 'display_single_additional', 'on'),
-											];
+											$others = [];
 											$data = [
 												'order_id' => intval($order_id),
 												'item_id' => intval($item_id),
@@ -481,7 +467,7 @@
 									$where = ['item_id' => $item_id];
 									// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 									$wpdb->update($table_name, $data, $where, ['%s', '%s', '%s'], ['%d']);
-									do_action('abptm_send_mail', $item_id);
+									do_action('abprf_send_mail', $item_id);
 								}
 							}
 						}

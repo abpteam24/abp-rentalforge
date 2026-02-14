@@ -5,7 +5,7 @@
 	if (!class_exists('ABPRF_LIB_Layout')) {
 		class ABPRF_LIB_Layout {
 			public function __construct() {
-				add_action('abptm_add_icon', array($this, 'load_icon'), 10, 2);
+				add_action('abprf_add_icon', array($this, 'load_icon'), 10, 2);
 				add_action('abprf_add_image', array($this, 'add_single_image'), 10, 2);
 				add_action('abprf_add_image_multiple', array($this, 'abprf_add_image_multi'), 10, 2);
 				add_action('abprf_add_image_icon', array($this, 'selection_icon_image'), 10, 3);
@@ -192,9 +192,18 @@
                 </label>
 				<?php
 			}
+			public static function input_time($name, $time = '', $label = '', $required = ''): void {
+				?>
+                <label class="_input_item">
+					<?php self::input_title($label, $required); ?>
+                    <input type="time" class="_form_control" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($time); ?>" <?php echo esc_attr($required); ?>/>
+                    <span class="fas fa-times time_close_icon" title="<?php esc_attr_e('Clear Time', 'abprf-rental-forge'); ?>"></span>
+                </label>
+				<?php
+			}
 			public static function textarea($name, $value = '', $label = '', $required = ''): void {
 				?>
-                <label class="abptm_textarea _input_item">
+                <label class="abprf_textarea _input_item">
 					<?php self::input_title($label, $required); ?>
                     <textarea name="<?php echo esc_attr($name); ?>" rows="3" class="_form_control" placeholder="<?php echo esc_attr($label); ?>" title="<?php echo esc_attr($label); ?>"  <?php echo esc_attr($required); ?>><?php echo esc_textarea($value); ?></textarea>
                 </label>
@@ -261,10 +270,10 @@
                     <input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($value); ?>"/>
                     <div class="abprf_item_icon">
                         <div class="_all_center"><span class="<?php echo esc_attr($value); ?>" data-add-icon></span></div>
-                        <span class="fas fa-times close_icon abptm_delete_icon" title="<?php esc_html_e('Remove Icon', 'abprf-rental-forge'); ?>"></span>
+                        <span class="fas fa-times close_icon abprf_delete_icon" title="<?php esc_html_e('Remove Icon', 'abprf-rental-forge'); ?>"></span>
                     </div>
                     <div class="abprf_select_image_icon_content <?php echo esc_attr($button_active_class); ?>">
-                        <button class="_btn_info_xs abptm_add_icon" type="button" data-target-popup="#abprf_popup_icon"><span class="fas fa-icons _fs_h6"></span></button>
+                        <button class="_btn_info_xs abprf_add_icon" type="button" data-target-popup="#abprf_popup_icon"><span class="fas fa-icons _fs_h6"></span></button>
                     </div>
                 </div>
 				<?php
@@ -298,12 +307,13 @@
                                             <div class="popup_all_icon">
 												<?php foreach ($icons as $key => $icon) { ?>
                                                     <div class="popupTabItem" data-icon-list="<?php echo esc_attr($key); ?>" data-icon-title="<?php echo esc_attr($icon['title']); ?>">
-                                                        <h5 class="_abprf_color_theme"><?php echo esc_html($icon['title']); ?> &nbsp;(<strong class="_abprf"><?php echo esc_html(sizeof($icon['icon'])); ?></strong>) </h5>
-                                                        <div class="_divider"></div>
-                                                        <div class="itemIconArea">
+                                                        <h5 class="_abprf_color_theme_mar_t_xs"><?php echo esc_html($icon['title']); ?> &nbsp;(<strong class="_abprf"><?php echo esc_html(sizeof($icon['icon'])); ?></strong>) </h5>
+                                                        <div class="_divider_xs"></div>
+                                                        <div class="item_icon_area">
 															<?php foreach ($icon['icon'] as $icon => $item) { ?>
-                                                                <div class="iconItem _all_center" data-icon-class="<?php echo esc_attr($icon); ?>" data-icon-name="<?php echo esc_attr($item); ?>" title="<?php echo esc_attr($item); ?>">
+                                                                <div class="iconItem _all_center_fd_column" data-icon-class="<?php echo esc_attr($icon); ?>" data-icon-name="<?php echo esc_attr($item); ?>" title="<?php echo esc_attr($item); ?>">
                                                                     <span class="<?php echo esc_attr($icon); ?>"></span>
+                                                                    <i><?php echo esc_html($item); ?></i>
                                                                 </div>
 															<?php } ?>
                                                         </div>
@@ -373,16 +383,16 @@
                     <input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($value); ?>"/>
                     <div class="abprf_item_icon <?php echo esc_attr($icon_class); ?>">
                         <div class="_all_center"><span class="<?php echo esc_attr($icon); ?>" data-add-icon></span></div>
-                        <span class="fas fa-times close_icon abptm_delete_icon" title="<?php esc_html_e('Remove Icon', 'abprf-rental-forge'); ?>"></span>
+                        <span class="fas fa-times close_icon abprf_delete_icon" title="<?php esc_html_e('Remove Icon', 'abprf-rental-forge'); ?>"></span>
                     </div>
                     <div class="abprf_image_item <?php echo esc_attr($image_class); ?>">
                         <img class="_img_control" src="<?php echo esc_url(ABPRF_LIB_Function::get_image_url('', $image, 'medium')); ?>" alt="image">
-                        <span class="fas fa-times close_icon abptm_delete_image" title="<?php esc_html_e('Remove Image', 'abprf-rental-forge'); ?>"></span>
+                        <span class="fas fa-times close_icon abprf_delete_image" title="<?php esc_html_e('Remove Image', 'abprf-rental-forge'); ?>"></span>
                     </div>
                     <div class="abprf_select_image_icon_content <?php echo esc_attr($button_active_class); ?>">
                         <div class="_group_content_f_equal_full_width">
-                            <button class="_btn_info_xs abptm_select_image" type="button"><span class="fas fa-image _fs_h6"></span></button>
-                            <button class="_btn_info_xs abptm_add_icon" type="button" data-target-popup="#abprf_popup_icon"><span class="fas fa-icons _fs_h6"></span></button>
+                            <button class="_btn_info_xs abprf_select_image" type="button"><span class="fas fa-image _fs_h6"></span></button>
+                            <button class="_btn_info_xs abprf_add_icon" type="button" data-target-popup="#abprf_popup_icon"><span class="fas fa-icons _fs_h6"></span></button>
                         </div>
                     </div>
                 </div>

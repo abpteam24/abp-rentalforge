@@ -20,7 +20,6 @@
 							<?php do_action('abprf_title', $abprf_infos); ?>
                             <div class="_fd_column_mar_t_xxs title_details">
 								<?php do_action('abprf_category', $abprf_infos); ?>
-								<?php do_action('abprf_organizer', $abprf_infos); ?>
 								<?php do_action('abprf_capacity', $abprf_infos); ?>
                             </div>
                             <div class="_divider_xs"></div>
@@ -31,7 +30,7 @@
                     </div>
                     <div class="_col_4_12_800_bg_border_all_center">
 						<?php if ($sale_continue == 'on') {
-							do_action('abptm_search_form', $abprf_infos, ['form' => 'column'], $form_data);
+							do_action('abprf_search_form', $abprf_infos, ['form' => 'column'], $form_data);
 						} else {
 							ABPRF_LIB_Layout::layout_warning_info('sale_close_msg');
 						}
