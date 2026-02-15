@@ -65,12 +65,12 @@
         });
     });
     //==========Additional service =================//
-    $(document).on('click', 'button.abprf_import_additional_service', function () {
+    $(document).on('click', 'button.abprf_import_additional', function () {
         let parent = $(this).closest('.additional_configuration');
         let target = parent.find('.abprf_additional_content');
         $.ajax({
             type: 'POST', url: abprf_admin_ajax.ajax_url, data: {
-                "action": "abprf_import_additional_service", 'nonce': abprf_admin_ajax.nonce
+                "action": "abprf_import_additional", 'nonce': abprf_admin_ajax.nonce
             }, beforeSend: function () {
                 abprf_spinner(target);
             }, success: function (data) {

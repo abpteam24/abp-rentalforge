@@ -34,7 +34,7 @@
 					}
 					$date = gmdate('Y-m-d', strtotime($origin_date));
 					$time = gmdate('H:i', strtotime($origin_date));
-					$booked_status = ABPRF_LIB_Function::get_options('abprf_rental', 'booked_status', 'wc-processing,wc-completed');
+					$booked_status = ABPRF_LIB_Function::get_options('abprf_configuration', 'booked_status', 'wc-processing,wc-completed');
 					$booked_status = $booked_status ? explode(',', $booked_status) : [];
 					$status_placeholders = implode(',', array_fill(0, count($booked_status), '%s'));
 					$sp = array_search($bp, $routes);
@@ -117,7 +117,7 @@
 				$conditions = [];
 				$params = [];
 				$status = array_key_exists('status', $filters) && !empty($filters['status']) ? sanitize_text_field($filters['status']) : null;
-				$booked_status = $status ?: ABPRF_LIB_Function::get_options('abprf_rental', 'booked_status', 'wc-processing,wc-completed');
+				$booked_status = $status ?: ABPRF_LIB_Function::get_options('abprf_configuration', 'booked_status', 'wc-processing,wc-completed');
 				$booked_status = $booked_status ? explode(',', $booked_status) : [];
 				$query_status = current($booked_status) == 'all' ? '' : implode(',', array_fill(0, count($booked_status), '%s'));
 				$post_id = array_key_exists('post_id', $filters) && !empty($filters['post_id']) ? intval($filters['post_id']) : null;

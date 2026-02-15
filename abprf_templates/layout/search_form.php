@@ -25,7 +25,7 @@
 	$equipment_icon = ABPRF_LIB_Function::get_equipment_icon();
 	$equipment_icon = $equipment_icon ? $equipment_icon . ' _mar_r_xs' : '';
 	//=============================//
-	$redirect_search = ABPRF_LIB_Function::get_options('abprf_layout', 'redirect_search');
+	$redirect_search = ABPRF_LIB_Function::get_options('abprf_configuration', 'redirect_search');
 	$submit_url = $redirect_search && !is_admin() && $equipment_id == 0 && !$single_post ? get_home_url() . '/' . get_page_uri($redirect_search) : '';
 ?>
     <div id="abprf_search_area">
@@ -33,7 +33,7 @@
 			<?php
 				wp_nonce_field('abprf_search_form_nonce', 'abprf_search_form_nonce');
                 if ($params_transport == 'on' || is_admin() || ($params_transport != 'off' && (($equipment_id && $single_post) || !$single_post))) {
-				ABPRF_Layout::filter_transport($equipment_id);
+				//ABPRF_Layout::filter_transport($equipment_id);
 			}
 				if ($single_post) { ?>
                     <input type="hidden" name="_post_id" value="<?php echo esc_attr($equipment_id); ?>"/>

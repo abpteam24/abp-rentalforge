@@ -20,7 +20,7 @@
                         <div class="_divider"></div>
 						<?php $this->tax_class($abprf_infos); ?>
 					<?php } else { ?>
-						<?php ABPRF_LIB_Layout::layout_warning_info('enable_tax_msg'); ?>
+						<?php ABPRF_Layout::layout_warning_info('enable_tax_msg'); ?>
 					<?php } ?>
                 </div>
 				<?php
@@ -59,7 +59,7 @@
                         </select>
                     </label>
                     <div class="_divider_xs"></div>
-					<?php ABPRF_LIB_Layout::info_text('_tax_class'); ?>
+					<?php ABPRF_Layout::info_text('_tax_class'); ?>
                 </div>
 				<?php
 			}

@@ -10,15 +10,15 @@
 				$post_id = $post_id ?? get_the_id();
 				$template_name = ABPRF_LIB_Function::get_post_info($post_id, 'abprf_template', 'default');
 				$file_name = 'details_theme/' . $template_name . '.php';
-				$dir = ABPRF_DIR . '/abprf_registration_item/' . $file_name;
+				$dir = ABPRF_DIR . '/abprf_templates/' . $file_name;
 				if (!file_exists($dir)) {
 					$file_name = 'themes/default.php';
 				}
 				return self::template_path($file_name);
 			}
 			public static function template_path($file_name): string {
-				$file_path = wp_normalize_path(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '/abprf_registration_item/' . $file_name);
-				$default_dir = wp_normalize_path(ABPRF_DIR . '/abprf_registration_item/' . $file_name);
+				$file_path = wp_normalize_path(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '/abprf_templates/' . $file_name);
+				$default_dir = wp_normalize_path(ABPRF_DIR . '/abprf_templates/' . $file_name);
 				return file_exists($file_path) ? $file_path : $default_dir;
 			}
 			//=============================//
@@ -174,10 +174,10 @@
 							}
 						}
 					} else {
-						$start_date = ABPRF_LIB_Function::get_post_info($post_id, 'periodic_start_date') ?: ABPRF_LIB_Function::get_options('abprf_rental', 'periodic_start_date', $now);
-						$sale_end_date = ABPRF_LIB_Function::get_options('abprf_rental', 'periodic_end_date') ?: ABPRF_LIB_Function::get_post_info($post_id, 'periodic_end_date');
+						$start_date = ABPRF_LIB_Function::get_post_info($post_id, 'periodic_start_date') ?: ABPRF_LIB_Function::get_options('abprf_configuration', 'periodic_start_date', $now);
+						$sale_end_date = ABPRF_LIB_Function::get_options('abprf_configuration', 'periodic_end_date') ?: ABPRF_LIB_Function::get_post_info($post_id, 'periodic_end_date');
 						$sale_end_date = $sale_end_date ? gmdate('Y-m-d', strtotime($sale_end_date)) : '';
-						$active_days = ABPRF_LIB_Function::get_post_info($post_id, 'advance_date_number') ?: ABPRF_LIB_Function::get_options('abprf_rental', 'advance_date_number', 28);
+						$active_days = ABPRF_LIB_Function::get_post_info($post_id, 'advance_date_number') ?: ABPRF_LIB_Function::get_options('abprf_configuration', 'advance_date_number', 28);
 						if (strtotime($now) >= strtotime($start_date)) {
 							$start_date = $now;
 						}
@@ -286,7 +286,7 @@
 				return [];
 			}
 			public static function slice_buffer_time($date) {
-				$buffer_time = ABPRF_LIB_Function::get_options('abprf_rental', 'ticket_sale_close_before', 0) * 60;
+				$buffer_time = ABPRF_LIB_Function::get_options('abprf_configuration', 'ticket_sale_close_before', 0) * 60;
 				if ($buffer_time > 0) {
 					$date = gmdate('Y-m-d H:i', strtotime($date) - $buffer_time);
 				}

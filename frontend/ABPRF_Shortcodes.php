@@ -89,7 +89,7 @@
 									require ABPRF_Function::template_path('route/button.php');
 								}
 							} else {
-								ABPRF_LIB_Layout::layout_warning_info('not_found');
+								ABPRF_Layout::layout_warning_info('not_found');
 							}
 						?>
                     </div>

@@ -78,7 +78,7 @@
 										$name = array_key_exists('name', $additional) && $additional['name'] ? $additional['name'] : ''; ?>
                                         <li>
 											<?php if ($image) { ?>
-                                                <div class="_w_25"><?php ABPRF_LIB_Layout::bg_image('', $image); ?></div><?php }
+                                                <div class="_w_25"><?php ABPRF_Layout::bg_image('', $image); ?></div><?php }
 												if ($icon) { ?><span class="<?php echo esc_attr($icon); ?> _mar_r_xs"></span><?php } ?>
                                             <span class="_fs_label_mar_r_xs"><?php echo esc_html($name . __(' : ', 'abprf-rental-forge')); ?></span>
 											<?php echo wp_kses_post(wc_price($additional['price'])) . esc_html(' X ') . esc_html($additional['qty']) . esc_html('  = ') . wp_kses_post(wc_price($additional['price'] * $additional['qty'])); ?>

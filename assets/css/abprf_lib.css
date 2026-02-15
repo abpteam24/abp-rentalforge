@@ -26,6 +26,7 @@
 		--rf_shadow_10: 0 0 0 3px rgba(0, 119, 204, 0.3);
 		--rf_shadow_11: 0 0 15px 0 rgba(0, 0, 0, .15);
 		--rf_shadow_12: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		--rf_shadow_13: 0 3px 10px rgba(0,0,0,0.1);
 		--rf_fw: normal;
 		--rf_fw-thin: 300;
 		--rf_fw-normal: 500;
@@ -135,6 +136,7 @@
 	div.abprf_area [class*="_reflex_10"] { -webkit-box-shadow: var(--rf_shadow_10); box-shadow: var(--rf_shadow_10);}
 	div.abprf_area [class*="_reflex_11"] { -webkit-box-shadow: var(--rf_shadow_11); box-shadow: var(--rf_shadow_11);}
 	div.abprf_area [class*="_reflex_12"] { -webkit-box-shadow: var(--rf_shadow_12); box-shadow: var(--rf_shadow_12);}
+	div.abprf_area [class*="_reflex_13"] { -webkit-box-shadow: var(--rf_shadow_13); box-shadow: var(--rf_shadow_13);}
 	div.abprf_area [class*="_reflex_no"] { -webkit-box-shadow: none; box-shadow: none; }
 }
 /******************************************************************** Font Size & Font weight ************************************************/
@@ -414,7 +416,7 @@
 	div.abprf_area [class*="_form_column"] label span {margin: 0 0 var(--rf_gap_xxs) 0;}
 	/*************** Switch on/off*********/
 	div.abprf_area [data-switch] {width: 80px; height: 30px; min-width: auto;position: relative; background-color: var(--rf_color_white);border: 2px solid var(--rf_color_theme);}
-	div.abprf_area [data-switch]::before {position: absolute; content: var(--rf_text_off);height: 26px; width: 50%; left: 0; bottom: 0;top: 0; background-color: var(--rf_color_success);color: var(--rf_color_white);opacity: 1; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center; -webkit-transition: var(--rf_transition); transition: var(--rf_transition);}
+	div.abprf_area [data-switch]::before {position: absolute; content: var(--rf_text_off);height: 26px; width: 50%; left: 0; bottom: 0;top: 0; background-color: var(--rf_color_warning);color: var(--rf_color_white);opacity: 1; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center; -webkit-transition: var(--rf_transition); transition: var(--rf_transition);}
 	div.abprf_area [data-switch].rf_active::before {opacity: 0.4;background-color: var(--rf_color_light);color: var(--rf_color_theme);}
 	div.abprf_area [data-switch]::after {position: absolute; content: var(--rf_text_on);height: 26px; width: 50%; right: 0; bottom: 0;top: 0; background-color: var(--rf_color_light);color: var(--rf_color_theme);border-left: 2px solid var(--rf_color_theme);opacity: 0.4; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;-webkit-transition: var(--rf_transition); transition: var(--rf_transition); }
 	div.abprf_area [data-switch].rf_active::after {background-color: var(--rf_color_success);color: var(--rf_color_white);opacity: 1;}
@@ -528,10 +530,12 @@
 /******************************************************************** Panel section ************************************************/
 @media only screen and (min-width: 10px) {
 	div.abprf_area [class*="_abprf_panel"] { position: relative; border: 1px solid var(--rf_color_border); border-radius: var(--rf_br); }
-	div.abprf_area [class*="_panel_head"] { padding: var(--rf_gap_xs) var(--rf_gap); background-color: #161B37; color: #FFF;border-radius: var(--rf_br) var(--rf_br) 0 0; text-align: center;}
+	div.abprf_area [class*="_panel_head"] { padding: var(--rf_gap_xs) var(--rf_gap); background-color: #161B37; color: #FFF;border-radius: var(--rf_br) var(--rf_br) 0 0;}
 	div.abprf_area [class*="_panel_head"] span { color: #FFF; }
 	div.abprf_area [class*="_panel_body"] { padding: var(--rf_gap); background-color: var(--rf_color_3); overflow-x: auto;border-radius: 0 0 var(--rf_br) var(--rf_br); }
+	div.abprf_area [class*="_panel_footer"] { padding: var(--rf_gap_xs) var(--rf_gap); background-color: #161B37; color: #FFF;border-radius: 0 0 var(--rf_br) var(--rf_br); }
 	div.abprf_area [class*="_abprf_panel"][class*="_xs"] [class*="_panel_head"],
+	div.abprf_area [class*="_abprf_panel"][class*="_xs"] [class*="_panel_footer"],
 	div.abprf_area [class*="_abprf_panel"][class*="_xs"] [class*="_panel_body"] {padding: var(--rf_gap_xs); }
 }
 /******************************************************************** Popup section ************************************************/

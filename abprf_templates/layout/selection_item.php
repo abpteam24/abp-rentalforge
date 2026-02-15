@@ -29,7 +29,7 @@
                     <th class="seat_name"></th>
                     <th class="seat_price"></th>
                     <th>
-                        <div class="_all_center"><?php ABPRF_LIB_Layout::button_delete('abptm_seat_remove'); ?></div>
+                        <div class="_all_center"><?php ABPRF_Layout::button_delete('abptm_seat_remove'); ?></div>
                     </th>
                 </tr>
                 </tbody>

@@ -42,7 +42,7 @@
 				}
 				require_once ABPRF_DIR . '/includes/ABPRF_Dependencies.php';
 				if ( ! defined( 'ABPRF_Date_Format' ) ) {
-					define( 'ABPRF_Date_Format', ABPRF_LIB_Function::get_options( 'abprf_layout', 'date_format', 'D d M , yy' ) );
+					define( 'ABPRF_Date_Format', ABPRF_LIB_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ) );
 				}
 			}
 		}

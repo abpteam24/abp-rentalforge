@@ -19,11 +19,11 @@
                     <div class="_divider_xs"></div>
                     <div class="_setting_item">
                         <div class="_fa_center">
-							<?php ABPRF_LIB_Layout::switch_checkbox('display_slider', $display_slider); ?>
+							<?php ABPRF_Layout::switch_checkbox('display_slider', $display_slider); ?>
                             <span class="_fs_label_mar_lr_xs"><?php esc_html_e('Display Slider', 'abprf-rental-forge'); ?></span>
                         </div>
                         <div class="_divider_xs"></div>
-						<?php ABPRF_LIB_Layout::info_text('display_slider'); ?>
+						<?php ABPRF_Layout::info_text('display_slider'); ?>
                     </div>
                     <div data-collapse="#display_slider" class="<?php echo esc_attr($display_slider == 'on' ? 'rf_active' : ''); ?>">
 						<?php do_action('abprf_add_image_multiple', 'abprf_sliders', $abprf_sliders); ?>

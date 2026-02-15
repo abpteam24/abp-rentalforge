@@ -9,44 +9,44 @@
 			}
 
 			public function general_configuration( $abprf_infos ): void {
-				$abprf_configuration  = array_key_exists( 'abprf_configuration', $abprf_infos ) ? $abprf_infos['abprf_configuration'] : [];
-				$post_title           = array_key_exists( 'post_title', $abprf_infos ) ? $abprf_infos['post_title'] : '';
-				$equipment_icon       = isset( $abprf_configuration['equipment_icon'] ) && $abprf_configuration['equipment_icon'] ? $abprf_configuration['equipment_icon'] : 'fas fa-hammer';
-				$sale_continue        = array_key_exists( 'sale_continue', $abprf_infos ) ? $abprf_infos['sale_continue'] : 'on';
-				$display_equipment_id = array_key_exists( 'display_equipment_id', $abprf_infos ) ? $abprf_infos['display_equipment_id'] : 'on';
-				$equipment_id         = array_key_exists( 'equipment_id', $abprf_infos ) ? $abprf_infos['equipment_id'] : '';
-				$abprf_template       = array_key_exists( 'abprf_template', $abprf_infos ) ? $abprf_infos['abprf_template'] : 'default';
+				$abprf_configuration = array_key_exists( 'abprf_configuration', $abprf_infos ) ? $abprf_infos['abprf_configuration'] : [];
+				$post_title          = array_key_exists( 'post_title', $abprf_infos ) ? $abprf_infos['post_title'] : '';
+				$equipment_icon      = isset( $abprf_configuration['equipment_icon'] ) && $abprf_configuration['equipment_icon'] ? $abprf_configuration['equipment_icon'] : 'fas fa-hammer';
 				?>
                 <div class="tab_item" data-tabs="#abprf_general">
                     <h4 class="_abprf_color_theme"><span class="<?php echo esc_attr( $equipment_icon ); ?> _mar_r_xs"></span> <?php echo esc_html( $post_title . ' ' . __( ' : ', 'abprf-rental-forge' ) . ' ' . __( 'General Configuration', 'abprf-rental-forge' ) ); ?></h4>
                     <div class="_divider_xs"></div>
-					<?php $this->sale_close( $sale_continue ); ?>
-					<?php $this->equipment_group_id( $display_equipment_id, $equipment_id ); ?>
+					<?php $this->sale_close( $abprf_infos ); ?>
+					<?php $this->equipment_group_id( $abprf_infos ); ?>
 					<?php $this->category( $abprf_infos ); ?>
-					<?php $this->template( $abprf_template ); ?>
+					<?php $this->template( $abprf_infos ); ?>
+					<?php $this->select_advance_date_number( $abprf_infos ); ?>
                 </div>
 				<?php
 			}
 
-			public function sale_close( $sale_continue ): void {
+			public function sale_close( $abprf_infos ): void {
+				$sale_continue = array_key_exists( 'sale_continue', $abprf_infos ) ? $abprf_infos['sale_continue'] : 'on';
 				?>
                 <div class="_setting_item">
                     <div class="_fa_center">
-						<?php ABPRF_LIB_Layout::switch_checkbox( 'sale_continue', $sale_continue ); ?>
+						<?php ABPRF_Layout::switch_checkbox( 'sale_continue', $sale_continue ); ?>
                         <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Sale continue?', 'abprf-rental-forge' ); ?></span>
                     </div>
                     <div class="_divider_xs"></div>
-					<?php ABPRF_LIB_Layout::info_text( 'sale_continue' ); ?>
+					<?php ABPRF_Layout::info_text( 'sale_continue' ); ?>
                 </div>
 				<?php
 			}
 
-			public function equipment_group_id( $display_equipment_id, $equipment_id ): void {
+			public function equipment_group_id( $abprf_infos ): void {
+				$display_equipment_id = array_key_exists( 'display_equipment_id', $abprf_infos ) ? $abprf_infos['display_equipment_id'] : 'on';
+				$equipment_id         = array_key_exists( 'equipment_id', $abprf_infos ) ? $abprf_infos['equipment_id'] : '';
 				?>
                 <div class="_setting_item">
                     <div class="_f_equal_max_500_f_wrap">
                         <div class="_fa_center">
-							<?php ABPRF_LIB_Layout::switch_checkbox( 'display_equipment_id', $display_equipment_id ); ?>
+							<?php ABPRF_Layout::switch_checkbox( 'display_equipment_id', $display_equipment_id ); ?>
                             <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Equipment Groups ID', 'abprf-rental-forge' ); ?></span>
                         </div>
                         <div data-collapse="#display_equipment_id" class="<?php echo esc_attr( $display_equipment_id == 'on' ? 'rf_active' : '' ); ?>">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="_divider_xs"></div>
-					<?php ABPRF_LIB_Layout::info_text( 'display_equipment_id' ); ?>
+					<?php ABPRF_Layout::info_text( 'display_equipment_id' ); ?>
                 </div>
 				<?php
 			}
@@ -71,7 +71,7 @@
                 <div class="_setting_item">
                     <div class="_f_equal_max_500_f_wrap">
                         <div class="_fa_center">
-							<?php ABPRF_LIB_Layout::switch_checkbox( 'display_category', $display_category ); ?>
+							<?php ABPRF_Layout::switch_checkbox( 'display_category', $display_category ); ?>
                             <span class="_fs_label_mar_lr_xs"><?php echo esc_html( $category_label ); ?></span>
                         </div>
                         <div data-collapse="#display_category" class="<?php echo esc_attr( $display_category == 'on' ? 'rf_active' : '' ); ?>">
@@ -94,12 +94,13 @@
                         </div>
                     </div>
                     <div class="_divider_xs"></div>
-					<?php ABPRF_LIB_Layout::info_text( 'display_category' ); ?>
+					<?php ABPRF_Layout::info_text( 'display_category' ); ?>
                 </div>
 				<?php
 			}
 
-			public function template( $abprf_template ): void {
+			public function template( $abprf_infos ): void {
+				$abprf_template = array_key_exists( 'abprf_template', $abprf_infos ) ? $abprf_infos['abprf_template'] : 'default';
 				?>
                 <div class="_setting_item">
                     <label class="_f_equal_max_500_f_wrap">
@@ -111,7 +112,21 @@
                         </select>
                     </label>
                     <div class="_divider_xs"></div>
-					<?php ABPRF_LIB_Layout::info_text( 'abprf_template' ); ?>
+					<?php ABPRF_Layout::info_text( 'abprf_template' ); ?>
+                </div>
+				<?php
+			}
+
+			public function select_advance_date_number( $abprf_infos ): void {
+				$advance_date_number = array_key_exists( 'advance_date_number', $abprf_infos ) ? $abprf_infos['advance_date_number'] : '15';
+				?>
+                <div class="_setting_item">
+                    <label class="_f_equal_max_500_f_wrap">
+                        <span class="_mar_r_xs"><?php esc_html_e( 'Number of advance booking date', 'abprf-rental-forge' ); ?></span>
+                        <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="advance_date_number" placeholder="Ex: 15" value="<?php echo esc_attr( $advance_date_number ); ?>"/>
+                    </label>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'advance_date_number' ); ?>
                 </div>
 				<?php
 			}

@@ -3,6 +3,7 @@
 		exit; // Exit if accessed directly
 	}
 	$abprf_infos = $abprf_infos ?? [];
+	//echo '<pre>';print_r($abprf_infos);echo '</pre>';
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$post_id = array_key_exists('post_id', $abprf_infos) ? $abprf_infos['post_id'] : 0;
 	if ($post_id > 0) {

@@ -15,7 +15,7 @@
 	#abprf_configuration textarea[class*="_form_control"] {max-width: 100%;}
 	#abprf_configuration input[class*="_form_control"][type="time"] {max-width: 100px;text-align: center;min-width: 100px;}
 	/*=============================*/
-	div.abprf_area ._setting_item, div.abprf_area [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-bottom: var(--rf_gap_xs); background-color: var(--rf_color_light_2); width: 100%; }
+	div.abprf_area [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-bottom: var(--rf_gap_xs); background-color: var(--rf_color_light_2); width: 100%; }
 	/*=============================*/
 	#abprf_configuration .inside,
 	#abprf_configuration .form-section {margin: 0;padding: 0;}
@@ -79,14 +79,15 @@
 }
 /******************************************************************** configuration  custom************************************************/
 @media only screen and (min-width: 10px) {
-
-	#abprf_configuration div.abprf_equipment_configuration { position: relative;}
 	#abprf_configuration div.client_form_content [class*="_form_control"],
 	#abprf_configuration div.additional_configuration [class*="_form_control"],
 	#abprf_configuration div.abprf_traveller_pattern [class*="_form_control"],
 	#abprf_configuration div.abprf_pricing [class*="_form_control"],
-	#abprf_configuration div.abprf_equipment_configuration [class*="_form_control"],
 	#abprf_configuration div.abprf_date_range [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
+	/**************************************************************************************************************************/
+	#abprf_configuration  .equipment_area{display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
+	#abprf_configuration  .equipment_item{min-width: 350px;margin: 0;-webkit-flex: 1;flex: 1;max-width: 600px;}
+	#abprf_configuration  .equipment_item [class*="_form_control"]{min-width: auto;width: 100%;max-width: 100%;}
 	/**************************************************************************************************************************/
 	#abprf_configuration table th._text_table_center {text-align: center;vertical-align: middle;}
 }

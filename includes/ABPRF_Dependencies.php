@@ -63,7 +63,7 @@
 						'decimal_num' => ABPRF_LIB_Function::get_option( 'woocommerce_price_num_decimals', 2 ),
 						'currency_suffix' => ABPRF_LIB_Function::get_option( 'woocommerce_price_display_suffix', '' ),
 						'blank_image' => ABPRF_BLANK_IMG_URL,
-						'date_picker_format' => ABPRF_LIB_Function::get_options( 'abprf_layout', 'date_format', 'D d M , yy' ),
+						'date_picker_format' => ABPRF_LIB_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ),
 					] );
 				} else {
 					wp_localize_script( 'abprf_lib', 'abprf_var', [
@@ -74,7 +74,7 @@
 						'decimal_num' => '',
 						'wc_suffix' => '',
 						'blank_image' => ABPRF_BLANK_IMG_URL,
-						'date_picker_format' => ABPRF_LIB_Function::get_options( 'abprf_layout', 'date_format', 'D d M , yy' ),
+						'date_picker_format' => ABPRF_LIB_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ),
 					] );
 				}
 			}
@@ -147,7 +147,7 @@
 
 			private function load_file(): void {
 				require_once ABPRF_DIR . '/includes/ABPRF_LIB_Function.php';
-				require_once ABPRF_DIR . '/includes/ABPRF_LIB_Layout.php';
+				require_once ABPRF_DIR . '/includes/ABPRF_Layout.php';
 				require_once ABPRF_DIR . '/includes/ABPRF_Static_Array.php';
 				//=============Global Configuration================//
 				if ( is_admin() ) {
@@ -157,11 +157,10 @@
 				}
 				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
 					require_once ABPRF_DIR . '/includes/ABPRF_Function.php';
-					//require_once ABPRF_DIR . '/includes/ABPRF_Hooks.php';
+					require_once ABPRF_DIR . '/includes/ABPRF_Hooks.php';
 					//require_once ABPRF_DIR . '/includes/ABPRF_Ajax.php';
 					//require_once ABPRF_DIR . '/includes/ABPRF_Query.php';
-					require_once ABPRF_DIR . '/includes/ABPRF_Layout.php';
-					//require_once ABPRF_DIR . '/frontend/ABPRF_Frontend.php';
+					require_once ABPRF_DIR . '/frontend/ABPRF_Frontend.php';
 					require_once ABPRF_DIR . '/admin/ABPRF_Taxonomy_CPT.php';
 					require_once ABPRF_DIR . '/admin/ABPRF_Hidden_Post.php';
 					if ( is_admin() ) {

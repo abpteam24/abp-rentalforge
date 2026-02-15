@@ -5,7 +5,6 @@
 	if ( ! class_exists( 'ABPRF_LIB_Function' ) ) {
 		class ABPRF_LIB_Function {
 			public function __construct() {
-				add_action( 'abprf_load_date_picker', [ $this, 'load_date_picker' ], 10, 2 );
 			}
 
 			public static function query_post_type( $post_type, $show = - 1, $page = 1 ): WP_Query {
@@ -139,46 +138,7 @@
 				return $format == 'D M d , yy' ? 'D M  j, Y' : $date_format;
 			}
 
-			public function load_date_picker( $selector, $dates ): void {
-				$start_date  = current( $dates );
-				$start_year  = gmdate( 'Y', strtotime( $start_date ) );
-				$start_month = ( gmdate( 'n', strtotime( $start_date ) ) - 1 );
-				$start_day   = gmdate( 'j', strtotime( $start_date ) );
-				$end_date    = end( $dates );
-				$end_year    = gmdate( 'Y', strtotime( $end_date ) );
-				$end_month   = ( gmdate( 'n', strtotime( $end_date ) ) - 1 );
-				$end_day     = gmdate( 'j', strtotime( $end_date ) );
-				$all_date    = [];
-				foreach ( $dates as $date ) {
-					$all_date[] = '"' . gmdate( 'j-n-Y', strtotime( $date ) ) . '"';
-				}
-				?>
-                <script>
-                    jQuery(document).ready(function () {
-                        jQuery("<?php echo esc_attr( $selector ); ?>").datepicker({
-                            dateFormat: abprf_var.date_picker_format,
-                            autoSize: true, changeMonth: true, changeYear: true,
-                            minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
-                            maxDate: new Date(<?php echo esc_attr( $end_year ); ?>, <?php echo esc_attr( $end_month ); ?>, <?php echo esc_attr( $end_day ); ?>),
-                            beforeShowDay: available_check,
-                            onSelect: function (dateString, data) {
-                                let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
-                                jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
-                            }
-                        });
-                        function available_check(date) {
-                            let availableDates = [<?php echo wp_kses_post( implode( ',', $all_date ) ); ?>];
-                            let dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-                            if (jQuery.inArray(dmy, availableDates) !== -1) {
-                                return [true, "", "<?php esc_attr_e( 'Available', 'abprf-rental-forge' ); ?>"];
-                            } else {
-                                return [false, "", "<?php esc_attr_e( 'Unavailable', 'abprf-rental-forge' ); ?>"];
-                            }
-                        }
-                    });
-                </script>
-				<?php
-			}
+
 
 			public static function date_format( $date, $format = 'date' ): string {
 				$date_format = get_option( 'date_format' );

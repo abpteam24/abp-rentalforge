@@ -10,7 +10,7 @@
 				//=============================//
 				add_action('abprf_post_content', [$this, 'additional_configuration']);
 				//=============================//
-				add_action('wp_ajax_abprf_import_additional_service', array($this, 'abprf_import_additional_service'));
+				add_action('wp_ajax_abprf_import_additional', array($this, 'abprf_import_additional'));
 			}
 			public function additional_service_global($abprf_configuration): void {
 				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
@@ -19,7 +19,7 @@
 				?>
                 <div class="tab_item additional_configuration" data-tabs="#abprf_additional">
                     <h3 class="_abprf"><?php echo esc_html($label); ?></h3>
-					<?php ABPRF_LIB_Layout::info_text('additional_services'); ?>
+					<?php ABPRF_Layout::info_text('additional_services'); ?>
                     <div class="_divider_xs"></div>
                     <form method="post" action="options.php">
 						<?php settings_fields('abprf_additional'); ?>
@@ -45,15 +45,15 @@
                     <div class="_setting_item">
                         <div class="_f_equal_f_wrap">
                             <div class="_fa_center">
-								<?php ABPRF_LIB_Layout::switch_checkbox('display_additional_services', $display); ?>
+								<?php ABPRF_Layout::switch_checkbox('display_additional_services', $display); ?>
                                 <span class="_fs_label_mar_lr_xs"><?php esc_html_e('Additional services', 'abprf-rental-forge'); ?></span>
                             </div>
                             <div data-collapse="#display_additional_services" class="<?php echo esc_attr($display == 'on' ? 'rf_active' : ''); ?>">
-                                <button type="button" class="_btn_theme abprf_import_additional_service"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e('Import Additional Service', 'abprf-rental-forge'); ?></button>
+                                <button type="button" class="_btn_theme abprf_import_additional"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e('Import Additional Service', 'abprf-rental-forge'); ?></button>
                             </div>
                         </div>
                         <div class="_divider_xs"></div>
-						<?php ABPRF_LIB_Layout::info_text('display_additional_services'); ?>
+						<?php ABPRF_Layout::info_text('display_additional_services'); ?>
                     </div>
                     <div class="<?php echo esc_attr($display == 'on' ? 'rf_active' : ''); ?>" data-collapse="#display_additional_services">
                         <div class="abprf_additional_content">
@@ -93,7 +93,7 @@
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fj_between">
-						<?php ABPRF_LIB_Layout::button_add(__('Add New Additional services', 'abprf-rental-forge')); ?>
+						<?php ABPRF_Layout::button_add(__('Add New Additional services', 'abprf-rental-forge')); ?>
 						<?php if ($global) { ?>
                             <button type="submit" class="_btn_success_br"><span class="far fa-save _mar_r_xs"></span><?php esc_html_e('Save Additional Service', 'abprf-rental-forge'); ?></button>
 						<?php } ?>
@@ -153,7 +153,7 @@
                             <textarea class="_form_control" name="additional_description[]" placeholder="<?php esc_attr_e('EX: Description', 'abprf-rental-forge'); ?>"><?php echo esc_html($description); ?></textarea>
                         </label>
                     </td>
-                    <td><?php ABPRF_LIB_Layout::button_delete_sort(); ?></td>
+                    <td><?php ABPRF_Layout::button_delete_sort(); ?></td>
                 </tr>
 				<?php
 			}
@@ -185,10 +185,10 @@
 				return apply_filters('additional_services_filter', $additional_services);
 			}
 			//=============================//
-			public function abprf_import_additional_service(): void {
+			public function abprf_import_additional(): void {
 				if (is_admin() && isset($_POST['nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'abprf_admin_ajax_nonce')) {
 					$additional_services = get_option('abprf_additional');
-					$additional_services = $additional_services && is_array($additional_services) ? $additional_services : [];
+					$additional_services = $additional_services && is_array($additional_services) && sizeof($additional_services)>0 ? $additional_services : ABPRF_Static_Array::static_additional();
 					$this->additional_service($additional_services);
 				}
 				wp_die();

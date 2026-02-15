@@ -24,6 +24,7 @@
 					'display_equipment_id' => __( 'Equipment Groups id is unique number which can on/off by this switch.', 'abprf-rental-forge' ),
 					'display_category' => __( 'This switch indicate Equipment Groups Category . You can on/off by this switch.', 'abprf-rental-forge' ),
 					'abprf_template' => __( 'Here You can change your details page template.', 'abprf-rental-forge' ),
+					'advance_date_number' => __( 'Kindly provide the number of days in advance for booking. By default, the advance booking period is set to 15 days.(optional) ', 'abprf-rental-forge' ),
 					//=============================//
 					'date_type' => __( 'Please Select your Equipment operational date type. Default operational date will be Periodic', 'abprf-rental-forge' ),
 					'specific_dates' => __( 'Please add your Equipment operational Specific Date lists and Operation time length(optional). If operation time empty that means it will be 24 hours', 'abprf-rental-forge' ),
@@ -31,17 +32,15 @@
 					'periodic_start_date' => __( 'Please add your Equipment Launching Date otherwise it will be start today.(optional)', 'abprf-rental-forge' ),
 					'periodic_end_date' => __( 'Please add your Equipment Terminate  Date otherwise it will be Continuously running periodically(optional)', 'abprf-rental-forge' ),
 					'periodic_after' => __( 'please add your periodically after days. if  your Equipment operation day everyday this will be one(1).(optional)', 'abprf-rental-forge' ),
-					'advance_date_number' => __( 'Kindly provide the number of days in advance for booking. By default, the advance booking period is set to 15 days.(optional) ', 'abprf-rental-forge' ),
 					'weekend' => __( 'please select your weekend.Default all days open(optional)', 'abprf-rental-forge' ),
 					'specific_off_dates' => __( 'please add your specific Operation off dates.(optional)', 'abprf-rental-forge' ),
 					'off_date_range' => __( 'If you have off days between two dates which can add here.(optional)', 'abprf-rental-forge' ),
 					//=============================//
-					'seat_type' => __( 'Please select your Equipment Groups seat type . Default is Seat Plan', 'abprf-rental-forge' ),
-					'total_seat' => __( 'Please Type your Equipment Groups total Ticket', 'abprf-rental-forge' ),
-					'display_ticket_type' => __( 'This switch indicate Equipment type. if your all ticket/seat same type then switch will be off. if you want to multiple type please switch on', 'abprf-rental-forge' ),
-					//=============================//
-					'abprf_pricing_warning' => __( 'This Equipment Groups has no route.Please add route from route configuration tab.', 'abprf-rental-forge' ),
-
+					'abprf_equipment_price' => __( 'Notice: If Operation Time is enabled, the pricing will strictly follow the Hourly Rate. Daily or other long-term rates will not be applied when specific operating hours are active.', 'abprf-rental-forge' ),
+					'hourly_rate' => __( 'Note: If price type hourly rate , it will be calculated only hour base.', 'abprf-rental-forge' ),
+					'daily_rate' => __( 'Note: If price type daily rate , it will be calculated only day base.', 'abprf-rental-forge' ),
+					'hourly_daily' => __( 'Note: If price type hourly and daily rate , it will be calculated full day(24 hours) and time .', 'abprf-rental-forge' ),
+					'monthly_rate' => __( 'Note: If price type monthly rate , it will be calculated only monthly base.', 'abprf-rental-forge' ),
 					//=============================//
 					'display_slider' => __( 'This switch indicate Equipment image slide show. You can on/off by this switch. Please use 2:1 ratio size image and all image same size. ', 'abprf-rental-forge' ),
 					'abprf_sliders' => __( 'Please upload Slider images for this Equipment Groups', 'abprf-rental-forge' ),
@@ -49,7 +48,7 @@
 					'_tax_class' => __( 'if you want to add any new tax class , Please go to WooCommerce ->configuration->Tax Area', 'abprf-rental-forge' ),
 					'enable_tax_msg' => __( 'Your Woo-commerce Tax setting already disable. If you want to enable tax please enable woo-commerce tax.', 'abprf-rental-forge' ),
 					//=============================//
-					'display_additional_services' => __( 'If you want sale additional product with ticket then active this button and add additional service.', 'abprf-rental-forge' ),
+					'display_additional_services' => __( 'If you want sale/rent additional product/equipment with regular equipment then active this button and add additional service. Additional item not depends on  operation time', 'abprf-rental-forge' ),
 					'additional_services' => __( 'In order to sell additional products with your equipment, you need to add additional services. Which imports easily from any equipment.', 'abprf-rental-forge' ),
 					'abprf_client_infos' => __( 'To obtain information from travelers, please design your form. Which imports easily from any transport.', 'abprf-rental-forge' ),
 					//=============================//
@@ -1274,7 +1273,7 @@
 							'fas fa-wind' => 'Wind'
 						]
 					],
-					16=> [
+					16 => [
 						'title' => 'Emoji',
 						'icon' => [
 							'fas fa-face-angry' => 'Face Angry',

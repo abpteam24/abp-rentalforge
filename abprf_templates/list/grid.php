@@ -44,5 +44,5 @@
         </div>
 		<?php
 	} else {
-		ABPRF_LIB_Layout::layout_warning_info('not_found');
+		ABPRF_Layout::layout_warning_info('not_found');
 	}

@@ -128,7 +128,7 @@
 						if ($_bp && $_dp && ($_j_date || $_r_date)) {
 							ABPRF_Layout::transport_list($form_data);
 						} else {
-							ABPRF_LIB_Layout::layout_warning_info('search_get_wrong_data_info');
+							ABPRF_Layout::layout_warning_info('search_get_wrong_data_info');
 						}
 					}
 				}
@@ -160,7 +160,7 @@
 						$passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity);
 						$product_status = get_post_status($product_id);
 						if ($passed_validation && $woocommerce->cart->add_to_cart($product_id) && 'publish' === $product_status) {
-							$checkout_system = ABPRF_LIB_Function::get_options('abprf_layout', 'checkout_system', 'default');
+							$checkout_system = ABPRF_LIB_Function::get_options('abprf_configuration', 'checkout_system', 'default');
 							if ($checkout_system == 'checkout') {
 								printf('%s', esc_url(wc_get_checkout_url()));
 							} elseif ($checkout_system == 'cart') {

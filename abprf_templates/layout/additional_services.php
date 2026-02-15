@@ -40,7 +40,7 @@
 					$ex_count++; ?>
                     <div class="service_item _d_flex">
 						<?php if ($image) { ?>
-                            <div class="_w_100"><?php ABPRF_LIB_Layout::bg_image('', $image); ?></div>
+                            <div class="_w_100"><?php ABPRF_Layout::bg_image('', $image); ?></div>
 						<?php } ?>
                         <div class="_fd_column_full_width">
                             <div class="_fj_between">
@@ -54,7 +54,7 @@
                                     <input type="hidden" name="<?php echo esc_attr('name_'.$id.'[]'); ?>" value="<?php echo esc_attr($ex_name); ?>"/>
 									<?php
 									$input_info = ['name' => 'qty_' . $id . '[]', 'price' => $row_ex_price, 'available' => $ex_available, 'd_qty' => 0, 'min_qty' => 0, 'max_qty' => $ex_max_qty, 'class' => 'ex_price_calculate',];
-									ABPRF_LIB_Layout::quantity_input($input_info);
+									ABPRF_Layout::quantity_input($input_info);
 								} else { ?>
                                     <span class="_color_warning"> <?php esc_html_e('Not Available !', 'abprf-rental-forge'); ?></span>
 								<?php } ?>

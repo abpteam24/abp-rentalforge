@@ -40,7 +40,7 @@
 							<?php ABPRF_Layout::transport_list($form_data); ?>
                         </div>
 					<?php } else {
-						ABPRF_LIB_Layout::layout_warning_info('sale_close_msg');
+						ABPRF_Layout::layout_warning_info('sale_close_msg');
 					}
 					?>
                 </div>

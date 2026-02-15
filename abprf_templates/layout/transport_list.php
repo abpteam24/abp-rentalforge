@@ -35,11 +35,7 @@
 				<?php ABPRF_Layout::hidden_search_form($form_data); ?>
                 <div class="transportation_item_content">
 					<?php do_action('abprf_category', $abprf_infos, true);
-						if ($display_slider == 'on') {
-							do_action('abprf_slider_only', $equipment_id, 'transport_slider');
-						} else {
-							ABPRF_LIB_Layout::bg_image($equipment_id, '', ABPRF_BLANK_IMG_URL);
-						}
+						do_action('abprf_slider_only', $abprf_infos, 'transport_slider');
 					?>
                     <div class="transport_details">
                         <div class="details_left">

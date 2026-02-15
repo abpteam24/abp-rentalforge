@@ -50,7 +50,7 @@
                         <input type="hidden" name='dp_time' value='<?php  echo esc_attr($dp_time); ?>'/>
                         <input type="hidden" name='seat_type' value='<?php echo  esc_attr($seat_type); ?>'/>
                         <input type="hidden" name='display_single_form' value='<?php  echo esc_attr(array_key_exists('display_single_form', $abprf_infos) ? $abprf_infos['display_single_form'] : 'on'); ?>'/>
-                        <input type="hidden" name='checkout_system' value='<?php  echo esc_attr((is_admin() && str_contains(wp_get_referer(), 'add_order')) ? 'default' : ABPRF_LIB_Function::get_options('abprf_layout', 'checkout_system', 'default')); ?>'/>
+                        <input type="hidden" name='checkout_system' value='<?php  echo esc_attr((is_admin() && str_contains(wp_get_referer(), 'add_order')) ? 'default' : ABPRF_LIB_Function::get_options('abprf_configuration', 'checkout_system', 'default')); ?>'/>
 						<?php ABPRF_Layout::hidden_search_form($form_data); ?>
 						<?php wp_nonce_field('abprf_registration_nonce'); ?>
                         <div class="_abprf_row">
@@ -83,8 +83,8 @@
 				<?php
 			}
 		} else {
-			ABPRF_LIB_Layout::layout_warning_info('sale_close_msg');
+			ABPRF_Layout::layout_warning_info('sale_close_msg');
 		}
 	} else {
-		ABPRF_LIB_Layout::layout_warning_info('search_get_wrong_data_info');
+		ABPRF_Layout::layout_warning_info('search_get_wrong_data_info');
 	}

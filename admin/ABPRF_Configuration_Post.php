@@ -53,6 +53,7 @@
 					return;
 				}
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
+					//echo '<pre>';print_r($_POST);echo '</pre>';
 					$meta_info                         = [];
 					$meta_info['sale_continue']        = isset( $_POST['sale_continue'] ) ? sanitize_text_field( wp_unslash( $_POST['sale_continue'] ) ) : 'off';
 					$meta_info['display_equipment_id'] = isset( $_POST['display_equipment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['display_equipment_id'] ) ) : 'off';
@@ -60,6 +61,7 @@
 					$meta_info['display_category']     = isset( $_POST['display_category'] ) ? sanitize_text_field( wp_unslash( $_POST['display_category'] ) ) : 'off';
 					$meta_info['category']             = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
 					$meta_info['abprf_template']       = isset( $_POST['abprf_template'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_template'] ) ) : 'default';
+					$meta_info['advance_date_number']  = isset( $_POST['advance_date_number'] ) ? sanitize_text_field( wp_unslash( $_POST['advance_date_number'] ) ) : '';
 					//=============================//
 					$meta_info['date_type']            = isset( $_POST['date_type'] ) ? sanitize_text_field( wp_unslash( $_POST['date_type'] ) ) : 'periodic_date';
 					$periodic_start_date               = isset( $_POST['periodic_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['periodic_start_date'] ) ) : '';
@@ -69,7 +71,6 @@
 					$meta_info['operation_time_start'] = isset( $_POST['operation_time_start'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_time_start'] ) ) : '';
 					$meta_info['operation_time_end']   = isset( $_POST['operation_time_end'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_time_end'] ) ) : '';
 					$meta_info['periodic_after']       = isset( $_POST['periodic_after'] ) ? sanitize_text_field( wp_unslash( $_POST['periodic_after'] ) ) : '1';
-					$meta_info['advance_date_number']  = isset( $_POST['advance_date_number'] ) ? sanitize_text_field( wp_unslash( $_POST['advance_date_number'] ) ) : '';
 					$meta_info['weekend']              = isset( $_POST['weekend'] ) ? sanitize_text_field( wp_unslash( $_POST['weekend'] ) ) : '';
 					$specific_off_dates                = isset( $_POST['specific_off_dates'] ) && is_array( $_POST['specific_off_dates'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['specific_off_dates'] ) ) : [];
 					$off_dates                         = array();
@@ -103,38 +104,40 @@
 					if ( sizeof( $specific_dates ) > 0 ) {
 						foreach ( $specific_dates as $key => $specific_date ) {
 							if ( $specific_date ) {
-								$specific['date']  = gmdate( 'Y-m-d', strtotime( $specific_date ) );
-								$specific['start'] = array_key_exists( $key, $specific_time_start ) ? $specific_time_start[ $key ] : '';
-								$specific['end']   = array_key_exists( $key, $specific_time_end ) ? $specific_time_end[ $key ] : '';
+								$specific[ $key ]['date']  = gmdate( 'Y-m-d', strtotime( $specific_date ) );
+								$specific[ $key ]['start'] = array_key_exists( $key, $specific_time_start ) ? $specific_time_start[ $key ] : '';
+								$specific[ $key ]['end']   = array_key_exists( $key, $specific_time_end ) ? $specific_time_end[ $key ] : '';
 							}
 						}
 					}
-					$meta_info['specific_dates'] = array_unique( $specific );
+					$meta_info['specific_dates'] = $specific;
 					//=============================//
-					$ticket_infos  = array();
-					$hidden_ids    = isset( $_POST['equipment_hidden_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_hidden_id'] ) ) : [];
-					$icon          = isset( $_POST['equipment_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_icon'] ) ) : [];
-					$name          = isset( $_POST['equipment_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_name'] ) ) : [];
-					$qty           = isset( $_POST['equipment_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_qty'] ) ) : [];
-					$max_qty       = isset( $_POST['equipment_max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_max_qty'] ) ) : [];
-					$hourly_price  = isset( $_POST['hourly_price'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['hourly_price'] ) ) : '';
-					$daily_price   = isset( $_POST['daily_price'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['daily_price'] ) ) : '';
-					$weekly_price  = isset( $_POST['weekly_price'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['weekly_price'] ) ) : '';
-					$monthly_price = isset( $_POST['monthly_price'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['monthly_price'] ) ) : '';
-					$description   = isset( $_POST['equipment_description'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['equipment_description'] ) ) : [];
+					$meta_info['price_type'] = isset( $_POST['price_type'] ) ? sanitize_text_field( wp_unslash( $_POST['price_type'] ) ) : 'hourly';
+					$ticket_infos            = array();
+					$hidden_ids              = isset( $_POST['equipment_hidden_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_hidden_id'] ) ) : [];
+					$icon                    = isset( $_POST['equipment_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_icon'] ) ) : [];
+					$name                    = isset( $_POST['equipment_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_name'] ) ) : [];
+					$qty                     = isset( $_POST['equipment_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_qty'] ) ) : [];
+					$max_qty                 = isset( $_POST['equipment_max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_max_qty'] ) ) : [];
+					$hourly_rate             = isset( $_POST['hourly_rate'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['hourly_rate'] ) ) : '';
+					$daily_rate              = isset( $_POST['daily_rate'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['daily_rate'] ) ) : '';
+					$monthly_rate            = isset( $_POST['monthly_rate'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['monthly_rate'] ) ) : '';
+					$description             = isset( $_POST['equipment_description'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['equipment_description'] ) ) : [];
 					if ( sizeof( $hidden_ids ) > 0 ) {
 						foreach ( $hidden_ids as $key => $hidden_id ) {
-							$hidden_id = ! empty( $hidden_id ) ? $hidden_id : uniqid();
-							if ( $name[ $key ] && $qty[ $key ] > 0 && ( $hourly_price[ $key ] || $daily_price[ $key ] || $weekly_price[ $key ] || $monthly_price[ $key ] ) ) {
-								$ticket_infos[ $hidden_id ]['icon']          = $icon[ $key ] ?? '';
-								$ticket_infos[ $hidden_id ]['name']          = $name[ $key ];
-								$ticket_infos[ $hidden_id ]['qty']           = $qty[ $key ];
-								$ticket_infos[ $hidden_id ]['max_qty']       = $max_qty[ $key ];
-								$ticket_infos[ $hidden_id ]['hourly_price']  = $hourly_price[ $key ];
-								$ticket_infos[ $hidden_id ]['daily_price']   = $daily_price[ $key ];
-								$ticket_infos[ $hidden_id ]['weekly_price']  = $weekly_price[ $key ];
-								$ticket_infos[ $hidden_id ]['monthly_price'] = $monthly_price[ $key ];
-								$ticket_infos[ $hidden_id ]['description']   = $description[ $key ] ?? '';
+							$ticket_info = [];
+							$hidden_id   = ! empty( $hidden_id ) ? $hidden_id : uniqid();
+							if ( $name[ $key ] && $qty[ $key ] > 0 && ( $hourly_rate[ $key ] || $daily_rate[ $key ] || $monthly_rate[ $key ] ) ) {
+								$ticket_info['icon']         = $icon[ $key ] ?? '';
+								$ticket_info['name']         = $name[ $key ];
+								$ticket_info['qty']          = $qty[ $key ];
+								$ticket_info['max_qty']      = $max_qty[ $key ];
+								$ticket_info['hourly_rate']  = $hourly_rate[ $key ];
+								$ticket_info['daily_rate']   = $daily_rate[ $key ];
+								$ticket_info['monthly_rate'] = $monthly_rate[ $key ];
+								$ticket_info['description']  = $description[ $key ] ?? '';
+								$ticket_info                 = apply_filters( 'abprf_filter_equipment_item', $ticket_info, $key );
+								$ticket_infos[ $hidden_id ]  = $ticket_info;
 							}
 						}
 						$meta_info['equipment_infos'] = $ticket_infos;
@@ -153,6 +156,7 @@
 					}
 					//=============================//
 					$meta_info = apply_filters( 'abprf_meta_info_update', $meta_info );
+					//echo '<pre>';print_r($meta_info);echo '</pre>';die();
 					if ( sizeof( $meta_info ) > 0 ) {
 						foreach ( $meta_info as $key => $value ) {
 							update_post_meta( $post_id, sanitize_key( $key ), $value );
