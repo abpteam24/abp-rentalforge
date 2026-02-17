@@ -80,7 +80,7 @@
 
 			//=============================//
 			public function wc(): void {
-				$wc_status = ABPRF_LIB_Function::check_wc();
+				$wc_status = ABPRF_Function::check_wc();
 				$title     = $wc_status == 2 ? __( 'Woocommerce Plugin', 'abprf-rental-forge' ) : __( 'Woocommerce need to install and active', 'abprf-rental-forge' );
 				$title     = $wc_status == 1 ? __( 'Woocommerce already installed but  not  activated', 'abprf-rental-forge' ) : $title;
 				$name      = get_option( 'woocommerce_email_from_name' );
@@ -177,7 +177,7 @@
                 <form class="_section_xs" method="post" action="">
                     <div class="_fa_center_fj_between">
                         <h6 class="_abprf"><?php esc_html_e( 'Equipment List Page', 'abprf-rental-forge' ); ?></h6>
-						<?php if ( ABPRF_LIB_Function::get_page_by_slug( 'equipment_search' ) ) { ?>
+						<?php if ( ABPRF_Function::get_page_by_slug( 'equipment_search' ) ) { ?>
                             <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
 						<?php } else { ?>
                             <button class="_btn_warning_xs_min_125 abprf_create_equipment_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Equipment List Page', 'abprf-rental-forge' ); ?></button>
@@ -186,7 +186,7 @@
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
                         <h6 class="_abprf"><?php esc_html_e( 'Equipment Groups Page', 'abprf-rental-forge' ); ?></h6>
-						<?php if ( ABPRF_LIB_Function::get_page_by_slug( 'equipment_group' ) ) { ?>
+						<?php if ( ABPRF_Function::get_page_by_slug( 'equipment_group' ) ) { ?>
                             <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
 						<?php } else { ?>
                             <button class="_btn_warning_xs_min_125 abprf_create_equipment_group_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Equipment Groups Page', 'abprf-rental-forge' ); ?></button>
@@ -199,7 +199,7 @@
 
 			public function equipment_list_page() {
 				if ( is_admin() && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'abprf_admin_ajax_nonce' ) ) {
-					if ( ! ABPRF_LIB_Function::get_page_by_slug( 'equipment_search' ) ) {
+					if ( ! ABPRF_Function::get_page_by_slug( 'equipment_search' ) ) {
 						$page = array(
 							'post_type'    => 'page',
 							'post_name'    => 'equipment_search',
@@ -216,7 +216,7 @@
 
 			public function equipment_group_page() {
 				if ( is_admin() && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'abprf_admin_ajax_nonce' ) ) {
-					if ( ! ABPRF_LIB_Function::get_page_by_slug( 'equipment_group' ) ) {
+					if ( ! ABPRF_Function::get_page_by_slug( 'equipment_group' ) ) {
 						$page = array(
 							'post_type'    => 'page',
 							'post_name'    => 'equipment_group',
@@ -233,7 +233,7 @@
 
 			//=============================//
 			public function dummy_import(): void {
-				$total = sizeof( ABPRF_LIB_Function::get_all_post_id( 'abprf_post' ) );
+				$total = sizeof( ABPRF_Function::get_all_post_id( 'abprf_post' ) );
 				?>
                 <form class="_section_xs" method="post" action="">
                     <div class="_fa_center_fj_between">

@@ -4,7 +4,7 @@
 	}
 	$post_id = $post_id ?? 0;
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$wc_link = ABPRF_LIB_Function::get_post_info($post_id, 'link_wc_id', 0);
+	$wc_link = ABPRF_Function::get_post_info($post_id, 'link_wc_id', 0);
 	if ($post_id > 0 && $wc_link > 0) {
 		?>
         <div class="total_continue">

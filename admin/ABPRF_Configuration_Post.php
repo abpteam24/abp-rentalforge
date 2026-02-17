@@ -11,7 +11,7 @@
 
 			//=============================//
 			public function settings_meta(): void {
-				$abprf_configuration = ABPRF_LIB_Function::get_option( 'abprf_configuration' );
+				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 				$label               = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
 				$equipment_icon      = isset( $abprf_configuration['equipment_icon'] ) && $abprf_configuration['equipment_icon'] ? $abprf_configuration['equipment_icon'] : 'fas fa-hammer';
 				$label               = $label . ' ' . __( 'Configuration', 'abprf-rental-forge' ) . get_the_title( get_the_id() );
@@ -21,7 +21,7 @@
 			//=============================//
 			public function settings(): void {
 				$post_id             = get_the_id();
-				$abprf_infos         = ABPRF_LIB_Function::get_all_meta( $post_id );
+				$abprf_infos         = ABPRF_Function::get_all_meta( $post_id );
 				$abprf_configuration = array_key_exists( 'abprf_configuration', $abprf_infos ) ? $abprf_infos['abprf_configuration'] : [];
 				$equipment_icon      = isset( $abprf_configuration['equipment_icon'] ) && $abprf_configuration['equipment_icon'] ? $abprf_configuration['equipment_icon'] : 'fas fa-hammer';
 				wp_nonce_field( 'abprf_post_nonce', 'abprf_post_nonce' );
@@ -55,6 +55,8 @@
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
 					//echo '<pre>';print_r($_POST);echo '</pre>';
 					$meta_info                         = [];
+					$meta_info['display_sub_title'] = isset( $_POST['display_sub_title'] ) ? sanitize_text_field( wp_unslash( $_POST['display_sub_title'] ) ) : 'on';
+					$meta_info['sub_title']         = isset( $_POST['sub_title'] ) ? sanitize_text_field( wp_unslash( $_POST['sub_title'] ) ) : '';
 					$meta_info['sale_continue']        = isset( $_POST['sale_continue'] ) ? sanitize_text_field( wp_unslash( $_POST['sale_continue'] ) ) : 'off';
 					$meta_info['display_equipment_id'] = isset( $_POST['display_equipment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['display_equipment_id'] ) ) : 'off';
 					$meta_info['equipment_id']         = isset( $_POST['equipment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['equipment_id'] ) ) : '';

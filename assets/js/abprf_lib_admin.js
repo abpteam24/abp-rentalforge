@@ -99,12 +99,12 @@ function load_sortable_datepicker(parent, item) {
         $(this).trigger('rf_trigger');
     });
 }(jQuery));
+//=================select icon &  Single image=========================//
 (function ($) {
     "use strict";
-    //=================select icon=========================//
     $(document).on('click', '.abprf_icon_image_selection_area button.abprf_add_icon', function () {
         let target_popup = $('.abprf_popup_icon');
-        target_popup.find('.iconItem').click(function () {
+        target_popup.find('.icon_item').click(function () {
             let parent = $('[data-active-popup]').closest('.abprf_icon_image_selection_area');
             let icon_class = $(this).data('icon-class');
             if (icon_class) {
@@ -112,8 +112,12 @@ function load_sortable_datepicker(parent, item) {
                 parent.find('.abprf_select_image_icon_content').slideUp('fast');
                 parent.find('.abprf_image_item').slideUp('fast');
                 parent.find('.abprf_item_icon').slideDown('fast');
-                parent.find('[data-add-icon]').removeAttr('class').addClass(icon_class);
-                target_popup.find('.iconItem').removeClass('rf_active');
+                if ($(this).closest('.special_emoji').length > 0) {
+                    parent.find('[data-add-icon]').removeAttr('class').html(icon_class);
+                } else {
+                    parent.find('[data-add-icon]').removeAttr('class').addClass(icon_class).html('');
+                }
+                target_popup.find('.icon_item').removeClass('rf_active');
                 target_popup.find('.popup_close').trigger('click');
             }
         });
@@ -136,7 +140,7 @@ function load_sortable_datepicker(parent, item) {
         });
         target_popup.find('.popup_close').click(function () {
             target_popup.find('[data-icon-menu="all_item"]').trigger('click');
-            target_popup.find('.iconItem').removeClass('rf_active');
+            target_popup.find('.icon_item').removeClass('rf_active');
         });
     });
     $(document).on('click', '.abprf_icon_image_selection_area .abprf_delete_icon', function () {
@@ -146,7 +150,6 @@ function load_sortable_datepicker(parent, item) {
         parent.find('.abprf_item_icon').slideUp('fast');
         parent.find('.abprf_select_image_icon_content').slideDown('fast');
     });
-    //=================select Single image=========================//
     $(document).on('click', 'button.abprf_select_image', function () {
         let $this = $(this);
         let parent = $this.closest('.abprf_icon_image_selection_area');

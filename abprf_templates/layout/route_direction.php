@@ -17,7 +17,7 @@
                     <span class="<?php echo esc_attr($route_class); ?> _mar_r_xs"></span>
                     <span><?php echo esc_html($route_stop); ?></span>
 					<?php if ($route_time) { ?>
-                        <span class="_mar_r_pL_xs">(<?php echo esc_html(ABPRF_LIB_Function::date_format($route_time, 'time')); ?>)</span>
+                        <span class="_mar_r_pL_xs">(<?php echo esc_html(ABPRF_Function::date_format($route_time, 'time')); ?>)</span>
 					<?php } ?>
                 </p>
 				<?php

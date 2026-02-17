@@ -22,12 +22,12 @@
         <div class="_section_xs">
             <ul class="_abprf cart_list">
                 <li><span class="fas fa-map-marker-alt _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Departure : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html($bp); ?></li>
-                <li><span class="fas fa-calendar-check _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Departure Time : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html(ABPRF_LIB_Function::date_format($bp_time, 'full')); ?></li>
+                <li><span class="fas fa-calendar-check _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Departure Time : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html(ABPRF_Function::date_format($bp_time, 'full')); ?></li>
                 <li><span class="fas fa-map-marker-alt _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Arrival : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html($dp); ?> </li>
-                <li><span class="fas fa-calendar-check _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Arrival Time : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html(ABPRF_LIB_Function::date_format($dp_time, 'full')); ?></li>
+                <li><span class="fas fa-calendar-check _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Arrival Time : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html(ABPRF_Function::date_format($dp_time, 'full')); ?></li>
 				<?php if ($bp !== $origin) { ?>
                     <li><span class="fas fa-map-marker-alt _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Starting point : ', 'abprf-rental-forge'); ?>&nbsp;</span> <?php echo esc_html($origin); ?> </li>
-                    <li><span class="fas fa-calendar-check _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Starting Time : ', 'abprf-rental-forge'); ?>&nbsp;</span> <?php echo esc_html(ABPRF_LIB_Function::date_format($origin_time, 'full')); ?> </li>
+                    <li><span class="fas fa-calendar-check _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Starting Time : ', 'abprf-rental-forge'); ?>&nbsp;</span> <?php echo esc_html(ABPRF_Function::date_format($origin_time, 'full')); ?> </li>
 				<?php }
 					if ($pickup) { ?>
                         <li><span class="fas fa-map-pin _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Pickup Point : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html($pickup); ?></li>
@@ -35,7 +35,7 @@
 					if ($drop) { ?>
                         <li><span class="fas fa-map-pin _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Drop-off Point : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html($drop); ?></li>
 					<?php } ?>
-                <li><span class="fas fa-business-time _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Approximate Time : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html(ABPRF_LIB_Function::get_date_time_difference($bp_time, $dp_time)); ?></li>
+                <li><span class="fas fa-business-time _mar_r_xs"></span><span class="_fs_label"><?php esc_html_e('Approximate Time : ', 'abprf-rental-forge'); ?></span>&nbsp;<?php echo esc_html(ABPRF_Function::get_date_time_difference($bp_time, $dp_time)); ?></li>
             </ul>
         </div>
 		<?php if (sizeof($ticket_infos) > 0) { ?>

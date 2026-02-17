@@ -5,7 +5,7 @@
 	$post_id = $post_id ?? get_the_id();
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	if ($post_id > 0) {
-		$abprf_infos = ABPRF_LIB_Function::get_all_meta($post_id);
+		$abprf_infos = ABPRF_Function::get_all_meta($post_id);
 		$abprf_infos['_post_id'] = $post_id;
 		$abprf_infos['single_post'] = true;
 		$display_slider = array_key_exists('display_slider', $abprf_infos) ? $abprf_infos['display_slider'] : 'on';

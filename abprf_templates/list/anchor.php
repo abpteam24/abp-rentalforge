@@ -23,8 +23,8 @@
             <div class="_f_wrap_mar_t_xs">
 				<?php foreach ($all_equipment_ids as $equipment_id => $title) {
 					$post_count++;
-					$display_category = ABPRF_LIB_Function::get_post_info($equipment_id, 'display_category', 'on');
-					$category = ABPRF_LIB_Function::get_post_info($equipment_id, 'category'); ?>
+					$display_category = ABPRF_Function::get_post_info($equipment_id, 'display_category', 'on');
+					$category = ABPRF_Function::get_post_info($equipment_id, 'category'); ?>
                     <a class="_abprf_margin_xxs_border_b pagination_item  <?php echo esc_attr($show_post >= $post_count ? '' : '_d_none'); ?>" href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $from . '&_dp=' . $to); ?>">
 						<?php
 							echo esc_html($title);

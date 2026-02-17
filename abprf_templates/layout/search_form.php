@@ -22,10 +22,10 @@
 	$params_transport = array_key_exists('transport', $params) ? $params['transport'] : '';
 	$params_return = array_key_exists('return', $params) ? $params['return'] : '';
 	//=============================//
-	$equipment_icon = ABPRF_LIB_Function::get_equipment_icon();
+	$equipment_icon = ABPRF_Function::get_equipment_icon();
 	$equipment_icon = $equipment_icon ? $equipment_icon . ' _mar_r_xs' : '';
 	//=============================//
-	$redirect_search = ABPRF_LIB_Function::get_options('abprf_configuration', 'redirect_search');
+	$redirect_search = ABPRF_Function::get_options('abprf_configuration', 'redirect_search');
 	$submit_url = $redirect_search && !is_admin() && $equipment_id == 0 && !$single_post ? get_home_url() . '/' . get_page_uri($redirect_search) : '';
 ?>
     <div id="abprf_search_area">

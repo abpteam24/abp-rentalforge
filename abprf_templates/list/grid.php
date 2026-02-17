@@ -25,10 +25,10 @@
             <div class="_f_gap_f_wrap_mar_tb">
 				<?php foreach ($all_equipment_ids as $equipment_id => $title) {
 					$post_count++;
-					$abprf_infos = ABPRF_LIB_Function::get_all_meta($equipment_id);
+					$abprf_infos = ABPRF_Function::get_all_meta($equipment_id);
 					$display_category = array_key_exists('display_category', $abprf_infos) ? $abprf_infos['display_category'] : 'on';
 					$category = array_key_exists('category', $abprf_infos) ? $abprf_infos['category'] : '';
-					$image_url = ABPRF_LIB_Function::get_image_url($equipment_id);
+					$image_url = ABPRF_Function::get_image_url($equipment_id);
                     ?>
                     <div class="pagination_item list_item _reflex <?php echo esc_attr('grid_' . $column . ' ' . ($show_post >= $post_count ? '' : '_d_none')); ?>">
                         <div data-image-href="<?php echo esc_url($image_url); ?>"><img class="_img_control" src="#" alt="<?php echo esc_attr($category); ?>"></div>

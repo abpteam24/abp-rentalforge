@@ -11,6 +11,29 @@
 	div.default_details_page div.abprf_slider {background-color: transparent;}
 	/********************/
 }
+/******************************************************************** equipment_item_area************************************************/
+@media only screen and (min-width: 10px) {
+	div.equipment_item_area {display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: var(--rf_gap);}
+	div.equipment_item_area .equipment_item {background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; border: 2px solid transparent;}
+	div.equipment_item_area .equipment_item.rf_active {border-color: var(--rf_color_theme); box-shadow: 0 8px 30px rgba(99, 102, 241, 0.2);}
+	div.equipment_item_area .equipment_item:hover {transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);}
+	div.equipment_item .item_head {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap); text-align: center;}
+	div.equipment_item .item_body {padding: var(--rf_gap);}
+	div.equipment_item .item_img {height: 150px;width: 100%;}
+	div.item_body .item_spec {display: flex; flex-wrap: wrap; gap: var(--rf_gap_xs); margin-bottom: var(--rf_gap);}
+	div.item_body .spec_badge {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap_xxs) var(--rf_gap_xs); border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: var(--rf_color_dark);}
+	div.item_body .pricing_box { background: var(--rf_color_light); padding: var(--rf_gap_xs); border-radius: 8px; margin-bottom: var(--rf_gap);}
+	div.item_body .price_row {display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rf_gap);}
+	div.item_body .price_label {font-size: 0.9rem; color: #6B7280;}
+	div.item_body .price_value {font-size: 1.5rem; font-weight: 800; color: var(--rf_color_theme);}
+	div.item_body .item_condition {font-size: 0.8rem; color: #6B7280;}
+	div.item_body .calculated_cost {background: white; padding: var(--rf_gap); border-radius: 6px; margin-top: var(--rf_gap); border: 2px dashed var(--rf_color_border);}
+	div.item_body .cost_label {font-size: 0.8rem; color: #6B7280; margin-bottom: var(--rf_gap_xs);}
+	div.item_body .cost_value {font-size: 2rem; font-weight: 800; color: var(--rf_color_secondary);}
+	div.item_body .select_checkbox{display: flex; align-items: center; gap: var(--rf_gap_xs); padding: var(--rf_gap_xs); background: var(--rf_color_light); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;}
+	div.item_body .item_checkbox {width: 24px; height: 24px; accent-color: var(--rf_color_primary); cursor: pointer;}
+	div.item_body .checkbox_label {font-weight: 600; cursor: pointer;}
+}
 /******************************************************************** Registration section************************************************/
 @media only screen and (min-width: 10px) {
 	div.abptm_pickup_drop,

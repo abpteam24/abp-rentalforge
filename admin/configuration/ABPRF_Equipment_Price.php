@@ -72,21 +72,13 @@
 				$daily_rate   = array_key_exists( 'daily_rate', $field ) ? $field['daily_rate'] : '';
 				$monthly_rate = array_key_exists( 'monthly_rate', $field ) ? $field['monthly_rate'] : '';
 				$description  = array_key_exists( 'description', $field ) ? $field['description'] : '';
-				$icon         = $image = "";
-				if ( $icon_image ) {
-					if ( preg_match( '/\s/', $icon_image ) ) {
-						$icon = $icon_image;
-					} else {
-						$image = $icon_image;
-					}
-				}
 				?>
                 <div class="abprf_delete_area equipment_item _setting_item ">
                     <input type="hidden" name="equipment_hidden_id[]" value="<?php echo esc_attr( $key ); ?>"/>
                     <div class="_f_equal">
                         <span class="_fs_label"><?php esc_html_e( 'Icon / Image', 'abprf-rental-forge' ); ?></span>
                         <div class="_f_equal">
-							<?php do_action( 'abprf_add_image_icon', 'equipment_icon[]', $icon, $image ); ?>
+							<?php do_action( 'abprf_add_image_icon', 'equipment_icon[]', $icon_image ); ?>
 							<?php ABPRF_Layout::button_delete_sort(); ?>
                         </div>
                     </div>

@@ -9,7 +9,7 @@
 	$dp = array_key_exists('dp', $form_data) ? $form_data['dp'] : '';
 	$_j_date = array_key_exists('j_date', $form_data) ? $form_data['j_date'] : '';
 	if ($bp && $dp && $_j_date && $post_id > 0) {
-		$abprf_infos = ABPRF_LIB_Function::get_all_meta($post_id);
+		$abprf_infos = ABPRF_Function::get_all_meta($post_id);
 		$sale_continue = array_key_exists('sale_continue', $abprf_infos) ? $abprf_infos['sale_continue'] : 'on';
 		$seat_type = array_key_exists('seat_type', $abprf_infos) ? $abprf_infos['seat_type'] : 'seat_plan';
 		if ($sale_continue == 'on') {
@@ -50,7 +50,7 @@
                         <input type="hidden" name='dp_time' value='<?php  echo esc_attr($dp_time); ?>'/>
                         <input type="hidden" name='seat_type' value='<?php echo  esc_attr($seat_type); ?>'/>
                         <input type="hidden" name='display_single_form' value='<?php  echo esc_attr(array_key_exists('display_single_form', $abprf_infos) ? $abprf_infos['display_single_form'] : 'on'); ?>'/>
-                        <input type="hidden" name='checkout_system' value='<?php  echo esc_attr((is_admin() && str_contains(wp_get_referer(), 'add_order')) ? 'default' : ABPRF_LIB_Function::get_options('abprf_configuration', 'checkout_system', 'default')); ?>'/>
+                        <input type="hidden" name='checkout_system' value='<?php  echo esc_attr((is_admin() && str_contains(wp_get_referer(), 'add_order')) ? 'default' : ABPRF_Function::get_options('abprf_configuration', 'checkout_system', 'default')); ?>'/>
 						<?php ABPRF_Layout::hidden_search_form($form_data); ?>
 						<?php wp_nonce_field('abprf_registration_nonce'); ?>
                         <div class="_abprf_row">

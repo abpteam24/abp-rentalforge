@@ -20,7 +20,7 @@
 					$icon_image = array_key_exists('icon', $additional_service) ? $additional_service['icon'] : '';
 					$ex_name = array_key_exists('name', $additional_service) ? $additional_service['name'] : '';
 					$ex_price = array_key_exists('price', $additional_service) ? $additional_service['price'] : '';
-					$row_ex_price = ABPRF_LIB_Function::get_wc_raw_price($post_id, $ex_price);
+					$row_ex_price = ABPRF_Function::get_wc_raw_price($post_id, $ex_price);
 					$ex_qty = array_key_exists('qty', $additional_service) ? $additional_service['qty'] : '';
 					$ex_max_qty = array_key_exists('max_qty', $additional_service) ? $additional_service['max_qty'] : '';
 					$ex_sold = array_key_exists($id, $additional_sold) ? $additional_sold[$id] : 0;

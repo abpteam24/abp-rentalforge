@@ -16,15 +16,36 @@
                 <div class="tab_item" data-tabs="#abprf_general">
                     <h4 class="_abprf_color_theme"><span class="<?php echo esc_attr( $equipment_icon ); ?> _mar_r_xs"></span> <?php echo esc_html( $post_title . ' ' . __( ' : ', 'abprf-rental-forge' ) . ' ' . __( 'General Configuration', 'abprf-rental-forge' ) ); ?></h4>
                     <div class="_divider_xs"></div>
+					<?php $this->sub_title( $abprf_infos ); ?>
 					<?php $this->sale_close( $abprf_infos ); ?>
-					<?php $this->equipment_group_id( $abprf_infos ); ?>
+					<?php $this->unique_id( $abprf_infos ); ?>
 					<?php $this->category( $abprf_infos ); ?>
 					<?php $this->template( $abprf_infos ); ?>
 					<?php $this->select_advance_date_number( $abprf_infos ); ?>
                 </div>
 				<?php
 			}
-
+			public function sub_title( $abprf_infos ): void {
+				$display= array_key_exists( 'display_sub_title', $abprf_infos ) ? $abprf_infos['display_sub_title'] : 'on';
+				$sub_title         = array_key_exists( 'sub_title', $abprf_infos ) ? $abprf_infos['sub_title'] : '';
+				?>
+                <div class="_setting_item">
+                    <div class="_f_equal_max_500_f_wrap">
+                        <div class="_fa_center">
+							<?php ABPRF_Layout::switch_checkbox( 'display_sub_title', $display ); ?>
+                            <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Sub Title', 'abprf-rental-forge' ); ?></span>
+                        </div>
+                        <div data-collapse="#display_sub_title" class="<?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
+                            <label>
+                                <input class="_form_control" name="sub_title" value="<?php echo esc_attr( $sub_title ); ?>" placeholder="<?php esc_attr_e( 'Equipment Sub Title', 'abprf-rental-forge' ); ?>"/>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'display_sub_title' ); ?>
+                </div>
+				<?php
+			}
 			public function sale_close( $abprf_infos ): void {
 				$sale_continue = array_key_exists( 'sale_continue', $abprf_infos ) ? $abprf_infos['sale_continue'] : 'on';
 				?>
@@ -39,7 +60,7 @@
 				<?php
 			}
 
-			public function equipment_group_id( $abprf_infos ): void {
+			public function unique_id( $abprf_infos ): void {
 				$display_equipment_id = array_key_exists( 'display_equipment_id', $abprf_infos ) ? $abprf_infos['display_equipment_id'] : 'on';
 				$equipment_id         = array_key_exists( 'equipment_id', $abprf_infos ) ? $abprf_infos['equipment_id'] : '';
 				?>
@@ -51,7 +72,7 @@
                         </div>
                         <div data-collapse="#display_equipment_id" class="<?php echo esc_attr( $display_equipment_id == 'on' ? 'rf_active' : '' ); ?>">
                             <label>
-                                <input class="_form_control validation_id" name="equipment_id" value="<?php echo esc_attr( $equipment_id ); ?>" placeholder="<?php esc_attr_e( 'Ex : XYZ_123', 'abprf-rental-forge' ); ?>"/>
+                                <input type="text" class="_form_control validation_id" name="equipment_id" value="<?php echo esc_attr( $equipment_id ); ?>" placeholder="<?php esc_attr_e( 'Ex : XYZ_123', 'abprf-rental-forge' ); ?>"/>
                             </label>
                         </div>
                     </div>
@@ -66,7 +87,7 @@
 				$category_label      = isset( $abprf_configuration['category_label'] ) && $abprf_configuration['category_label'] ? $abprf_configuration['category_label'] : __( 'Category', 'abprf-rental-forge' );
 				$equipment_category  = array_key_exists( 'category', $abprf_infos ) ? $abprf_infos['category'] : '';
 				$display_category    = array_key_exists( 'display_category', $abprf_infos ) ? $abprf_infos['display_category'] : 'on';
-				$all_categories      = ABPRF_LIB_Function::get_all_term_data( 'abprf_category' );
+				$all_categories      = ABPRF_Function::get_all_term_data( 'abprf_category' );
 				?>
                 <div class="_setting_item">
                     <div class="_f_equal_max_500_f_wrap">

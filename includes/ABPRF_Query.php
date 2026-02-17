@@ -24,7 +24,7 @@
 				return array_unique($ticket_list);
 			}
 			public static function get_sold_query($post_id, $bp, $dp, $origin_date, $key = '*') {
-				$routes = ABPRF_LIB_Function::get_post_info($post_id, 'route_direction', []);
+				$routes = ABPRF_Function::get_post_info($post_id, 'route_direction', []);
 				if (sizeof($routes) > 0) {
 					global $wpdb;
 					$table_name = $wpdb->prefix . 'abprf_orders';
@@ -34,7 +34,7 @@
 					}
 					$date = gmdate('Y-m-d', strtotime($origin_date));
 					$time = gmdate('H:i', strtotime($origin_date));
-					$booked_status = ABPRF_LIB_Function::get_options('abprf_configuration', 'booked_status', 'wc-processing,wc-completed');
+					$booked_status = ABPRF_Function::get_options('abprf_configuration', 'booked_status', 'wc-processing,wc-completed');
 					$booked_status = $booked_status ? explode(',', $booked_status) : [];
 					$status_placeholders = implode(',', array_fill(0, count($booked_status), '%s'));
 					$sp = array_search($bp, $routes);
@@ -117,7 +117,7 @@
 				$conditions = [];
 				$params = [];
 				$status = array_key_exists('status', $filters) && !empty($filters['status']) ? sanitize_text_field($filters['status']) : null;
-				$booked_status = $status ?: ABPRF_LIB_Function::get_options('abprf_configuration', 'booked_status', 'wc-processing,wc-completed');
+				$booked_status = $status ?: ABPRF_Function::get_options('abprf_configuration', 'booked_status', 'wc-processing,wc-completed');
 				$booked_status = $booked_status ? explode(',', $booked_status) : [];
 				$query_status = current($booked_status) == 'all' ? '' : implode(',', array_fill(0, count($booked_status), '%s'));
 				$post_id = array_key_exists('post_id', $filters) && !empty($filters['post_id']) ? intval($filters['post_id']) : null;
@@ -244,18 +244,18 @@
 					$bus_query->the_post();
 					$id = get_the_id();
 					if ($bp && $dp) {
-						$abptm_bp = ABPRF_LIB_Function::get_post_info($id, 'abptm_bp', []);
-						$abptm_dp = ABPRF_LIB_Function::get_post_info($id, 'abptm_dp', []);
+						$abptm_bp = ABPRF_Function::get_post_info($id, 'abptm_bp', []);
+						$abptm_dp = ABPRF_Function::get_post_info($id, 'abptm_dp', []);
 						if (in_array($bp, $abptm_bp) && in_array($dp, $abptm_dp)) {
 							$bus_ids[] = $id;
 						}
 					} elseif ($bp) {
-						$abptm_bp = ABPRF_LIB_Function::get_post_info($id, 'abptm_bp', []);
+						$abptm_bp = ABPRF_Function::get_post_info($id, 'abptm_bp', []);
 						if (in_array($bp, $abptm_bp)) {
 							$bus_ids[] = $id;
 						}
 					} elseif ($dp) {
-						$abptm_dp = ABPRF_LIB_Function::get_post_info($id, 'abptm_dp', []);
+						$abptm_dp = ABPRF_Function::get_post_info($id, 'abptm_dp', []);
 						if (in_array($dp, $abptm_dp)) {
 							$bus_ids[] = $id;
 						}

@@ -14,7 +14,7 @@
 				add_filter('wpseo_exclude_from_sitemap_by_post_ids', [$this, 'get_all_hidden_product_id']);
 			}
 			public function insert_wc_hidden_post($post_id, $post): void {
-				if ($post->post_type == ABPRF_Function::get_cpt() && $post->post_status == 'publish' && empty(ABPRF_LIB_Function::get_post_info($post_id, 'exit_wc_hidden_post'))) {
+				if ($post->post_type == ABPRF_Function::get_cpt() && $post->post_status == 'publish' && empty(ABPRF_Function::get_post_info($post_id, 'exit_wc_hidden_post'))) {
 					$this->create_wc_hidden_post($post_id, $post->post_title);
 				}
 			}
@@ -24,10 +24,10 @@
 						return;
 					}
 					$title = get_the_title($post_id);
-					if ($this->count_hidden_post($post_id) == 0 || empty(ABPRF_LIB_Function::get_post_info($post_id, 'link_wc_id'))) {
+					if ($this->count_hidden_post($post_id) == 0 || empty(ABPRF_Function::get_post_info($post_id, 'link_wc_id'))) {
 						$this->create_wc_hidden_post($post_id, $title);
 					}
-					$product_id = ABPRF_LIB_Function::get_post_info($post_id, 'link_wc_id', $post_id);
+					$product_id = ABPRF_Function::get_post_info($post_id, 'link_wc_id', $post_id);
 					set_post_thumbnail($product_id, get_post_thumbnail_id($post_id));
 					wp_publish_post($product_id);
 					$product_type = 'yes';
@@ -58,7 +58,7 @@
 					$visibility = get_the_terms($post_id, 'product_visibility');
 					if (is_object($visibility)) {
 						if ($visibility[0]->name == 'exclude-from-catalog') {
-							$check_event_hidden = ABPRF_LIB_Function::get_post_info($post_id, 'link_abprf_id', 0);
+							$check_event_hidden = ABPRF_Function::get_post_info($post_id, 'link_abprf_id', 0);
 							if ($check_event_hidden > 0) {
 								$wp_query->set_404();
 								status_header(404);
@@ -100,7 +100,7 @@
 					$post_id = $post->ID;
 					$visibility = get_the_terms($post_id, 'product_visibility') ? get_the_terms($post_id, 'product_visibility') : [0];
 					if (is_object($visibility[0]) && $visibility[0]->name == 'exclude-from-catalog') {
-						$check_hidden = ABPRF_LIB_Function::get_post_info($post_id, 'link_abprf_id', 0);
+						$check_hidden = ABPRF_Function::get_post_info($post_id, 'link_abprf_id', 0);
 						if ($check_hidden > 0) {
 							?>
                             <meta name="robots" content="noindex, nofollow">
@@ -111,10 +111,10 @@
 			}
 			public function get_all_hidden_product_id(): array {
 				$product_id = [];
-				$query = ABPRF_LIB_Function::query_post_type(ABPRF_Function::get_cpt());
+				$query = ABPRF_Function::query_post_type(ABPRF_Function::get_cpt());
 				foreach ($query->posts as $result) {
 					$post_id = $result->ID;
-					$product_id[] = ABPRF_LIB_Function::get_post_info($post_id, 'link_wc_id');
+					$product_id[] = ABPRF_Function::get_post_info($post_id, 'link_wc_id');
 				}
 				return array_filter($product_id);
 			}

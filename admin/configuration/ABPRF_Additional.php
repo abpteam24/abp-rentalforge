@@ -15,7 +15,7 @@
 			public function additional_service_global($abprf_configuration): void {
 				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
 				$label = $label . ' ' . __(' : ', 'abprf-rental-forge') . ' ' . __('Additional services', 'abprf-rental-forge');
-				$additional_services = ABPRF_LIB_Function::get_option('abprf_additional', ABPRF_Static_Array::static_additional());
+				$additional_services = ABPRF_Function::get_option('abprf_additional', ABPRF_Static_Array::static_additional());
 				?>
                 <div class="tab_item additional_configuration" data-tabs="#abprf_additional">
                     <h3 class="_abprf"><?php echo esc_html($label); ?></h3>
@@ -116,17 +116,9 @@
 				$max_ty = array_key_exists('max_qty', $field) ? $field['max_qty'] : '';
 				$price = array_key_exists('price', $field) ? $field['price'] : '';
 				$description = array_key_exists('description', $field) ? $field['description'] : '';
-				$icon = $image = "";
-				if ($icon_image) {
-					if (preg_match('/\s/', $icon_image)) {
-						$icon = $icon_image;
-					} else {
-						$image = $icon_image;
-					}
-				}
 				?>
                 <tr class="abprf_delete_area ">
-                    <td> <?php do_action('abprf_add_image_icon', 'additional_icon[]', $icon, $image); ?>  </td>
+                    <td> <?php do_action('abprf_add_image_icon', 'additional_icon[]', $icon_image); ?>  </td>
                     <td>
                         <input type="hidden" name="additional_id[]" value="<?php echo esc_attr($key ?: uniqid()); ?>"/>
                         <label>

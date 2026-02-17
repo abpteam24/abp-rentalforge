@@ -16,9 +16,9 @@
 	$abprf_infos = $abprf_infos ?? [];
 	$seat_type = array_key_exists('seat_type', $abprf_infos) ? $abprf_infos['seat_type'] : 'seat_plan';
 	if ($bp && $dp && $bp_date && $post_id > 0 && sizeof($full_infos) > 0 && $seat_type == 'seat_plan') {
-		$rows = ABPRF_LIB_Function::get_post_info($post_id, 'ld_rows', 0);
-		$columns = ABPRF_LIB_Function::get_post_info($post_id, 'ld_columns', 0);
-		$sp_ld_infos = ABPRF_LIB_Function::get_post_info($post_id, 'ld_infos', []);
+		$rows = ABPRF_Function::get_post_info($post_id, 'ld_rows', 0);
+		$columns = ABPRF_Function::get_post_info($post_id, 'ld_columns', 0);
+		$sp_ld_infos = ABPRF_Function::get_post_info($post_id, 'ld_infos', []);
 		$display_ud = array_key_exists('display_ud', $abprf_infos) ? $abprf_infos['display_ud'] : 'off';
 		$sp_ud_infos = array_key_exists('ud_infos', $abprf_infos) ? $abprf_infos['ud_infos'] : [];
 		$rows_ud = array_key_exists('ud_rows', $abprf_infos) ? $abprf_infos['ud_rows'] : 0;

@@ -24,7 +24,7 @@
 			}
 
 			public function update_sanitize( $new, $old, $option ) {
-				$abprf_configuration = ABPRF_LIB_Function::get_option( 'abprf_configuration' );
+				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 				$all_fields          = $this->configuration_data( $abprf_configuration );
 				$field_infos         = array_key_exists( $option, $all_fields ) ? $all_fields[ $option ] : array();
 				if ( sizeof( $field_infos ) > 0 && is_array( $new ) ) {
@@ -43,7 +43,7 @@
 			}
 
 			public function admin_init(): void {
-				$abprf_configuration = ABPRF_LIB_Function::get_option( 'abprf_configuration' );
+				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 				foreach ( $this->configuration_section( $abprf_configuration ) as $section ) {
 					register_setting( $section['id'], $section['id'], array( $this, 'sanitize_options' ) );
 				}
@@ -54,14 +54,14 @@
 					$label = __( 'Configuration', 'abprf-rental-forge' );
 					add_submenu_page( 'edit.php?post_type=abprf_post', $label, $label, 'manage_options', 'rf_configuration', array( $this, 'configuration' ) );
 				} else {
-					$abprf_configuration = ABPRF_LIB_Function::get_option( 'abprf_configuration' );
+					$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 					$label               = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
 					add_menu_page( $label, $label, 'manage_options', 'rf_configuration', array( $this, 'configuration' ), 'dashicons-hammer', 6 );
 				}
 			}
 
 			public function configuration(): void {
-				$abprf_configuration = ABPRF_LIB_Function::get_option( 'abprf_configuration' );
+				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 				?>
                 <div class="abprf_area" id="abprf_configuration">
                     <div class="abprf_container">
@@ -100,13 +100,13 @@
                             <div class="_divider_xs"></div>
                             <form method="post" action="options.php">
 								<?php settings_fields( $section_id );
-									$options = ABPRF_LIB_Function::get_option( $section_id );
+									$options = ABPRF_Function::get_option( $section_id );
 									foreach ( $fields as $option ) {
 										$name = array_key_exists( 'name', $option ) ? $option['name'] : '';
 										if ( $name == 'collapse_start' ) {
 											$collapse      = $option['collapse'] ?? '';
 											$collapse_data = $option['collapse_data'] ?? '';
-											$target_value  = ABPRF_LIB_Function::get_options( $collapse_data['option'], $collapse_data['key'], $collapse );
+											$target_value  = ABPRF_Function::get_options( $collapse_data['option'], $collapse_data['key'], $collapse );
 											?>
                                             <div class="<?php echo esc_attr( $target_value == 'on' ? 'rf_active' : '' ); ?>" data-collapse="<?php echo esc_attr( '#' . $collapse_data['option'] . '[' . $collapse_data['key'] . ']' ); ?>">
 										<?php } elseif ( $name == 'collapse_end' ) { ?>
@@ -838,7 +838,7 @@
 				if ( ! $options ) {
 					return $options;
 				}
-				$abprf_configuration = ABPRF_LIB_Function::get_option( 'abprf_configuration' );
+				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 				foreach ( $options as $option_slug => $option_value ) {
 					$sanitize_callback = $this->get_sanitize_callback( $abprf_configuration, $option_slug );
 					if ( $sanitize_callback ) {

@@ -32,7 +32,7 @@
 							<?php foreach ($pickups as $pickup) {
 								$name = array_key_exists('name', $pickup) ? $pickup['name'] : '';
 								$time = array_key_exists('time', $pickup) ? $pickup['time'] : '';
-								$value = $name . ' ' . ($time ? ' (' . ABPRF_LIB_Function::date_format($time, 'time') . ')' : '');
+								$value = $name . ' ' . ($time ? ' (' . ABPRF_Function::date_format($time, 'time') . ')' : '');
 								?>
                                 <option value="<?php echo esc_attr($value); ?>" <?php echo esc_attr(strtolower($name) == strtolower($bp) ? 'selected' : ''); ?>><?php echo esc_html($value); ?></option>
 							<?php } ?>
@@ -52,7 +52,7 @@
 							<?php foreach ($drops as $drop) {
 								$name = array_key_exists('name', $drop) ? $drop['name'] : '';
 								$time = array_key_exists('time', $drop) ? $drop['time'] : '';
-								$value = $name . ' ' . ($time ? ' (' . ABPRF_LIB_Function::date_format($time, 'time') . ')' : '');
+								$value = $name . ' ' . ($time ? ' (' . ABPRF_Function::date_format($time, 'time') . ')' : '');
 								?>
                                 <option value="<?php echo esc_attr($value); ?>" <?php echo esc_attr(strtolower($name) == strtolower($dp) ? 'selected' : ''); ?>><?php echo esc_html($value); ?></option>
 							<?php } ?>

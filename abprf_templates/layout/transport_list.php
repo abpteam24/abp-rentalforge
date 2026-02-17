@@ -11,12 +11,12 @@
 	$equipment_id = is_array($transport_item) && array_key_exists('id', $transport_item) ? $transport_item['id'] : 0;
 	$bp_time = is_array($transport_item) && array_key_exists('time', $transport_item) ? $transport_item['time'] : '';
 	$dp_time = is_array($transport_item) && array_key_exists('dp_time', $transport_item) ? $transport_item['dp_time'] : '';
-	$sale_continue = ABPRF_LIB_Function::get_post_info($equipment_id, 'sale_continue', 'on');
+	$sale_continue = ABPRF_Function::get_post_info($equipment_id, 'sale_continue', 'on');
 	if ($equipment_id && $equipment_id > 0 && $sale_continue == 'on') {
 		$full_infos = ABPRF_Function::get_route_full_info($equipment_id, $bp, $bp_date);
 		$origin_time = sizeof($full_infos) > 0 ? current($full_infos)['time'] : '';
 		$collapse_id = '#' . uniqid();
-		$abprf_infos = ABPRF_LIB_Function::get_all_meta($equipment_id);
+		$abprf_infos = ABPRF_Function::get_all_meta($equipment_id);
 		$abprf_infos['post_id'] = $equipment_id;
 		$seat_type = array_key_exists('seat_type', $abprf_infos) ? $abprf_infos['seat_type'] : 'seat_plan';
 		$seat_ticket_key = $seat_type == 'seat_plan' ? 'seat' : 'ticket';
@@ -44,16 +44,16 @@
                                 <div class="item_left">
                                     <p class="_abprf"><span class="fas fa-map-marker-alt _mar_r_xs"></span><?php echo esc_html(__('From : ', 'abprf-rental-forge') . $bp); ?></p>
                                     <p class="_abprf"><span class="fas fa-map-marker-alt _mar_r_xs"></span><?php echo esc_html(__('To : ', 'abprf-rental-forge') . $dp); ?></p>
-                                    <p class="_abprf"><span class="fas fa-calendar-day _mar_r_xs"></span><?php echo esc_html( __('Date : ', 'abprf-rental-forge') . ABPRF_LIB_Function::date_format($bp_time)); ?></p>
-                                    <p class="_abprf"><span class="fas fa-business-time _mar_r_xs"></span><?php echo esc_html( __('Approximate Time : ', 'abprf-rental-forge') . ABPRF_LIB_Function::get_date_time_difference($bp_time, $dp_time)); ?></p>
+                                    <p class="_abprf"><span class="fas fa-calendar-day _mar_r_xs"></span><?php echo esc_html( __('Date : ', 'abprf-rental-forge') . ABPRF_Function::date_format($bp_time)); ?></p>
+                                    <p class="_abprf"><span class="fas fa-business-time _mar_r_xs"></span><?php echo esc_html( __('Approximate Time : ', 'abprf-rental-forge') . ABPRF_Function::get_date_time_difference($bp_time, $dp_time)); ?></p>
                                 </div>
                                 <div class="details_item_info">
                                     <div class="item_departure">
-                                        <h6 class="_abprf_color_theme"><?php echo esc_html(ABPRF_LIB_Function::date_format($bp_time, 'time')); ?></h6>
+                                        <h6 class="_abprf_color_theme"><?php echo esc_html(ABPRF_Function::date_format($bp_time, 'time')); ?></h6>
                                         <span><?php esc_html_e('Departure Time', 'abprf-rental-forge'); ?></span>
                                     </div>
                                     <div class="item_arrival">
-                                        <h6 class="_abprf_color_theme"><?php echo esc_html(ABPRF_LIB_Function::date_format($dp_time, 'time')); ?></h6>
+                                        <h6 class="_abprf_color_theme"><?php echo esc_html(ABPRF_Function::date_format($dp_time, 'time')); ?></h6>
                                         <span><?php esc_html_e('Arrival Time', 'abprf-rental-forge'); ?></span>
                                     </div>
                                     <div class="item_available">

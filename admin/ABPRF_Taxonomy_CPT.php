@@ -14,7 +14,7 @@
 				add_action('activated_plugin', array($this, 'activation_redirect'));
 			}
 			public function taxonomy_cpt(): void {
-				$abprf_configuration = ABPRF_LIB_Function::get_option('abprf_configuration');
+				$abprf_configuration = ABPRF_Function::get_option('abprf_configuration');
 				$this->add_cpt($abprf_configuration);
 				$this->taxonomy_category($abprf_configuration);
 			}
@@ -144,14 +144,14 @@
 			}
 			public function activation_redirect($plugin): void {
 				if ($plugin == plugin_basename(__FILE__)) {
-					if ( ABPRF_LIB_Function::check_wc() < 2) {
+					if ( ABPRF_Function::check_wc() < 2) {
 						wp_safe_redirect( admin_url( 'admin.php?page=rf_configuration' ) );
 						exit;
 					}
 				}
 			}
 			public function posts_columns($column) {
-				$abprf_configuration = ABPRF_LIB_Function::get_option('abprf_configuration');
+				$abprf_configuration = ABPRF_Function::get_option('abprf_configuration');
 				$date = $column['date'];
 				unset($column['taxonomy-abprf_category']);
 				unset($column['date']);
@@ -164,7 +164,7 @@
 				return $column;
 			}
 			public function custom_column($column, $post_id): void {
-				$abprf_infos = ABPRF_LIB_Function::get_all_meta($post_id);
+				$abprf_infos = ABPRF_Function::get_all_meta($post_id);
 				$seat_type = array_key_exists('seat_type', $abprf_infos) ? $abprf_infos['seat_type'] : '';
 				$equipment_id = array_key_exists('equipment_id', $abprf_infos) ? $abprf_infos['equipment_id'] : '';
 				$total_seat = array_key_exists('total_seat', $abprf_infos) ? $abprf_infos['total_seat'] : '';
@@ -189,7 +189,7 @@
 						break;
 					case 'abprf_admin':
 						$user_id = get_post_field('post_author', $post_id);
-						echo esc_html(get_the_author_meta('display_name', $user_id) . ' [' . ABPRF_LIB_Function::get_user_role($user_id)) . "]";
+						echo esc_html(get_the_author_meta('display_name', $user_id) . ' [' . ABPRF_Function::get_user_role($user_id)) . "]";
 						break;
 				}
 			}

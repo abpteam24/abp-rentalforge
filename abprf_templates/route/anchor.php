@@ -9,7 +9,7 @@
 	$args = $args ?? [];
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$show_post = array_key_exists('post', $params) && $params['post'] ? $params['post'] : 50;
-	$redirect_search = ABPRF_LIB_Function::get_options('abprf_configuration', 'redirect_search');
+	$redirect_search = ABPRF_Function::get_options('abprf_configuration', 'redirect_search');
 	$post_count = 0;
 	if (sizeof($all_route) > 0) {
 		?>

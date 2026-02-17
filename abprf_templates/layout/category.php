@@ -14,7 +14,7 @@
 		<?php } else { ?>
             <span class="_fs_label_mar_r">
                 <?php
-	                $abprf_configuration = array_key_exists('abprf_configuration', $abprf_infos) ? $abprf_infos['abprf_configuration'] : ABPRF_LIB_Function::get_option('abprf_configuration');
+	                $abprf_configuration = array_key_exists('abprf_configuration', $abprf_infos) ? $abprf_infos['abprf_configuration'] : ABPRF_Function::get_option('abprf_configuration');
 	                $category_label = is_array($abprf_configuration) && array_key_exists('category_label', $abprf_configuration) && $abprf_configuration['category_label'] ? $abprf_configuration['category_label'] : __('Category : ', 'abprf-rental-forge');
 	                echo esc_html($category_label . ' ' . $category);
                 ?>

@@ -25,18 +25,18 @@
             <li>
                 <span class="fas fa-map-marker-alt _mar_r_xs"></span>
                 <span class="_fs_label"><?php esc_html_e('Departure : ', 'abprf-rental-forge'); ?></span>&nbsp;
-				<?php echo esc_html($bp) . ' ' . esc_html($bp_time ? ' (' . ABPRF_LIB_Function::date_format($bp_time, 'full') . ' )' : ''); ?>
+				<?php echo esc_html($bp) . ' ' . esc_html($bp_time ? ' (' . ABPRF_Function::date_format($bp_time, 'full') . ' )' : ''); ?>
             </li>
             <li>
                 <span class="fas fa-map-marker-alt _mar_r_xs"></span>
                 <span class="_fs_label"><?php esc_html_e('Arrival : ', 'abprf-rental-forge'); ?></span>&nbsp;
-				<?php echo esc_html($dp) . ' ' . esc_html($dp_time ? ' (' . ABPRF_LIB_Function::date_format($dp_time, 'full') . ' )' : ''); ?>
+				<?php echo esc_html($dp) . ' ' . esc_html($dp_time ? ' (' . ABPRF_Function::date_format($dp_time, 'full') . ' )' : ''); ?>
             </li>
 			<?php if ($origin_place !== $bp) { ?>
                 <li>
                     <span class="fas fa-map-marker-alt _mar_r_xs"></span>
                     <span class="_fs_label"><?php esc_html_e('Starting point : ', 'abprf-rental-forge'); ?></span>&nbsp;
-					<?php echo esc_html($origin_place) . ' ' . esc_html($origin_time ? ' (' . ABPRF_LIB_Function::date_format($origin_time, 'full') . ' )' : ''); ?>
+					<?php echo esc_html($origin_place) . ' ' . esc_html($origin_time ? ' (' . ABPRF_Function::date_format($origin_time, 'full') . ' )' : ''); ?>
                 </li>
 			<?php } ?>
 			<?php if ($display_total_seat == 'on') {
@@ -64,7 +64,7 @@
             <li>
                 <span class="fas fa-business-time _mar_r_xs"></span>
                 <span class="_fs_label"><?php esc_html_e('Approximate Time : ', 'abprf-rental-forge'); ?></span>
-				<?php echo esc_html(ABPRF_LIB_Function::get_date_time_difference($bp_time, $dp_time)); ?>
+				<?php echo esc_html(ABPRF_Function::get_date_time_difference($bp_time, $dp_time)); ?>
             </li>
         </ul>
     </div>

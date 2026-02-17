@@ -38,7 +38,7 @@
 		--rf_color_alert: #d1ecf1;
 		--rf_color_required: #C00;
 		--rf_color_white: #FFFFFF;
-		--rf_color_light: #f8f9fa;
+		--rf_color_light: #F9FAFB;
 		--rf_color_light_1: #BBB;
 		--rf_color_light_2: #EAECEE;
 		--rf_color_light_3: #878787;
@@ -50,12 +50,14 @@
 		--rf_color_wp_menu: #1d2327;
 		--rf_color_wp_menu_sub: #2c3338;
 		--rf_color_wp_bg: #f0f0f1;
-		--rf_color_dark: #0C5460;
+		--rf_color_dark: #1F2937;
 		--rf_color_green_light: #0CB32612;
 		--rf_color_off_white: #FAFCFE;
 		--rf_color_purple: #6148BA;
 		--rf_color_green_pale: #BCB;
 		--rf_color_rose_dusty: #d27f7f;
+		--rf_color_secondary: #EC4899;
+		--rf_color_primary: #6366F1;
 	}
 }
 @media only screen and (max-width: 1100px) {

@@ -24,8 +24,8 @@
                 <ul class="_abprf_list">
 					<?php foreach ($all_equipment_ids as $equipment_id => $title) {
 						$post_count++;
-						$display_category = ABPRF_LIB_Function::get_post_info($equipment_id, 'display_category', 'on');
-						$category = ABPRF_LIB_Function::get_post_info($equipment_id, 'category'); ?>
+						$display_category = ABPRF_Function::get_post_info($equipment_id, 'display_category', 'on');
+						$category = ABPRF_Function::get_post_info($equipment_id, 'category'); ?>
                         <li class="pagination_item  <?php echo esc_attr($show_post >= $post_count ? '' : '_d_none'); ?>">
                             <a class="_abprf " href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $from . '&_dp=' . $to); ?>">
 								<?php echo esc_html(get_the_title($equipment_id) . ($category && $display_category == 'on') ? '-' . $category : ''); ?>

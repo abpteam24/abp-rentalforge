@@ -24,8 +24,8 @@
             <div class="_f_gap_f_wrap_mar_tb">
 				<?php foreach ($all_equipment_ids as $equipment_id => $title) {
 					$post_count++;
-					$abprf_infos = ABPRF_LIB_Function::get_all_meta($equipment_id);
-					$image_url = ABPRF_LIB_Function::get_image_url($equipment_id); ?>
+					$abprf_infos = ABPRF_Function::get_all_meta($equipment_id);
+					$image_url = ABPRF_Function::get_image_url($equipment_id); ?>
                     <div class="pagination_item list_item _reflex <?php echo esc_attr('grid_' . $column); ?> <?php echo esc_attr($show_post >= $post_count ? '' : '_d_none'); ?>">
 						<?php do_action('abprf_category', $abprf_infos, true); ?>
 						<?php do_action('abprf_capacity', $abprf_infos, true); ?>
