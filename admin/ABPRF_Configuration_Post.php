@@ -119,6 +119,7 @@
 					$hidden_ids              = isset( $_POST['equipment_hidden_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_hidden_id'] ) ) : [];
 					$icon                    = isset( $_POST['equipment_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_icon'] ) ) : [];
 					$name                    = isset( $_POST['equipment_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_name'] ) ) : [];
+					$brands                  = isset( $_POST['equipment_brand'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_brand'] ) ) : [];
 					$qty                     = isset( $_POST['equipment_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_qty'] ) ) : [];
 					$max_qty                 = isset( $_POST['equipment_max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['equipment_max_qty'] ) ) : [];
 					$hourly_rate             = isset( $_POST['hourly_rate'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['hourly_rate'] ) ) : '';
@@ -132,6 +133,7 @@
 							if ( $name[ $key ] && $qty[ $key ] > 0 && ( $hourly_rate[ $key ] || $daily_rate[ $key ] || $monthly_rate[ $key ] ) ) {
 								$ticket_info['icon']         = $icon[ $key ] ?? '';
 								$ticket_info['name']         = $name[ $key ];
+								$ticket_info['brand']         = $brands[ $key ];
 								$ticket_info['qty']          = $qty[ $key ];
 								$ticket_info['max_qty']      = $max_qty[ $key ];
 								$ticket_info['hourly_rate']  = $hourly_rate[ $key ];

@@ -35,18 +35,21 @@
 											$emoji = $icon_image;
 										}
 										$name = array_key_exists( 'name', $info ) ? $info['name'] : '';
+										$brand = array_key_exists( 'brand', $info ) ? $info['brand'] : '';
 										?>
                                         <div class="equipment_item">
                                             <div class="item_head">
-                                                <div class="item_img">
+                                                <div class="item_img _all_center">
 													<?php if ( $image ) {
 														ABPRF_Layout::bg_image( '', $image );
 													} else { ?>
-                                                        <span class="_fs_h1 <?php echo esc_attr( $icon ); ?>"><?php echo esc_html( $emoji ); ?></span>
+                                                        <span class="<?php echo esc_attr( $icon ); ?>"><?php echo esc_html( $emoji ); ?></span>
 													<?php } ?>
                                                 </div>
                                                 <h4 class="_abprf"><?php echo esc_html( $name ); ?></h4>
-                                                <p class="_abprf">DeWalt DCD996B</p>
+                                                <?php if($brand){ ?>
+                                                <p class="_abprf"><?php echo esc_html($brand); ?></p>
+                                            <?php } ?>
                                             </div>
                                             <div class="item_body">
                                                 <div class="item_spec">

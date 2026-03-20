@@ -37,8 +37,8 @@
 	div.abprf_icon_image_selection_area {position: relative;max-width: 120px;}
 	div.abprf_icon_image_selection_area [class*="_img_control"] {max-height: 100px;}
 	div.abprf_area div.abprf_icon_image_selection_area button {padding: var(--rf_gap_xxs);font-size: 12px;}
-	div.abprf_area div.abprf_icon_image_selection_area [class*="_img_control"] {border-radius: 0;}
-	div.abprf_icon_image_selection_area div.abprf_item_icon {padding: var(--rf_gap_xs);background-color: var(--rf_color_light);font-size: 40px;}
+	div.abprf_area div.abprf_icon_image_selection_area [class*="_img_control"] {border-radius: 0;padding: 0 var(--rf_gap_xxs) 0 0;}
+	div.abprf_icon_image_selection_area div.abprf_item_icon {padding: var(--rf_gap_xxs);background-color: var(--rf_color_light);font-size: 30px; line-height: 1;}
 	div.abprf_item_icon:hover .close_icon,
 	div.abprf_image_item:hover .close_icon {opacity: 1;}
 	div.abprf_popup_icon .popup_main_area {max-width: 100vw;width: 100%;height: 100vh;}
@@ -79,7 +79,7 @@
 	/**************************************************************************************************************************/
 	#abprf_configuration .equipment_area {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	#abprf_configuration .equipment_item {min-width: 350px;margin: 0;-webkit-flex: 1;flex: 1;max-width: 600px;}
-	#abprf_configuration .equipment_item [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
+	#abprf_configuration .equipment_item [class*="_form_control"] {min-width: auto;width: 100%;max-width: 50%;}
 	/**************************************************************************************************************************/
 	#abprf_configuration table th._text_table_center {text-align: center;vertical-align: middle;}
 }

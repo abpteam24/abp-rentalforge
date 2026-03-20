@@ -19,7 +19,7 @@
 	div.equipment_item_area .equipment_item:hover {transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);}
 	div.equipment_item .item_head {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap); text-align: center;}
 	div.equipment_item .item_body {padding: var(--rf_gap);}
-	div.equipment_item .item_img {height: 150px;width: 100%;}
+	div.equipment_item .item_img {height: 150px;width: 100%;overflow: hidden;font-size: 70px;}
 	div.item_body .item_spec {display: flex; flex-wrap: wrap; gap: var(--rf_gap_xs); margin-bottom: var(--rf_gap);}
 	div.item_body .spec_badge {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap_xxs) var(--rf_gap_xs); border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: var(--rf_color_dark);}
 	div.item_body .pricing_box { background: var(--rf_color_light); padding: var(--rf_gap_xs); border-radius: 8px; margin-bottom: var(--rf_gap);}

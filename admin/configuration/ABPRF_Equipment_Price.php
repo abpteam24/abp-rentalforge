@@ -37,7 +37,13 @@
 						<?php ABPRF_Layout::info_text( 'monthly_rate' ); ?>
                     </div>
                     <div class="_abprf_panel_xs abprf_configuration_content">
-                        <div class="_panel_head"><h5 class="_abprf"><?php esc_html_e( 'Equipment', 'abprf-rental-forge' ); ?></h5></div>
+                        <div class="_panel_head">
+                            <h5 class="_abprf"><?php esc_html_e( 'Equipment', 'abprf-rental-forge' ); ?></h5>
+                            <div class="_divider_xs"></div>
+	                        <?php ABPRF_Layout::info_text( 'equipment_icon' ); ?>
+	                        <?php ABPRF_Layout::info_text( 'equipment_name' ); ?>
+	                        <?php ABPRF_Layout::info_text( 'equipment_brand' ); ?>
+                        </div>
                         <div class="_panel_body abprf_insert_item abprf_sortable equipment_area">
 							<?php
 								if ( sizeof( $infos ) > 0 ) {
@@ -66,6 +72,7 @@
 				$price_type   = array_key_exists( 'price_type', $abprf_infos ) ? $abprf_infos['price_type'] : 'hourly';
 				$icon_image   = array_key_exists( 'icon', $field ) ? $field['icon'] : '';
 				$name         = array_key_exists( 'name', $field ) ? $field['name'] : '';
+				$brand         = array_key_exists( 'brand', $field ) ? $field['brand'] : '';
 				$qty          = array_key_exists( 'qty', $field ) ? $field['qty'] : '';
 				$max_ty       = array_key_exists( 'max_qty', $field ) ? $field['max_qty'] : '';
 				$hourly_rate  = array_key_exists( 'hourly_rate', $field ) ? $field['hourly_rate'] : '';
@@ -76,8 +83,8 @@
                 <div class="abprf_delete_area equipment_item _setting_item ">
                     <input type="hidden" name="equipment_hidden_id[]" value="<?php echo esc_attr( $key ); ?>"/>
                     <div class="_f_equal">
-                        <span class="_fs_label"><?php esc_html_e( 'Icon / Image', 'abprf-rental-forge' ); ?></span>
-                        <div class="_f_equal">
+                        <span class="_fs_label"><?php esc_html_e( 'Image or Icon', 'abprf-rental-forge' ); ?></span>
+                        <div class="_fj_between">
 							<?php do_action( 'abprf_add_image_icon', 'equipment_icon[]', $icon_image ); ?>
 							<?php ABPRF_Layout::button_delete_sort(); ?>
                         </div>
@@ -85,7 +92,12 @@
                     <div class="_divider_xxs"></div>
                     <label class="_f_equal">
                         <span><?php esc_html_e( 'Equipment', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
-                        <input type="text" class="_form_control_min_auto validation_name" name="equipment_name[]" placeholder="<?php esc_attr_e( 'EX: Bike', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $name ); ?>"/>
+                        <input type="text" class="_form_control validation_name" name="equipment_name[]" placeholder="<?php esc_attr_e( 'EX: Bike', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $name ); ?>"/>
+                    </label>
+                    <div class="_divider_xxs"></div>
+                    <label class="_f_equal">
+                        <span><?php esc_html_e( 'Brand', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
+                        <input type="text" class="_form_control validation_name" name="equipment_brand[]" placeholder="<?php esc_attr_e( 'EX: Yamaha R15', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $brand ); ?>"/>
                     </label>
                     <div class="_divider_xxs"></div>
                     <label class="_f_equal">
@@ -94,7 +106,7 @@
                     </label>
                     <div class="_divider_xxs"></div>
                     <label class="_f_equal">
-                        <span><?php esc_html_e( 'Max Quantity / Order', 'abprf-rental-forge' ); ?></span>
+                        <span><?php esc_html_e( 'Max Quantity', 'abprf-rental-forge' ); ?></span>
                         <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="equipment_max_qty[]" placeholder="<?php esc_attr_e( 'EX: 15', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $max_ty ); ?>"/>
                     </label>
                     <div data-collapse="#hourly" class="<?php echo esc_attr( ( $price_type == 'hourly' || $price_type == 'hourly_daily' ) ? 'rf_active' : '' ); ?>">
