@@ -30,6 +30,7 @@
 				wp_localize_script( 'abprf_admin', 'abprf_admin_ajax', array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'abprf_admin_ajax_nonce' ) ) );
 				wp_enqueue_style( 'abprf_admin', ABPRF_URL . '/assets/css/abprf_admin.css', array(), time() );
 				wp_enqueue_script( 'abprf_lib_admin', ABPRF_URL . '/assets/js/abprf_lib_admin.js', array( 'jquery' ), time(), true );
+				wp_localize_script( 'abprf_lib_admin', 'abprf_icons', [ 'url' => ABPRF_URL . '/assets/js/abprf_icons.json', ] );
 				//=============================//
 				$this->global_enqueue();
 				do_action( 'abprf_admin_enqueue' );
@@ -148,14 +149,13 @@
 			private function load_file(): void {
 				require_once ABPRF_DIR . '/includes/ABPRF_Function.php';
 				require_once ABPRF_DIR . '/includes/ABPRF_Layout.php';
-				require_once ABPRF_DIR . '/includes/ABPRF_Static_Array.php';
 				//=============Global Configuration================//
 				if ( is_admin() ) {
 					require_once ABPRF_DIR . '/admin/ABPRF_Configuration.php';
 					require_once ABPRF_DIR . '/admin/configuration/ABPRF_Tools.php';
 					require_once ABPRF_DIR . '/admin/configuration/ABPRF_Additional.php';
 				}
-				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {					
+				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
 					require_once ABPRF_DIR . '/includes/ABPRF_Hooks.php';
 					//require_once ABPRF_DIR . '/includes/ABPRF_Ajax.php';
 					//require_once ABPRF_DIR . '/includes/ABPRF_Query.php';

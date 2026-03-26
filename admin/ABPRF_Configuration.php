@@ -197,7 +197,7 @@
 						array(
 							'name' => 'advance_date_number',
 							'label' => __( 'Number of advance booking date', 'abprf-rental-forge' ),
-							'desc' => ABPRF_Static_Array::array_info( 'advance_date_number' ),
+							'desc' => ABPRF_Layout::array_info( 'advance_date_number' ),
 							'type' => 'number',
 							'placeholder' => '15',
 							'min' => 1,

@@ -434,7 +434,7 @@
 	/****************custom dropdown**************/
 	div.abprf_area div.dropdown_area [class*="_form_control"] :focus { border-color: var(--rf_color_border); border-radius: var(--rf_br) var(--rf_br) 0 0; -webkit-box-shadow: var(--rf_shadow_4); box-shadow: var(--rf_shadow_4);}
 	div.abprf_area div.dropdown_area { position: relative; }
-	div.abprf_area ul.dropdown_input { display: none; z-index: 111; overflow: auto; max-height: 250px; height: auto; width: max-content; margin: 1px 0 0 0; padding: var(--rf_gap_xs); position: absolute; left: 0; top: 100%; right: 0; border: 1px solid var(--rf_color_border); background-color: var(--rf_color_white);min-width: 100%; border-radius: 0 0 var(--rf_br) var(--rf_br);-webkit-box-shadow: var(--rf_shadow_4); box-shadow: var(--rf_shadow_4); }
+	div.abprf_area ul.dropdown_input { display: none; z-index: 111; overflow: auto; max-height: 250px; height: auto; width: max-content; margin: 1px 0 0 0; padding: var(--rf_gap_xs); position: absolute; left: 0; top: 100%; right: 0; border: 1px solid var(--rf_color_border); background-color: var(--rf_color_white);min-width: 100%; border-radius: 0 0 var(--rf_br) var(--rf_br);-webkit-box-shadow: var(--rf_shadow_4); box-shadow: var(--rf_shadow_4); color: var(--rf_color_theme);}
 	div.abprf_area ul.dropdown_input li { padding: var(--rf_gap_xs); cursor: pointer; border-bottom: 1px solid var(--rf_color_border); margin: 0; list-style-type: none; white-space: nowrap;}
 	div.abprf_area ul.dropdown_input li:last-child { border-bottom: none; }
 	div.abprf_area ul.dropdown_input li:hover { background-color: var(--rf_color_theme_cc); color: var(--rf_color_theme_alter); }

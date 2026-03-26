@@ -15,7 +15,7 @@
 			public function additional_service_global($abprf_configuration): void {
 				$label = isset($abprf_configuration['label']) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __('RentalForge', 'abprf-rental-forge');
 				$label = $label . ' ' . __(' : ', 'abprf-rental-forge') . ' ' . __('Additional services', 'abprf-rental-forge');
-				$additional_services = ABPRF_Function::get_option('abprf_additional', ABPRF_Static_Array::static_additional());
+				$additional_services = ABPRF_Function::get_option('abprf_additional', ABPRF_Layout::static_additional());
 				?>
                 <div class="tab_item additional_configuration" data-tabs="#abprf_additional">
                     <h3 class="_abprf"><?php echo esc_html($label); ?></h3>
@@ -180,7 +180,7 @@
 			public function abprf_import_additional(): void {
 				if (is_admin() && isset($_POST['nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'abprf_admin_ajax_nonce')) {
 					$additional_services = get_option('abprf_additional');
-					$additional_services = $additional_services && is_array($additional_services) && sizeof($additional_services)>0 ? $additional_services : ABPRF_Static_Array::static_additional();
+					$additional_services = $additional_services && is_array($additional_services) && sizeof($additional_services)>0 ? $additional_services : ABPRF_Layout::static_additional();
 					$this->additional_service($additional_services);
 				}
 				wp_die();

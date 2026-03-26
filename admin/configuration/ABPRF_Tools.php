@@ -313,8 +313,8 @@
 						],
 					],
 					'options'     => [
-						'abprf_additional'        => ABPRF_Static_Array::static_additional(),
-						'abprf_traveller_pattern' => ABPRF_Static_Array::static_form(),
+						'abprf_additional'        => ABPRF_Layout::static_additional(),
+						'abprf_traveller_pattern' => ABPRF_Layout::static_form(),
 					],
 					'custom_post' => [
 						'abprf_post' => [
@@ -389,10 +389,10 @@
 									//Reg form
 									'display_passenger_form'      => 'on',
 									'display_single_form'         => 'on',
-									'passenger_form'              => ABPRF_Static_Array::static_form(),
+									'passenger_form'              => ABPRF_Layout::static_form(),
 									//additional service
 									'display_additional_services' => 'on',
-									'additional_services'         => ABPRF_Static_Array::static_additional(),
+									'additional_services'         => ABPRF_Layout::static_additional(),
 									//slider_settings
 									'display_slider'              => 'on',
 									'abprf_sliders'               => [ 200, 300, 400, 500, 600, 700, 800, 900, 1000 ],

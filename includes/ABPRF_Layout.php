@@ -59,14 +59,14 @@
 			}
 
 			public static function info_text( $key ): void {
-				$data = ABPRF_Static_Array::array_info( $key );
+				$data = ABPRF_Layout::array_info( $key );
 				if ( $data ) {
 					echo '<span class="info_text"><i class="fas fa-info-circle _color_theme_mar_r_xxs"></i>' . esc_html( $data ) . '</span>';
 				}
 			}
 
 			public static function layout_warning_info( $key ): void {
-				$data = ABPRF_Static_Array::array_info( $key );
+				$data = ABPRF_Layout::array_info( $key );
 				if ( $data ) {
 					echo '<div class="_section_bg_warning_mar_zero"><h4 class="_abprf_text_center_color_white">' . esc_html( $data ) . '</h4></div>';
 				}
@@ -348,40 +348,20 @@
 
 			public function icon_popup(): void {
 				if ( ! defined( 'ABPTM_ICON' ) ) {
-					$icons = ABPRF_Static_Array::fontawesome_array();
 					?>
                     <div class="abprf_popup_icon abprf_popup abprf_area" data-popup="#abprf_popup_icon">
                         <div class="popup_main_area">
                             <div class="popup_head _all_center">
-                                <label class="_abprf_all_center">
-                                    <span class="_abprf_mar_r"><?php esc_html_e( 'Select Icon', 'abprf-rental-forge' ); ?></span>
-                                    <select class="_form_control " name="fontawesome_array" data-collapse-target required>
-										<?php foreach ( $icons as $key => $icon ) { ?>
-                                            <option value="<?php echo esc_attr( $key ); ?>" data-option-target="#icon_group_<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $key == 'special_emoji' ? 'selected' : '' ); ?>><?php echo esc_html( $icon['title'] ); ?> ( <?php echo esc_html( sizeof( $icon['icon'] ) ); ?> )</option>
-										<?php } ?>
-                                    </select>
-                                </label>
+                                <div class="dropdown_area item_category_list _max_300">
+                                    <label class="_abprf_all_center">
+                                        <input type="text" class="_form_control_text_center validation_name abprf_allow" name="abp_icon_search" placeholder="<?php esc_attr_e( 'Search  icon', 'abprf-rental-forge' ); ?>" value=""/>
+                                    </label>
+                                </div>
                                 <span class="popup_close"><i class="fas fa-times"></i></span>
                             </div>
                             <div class="popup_body">
-								<?php if ( sizeof( $icons ) > 0 ) { ?>
-									<?php foreach ( $icons as $key => $icon ) { ?>
-                                        <div class="<?php echo esc_attr( $key == 'special_emoji' ? 'special_emoji rf_active' : '' ); ?>" data-collapse="#icon_group_<?php echo esc_attr( $key ); ?>">
-                                            <div class="item_icon_area">
-												<?php foreach ( $icon['icon'] as $icon => $item ) { ?>
-                                                    <div class="icon_item" data-icon-class="<?php echo esc_attr( $icon ); ?>" data-icon-name="<?php echo esc_attr( $item ); ?>">
-														<?php if ( $key == 'special_emoji' ) { ?>
-                                                            <span><?php echo esc_html( $icon ); ?></span>
-														<?php } else { ?>
-                                                            <span class="<?php echo esc_attr( $icon ); ?>"></span>
-														<?php } ?>
-                                                        <i><?php echo esc_html( $item ); ?></i>
-                                                    </div>
-												<?php } ?>
-                                            </div>
-                                        </div>
-									<?php } ?>
-								<?php } ?>
+                                <h4 class="_abprf_text_center item_icon_title"></h4>
+                                <div class="item_icon_area"></div>
                             </div>
                         </div>
                     </div>
@@ -437,17 +417,17 @@
 
 			//=============================//
 			public function selection_icon_image( $name, $value = '' ): void {
-				$icon=$image=$emoji='';
-				if (is_numeric($value)) {
-					$image=$value;
-                }elseif ( preg_match( '/\s/', $value ) ) {
-					$icon=$value;
-                }else{
-					$emoji=$value;
-                }
-				$icon_class          = ($icon || $emoji) ? '' : '_d_none';
+				$icon = $image = $emoji = '';
+				if ( is_numeric( $value ) ) {
+					$image = $value;
+				} elseif ( preg_match( '/\s/', $value ) ) {
+					$icon = $value;
+				} else {
+					$emoji = $value;
+				}
+				$icon_class          = ( $icon || $emoji ) ? '' : '_d_none';
 				$image_class         = $image ? '' : '_d_none';
-				$button_active_class = ($icon || $image || $emoji) ? '_d_none' : '';
+				$button_active_class = ( $icon || $image || $emoji ) ? '_d_none' : '';
 				?>
                 <div class="abprf_icon_image_selection_area _fd_column">
                     <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
@@ -918,6 +898,102 @@
 				<?php
 			}
 
+			//=============================//
+			public static function week_day(): array {
+				return [
+					'monday' => __( 'Monday', 'abprf-rental-forge' ),
+					'tuesday' => __( 'Tuesday', 'abprf-rental-forge' ),
+					'wednesday' => __( 'Wednesday', 'abprf-rental-forge' ),
+					'thursday' => __( 'Thursday', 'abprf-rental-forge' ),
+					'friday' => __( 'Friday', 'abprf-rental-forge' ),
+					'saturday' => __( 'Saturday', 'abprf-rental-forge' ),
+					'sunday' => __( 'Sunday', 'abprf-rental-forge' ),
+				];
+			}
+
+			public static function array_info( $key ) {
+				$des = array(
+					'display_sub_title' => __( 'Note: This switch indicate Equipment Groups Sub-Title ON/OFF . You can  ON/OFF  by this switch. By default Sub-Title ON', 'abprf-rental-forge' ),
+					'sale_continue' => __( 'Note: This switch indicate Equipment Groups sale close/continue . You can  sale close/continue  by this switch. By default sale continue', 'abprf-rental-forge' ),
+					'display_equipment_id' => __( 'Note: Equipment Groups id is unique number which can on/off by this switch.', 'abprf-rental-forge' ),
+					'display_category' => __( 'Note: This switch indicate Equipment Groups Category . You can on/off by this switch.', 'abprf-rental-forge' ),
+					'abprf_template' => __( 'Note: Here You can change your details page template.', 'abprf-rental-forge' ),
+					'advance_date_number' => __( 'Note: Kindly provide the number of days in advance for booking. By default, the advance booking period is set to 15 days.(optional) ', 'abprf-rental-forge' ),
+					//=============================//
+					'date_type' => __( 'Note: Please Select your Equipment operational date type. Default operational date will be Periodic', 'abprf-rental-forge' ),
+					'specific_dates' => __( 'Note: Please add your Equipment operational Specific Date lists and Operation time length(optional). If operation time empty that means it will be 24 hours', 'abprf-rental-forge' ),
+					'operation_time' => __( 'Note: Please add your Equipment  Operation time length(optional). If operation time empty that means it will be 24 hours(optional)', 'abprf-rental-forge' ),
+					'periodic_start_date' => __( 'Note: Please add your Equipment Launching Date otherwise it will be start today.(optional)', 'abprf-rental-forge' ),
+					'periodic_end_date' => __( 'Note: Please add your Equipment Terminate  Date otherwise it will be Continuously running periodically(optional)', 'abprf-rental-forge' ),
+					'periodic_after' => __( 'Note: Please add your periodically after days. if  your Equipment operation day everyday this will be one(1).(optional)', 'abprf-rental-forge' ),
+					'weekend' => __( 'Note: Please select your weekend.Default all days open(optional)', 'abprf-rental-forge' ),
+					'specific_off_dates' => __( 'Note: please add your specific Operation off dates.(optional)', 'abprf-rental-forge' ),
+					'off_date_range' => __( 'Note: If you have off days between two dates which can add here.(optional)', 'abprf-rental-forge' ),
+					//=============================//
+					'abprf_equipment_price' => __( 'Note: If Operation Time is enabled, the pricing will strictly follow the Hourly Rate. Daily or other long-term rates will not be applied when specific operating hours are active.', 'abprf-rental-forge' ),
+					'hourly_rate' => __( 'Note: If price type hourly rate , it will be calculated only hour base.', 'abprf-rental-forge' ),
+					'daily_rate' => __( 'Note: If price type daily rate , it will be calculated only day base.', 'abprf-rental-forge' ),
+					'hourly_daily' => __( 'Note: If price type hourly and daily rate , it will be calculated full day(24 hours) and time .', 'abprf-rental-forge' ),
+					'monthly_rate' => __( 'Note: If price type monthly rate , it will be calculated only monthly base.', 'abprf-rental-forge' ),
+					'equipment_icon' => __( 'Image or Icon: Here You can set an image, icon, or emoji for each equipment directly', 'abprf-rental-forge' ),
+					'equipment_name' => __( 'Equipment: Here You can set  equipment Name or title directly', 'abprf-rental-forge' ),
+					'equipment_brand' => __( 'Brand: Add a brand name to enable the Brand/Equipment sub-tile. Leave this blank if you dont want to show any brand information for this item.', 'abprf-rental-forge' ),
+					//=============================//
+					'display_slider' => __( 'Note: This switch indicate Equipment image slide show. You can on/off by this switch. Please use 2:1 ratio size image and all image same size. ', 'abprf-rental-forge' ),
+					'abprf_sliders' => __( 'Note: Please upload Slider images for this Equipment Groups', 'abprf-rental-forge' ),
+					//=============================//
+					'_tax_class' => __( 'Note: If you want to add any new tax class , Please go to WooCommerce ->configuration->Tax Area', 'abprf-rental-forge' ),
+					'enable_tax_msg' => __( 'Note: Your Woo-commerce Tax setting already disable. If you want to enable tax please enable woo-commerce tax.', 'abprf-rental-forge' ),
+					//=============================//
+					'display_additional_services' => __( 'Note: If you want sale/rent additional product/equipment with regular equipment then active this button and add additional service. Additional item not depends on  operation time', 'abprf-rental-forge' ),
+					'additional_services' => __( 'Note: In order to sell additional products with your equipment, you need to add additional services. Which imports easily from any equipment.', 'abprf-rental-forge' ),
+					'abprf_client_infos' => __( 'Note: To obtain information from travelers, please design your form. Which imports easily from any transport.', 'abprf-rental-forge' ),
+					//=============================//
+					'search_get_wrong_data_info' => __( 'Somethings went Wrong ! Please Try again', 'abprf-rental-forge' ),
+					'sale_close_msg' => __( 'This Equipment sale close shortly. please try another transport.', 'abprf-rental-forge' ),
+					'not_found' => __( 'No Equipment Found !', 'abprf-rental-forge' ),
+					//=============================//
+					'pass_form_option' => __( 'Use comma( , ) to separate option.', 'abprf-rental-forge' ),
+					'display_passenger_form' => __( 'If you want to get traveller/attendee info with ticket then active this button and add form/import global form.', 'abprf-rental-forge' ),
+					'display_single_form' => __( 'If you want to get single traveller/attendee info for multiple ticket  then active this button .Default is off', 'abprf-rental-forge' ),
+					//=============================//
+					'abptm_pickup' => __( 'Here you can set traveller Pickup Point . If you want visible Pickup point select option for traveller , please switch on. default pickup point off', 'abprf-rental-forge' ),
+					'required_pickup' => __( 'Here you can set traveller Pickup Point mandatory or not . If you want mandatory Pickup point select option for traveller , please switch on. default mandatory pickup point off', 'abprf-rental-forge' ),
+					'abptm_drop' => __( 'Here you can set traveller Drop-off Point . If you want visible Drop-off point select option for traveller , please switch on. default Drop-off point off', 'abprf-rental-forge' ),
+					'required_drop' => __( 'Here you can set traveller Drop-off Point mandatory or not . If you want mandatory Drop-off point select option for traveller , please switch on. default mandatory Drop-off point off', 'abprf-rental-forge' ),
+					//=============================//
+					'sign_up_msg' => __( 'Please Login your account to Download/View ticket !', 'abprf-rental-forge' ),
+					'no_permit_msg' => __( 'You are not permitted to Download/View this ticket !', 'abprf-rental-forge' ),
+					'wrong_msg_id' => __( 'We see, this id are not valid !', 'abprf-rental-forge' ),
+					'no_transport_found' => __( 'Sorry ! We can not find any transport in your criteria.', 'abprf-rental-forge' ),
+					'no_traveller_found' => __( 'Sorry ! We can not find any Traveller in your criteria.', 'abprf-rental-forge' ),
+					//''          => __( '', 'abprf-rental-forge' ),
+				);
+				$des = apply_filters( 'abptm_info_array_filter', $des );
+
+				return $des[ $key ];
+			}
+
+			public static function static_form( $key = '' ): array {
+				$form['pass_name']    = [ 'type' => 'text', 'required' => 'on', 'label' => __( 'First Name', 'abprf-rental-forge' ) ];
+				$form['pass_name_2']  = [ 'type' => 'text', 'required' => 'on', 'label' => __( 'Last Name', 'abprf-rental-forge' ) ];
+				$form['pass_email']   = [ 'type' => 'email', 'required' => 'on', 'label' => __( 'E-Mail', 'abprf-rental-forge' ) ];
+				$form['pass_phone']   = [ 'type' => 'text', 'required' => 'on', 'label' => __( 'Phone', 'abprf-rental-forge' ) ];
+				$form['pass_gender']  = [ 'type' => 'select', 'required' => 'off', 'label' => __( 'Gender', 'abprf-rental-forge' ), 'option' => 'male,female' ];
+				$form['pass_date']    = [ 'type' => 'date', 'required' => 'off', 'label' => __( 'Date of Birth', 'abprf-rental-forge' ) ];
+				$form['pass_address'] = [ 'type' => 'textarea', 'required' => 'off', 'label' => __( 'Address', 'abprf-rental-forge' ) ];
+
+				return $key && array_key_exists( $key, $form ) ? $form[ $key ] : $form;
+			}
+
+			public static function static_additional(): array {
+				return [
+					'additional_service_1' => [ 'icon' => 'fas fa-helmet-un', 'name' => 'Helmet', 'qty' => 50, 'max_qty' => 1, 'price' => 0, 'description' => '1x Safety Helmet per order. Keep your head protected at no extra cost. Your safety is our priority!', ],
+					'additional_service_2' => [ 'icon' => 'fas fa-suitcase', 'name' => 'Storage', 'qty' => 30, 'max_qty' => 3, 'price' => 2.99, 'description' => 'Optional baggage support is available as a paid service to help carry your essentials with ease.', ],
+					'additional_service_3' => [ 'icon' => 'fas fa-user-tie', 'name' => 'Tie', 'qty' => 100, 'price' => 1.00, 'description' => 'Multiple color available', ],
+					'additional_service_4' => [ 'icon' => 'fas fa-shoe-prints', 'name' => 'Shoes', 'qty' => 100, 'price' => 1.00, 'description' => 'Multiple Size available', ]
+				];
+			}
 			//=============================//
 			public static function filter_transport( $post_id = 0 ): void {
 				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );

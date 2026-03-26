@@ -191,7 +191,7 @@
 
 			public function select_weekend( $weekend ): void {
 				$off_day_array = $weekend ? explode( ',', $weekend ) : [];
-				$days          = ABPRF_Static_Array::week_day(); ?>
+				$days          = ABPRF_Layout::week_day(); ?>
                 <div class="_setting_item ">
                     <div class="_d_flex">
                         <span class="_fs_label_mar_r_xs_max_250"><?php esc_html_e( 'Weekend', 'abprf-rental-forge' ); ?></span>

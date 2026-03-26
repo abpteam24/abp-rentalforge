@@ -488,7 +488,11 @@ function abprf_load_tabs() {
         }
         parent.find('.dropdown_input').slideUp(250);
         parent.find('input[type="text"]').val(text);
-        parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
+        if (parent.find('input[type="hidden"]').length > 0) {
+            parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
+        }else{
+            parent.find('input[type="text"]').trigger('change');
+        }
     });
     $(document).on({
         keyup: function () {
@@ -503,7 +507,10 @@ function abprf_load_tabs() {
             if (target.is(':visible')) {
                 $('body').find('.dropdown_area .dropdown_input').slideUp(250);
                 let parent = $this.closest('.dropdown_area');
-                let input = parent.find('input[type="hidden"]').val().toLowerCase();
+                let input = '';
+                if (parent.find('input[type="hidden"]').length > 0) {
+                    input = parent.find('input[type="hidden"]').val().toLowerCase();
+                }
                 target.find('li').each(function () {
                     let data = $(this).attr('data-value').toLowerCase();
                     if ($(this).find('[data-id]').length > 0) {
@@ -523,11 +530,18 @@ function abprf_load_tabs() {
             $('body').find('.dropdown_input').slideUp(250);
             let parent = $this.closest('.dropdown_area');
             if ($this.hasClass('abprf_allow')) {
-                parent.find('input[type="hidden"]').val($this.val()).trigger('rf_trigger');
+                if (parent.find('input[type="hidden"]').length > 0) {
+                    parent.find('input[type="hidden"]').val($this.val()).trigger('rf_trigger');
+                } else {
+                    parent.find('input[type="text"]').val($this.val()).trigger('change');
+                }
             } else {
                 if (target.closest('.dropdown_area').length === 0) {
                     let current_val = parent.find('input[type="text"]').val();
-                    let input = parent.find('input[type="hidden"]').val().toLowerCase();
+                    let input = '';
+                    if (parent.find('input[type="hidden"]').length > 0) {
+                        input = parent.find('input[type="hidden"]').val().toLowerCase();
+                    }
                     let exit = 0;
                     $this.closest('.dropdown_area').find('.dropdown_input li').each(function () {
                         let data = $(this).attr('data-value').toLowerCase();
@@ -540,7 +554,11 @@ function abprf_load_tabs() {
                     }).promise().done(function () {
                         if (exit < 1) {
                             parent.find('input[type="text"]').val('');
-                            parent.find('input[type="hidden"]').val('').trigger('rf_trigger');
+                            if (parent.find('input[type="hidden"]').length > 0) {
+                                parent.find('input[type="hidden"]').val('').trigger('rf_trigger');
+                            } else {
+                                parent.find('input[type="text"]').trigger('change');
+                            }
                         }
                     });
                 }
@@ -594,13 +612,12 @@ function abprf_load_bg_image(body = jQuery('body')) {
     body.find('.abprf_area [data-image-href]:visible').each(function () {
         let target = jQuery(this);
         let bg_url = target.data('image-href');
-       // alert(bg_url);
+        // alert(bg_url);
         target.attr('data-image-href', '');
         if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
             bg_url = abprf_var.blank_image;
         }
         if (bg_url) {
-
             target.find('img').attr('src', bg_url).promise().done(function () {
                 abprf_spinner_remove(target);
             });
