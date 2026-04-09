@@ -24,8 +24,8 @@
         </table>
         <div class="abprf_d_none">
             <table class="_abprf">
-                <tbody class="abprf_hidden_item">
-                <tr class="abprf_delete_area " data-type="" data-name="">
+                <tbody class="hidden_content">
+                <tr class="delete_area " data-type="" data-name="">
                     <th class="seat_name"></th>
                     <th class="seat_price"></th>
                     <th>

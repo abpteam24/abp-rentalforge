@@ -17,7 +17,7 @@
 			<?php } else { ?>
                 <input type="submit" class="_d_none" name="add-to-cart" value="<?php echo esc_attr($wc_link); ?>"/>
 			<?php } ?>
-            <button class="_btn_theme_light abprf_book_continue" type="button" data-alert="<?php esc_attr_e('No Ticket Selected ! Please Select Ticket', 'abprf-rental-forge'); ?>" data-msg="<?php esc_attr_e('Added to Cart Successfully', 'abprf-rental-forge'); ?>">
+            <button class="_btn_light_theme abprf_book_continue" type="button" data-alert="<?php esc_attr_e('No Ticket Selected ! Please Select Ticket', 'abprf-rental-forge'); ?>" data-msg="<?php esc_attr_e('Added to Cart Successfully', 'abprf-rental-forge'); ?>">
 				<?php esc_html_e('Continue', 'abprf-rental-forge'); ?>
                 <span class="fas fa-angle-double-right _mar_l_xs"></span>
             </button>

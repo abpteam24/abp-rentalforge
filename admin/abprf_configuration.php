@@ -6,17 +6,23 @@
 		class ABPRF_Configuration {
 			public function __construct() {
 				add_action( 'admin_init', array( $this, 'admin_init' ) );
-				add_action( 'admin_menu', array( $this, 'configuration_menu' ) );
+				add_action( 'abprf_load_configuration', array( $this, 'load_configuration' ) );
 				add_action( 'update_option_abprf_configuration', array( $this, 'permalink_flush' ) );
 				add_filter( 'pre_update_option_abprf_configuration', array( $this, 'update_sanitize' ), 10, 3 );
-				add_filter( 'pre_update_option_abprf_transport', array( $this, 'update_sanitize' ), 10, 3 );
-				add_filter( 'pre_update_option_abprf_pdf', array( $this, 'update_sanitize' ), 10, 3 );
-				add_filter( 'pre_update_option_abprf_pdf_list', array( $this, 'update_sanitize' ), 10, 3 );
-				add_filter( 'pre_update_option_abprf_csv', array( $this, 'update_sanitize' ), 10, 3 );
-				add_filter( 'pre_update_option_abprf_mail', array( $this, 'update_sanitize' ), 10, 3 );
 				add_filter( 'pre_update_option_abprf_contact', array( $this, 'update_sanitize' ), 10, 3 );
 				add_filter( 'pre_update_option_abprf_slider', array( $this, 'update_sanitize' ), 10, 3 );
 				add_filter( 'pre_update_option_abprf_css_var', array( $this, 'update_sanitize' ), 10, 3 );
+				add_filter( 'pre_update_option_abprf_mail', array( $this, 'update_sanitize' ), 10, 3 );
+				add_filter( 'pre_update_option_abprf_pdf', array( $this, 'update_sanitize' ), 10, 3 );
+				add_filter( 'pre_update_option_abprf_pdf_list', array( $this, 'update_sanitize' ), 10, 3 );
+				add_filter( 'pre_update_option_abprf_csv', array( $this, 'update_sanitize' ), 10, 3 );
+			}
+
+			public function admin_init(): void {
+				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
+				foreach ( $this->configuration_section( $abprf_configuration ) as $section ) {
+					register_setting( $section['id'], $section['id'], array( $this, 'sanitize_options' ) );
+				}
 			}
 
 			public function permalink_flush(): void {
@@ -27,14 +33,17 @@
 				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 				$all_fields          = $this->configuration_data( $abprf_configuration );
 				$field_infos         = array_key_exists( $option, $all_fields ) ? $all_fields[ $option ] : array();
+				$remove_name         = [ 'group_start', 'group_end', 'collapse_start', 'collapse_end' ];
 				if ( sizeof( $field_infos ) > 0 && is_array( $new ) ) {
 					foreach ( $field_infos as $field_info ) {
 						$name = array_key_exists( 'name', $field_info ) ? $field_info['name'] : '';
-						$type = array_key_exists( 'type', $field_info ) ? $field_info['type'] : '';
-						if ( $type == 'wp_editor' ) {
-							$new[ $name ] = sanitize_text_field( htmlentities( $new[ $name ] ) );
-						} else {
-							$new[ $name ] = sanitize_text_field( $new[ $name ] );
+						if ( ! in_array( $name, $remove_name ) ) {
+							$type = array_key_exists( 'type', $field_info ) ? $field_info['type'] : '';
+							if ( $type == 'wp_editor' ) {
+								$new[ $name ] = sanitize_text_field( htmlentities( $new[ $name ] ) );
+							} else {
+								$new[ $name ] = sanitize_text_field( $new[ $name ] );
+							}
 						}
 					}
 				}
@@ -42,34 +51,14 @@
 				return sizeof( $new ) > 0 ? $new : $old;
 			}
 
-			public function admin_init(): void {
-				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
-				foreach ( $this->configuration_section( $abprf_configuration ) as $section ) {
-					register_setting( $section['id'], $section['id'], array( $this, 'sanitize_options' ) );
-				}
-			}
-
-			public function configuration_menu(): void {
-				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
-					$label = __( 'Configuration', 'abprf-rental-forge' );
-					add_submenu_page( 'edit.php?post_type=abprf_post', $label, $label, 'manage_options', 'rf_configuration', array( $this, 'configuration' ) );
-				} else {
-					$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
-					$label               = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-					add_menu_page( $label, $label, 'manage_options', 'rf_configuration', array( $this, 'configuration' ), 'dashicons-hammer', 6 );
-				}
-			}
-
-			public function configuration(): void {
+			public function load_configuration(): void {
 				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 				?>
                 <div class="abprf_area" id="abprf_configuration">
                     <div class="abprf_container">
-                        <div class="_abprf_panel_margin">
-                            <div class="abprf_tabs tab_left">
+                        <div class="_reflex_6_abprf_panel">
+                            <div class="abprf_tabs tab_top">
                                 <ul class="_abprf tab_lists">
-                                    <li class="_color_theme_padding_xs_fs_h3_text_center"><?php esc_html_e( 'Configuration', 'abprf-rental-forge' ); ?></li>
-                                    <li data-tabs-target="#abprf_tools"><span class="fas fa-tools"></span><?php esc_html_e( 'Status  & Information', 'abprf-rental-forge' ); ?></li>
 									<?php foreach ( $this->configuration_section( $abprf_configuration ) as $tab ) { ?>
                                         <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><span class="<?php echo esc_attr( array_key_exists( 'icon', $tab ) ? $tab['icon'] : '' ); ?>"></span><?php echo esc_html( $tab['menu'] ); ?></li>
 									<?php } ?>
@@ -99,7 +88,8 @@
                             <h3 class="_abprf"><?php echo esc_html( $plugin_label . __( ' : ', 'abprf-rental-forge' ) . $form['menu'] . ' ' . __( 'Configuration', 'abprf-rental-forge' ) ); ?></h3>
                             <div class="_divider_xs"></div>
                             <form method="post" action="options.php">
-								<?php settings_fields( $section_id );
+								<?php
+									settings_fields( $section_id );
 									$options = ABPRF_Function::get_option( $section_id );
 									foreach ( $fields as $option ) {
 										$name = array_key_exists( 'name', $option ) ? $option['name'] : '';
@@ -111,7 +101,11 @@
                                             <div class="<?php echo esc_attr( $target_value == 'on' ? 'rf_active' : '' ); ?>" data-collapse="<?php echo esc_attr( '#' . $collapse_data['option'] . '[' . $collapse_data['key'] . ']' ); ?>">
 										<?php } elseif ( $name == 'collapse_end' ) { ?>
                                             </div>
-										<?php } else {
+										<?php } elseif ( $name == 'group_start' ) {
+											?><div class="group_setting"><?php
+										} elseif ( $name == 'group_end' ) {
+											?></div><?php
+										} else {
 											$type  = array_key_exists( 'type', $option ) ? $option['type'] : '';
 											$label = array_key_exists( 'label', $option ) ? $option['label'] : '';
 											if ( $name && $type && $label ) {
@@ -134,7 +128,7 @@
 									}
 								?>
                                 <div class="_divider_xs"></div>
-                                <button type="submit" class="_btn_theme" value="submit"><span class="far fa-save _mar_r_xs"></span><?php echo esc_html( __( 'Save', 'abprf-rental-forge' ) . ' ' . $form['menu'] . ' ' . __( 'Configuration', 'abprf-rental-forge' ) ); ?></button>
+                                <button type="submit" class="_btn_theme" value="submit"><span class="_mar_r_xxs">💾</span><?php echo esc_html( __( 'Save', 'abprf-rental-forge' ) . ' ' . $form['menu'] . ' ' . __( 'Configuration', 'abprf-rental-forge' ) ); ?></button>
                             </form>
                         </div>
 						<?php
@@ -143,22 +137,19 @@
 			}
 
 			public function configuration_section( $abprf_configuration ): array {
-				$label          = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$equipment_icon = isset( $abprf_configuration['equipment_icon'] ) && $abprf_configuration['equipment_icon'] ? $abprf_configuration['equipment_icon'] : 'fas fa-hammer';
-				$additional     = apply_filters( 'abprf_additional_after', array( array( 'id' => 'abprf_additional', 'icon' => 'fas fa-hand-holding-usd', 'menu' => __( 'Additional services', 'abprf-rental-forge' ) ) ) );
-				$configuration  = apply_filters( 'abprf_configuration_after', array( array( 'id' => 'abprf_configuration', 'icon' => $equipment_icon, 'menu' => $label ) ) );
-				$contact        = apply_filters( 'abprf_contact_after', array(
+				$label         = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+				$brand_icon    = isset( $abprf_configuration['brand_icon'] ) && $abprf_configuration['brand_icon'] ? $abprf_configuration['brand_icon'] : 'fas fa-hammer';
+				$configuration = apply_filters( 'abprf_configuration_after', array( array( 'id' => 'abprf_configuration', 'icon' => $brand_icon, 'menu' => $label ) ) );
+				$contact       = apply_filters( 'abprf_contact_after', array(
 					array( 'id' => 'abprf_slider', 'icon' => 'fas fa-photo-video', 'menu' => __( 'Slider', 'abprf-rental-forge' ) ),
 					array( 'id' => 'abprf_contact', 'icon' => 'fas fa-id-card-alt', 'menu' => __( 'Contact Information', 'abprf-rental-forge' ) ),
-					array( 'id' => 'abprf_css_var', 'icon' => 'fas fa-drafting-compass', 'menu' => __( 'CSS Value', 'abprf-rental-forge' ) ),
+					array( 'id' => 'abprf_css_var', 'icon' => 'fas fa-drafting-compass', 'menu' => __( 'CSS Property', 'abprf-rental-forge' ) ),
 				) );
 
-				return array_merge( $additional, $configuration, $contact );
+				return array_merge( $configuration, $contact );
 			}
 
 			public function configuration_data( $abprf_configuration ) {
-				$current_date = current_time( 'Y-m-d' );
-
 				return apply_filters( 'abprf_configuration_data_filter', array(
 					'abprf_configuration' => apply_filters( 'abprf_configuration_filter', array(
 						array(
@@ -169,72 +160,7 @@
 							'default' => 'wc-processing,wc-completed',
 							'options' => in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ? wc_get_order_statuses() : []
 						),
-						array(
-							'name' => 'checkout_system',
-							'label' => __( 'Checkout System', 'abprf-rental-forge' ),
-							'desc' => __( 'If you want to Only Added in cart by ajax on a single page, please select Only Add to cart by ajax. If you want to directly checkout with just one click, please select direct checkout . If you want to directly cart with just one click, please select direct cart. Default WooCommerce checkout system.', 'abprf-rental-forge' ),
-							'type' => 'radio',
-							'default' => 'default',
-							'options' => array(
-								'default' => __( 'Default', 'abprf-rental-forge' ),
-								'single' => __( 'Only Add to cart by ajax', 'abprf-rental-forge' ),
-								'cart' => __( 'Direct Cart', 'abprf-rental-forge' ),
-								'checkout' => __( 'Direct Checkout', 'abprf-rental-forge' ),
-							),
-						),
-						array(
-							'name' => 'periodic_start_date',
-							'label' => __( 'Sale Start after', 'abprf-rental-forge' ),
-							'desc' => __( 'If you want to begin selling tools after a specific date, please choose that date. Otherwise, sales will proceed without restriction. ', 'abprf-rental-forge' ),
-							'type' => 'datepicker',
-						),
-						array(
-							'name' => 'periodic_end_date',
-							'label' => __( 'Sale close after', 'abprf-rental-forge' ),
-							'desc' => __( 'If you wish to stop tools sales after a certain date, please indicate the chosen date. Otherwise, sales will proceed indefinitely. ', 'abprf-rental-forge' ),
-							'type' => 'datepicker',
-						),
-						array(
-							'name' => 'advance_date_number',
-							'label' => __( 'Number of advance booking date', 'abprf-rental-forge' ),
-							'desc' => ABPRF_Layout::array_info( 'advance_date_number' ),
-							'type' => 'number',
-							'placeholder' => '15',
-							'min' => 1,
-							'default' => 15,
-							'validation' => 'validation_number'
-						),
-						array(
-							'name' => 'ticket_sale_close_before',
-							'label' => __( 'Buffer time in MIN', 'abprf-rental-forge' ),
-							'desc' => __( 'Enter the time in minutes to close  rent before current time. If not specified, it will default to 0 (e.g. 1 hour equals 60 minutes). ', 'abprf-rental-forge' ),
-							'type' => 'number',
-							'placeholder' => '60',
-							'min' => 0,
-							'default' => 0,
-							'validation' => 'validation_number'
-						),
-						array(
-							'name' => 'date_format',
-							'label' => __( 'Date Picker Format', 'abprf-rental-forge' ),
-							'desc' => __( 'If you wish to edit the Date Picker Format, simply choose a different format. The default date is: ', 'abprf-rental-forge' ) . ' <strong class="_abprf_color_theme">' . date_i18n( 'D j M , Y', strtotime( $current_date ) ) . '</strong>',
-							'type' => 'select',
-							'default' => 'D d M , yy',
-							'options' => array(
-								'yy-mm-dd' => $current_date,
-								'yy/mm/dd' => date_i18n( 'Y/m/d', strtotime( $current_date ) ),
-								'yy-dd-mm' => date_i18n( 'Y-d-m', strtotime( $current_date ) ),
-								'yy/dd/mm' => date_i18n( 'Y/d/m', strtotime( $current_date ) ),
-								'dd-mm-yy' => date_i18n( 'd-m-Y', strtotime( $current_date ) ),
-								'dd/mm/yy' => date_i18n( 'd/m/Y', strtotime( $current_date ) ),
-								'mm-dd-yy' => date_i18n( 'm-d-Y', strtotime( $current_date ) ),
-								'mm/dd/yy' => date_i18n( 'm/d/Y', strtotime( $current_date ) ),
-								'd M , yy' => date_i18n( 'j M , Y', strtotime( $current_date ) ),
-								'D d M , yy' => date_i18n( 'D j M , Y', strtotime( $current_date ) ),
-								'M d , yy' => date_i18n( 'M  j, Y', strtotime( $current_date ) ),
-								'D M d , yy' => date_i18n( 'D M  j, Y', strtotime( $current_date ) ),
-							)
-						),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'label',
 							'label' => __( 'Label', 'abprf-rental-forge' ),
@@ -249,6 +175,8 @@
 							'type' => 'text',
 							'default' => 'rental-forge'
 						),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'icon',
 							'label' => __( 'Dashboard Menu Icon', 'abprf-rental-forge' ),
@@ -257,26 +185,13 @@
 							'default' => 'dashicons-hammer'
 						),
 						array(
-							'name' => 'equipment_icon',
-							'label' => __( 'Equipment Groups Icon', 'abprf-rental-forge' ),
-							'desc' => __( 'If you wish to alter the Equipment Groups you can do so from this location. ', 'abprf-rental-forge' ),
+							'name' => 'brand_icon',
+							'label' => __( 'Category/Post Icon', 'abprf-rental-forge' ),
+							'desc' => __( 'If you wish to alter the Category/Post you can do so from this location. ', 'abprf-rental-forge' ),
 							'type' => 'fontawesome',
 							'default' => 'fas fa-hammer'
 						),
-						array(
-							'name' => 'category_label',
-							'label' => __( 'Category Label', 'abprf-rental-forge' ),
-							'desc' => __( 'If you wish to modify the category label on the dashboard menu, you can do so here. ', 'abprf-rental-forge' ),
-							'type' => 'text',
-							'default' => __( 'Category', 'abprf-rental-forge' )
-						),
-						array(
-							'name' => 'cat_slug',
-							'label' => __( 'Category Slug', 'abprf-rental-forge' ),
-							'desc' => __( 'Please input the desired slug name for the category. Do not forget, after updating this slug, you must refresh permalinks. Simply navigate to  ', 'abprf-rental-forge' ) . '<strong class="_abprf_color_theme">' . __( 'configuration-> Permalinks', 'abprf-rental-forge' ) . '</strong> ' . __( 'and click on the Save Configuration button. ', 'abprf-rental-forge' ),
-							'type' => 'text',
-							'default' => 'rental_category'
-						)
+						array( 'name' => 'group_end', ),
 					) ),
 					'abprf_contact' => apply_filters( 'abprf_contact_filter', array(
 						array(
@@ -312,6 +227,7 @@
 						),
 					) ),
 					'abprf_slider' => array(
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'slider_style',
 							'label' => __( 'Slider Theme', 'abprf-rental-forge' ),
@@ -330,6 +246,7 @@
 							'type' => 'button_switch',
 							'default' => 'on',
 						),
+						array( 'name' => 'group_end', ),
 						array(
 							'name' => 'collapse_start',
 							'collapse' => 'on',
@@ -384,6 +301,7 @@
 							'collapse' => 'on',
 							'collapse_data' => array( 'option' => 'abprf_slider', 'key' => 'visible_popup' ),
 						),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'popup_image_indicator',
 							'label' => __( 'Popup Image Indicator', 'abprf-rental-forge' ),
@@ -398,10 +316,12 @@
 							'type' => 'button_switch',
 							'default' => 'on'
 						),
+						array( 'name' => 'group_end', ),
 						array( 'name' => 'collapse_end' ),
 						array( 'name' => 'collapse_end' ),
 					),
 					'abprf_css_var' => apply_filters( 'abprf_css_var_filter', array(
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'color_theme',
 							'label' => __( 'Base Color', 'abprf-rental-forge' ),
@@ -416,6 +336,8 @@
 							'type' => 'color',
 							'default' => '#fff'
 						),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'color_default',
 							'label' => __( 'Default Color', 'abprf-rental-forge' ),
@@ -431,6 +353,8 @@
 							'default' => '0',
 							'validation' => 'validation_number'
 						),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'fs_default',
 							'label' => __( 'Default Font Size', 'abprf-rental-forge' ),
@@ -439,6 +363,16 @@
 							'default' => '12',
 							'validation' => 'validation_number'
 						),
+						array(
+							'name' => 'fs_label',
+							'label' => __( 'Label Font Size ', 'abprf-rental-forge' ),
+							'desc' => __( 'Enter the label font size (in PX units).', 'abprf-rental-forge' ),
+							'type' => 'number',
+							'default' => '14',
+							'validation' => 'validation_number'
+						),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'fs_h1',
 							'label' => __( 'Font Size h1 ', 'abprf-rental-forge' ),
@@ -455,6 +389,8 @@
 							'default' => '30',
 							'validation' => 'validation_number'
 						),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'fs_h3',
 							'label' => __( 'Font Size h3', 'abprf-rental-forge' ),
@@ -471,6 +407,8 @@
 							'default' => '20',
 							'validation' => 'validation_number'
 						),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'fs_h5',
 							'label' => __( 'Font Size h5', 'abprf-rental-forge' ),
@@ -487,14 +425,8 @@
 							'default' => '15',
 							'validation' => 'validation_number'
 						),
-						array(
-							'name' => 'fs_label',
-							'label' => __( 'Label Font Size ', 'abprf-rental-forge' ),
-							'desc' => __( 'Enter the label font size (in PX units).', 'abprf-rental-forge' ),
-							'type' => 'number',
-							'default' => '14',
-							'validation' => 'validation_number'
-						),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'fs_button',
 							'label' => __( 'Button Font Size ', 'abprf-rental-forge' ),
@@ -503,6 +435,8 @@
 							'default' => '13',
 							'validation' => 'validation_number'
 						),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'color_button',
 							'label' => __( 'Button Text Color', 'abprf-rental-forge' ),
@@ -517,6 +451,8 @@
 							'type' => 'color',
 							'default' => '#222'
 						),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'color_warning',
 							'label' => __( 'Warning Color', 'abprf-rental-forge' ),
@@ -531,6 +467,7 @@
 							'type' => 'color',
 							'default' => '#FAFCFE'
 						),
+						array( 'name' => 'group_end', ),
 					) )
 				), $abprf_configuration
 				);
@@ -552,8 +489,8 @@
 				$placeholder = array_key_exists( 'placeholder', $args ) && $args['placeholder'] ? $args['placeholder'] : '';
 				?>
                 <div class="_setting_item">
-                    <label class="_f_equal_max_500_f_wrap">
-                        <span class="_pad_r_xs"><?php echo esc_html( $label ); ?></span>
+                    <label class="_f_wrap_fj_between_fa_center">
+                        <span class="_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <input type="text" name="<?php echo esc_attr( $name ); ?>" class="_form_control <?php echo esc_attr( array_key_exists( 'validation', $args ) && $args['validation'] ? $args['validation'] : '' ); ?>" value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>"/>
                     </label>
 					<?php self::description( $args ); ?>
@@ -569,8 +506,8 @@
 				$placeholder = array_key_exists( 'placeholder', $args ) ? $args['placeholder'] : '';
 				?>
                 <div class="_setting_item">
-                    <label class="_f_equal_max_500_f_wrap">
-                        <span class="_pad_r_xs"><?php echo esc_html( $label ); ?></span>
+                    <label class="_f_wrap_fj_between_fa_center">
+                        <span class="_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <input type="number" name="<?php echo esc_attr( $name ); ?>" class="_form_control  <?php echo esc_attr( array_key_exists( 'validation', $args ) && $args['validation'] ? $args['validation'] : '' ); ?>" value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>"
 							<?php echo esc_attr( empty( $args['min'] ) ? '' : 'data-min=' . $args['min'] ); ?>
 							<?php echo esc_attr( empty( $args['max'] ) ? '' : 'data-max=' . $args['max'] ); ?>
@@ -585,8 +522,8 @@
 				$placeholder = empty( $args['placeholder'] ) ? '' : $args['placeholder'];
 				?>
                 <div class="_setting_item">
-                    <label class="_f_equal_pad_r_xs_max_500_f_wrap">
-                        <span><?php echo esc_html( $label ); ?></span>
+                    <label class="_f_wrap_fj_between_fa_center">
+                        <span class="_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <input type="password" name="<?php echo esc_attr( $name ); ?>" class="_form_control <?php echo esc_attr( array_key_exists( 'validation', $args ) && $args['validation'] ? $args['validation'] : '' ); ?>" value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>"/>
                     </label>
 					<?php self::description( $args ); ?>
@@ -597,7 +534,7 @@
 			public function file( $args, $label, $name, $value ): void {
 				?>
                 <div class="_setting_item">
-                    <div class="_f_equal_pad_r_xs_max_500_f_wrap_fa_center">
+                    <div class="_f_wrap_fj_between_fa_center">
                         <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <div><?php do_action( 'abprf_add_image', $name, $value ); ?></div>
                     </div>
@@ -610,7 +547,7 @@
 				?>
                 <div class="_setting_item">
                     <div class="_d_flex">
-                        <div class="_fd_column_w_300">
+                        <div class="_f_wrap_fj_between_fa_center">
                             <span class="_fs_label"><?php echo esc_html( $label ); ?></span>
 							<?php self::description( $args ); ?>
                         </div>
@@ -623,7 +560,7 @@
 			public function fontawesome( $args, $label, $name, $value ): void {
 				?>
                 <div class="_setting_item">
-                    <div class="_f_equal_max_500_f_wrap_fa_center">
+                    <div class="_f_wrap_fj_between_fa_center">
                         <span class="_fs_label_pad_r_xs"><?php echo esc_html( $label ); ?></span>
                         <div><?php do_action( 'abprf_add_icon', $name, $value ); ?></div>
                     </div>
@@ -635,7 +572,7 @@
 			public function datepicker( $args, $label, $name, $value ): void {
 				?>
                 <div class="_setting_item">
-                    <div class="_f_equal_max_500_f_wrap_fa_center">
+                    <div class="_f_wrap_fj_between_fa_center">
                         <span class="_fs_label_pad_r_xs"><?php echo esc_html( $label ); ?></span>
 						<?php ABPRF_Layout::input_date( $name, $value ); ?>
                     </div>
@@ -648,12 +585,10 @@
 				$placeholder = empty( $args['placeholder'] ) ? '' : $args['placeholder'];
 				?>
                 <div class="_setting_item">
-                    <div class="_f_wrap_fa_center">
-                        <span class="_fs_label_pad_r_xs_max_250"><?php echo esc_html( $label ); ?></span>
-                        <label>
-                            <textarea name="<?php echo esc_attr( $name ); ?>" rows="5" cols="55" class="_form_control <?php echo esc_attr( array_key_exists( 'validation', $args ) && $args['validation'] ? $args['validation'] : '' ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>"><?php echo esc_html( $value ); ?></textarea>
-                        </label>
-                    </div>
+                    <label class="_f_wrap_fj_between_fa_center">
+                        <span class="_mar_r_xs"><?php echo esc_html( $label ); ?></span>
+                        <textarea name="<?php echo esc_attr( $name ); ?>" rows="5" cols="55" class="_form_control <?php echo esc_attr( array_key_exists( 'validation', $args ) && $args['validation'] ? $args['validation'] : '' ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>"><?php echo esc_html( $value ); ?></textarea>
+                    </label>
 					<?php self::description( $args ); ?>
                 </div>
 				<?php
@@ -662,8 +597,8 @@
 			public function select( $args, $label, $name, $value ): void {
 				?>
                 <div class="_setting_item">
-                    <label class="_f_equal_max_500_f_wrap">
-                        <span class="_pad_r_xs_max_250"><?php echo esc_html( $label ); ?></span>
+                    <label class="_f_wrap_fj_between_fa_center">
+                        <span class="_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <select name="<?php echo esc_attr( $name ); ?>" class="_form_control">
 							<?php foreach ( $args['options'] as $key => $label ) { ?>
                                 <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $key == $value ? 'selected' : '' ); ?>><?php echo esc_html( $label ); ?></option>
@@ -678,8 +613,8 @@
 			public function radio( $args, $label, $name, $value ): void {
 				?>
                 <div class="_setting_item ">
-                    <div class="_fa_center">
-                        <span class="_fs_label_pad_r_xs_max_250"><?php echo esc_html( $label ); ?></span>
+                    <div class="_f_wrap_fj_between_fa_center">
+                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <div class="abprf_radio _input_item _f_wrap">
                             <input type="hidden" class="_form_control" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $args['options'] as $key => $option ) { ?>
@@ -700,8 +635,8 @@
 				$checked = checked( $value, 'on', false );
 				?>
                 <div class="_setting_item">
-                    <div class="_f_equal_max_500_f_wrap_fa_center">
-                        <span class="_fs_label_pad_r_xs"><?php echo esc_html( $label ); ?></span>
+                    <div class="_f_wrap_fj_between_fa_center">
+                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <label>
                             <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="off"/>
                             <input type="checkbox" class="checkbox" name="<?php echo esc_attr( $name ); ?>" value="on" <?php echo esc_attr( $checked ); ?> />
@@ -716,10 +651,7 @@
 			public function button_switch( $args, $label, $name, $value ): void {
 				?>
                 <div class="_setting_item">
-                    <div class="_f_equal_max_500_f_wrap_fa_center">
-                        <span class="_fs_label_pad_r_xs"><?php echo esc_html( $label ); ?></span>
-                        <label><?php ABPRF_Layout::switch_checkbox( $name, $value ); ?></label>
-                    </div>
+                    <label><?php ABPRF_Layout::switch_checkbox( $name, $value ); ?><span class="_mar_l_xs"><?php echo esc_html( $label ); ?></span></label>
 					<?php self::description( $args ); ?>
                 </div>
 				<?php
@@ -729,8 +661,8 @@
 				$value_array = $value ? explode( ',', $value ) : [];
 				?>
                 <div class="_setting_item ">
-                    <div class="_d_flex">
-                        <span class="_fs_label_pad_r_xs_max_250"><?php echo esc_html( $label ); ?></span>
+                    <div class="_f_wrap_fj_between_fa_center">
+                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <div class="abprf_checkbox">
                             <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $args['options'] as $key => $label ) { ?>
@@ -750,9 +682,11 @@
 			public function color( $args, $label, $name, $value ): void {
 				?>
                 <div class="_setting_item">
-                    <div class="_f_equal_max_500_f_wrap_fa_center">
-                        <span class="_fs_labels_pad_r_xs"><?php echo esc_html( $label ); ?></span>
-                        <label><input type="text" name="<?php echo esc_attr( $name ); ?>" class="_form_control abprf_color_picker" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $args['std'] ); ?>"/></label>
+                    <div class="_f_wrap_fj_between_fa_center">
+                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
+                        <label>
+                            <input type="text" name="<?php echo esc_attr( $name ); ?>" class="_form_control abprf_color_picker" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $args['std'] ); ?>"/>
+                        </label>
                     </div>
 					<?php self::description( $args ); ?>
                 </div>
@@ -764,8 +698,8 @@
 				$value_array = $value ? explode( ',', $value ) : [];
 				?>
                 <div class="_setting_item ">
-                    <div class="_d_flex">
-                        <span class="_fs_label_pad_r_xs_max_250"><?php echo esc_html( $label ); ?></span>
+                    <div class="_f_wrap_fj_between_fa_center">
+                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <div class="abprf_checkbox">
                             <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $wp_roles->roles as $key => $label ) { ?>
@@ -809,8 +743,8 @@
 			public function pages( $args, $label, $name, $value ): void {
 				?>
                 <div class="_setting_item">
-                    <label class="_f_equal_max_500_f_wrap">
-                        <span class="_pad_r_xs_max_250"><?php echo esc_html( $label ); ?></span>
+                    <label class="_f_wrap_fj_between_fa_center">
+                        <span class="_mar_r_xs"><?php echo esc_html( $label ); ?></span>
 						<?php
 							$dropdown = wp_dropdown_pages( array(
 								'selected' => esc_attr( $value ),

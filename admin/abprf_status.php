@@ -2,10 +2,10 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
-	if ( ! class_exists( 'ABPRF_Tools' ) ) {
-		class ABPRF_Tools {
+	if ( ! class_exists( 'ABPRF_Status' ) ) {
+		class ABPRF_Status {
 			public function __construct() {
-				add_action( 'abprf_configuration_content', array( $this, 'tools_info_configuration' ) );
+				add_action( 'abprf_load_status', array( $this, 'load_status' ) );
 				//=============================//
 				add_action( 'wp_ajax_abprf_install_and_active_wc', array( $this, 'install_and_active_wc' ) );
 				add_action( 'wp_ajax_abprf_active_wc', array( $this, 'active_wc' ) );
@@ -16,12 +16,10 @@
 				add_action( 'wp_ajax_abprf_import_dummy', array( $this, 'import_dummy' ) );
 			}
 
-			public function tools_info_configuration( $abprf_configuration ): void {
-				$label = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$label = $label . ' ' . __( ' : ', 'abprf-rental-forge' ) . ' ' . __( 'Status  & Information', 'abprf-rental-forge' );
+			public function load_status(): void {
 				?>
-                <div class="tab_item abprf_tools" data-tabs="#abprf_tools">
-                    <h3 class="_abprf"><?php echo esc_html( $label ); ?></h3>
+                <div class="_section_xs abprf_status">
+                    <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">🛡️</span> <?php esc_html_e( 'Status  & Information', 'abprf-rental-forge' ); ?></h4>
                     <div class="_divider_xs"></div>
 					<?php $this->version(); ?>
 					<?php $this->wordpress(); ?>
@@ -40,7 +38,7 @@
                 <div class="_section_xs_mar_t_xs">
                     <div class="_fa_center_fj_between">
                         <h6 class="_abprf"> <?php esc_html_e( 'RentalForge Version', 'abprf-rental-forge' ) ?> </h6>
-                        <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( get_plugin_data( ABPRF_PLUGIN_FILE ) ['Version'] ); ?></button>
+                        <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( get_plugin_data( ABPRF_PLUGIN_FILE ) ['Version'] ); ?></button>
                     </div>
                 </div>
 				<?php
@@ -53,9 +51,9 @@
                     <div class="_fa_center_fj_between">
                         <h6 class="_abprf"> <?php esc_html_e( 'WordPress Version', 'abprf-rental-forge' ); ?> </h6>
 						<?php if ( $version > 5.5 ) { ?>
-                            <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_light_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
 						<?php } ?>
                     </div>
                 </div>
@@ -69,9 +67,9 @@
                     <div class="_fa_center_fj_between">
                         <h6 class="_abprf"> <?php esc_html_e( 'Php Version', 'abprf-rental-forge' ); ?> </h6>
 						<?php if ( $version > 7.4 ) { ?>
-                            <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_light_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
 						<?php } ?>
                     </div>
                 </div>
@@ -90,7 +88,7 @@
                     <div class="_fa_center_fj_between">
                         <h6 class="_abprf"> <?php echo esc_html( $title ); ?></h6>
 						<?php if ( $wc_status == 2 ) { ?>
-                            <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
 						<?php } elseif ( $wc_status == 1 ) { ?>
                             <button class="_btn_theme_xs_min_125 abprf_active_wc" type="button"><span class="fas fa-tasks _mar_r_xxs"></span><?php esc_html_e( 'Active Now', 'abprf-rental-forge' ); ?></button>
 						<?php } else { ?>
@@ -102,23 +100,23 @@
                         <div class="_fa_center_fj_between">
                             <h6 class="_abprf"><?php esc_html_e( 'Woocommerce Version', 'abprf-rental-forge' ); ?></h6>
 							<?php if ( version_compare( WC_VERSION, '8.0', '>' ) ) { ?>
-                                <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( WC_VERSION ); ?></button>
+                                <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( WC_VERSION ); ?></button>
 							<?php } else { ?>
-                                <button class="_btn_warning_light_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php echo esc_html( WC_VERSION ); ?></button>
+                                <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php echo esc_html( WC_VERSION ); ?></button>
 							<?php } ?>
                         </div>
 						<?php if ( ! empty( $name ) ) { ?>
                             <div class="_divider_xs"></div>
                             <div class="_fa_center_fj_between">
                                 <h6 class="_abprf"><?php esc_html_e( 'Name', 'abprf-rental-forge' ); ?></h6>
-                                <button class="_btn_success_light_xs_min_125" type="button"><?php echo esc_html( $name ); ?></button>
+                                <button class="_btn_light_success_xs_min_125" type="button"><?php echo esc_html( $name ); ?></button>
                             </div>
 						<?php } ?>
 						<?php if ( ! empty( $email ) ) { ?>
                             <div class="_divider_xs"></div>
                             <div class="_fa_center_fj_between">
                                 <h6 class="_abprf"><?php esc_html_e( 'Email Address', 'abprf-rental-forge' ); ?></h6>
-                                <button class="_btn_success_light_xs_min_125_text_inherit" type="button"><?php echo esc_html( $email ); ?></button>
+                                <button class="_btn_light_success_xs_min_125_text_inherit" type="button"><?php echo esc_html( $email ); ?></button>
                             </div>
 						<?php } ?>
 					<?php } else { ?>
@@ -129,27 +127,27 @@
 			}
 
 			public function install_and_active_wc() {
-				if ( is_admin() && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'abprf_admin_ajax_nonce' ) ) {
+				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
 					include_once( ABSPATH . 'wp-admin/includes/file.php' );
 					include_once( ABSPATH . 'wp-admin/includes/misc.php' );
 					include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
 					$plugin             = 'woocommerce';
 					$api                = plugins_api( 'plugin_information', array(
-						'slug'   => $plugin,
+						'slug' => $plugin,
 						'fields' => array(
 							'short_description' => false,
-							'sections'          => false,
-							'requires'          => false,
-							'rating'            => false,
-							'ratings'           => false,
-							'downloaded'        => false,
-							'last_updated'      => false,
-							'added'             => false,
-							'tags'              => false,
-							'compatibility'     => false,
-							'homepage'          => false,
-							'donate_link'       => false,
+							'sections' => false,
+							'requires' => false,
+							'rating' => false,
+							'ratings' => false,
+							'downloaded' => false,
+							'last_updated' => false,
+							'added' => false,
+							'tags' => false,
+							'compatibility' => false,
+							'homepage' => false,
+							'donate_link' => false,
 						),
 					) );
 					$title              = 'title';
@@ -163,7 +161,7 @@
 			}
 
 			public function active_wc() {
-				if ( is_admin() && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'abprf_admin_ajax_nonce' ) ) {
+				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					if ( is_dir( ABSPATH . 'wp-content/plugins/woocommerce' ) ) {
 						activate_plugin( 'woocommerce/woocommerce.php' );
 					}
@@ -176,20 +174,20 @@
 				?>
                 <form class="_section_xs" method="post" action="">
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"><?php esc_html_e( 'Equipment List Page', 'abprf-rental-forge' ); ?></h6>
+                        <h6 class="_abprf"><?php esc_html_e( 'Category/Post List Page', 'abprf-rental-forge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'equipment_search' ) ) { ?>
-                            <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 abprf_create_equipment_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Equipment List Page', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 abprf_create_equipment_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Category/Post List Page', 'abprf-rental-forge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"><?php esc_html_e( 'Equipment Groups Page', 'abprf-rental-forge' ); ?></h6>
+                        <h6 class="_abprf"><?php esc_html_e( 'Category/Post Page', 'abprf-rental-forge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'equipment_group' ) ) { ?>
-                            <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 abprf_create_equipment_group_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Equipment Groups Page', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 abprf_create_equipment_group_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Category/Post Page', 'abprf-rental-forge' ); ?></button>
 						<?php } ?>
                     </div>
 					<?php do_action( 'abprf_page_create' ); ?>
@@ -198,14 +196,14 @@
 			}
 
 			public function equipment_list_page() {
-				if ( is_admin() && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'abprf_admin_ajax_nonce' ) ) {
+				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					if ( ! ABPRF_Function::get_page_by_slug( 'equipment_search' ) ) {
 						$page = array(
-							'post_type'    => 'page',
-							'post_name'    => 'equipment_search',
-							'post_title'   => __( 'Equipment List', 'abprf-rental-forge' ),
+							'post_type' => 'page',
+							'post_name' => 'equipment_search',
+							'post_title' => __( 'Category/Post List', 'abprf-rental-forge' ),
 							'post_content' => '[abprf-equipment]',
-							'post_status'  => 'publish',
+							'post_status' => 'publish',
 						);
 						wp_insert_post( $page );
 						flush_rewrite_rules();
@@ -215,14 +213,14 @@
 			}
 
 			public function equipment_group_page() {
-				if ( is_admin() && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'abprf_admin_ajax_nonce' ) ) {
+				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					if ( ! ABPRF_Function::get_page_by_slug( 'equipment_group' ) ) {
 						$page = array(
-							'post_type'    => 'page',
-							'post_name'    => 'equipment_group',
-							'post_title'   => __( 'Equipment Groups', 'abprf-rental-forge' ),
+							'post_type' => 'page',
+							'post_name' => 'equipment_group',
+							'post_title' => __( 'Category/Post', 'abprf-rental-forge' ),
 							'post_content' => '[abprf-list]',
-							'post_status'  => 'publish',
+							'post_status' => 'publish',
 						);
 						wp_insert_post( $page );
 						flush_rewrite_rules();
@@ -233,28 +231,28 @@
 
 			//=============================//
 			public function dummy_import(): void {
-				$total = sizeof( ABPRF_Function::get_all_post_id( 'abprf_post' ) );
+				$total = sizeof( ABPRF_Query::get_all_post_id( 'abprf_post' ) );
 				?>
                 <form class="_section_xs" method="post" action="">
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"> <?php esc_html_e( 'Number of Equipment Groups', 'abprf-rental-forge' ); ?> </h6>
+                        <h6 class="_abprf"> <?php esc_html_e( 'Number of Category/Post', 'abprf-rental-forge' ); ?> </h6>
 						<?php if ( $total > 0 ) { ?>
-                            <button class="_btn_success_light_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $total ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $total ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_light_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Equipment Groups', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Category/Post', 'abprf-rental-forge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
                         <h6 class="_abprf"> <?php esc_html_e( 'Dummy Import', 'abprf-rental-forge' ); ?> </h6>
-                        <button class="<?php echo esc_attr( $total > 0 ? '_btn_success_light_xs' : '_btn_warning_xs' ); ?>_btn_theme_min_125 abprf_import_dummy" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add New Dummy Equipment Groups', 'abprf-rental-forge' ); ?></button>
+                        <button class="<?php echo esc_attr( $total > 0 ? '_btn_light_success_xs' : '_btn_warning_xs' ); ?>_btn_theme_min_125 abprf_import_dummy" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add New Dummy Category/Post', 'abprf-rental-forge' ); ?></button>
                     </div>
                 </form>
 				<?php
 			}
 
 			public function import_dummy() {
-				if ( is_admin() && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'abprf_admin_ajax_nonce' ) ) {
+				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					//$this->add_data( $this->dummy_data() );
 					flush_rewrite_rules();
 				}
@@ -305,58 +303,58 @@
 
 			public function dummy_data(): array {
 				return [
-					'taxonomy'    => [
-						'abprf_category'  => [
+					'taxonomy' => [
+						'abprf_category' => [
 							0 => [ 'name' => 'AC' ],
 							1 => [ 'name' => 'Non AC' ],
 							2 => [ 'name' => 'AC Sleeper' ],
 						],
 					],
-					'options'     => [
-						'abprf_additional'        => ABPRF_Layout::static_additional(),
+					'options' => [
+						'abprf_additional' => ABPRF_Layout::static_additional(),
 						'abprf_traveller_pattern' => ABPRF_Layout::static_form(),
 					],
 					'custom_post' => [
 						'abprf_post' => [
 							0 => [
-								'name'      => 'Bucharest-Izmail',
+								'name' => 'Bucharest-Izmail',
 								'post_data' => [
 									//General
-									'display_equipment_id'        => 'on',
-									'equipment_id'                => wp_rand( 100, 999 ),
-									'display_category'            => 'on',
-									'category'                    => 'AC',
-									'sale_continue'               => 'on',
+									'display_equipment_id' => 'on',
+									'equipment_id' => wp_rand( 100, 999 ),
+									'display_category' => 'on',
+									'category' => 'AC',
+									'rent_continue' => 'on',
 									//Date_settings
-									'date_type'                   => 'periodic_date',
-									'specific_dates'              => [],
-									'periodic_start_date'         => gmdate( 'Y-m-d', strtotime( ' +1 day' ) ),
-									'periodic_end_date'           => '',
-									'periodic_after'              => 1,
-									'advance_date_number'         => 15,
-									'weekend'                     => 'sunday',
-									'specific_off_dates'          => [
+									'date_type' => 'periodic_date',
+									'specific_dates' => [],
+									'periodic_start_date' => gmdate( 'Y-m-d', strtotime( ' +1 day' ) ),
+									'periodic_end_date' => '',
+									'periodic_after' => 1,
+									'advance_date_number' => 15,
+									'weekend' => 'sunday',
+									'specific_off_dates' => [
 										gmdate( 'Y-m-d', strtotime( ' +15 day' ) ),
 									],
-									'off_date_range'              => [
+									'off_date_range' => [
 										0 => [
 											'from' => gmmktime( 'Y-m-d', strtotime( ' +25 day' ) ),
-											'to'   => gmdate( 'Y-m-d', strtotime( ' +28 day' ) ),
+											'to' => gmdate( 'Y-m-d', strtotime( ' +28 day' ) ),
 										],
 									],
 									//seat_settings
-									'display_ticket_type'         => '',
-									'ticket_type'                 => '',
-									'seat_type'                   => 'seat_plan',
-									'ld_rows'                     => '12',
-									'ld_columns'                  => '5',
-									'display_ud'                  => '',
-									'ud_infos'                    => [],
-									'ud_rows'                     => '',
-									'ud_columns'                  => '',
-									'total_seat'                  => '40',
+									'display_ticket_type' => '',
+									'ticket_type' => '',
+									'seat_type' => 'seat_plan',
+									'ld_rows' => '12',
+									'ld_columns' => '5',
+									'display_ud' => '',
+									'ud_infos' => [],
+									'ud_rows' => '',
+									'ud_columns' => '',
+									'total_seat' => '40',
 									//Route_settings
-									'routing_infos'               => [
+									'routing_infos' => [
 										0 => [ 'stop' => 'A', 'type' => 'bp', 'time' => '08:00' ],
 										1 => [ 'stop' => 'B', 'type' => 'bp', 'time' => '09:00' ],
 										2 => [ 'stop' => 'C', 'type' => 'bp', 'time' => '11:00' ],
@@ -365,19 +363,19 @@
 										5 => [ 'stop' => 'F', 'type' => 'dp', 'time' => '15:45' ],
 										6 => [ 'stop' => 'G', 'type' => 'dp', 'time' => '17:00' ],
 									],
-									'route_direction'             => [ 'A', 'B', 'C', 'D', 'E', 'F', 'G' ],
+									'route_direction' => [ 'A', 'B', 'C', 'D', 'E', 'F', 'G' ],
 									//price_settings
-									'price_infos'                 => [
-										0  => [ 'bp' => 'A', 'dp' => 'D ', 'price' => '750', 'adult' => '', 'child' => '', 'infant' => '' ],
-										1  => [ 'bp' => 'A', 'dp' => 'E', 'price' => '850', 'adult' => '', 'child' => '', 'infant' => '' ],
-										2  => [ 'bp' => 'A', 'dp' => 'F', 'price' => '1000', 'adult' => '', 'child' => '', 'infant' => '' ],
-										3  => [ 'bp' => 'A', 'dp' => 'G', 'price' => '1200', 'adult' => '', 'child' => '', 'infant' => '' ],
-										4  => [ 'bp' => 'B', 'dp' => 'D ', 'price' => '1100', 'adult' => '', 'child' => '', 'infant' => '' ],
-										5  => [ 'bp' => 'B', 'dp' => 'E', 'price' => '900', 'adult' => '', 'child' => '', 'infant' => '' ],
-										6  => [ 'bp' => 'B', 'dp' => 'F', 'price' => '800', 'adult' => '', 'child' => '', 'infant' => '' ],
-										7  => [ 'bp' => 'B', 'dp' => 'G', 'price' => '700', 'adult' => '', 'child' => '', 'infant' => '' ],
-										8  => [ 'bp' => 'C', 'dp' => 'D ', 'price' => '1000', 'adult' => '', 'child' => '', 'infant' => '' ],
-										9  => [ 'bp' => 'C', 'dp' => 'E', 'price' => '900', 'adult' => '', 'child' => '', 'infant' => '' ],
+									'price_infos' => [
+										0 => [ 'bp' => 'A', 'dp' => 'D ', 'price' => '750', 'adult' => '', 'child' => '', 'infant' => '' ],
+										1 => [ 'bp' => 'A', 'dp' => 'E', 'price' => '850', 'adult' => '', 'child' => '', 'infant' => '' ],
+										2 => [ 'bp' => 'A', 'dp' => 'F', 'price' => '1000', 'adult' => '', 'child' => '', 'infant' => '' ],
+										3 => [ 'bp' => 'A', 'dp' => 'G', 'price' => '1200', 'adult' => '', 'child' => '', 'infant' => '' ],
+										4 => [ 'bp' => 'B', 'dp' => 'D ', 'price' => '1100', 'adult' => '', 'child' => '', 'infant' => '' ],
+										5 => [ 'bp' => 'B', 'dp' => 'E', 'price' => '900', 'adult' => '', 'child' => '', 'infant' => '' ],
+										6 => [ 'bp' => 'B', 'dp' => 'F', 'price' => '800', 'adult' => '', 'child' => '', 'infant' => '' ],
+										7 => [ 'bp' => 'B', 'dp' => 'G', 'price' => '700', 'adult' => '', 'child' => '', 'infant' => '' ],
+										8 => [ 'bp' => 'C', 'dp' => 'D ', 'price' => '1000', 'adult' => '', 'child' => '', 'infant' => '' ],
+										9 => [ 'bp' => 'C', 'dp' => 'E', 'price' => '900', 'adult' => '', 'child' => '', 'infant' => '' ],
 										10 => [ 'bp' => 'C', 'dp' => 'F', 'price' => '800', 'adult' => '', 'child' => '', 'infant' => '' ],
 										11 => [ 'bp' => 'C', 'dp' => 'G', 'price' => '700', 'adult' => '', 'child' => '', 'infant' => '' ],
 										12 => [ 'bp' => 'D ', 'dp' => 'E', 'price' => '800', 'adult' => '', 'child' => '', 'infant' => '' ],
@@ -387,22 +385,21 @@
 										16 => [ 'bp' => 'E ', 'dp' => 'G', 'price' => '300', 'adult' => '', 'child' => '', 'infant' => '' ],
 									],
 									//Reg form
-									'display_passenger_form'      => 'on',
-									'display_single_form'         => 'on',
-									'passenger_form'              => ABPRF_Layout::static_form(),
+									'display_client_form' => 'on',
+									'display_single_form' => 'on',
+									'abprf_forms' => ABPRF_Layout::static_form(),
 									//additional service
 									'display_additional_services' => 'on',
-									'additional_services'         => ABPRF_Layout::static_additional(),
+									'additional_services' => ABPRF_Layout::static_additional(),
 									//slider_settings
-									'display_slider'              => 'on',
-									'abprf_sliders'               => [ 200, 300, 400, 500, 600, 700, 800, 900, 1000 ],
+									'display_slider' => 'on',
+									'abprf_sliders' => [ 200, 300, 400, 500, 600, 700, 800, 900, 1000 ],
 								]
 							],
 						]
 					]
 				];
 			}
-
 		}
-		new ABPRF_Tools();
+		new ABPRF_Status();
 	}

@@ -6,7 +6,7 @@
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	if ( $post_id > 0 ) {
 		$abprf_infos   = ABPRF_Function::get_all_meta( $post_id );
-		$sale_continue = array_key_exists( 'sale_continue', $abprf_infos ) ? $abprf_infos['sale_continue'] : 'on';
+		$rent_continue = array_key_exists( 'rent_continue', $abprf_infos ) ? $abprf_infos['rent_continue'] : 'on';
 		?>
         <div id="abprf_area" class="abprf_area default_details_page">
             <div class="abprf_container">
@@ -26,25 +26,13 @@
 								if ( sizeof( $infos ) > 0 ) {
 									foreach ( $infos as $info ) {
 										$icon_image = array_key_exists( 'icon', $info ) ? $info['icon'] : '';
-										$icon       = $image = $emoji = '';
-										if ( is_numeric( $icon_image ) ) {
-											$image = $icon_image;
-										} elseif ( preg_match( '/\s/', $icon_image ) ) {
-											$icon = $icon_image;
-										} else {
-											$emoji = $icon_image;
-										}
 										$name = array_key_exists( 'name', $info ) ? $info['name'] : '';
 										$brand = array_key_exists( 'brand', $info ) ? $info['brand'] : '';
 										?>
                                         <div class="equipment_item">
                                             <div class="item_head">
                                                 <div class="item_img _all_center">
-													<?php if ( $image ) {
-														ABPRF_Layout::bg_image( '', $image );
-													} else { ?>
-                                                        <span class="<?php echo esc_attr( $icon ); ?>"><?php echo esc_html( $emoji ); ?></span>
-													<?php } ?>
+													<?php ABPRF_Layout::image_icon($icon_image); ?>
                                                 </div>
                                                 <h4 class="_abprf"><?php echo esc_html( $name ); ?></h4>
                                                 <?php if($brand){ ?>
@@ -95,7 +83,7 @@
                         </div>
                     </div>
                     <div class="_col_4_12_800_bg_border_all_center">
-						<?php if ( $sale_continue == 'on' ) {
+						<?php if ( $rent_continue == 'on' ) {
 							//do_action('abprf_search_form', $abprf_infos, ['form' => 'column'], $form_data);
 						} else {
 							ABPRF_Layout::layout_warning_info( 'sale_close_msg' );
@@ -105,7 +93,7 @@
                 </div>
 				<?php do_action( 'abptm_the_content', $abprf_infos ); ?>
                 <div class="_abprf_row">
-					<?php if ( $sale_continue == 'on' ) { ?>
+					<?php if ( $rent_continue == 'on' ) { ?>
                         <div class=" abprf_rental_result">
 							<?php //ABPRF_Layout::transport_list($form_data); ?>
                         </div>

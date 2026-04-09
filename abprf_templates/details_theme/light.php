@@ -9,7 +9,7 @@
 		$abprf_infos['_post_id'] = $post_id;
 		$abprf_infos['single_post'] = true;
 		$display_slider = array_key_exists('display_slider', $abprf_infos) ? $abprf_infos['display_slider'] : 'on';
-		$sale_continue = array_key_exists('sale_continue', $abprf_infos) ? $abprf_infos['sale_continue'] : 'on';
+		$rent_continue = array_key_exists('rent_continue', $abprf_infos) ? $abprf_infos['rent_continue'] : 'on';
 		$form_data = ABPRF_Function::get_form_data($abprf_infos);
 		?>
         <div class="abprf_area light_details_page">
@@ -34,7 +34,7 @@
                 </div>
 				<?php do_action('abptm_the_content', $abprf_infos); ?>
                 <div id="abprf_area" class="_abprf_row details_page_registration">
-					<?php if ($sale_continue == 'on') { ?>
+					<?php if ($rent_continue == 'on') { ?>
 						<?php do_action('abprf_search_form', $abprf_infos, [], $form_data); ?>
                         <div class=" abprf_rental_result">
 							<?php ABPRF_Layout::transport_list($form_data); ?>

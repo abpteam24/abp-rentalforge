@@ -22,8 +22,8 @@
 	$params_transport = array_key_exists('transport', $params) ? $params['transport'] : '';
 	$params_return = array_key_exists('return', $params) ? $params['return'] : '';
 	//=============================//
-	$equipment_icon = ABPRF_Function::get_equipment_icon();
-	$equipment_icon = $equipment_icon ? $equipment_icon . ' _mar_r_xs' : '';
+	$brand_icon = ABPRF_Function::get_brand_icon();
+	$brand_icon = $brand_icon ? $brand_icon . ' _mar_r_xs' : '';
 	//=============================//
 	$redirect_search = ABPRF_Function::get_options('abprf_configuration', 'redirect_search');
 	$submit_url = $redirect_search && !is_admin() && $equipment_id == 0 && !$single_post ? get_home_url() . '/' . get_page_uri($redirect_search) : '';
@@ -48,9 +48,9 @@
             <div class="_input_item_fj_between_fd_column">
                 <span></span>
 				<?php if ($submit_url) { ?>
-                    <button type="submit" class="_btn_theme abprf_submit"><span class="<?php echo esc_attr($equipment_icon); ?>"></span><?php esc_html_e('Search', 'abprf-rental-forge'); ?></button>
+                    <button type="submit" class="_btn_theme abprf_submit"><span class="<?php echo esc_attr($brand_icon); ?>"></span><?php esc_html_e('Search', 'abprf-rental-forge'); ?></button>
 				<?php } else { ?>
-                    <button type="button" class="_btn_theme abprf_get_rental abprf_submit"><span class="<?php echo esc_attr($equipment_icon); ?>"></span><?php esc_html_e('Search', 'abprf-rental-forge'); ?></button>
+                    <button type="button" class="_btn_theme abprf_get_rental abprf_submit"><span class="<?php echo esc_attr($brand_icon); ?>"></span><?php esc_html_e('Search', 'abprf-rental-forge'); ?></button>
 				<?php } ?>
             </div>
         </form>

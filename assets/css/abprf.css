@@ -68,16 +68,16 @@
 	div.abptm_seat_plan_area div.seat_item.selected { background-color: var(--rf_color_theme);border-color: var(--rf_color_theme);color: var(--rf_color_theme_alter); -webkit-box-shadow: var(--rf_shadow_5); box-shadow: var(--rf_shadow_5); }
 	div.abptm_seat_plan_area div.seat_item.seat_sale {cursor: pointer;}
 	div.abptm_seat_plan_area div.seat_item.seat_sale:hover {border-color: var(--rf_color_theme);color: var(--rf_color_theme);}
-	div.abprf_registration_item table[class*="_abprf"] div.abprf_bg_img {max-width: 50px;margin: 0 auto;}
+	div.abprf_registration_item table[class*="_abprf"] div.bg_img {max-width: 50px;margin: 0 auto;}
 	/*=============================*/
 	div.ticket_type_list {position: absolute;z-index: 11111;display: none;left: 5px;min-width: 120px;border: 1px solid var(--rf_color_border);border-radius: var(--rf_br);background-color: var(--rf_color_white);}
 	div.abptm_seat_plan_area th:hover div.ticket_type_list {display: block;}
 	div.ticket_type_list ul li:hover {background-color: var(--rf_color_theme);color: var(--rf_color_theme_alter);cursor: pointer;}
 }
-/******************************************************************** Equipment Groups List ************************************************/
+/******************************************************************** Category/Post List ************************************************/
 @media only screen and (min-width: 10px) {
 	div.transportation_item_content {display: -webkit-flex;display: flex;position: relative;}
-	div.transportation_item div.transportation_item_content > div.abprf_bg_img {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);height: auto;}
+	div.transportation_item div.transportation_item_content > div.bg_img {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);height: auto;}
 	div.transportation_item div.transport_slider {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);}
 	div.transport_slider div.icon_direction {font-size: var(--rf_fs);}
 	div.transport_details {display: -webkit-flex;display: flex; -webkit-justify-content: space-between;justify-content: space-between;width: 100%;max-width: 100%;}

@@ -13,12 +13,12 @@
 	$post_count = 0;
 	if (sizeof($all_route) > 0) {
 		?>
-        <div class=" abptm_route abprf_pagination_area">
+        <div class=" abptm_route pagination_content_area">
             <div class="_f_wrap_mar_t_xs">
 				<?php foreach ($all_route as $route) {
 					$url = $redirect_search ? (get_home_url() . '/' . get_page_uri($redirect_search) . '?_bp= ' . $route['start'] . '&_dp=' . $route['end']) : home_url( add_query_arg( null, null ) ) . '?_bp= ' . $route['start'] . '&_dp=' . $route['end'];
 					$post_count++; ?>
-                    <button class="_abprf_btn_theme_light_xs_margin_xxs pagination_item  <?php printf('%s', esc_attr($show_post >= $post_count ? '' : '_d_none')); ?>"
+                    <button class="_abprf_btn_light_theme_xs_margin_xxs pagination_item  <?php printf('%s', esc_attr($show_post >= $post_count ? '' : '_d_none')); ?>"
                             data-href="<?php echo esc_url($url); ?>">
 						<?php echo esc_html($route['start']); ?>
                         <span class="fas fa-arrow-right _color_theme _mar_lr_xs"></span>

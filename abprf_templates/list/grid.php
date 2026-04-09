@@ -21,7 +21,7 @@
 		}
 		asort($all_equipment_ids);
 		?>
-        <div class=" abptm_grid abprf_pagination_area">
+        <div class=" abptm_grid pagination_content_area">
             <div class="_f_gap_f_wrap_mar_tb">
 				<?php foreach ($all_equipment_ids as $equipment_id => $title) {
 					$post_count++;
@@ -33,7 +33,7 @@
                     <div class="pagination_item list_item _reflex <?php echo esc_attr('grid_' . $column . ' ' . ($show_post >= $post_count ? '' : '_d_none')); ?>">
                         <div data-image-href="<?php echo esc_url($image_url); ?>"><img class="_img_control" src="#" alt="<?php echo esc_attr($category); ?>"></div>
                         <div class="ribbon_full">
-                            <a class="_abprf_text_center_fs_h6_full_width_color_white" href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $from . '&_dp=' . $to); ?>" target="_blank">
+                            <a class="_abprf_text_center_fs_h6_w_full_color_white" href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $from . '&_dp=' . $to); ?>" target="_blank">
 								<?php echo esc_html($title . ($category && $display_category == 'on' ? ' - ' . $category : '')); ?>
                             </a>
                         </div>

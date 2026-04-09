@@ -10,9 +10,9 @@
 	$_j_date = array_key_exists('j_date', $form_data) ? $form_data['j_date'] : '';
 	if ($bp && $dp && $_j_date && $post_id > 0) {
 		$abprf_infos = ABPRF_Function::get_all_meta($post_id);
-		$sale_continue = array_key_exists('sale_continue', $abprf_infos) ? $abprf_infos['sale_continue'] : 'on';
+		$rent_continue = array_key_exists('rent_continue', $abprf_infos) ? $abprf_infos['rent_continue'] : 'on';
 		$seat_type = array_key_exists('seat_type', $abprf_infos) ? $abprf_infos['seat_type'] : 'seat_plan';
-		if ($sale_continue == 'on') {
+		if ($rent_continue == 'on') {
 			$full_infos = ABPRF_Function::get_route_full_info($post_id, $bp, $_j_date);
 			if (sizeof($full_infos) > 0) {
 				$origin_place = current($full_infos)['stop'];

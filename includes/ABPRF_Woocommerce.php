@@ -70,7 +70,7 @@
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
 					$url = ABPRF_Function::get_image_url( $post_id );
 					if ( $url ) {
-						$thumbnail = '<div class="abprf_bg_img" data-href="' . get_the_permalink( $post_id ) . '"><div data-bg-image="' . $url . '"></div></div>';
+						$thumbnail = '<div class="bg_img" data-href="' . get_the_permalink( $post_id ) . '"><div data-bg-image="' . $url . '"></div></div>';
 					}
 				}
 

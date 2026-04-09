@@ -42,7 +42,7 @@
 						<?php if ($image) { ?>
                             <div class="_w_100"><?php ABPRF_Layout::bg_image('', $image); ?></div>
 						<?php } ?>
-                        <div class="_fd_column_full_width">
+                        <div class="_fd_column_w_full">
                             <div class="_fj_between">
                                 <h6 class="_abprf_fa_center">
 									<?php if ($icon) { ?>

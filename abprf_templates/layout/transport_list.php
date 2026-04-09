@@ -11,8 +11,8 @@
 	$equipment_id = is_array($transport_item) && array_key_exists('id', $transport_item) ? $transport_item['id'] : 0;
 	$bp_time = is_array($transport_item) && array_key_exists('time', $transport_item) ? $transport_item['time'] : '';
 	$dp_time = is_array($transport_item) && array_key_exists('dp_time', $transport_item) ? $transport_item['dp_time'] : '';
-	$sale_continue = ABPRF_Function::get_post_info($equipment_id, 'sale_continue', 'on');
-	if ($equipment_id && $equipment_id > 0 && $sale_continue == 'on') {
+	$rent_continue = ABPRF_Function::get_post_info($equipment_id, 'rent_continue', 'on');
+	if ($equipment_id && $equipment_id > 0 && $rent_continue == 'on') {
 		$full_infos = ABPRF_Function::get_route_full_info($equipment_id, $bp, $bp_date);
 		$origin_time = sizeof($full_infos) > 0 ? current($full_infos)['time'] : '';
 		$collapse_id = '#' . uniqid();
@@ -69,7 +69,7 @@
 								echo '<h3 class="_abprf_color_theme_text_center">' . wp_kses_post(wc_price($item_price)) . '</h3>';
 							}
 								if ($available_seat > 0) { ?>
-                                    <button type="button" class="_btn_theme_light_xs_mar_t_xs abprf_get_rental_details"
+                                    <button type="button" class="_btn_light_theme_xs_mar_t_xs abprf_get_rental_details"
                                             data-collapse-target="<?php echo esc_attr($collapse_id); ?>"
                                             data-open-icon="fas fa-eye" data-close-icon="fas fa-times"
                                             data-add-class="_btn_warning"

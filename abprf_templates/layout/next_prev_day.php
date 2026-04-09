@@ -16,7 +16,7 @@
 		$next_disabled = $next_date ? '' : 'disabled';
 		?>
         <div class="_fj_between_f_wrap_mar_tb_xs">
-            <button type="button" class="_btn_default_light_xs abptm_goto_date" data-go_date="<?php echo esc_attr($prev_date); ?>" <?php echo esc_attr($prev_disabled); ?>>
+            <button type="button" class="_btn_light_default_xs abptm_goto_date" data-go_date="<?php echo esc_attr($prev_date); ?>" <?php echo esc_attr($prev_disabled); ?>>
                 <span class="fas fa-angle-double-left _mar_r_xs"></span><?php esc_html_e('Prev Day', 'abprf-rental-forge'); ?>
             </button>
             <div class="_all_center">
@@ -24,7 +24,7 @@
                 <span class="fas fa-arrow-right _color_theme _mar_lr"></span>
                 <h5 class="_abprf_text_nowrap _color_navy_blue"><?php echo esc_html($dp); ?></h5>
             </div>
-            <button type="button" class="_btn_default_light_xs abptm_goto_date" data-go_date="<?php echo esc_attr($next_date); ?>" <?php echo esc_attr($next_disabled); ?>>
+            <button type="button" class="_btn_light_default_xs abptm_goto_date" data-go_date="<?php echo esc_attr($next_date); ?>" <?php echo esc_attr($next_disabled); ?>>
 				<?php esc_html_e('Next Day', 'abprf-rental-forge'); ?><span class="fas fa-angle-double-right _mar_l_xs"></span>
             </button>
         </div>

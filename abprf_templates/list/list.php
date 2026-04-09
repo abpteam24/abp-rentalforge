@@ -19,7 +19,7 @@
 		}
 		asort($all_equipment_ids);
 		?>
-        <div class=" abptm_list abprf_pagination_area">
+        <div class=" abptm_list pagination_content_area">
             <div class="_f_wrap_mar_t_xs">
                 <ul class="_abprf_list">
 					<?php foreach ($all_equipment_ids as $equipment_id => $title) {

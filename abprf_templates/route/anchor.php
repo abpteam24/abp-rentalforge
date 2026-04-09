@@ -13,7 +13,7 @@
 	$post_count = 0;
 	if (sizeof($all_route) > 0) {
 		?>
-        <div class=" abptm_route abprf_pagination_area">
+        <div class=" abptm_route pagination_content_area">
             <div class="_f_wrap_mar_t_xs">
 				<?php foreach ($all_route as $route) {
 					$url = $redirect_search ? (get_home_url() . '/' . get_page_uri($redirect_search) . '?_bp= ' . $route['start'] . '&_dp=' . $route['end']) : home_url( add_query_arg( null, null ) ) . '?_bp= ' . $route['start'] . '&_dp=' . $route['end'];

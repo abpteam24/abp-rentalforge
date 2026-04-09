@@ -6,29 +6,6 @@
 		class ABPRF_Function {
 			public function __construct() { }
 
-			public static function query_post_type( $post_type, $show = - 1, $page = 1 ): WP_Query {
-				$args = array(
-					'post_type' => $post_type,
-					'posts_per_page' => $show,
-					'paged' => $page,
-					'post_status' => 'publish'
-				);
-
-				return new WP_Query( $args );
-			}
-
-			public static function get_all_post_id( $post_type, $show = - 1, $page = 1, $status = 'publish' ): array {
-				$all_data = get_posts( array(
-					'fields' => 'ids',
-					'post_type' => $post_type,
-					'posts_per_page' => $show,
-					'paged' => $page,
-					'post_status' => $status
-				) );
-
-				return array_unique( $all_data );
-			}
-
 			public static function get_post_info( $post_id, $key, $default = '' ) {
 				$data = get_post_meta( $post_id, $key, true ) ?: $default;
 
@@ -359,7 +336,7 @@
 			}
 
 			//=============================//
-			public static function get_equipment_icon() { return ABPRF_Function::get_options( 'abprf_configuration', 'equipment_icon' ); }
+			public static function get_brand_icon() { return ABPRF_Function::get_options( 'abprf_configuration', 'brand_icon' ); }
 
 			//=============================//
 			public static function array_to_string( $array ) {
@@ -418,7 +395,7 @@
 			//=============================//
 			public static function get_cpt(): string { return 'abprf_post'; }
 
-			//============== Equipment Function===============//
+			//============== Category/Post Function===============//
 			public static function route_for_price( $routing_infos, $price_infos, $ticket_types ): array {
 				$full_price = [];
 				if ( sizeof( $routing_infos ) > 0 ) {

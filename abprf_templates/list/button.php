@@ -19,13 +19,13 @@
 		}
 		asort($all_equipment_ids)
 		?>
-        <div class=" abptm_list abprf_pagination_area">
+        <div class=" abptm_list pagination_content_area">
             <div class="_f_wrap_mar_t_xs">
 				<?php foreach ($all_equipment_ids as $equipment_id => $title) {
 					$post_count++;
 					$display_category = ABPRF_Function::get_post_info($equipment_id, 'display_category', 'on');
 					$category = ABPRF_Function::get_post_info($equipment_id, 'category'); ?>
-                    <button class="_abprf_btn_theme_light_xs_margin_xxs pagination_item  <?php echo esc_attr($show_post >= $post_count ? '' : '_d_none'); ?>" data-href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $from . '&_dp=' . $to); ?>">
+                    <button class="_abprf_btn_light_theme_xs_margin_xxs pagination_item  <?php echo esc_attr($show_post >= $post_count ? '' : '_d_none'); ?>" data-href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $from . '&_dp=' . $to); ?>">
 						<?php
 							echo esc_html(get_the_title($equipment_id));
 							if ($category && $display_category == 'on') {

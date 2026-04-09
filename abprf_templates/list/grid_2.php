@@ -20,7 +20,7 @@
 		}
 		asort($all_equipment_ids);
 		?>
-        <div class=" abptm_grid abprf_pagination_area">
+        <div class=" abptm_grid pagination_content_area">
             <div class="_f_gap_f_wrap_mar_tb">
 				<?php foreach ($all_equipment_ids as $equipment_id => $title) {
 					$post_count++;
