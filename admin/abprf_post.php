@@ -97,30 +97,21 @@
 						foreach ( $copy_property_ids as $property_id ) {
 							$properties = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
 							if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
-								$property     = current( $properties );
-								$price_others = $others = [];
-								$data         = [
+								$property = current( $properties );
+								$data     = [
 									'post_id' => intval( $post_id ),
 									'rent_continue' => array_key_exists( 'rent_continue', $property ) ? $property['rent_continue'] : '',
 									'name' => array_key_exists( 'name', $property ) ? $property['name'] : '',
 									'icon' => array_key_exists( 'icon', $property ) ? $property['icon'] : '',
-									'qty' => array_key_exists( 'qty', $property ) ? $property['qty'] : '',
-									'qty_max' => array_key_exists( 'qty_max', $property ) ? $property['qty_max'] : '',
+									'qty_info' => array_key_exists( 'qty_info', $property ) ? $property['qty_info'] : '',
 									'brand' => array_key_exists( 'brand', $property ) ? $property['brand'] : '',
 									'description' => array_key_exists( 'description', $property ) ? $property['description'] : '',
 									'price_rule' => array_key_exists( 'price_rule', $property ) ? $property['price_rule'] : '',
-									'price_hourly' => array_key_exists( 'price_hourly', $property ) ? $property['price_hourly'] : '',
-									'min_hour' => array_key_exists( 'min_hour', $property ) ? $property['min_hour'] : '',
-									'price_daily' => array_key_exists( 'price_daily', $property ) ? $property['price_daily'] : '',
-									'min_day' => array_key_exists( 'min_day', $property ) ? $property['min_day'] : '',
-									'price_monthly' => array_key_exists( 'price_monthly', $property ) ? $property['price_monthly'] : '',
-									'min_month' => array_key_exists( 'min_month', $property ) ? $property['min_month'] : '',
-									'price_others' => json_encode( $price_others ),
+									'price_info' => array_key_exists( 'price_info', $property ) ? $property['price_info'] : '',
 									'features' => array_key_exists( 'features', $property ) ? $property['features'] : '',
 									'gallery' => array_key_exists( 'gallery', $property ) ? $property['gallery'] : '',
 									'status' => get_post_status( $post_id ),
-									'others' => json_encode( $others ),
-									'created_at' => current_time( 'Y-m-d H:i' ),
+									'others' => array_key_exists( 'others', $property ) ? $property['others'] : '',
 									'updated_at' => current_time( 'Y-m-d H:i' )
 								];
 								// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching

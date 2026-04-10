@@ -112,7 +112,7 @@
 
 			public function additional_service( $services = [] ): void {
 				?>
-                <div class="configuration_content abprf_additional_service">
+                <div class="configuration_content additional_service">
                     <div class="_ov_auto">
                         <table class="_abprf">
                             <thead>

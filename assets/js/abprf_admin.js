@@ -100,7 +100,7 @@
     $(document).on('submit', 'form.abprf_save_property', function (e) {
         e.preventDefault();
         let parent = $(this).closest('.abprf_admin');
-        let target = $(this).closest('.popup_main_area');
+        let target = $(this).closest('.popup_area');
         let formData = new FormData(this);
         formData.append('action', 'abprf_save_property');
         formData.append('nonce', abprf_admin_data.nonce);
@@ -131,7 +131,7 @@
         let property_id = $(this).attr('data-property_id');
         let property_copy = !!$(this).hasClass('.property_copy');
         let target_id = $(this).attr('data-active-popup', '').data('target-popup');
-        let parent = $('body').find('[data-popup="' + target_id + '"]').find('.popup_main_area');
+        let parent = $('body').find('[data-popup="' + target_id + '"]').find('.popup_area');
         let target = parent.find('.popup_body');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
@@ -415,31 +415,31 @@ function abprf_load_sortable_datepicker(parent, item) {
         parent.find('button').slideDown('fast');
     });
     $(document).on('click', 'div.abprf_area .add_image_multi', function () {
-        let parent = $(this).closest('.abprf_multiple_image_area');
+        let parent = $(this).closest('.multiple_image_area');
         wp.media.editor.send.attachment = function (props, attachment) {
             let attachment_id = attachment.id;
             let attachment_url = attachment.url;
-            let html = '<div class="abprf_multiple_image_item" data-image-id="' + attachment_id + '"><span class="fas fa-times _circle_icon_xs remove_image_multi"></span>';
+            let html = '<div class="multiple_image_item" data-image-id="' + attachment_id + '"><span class="fas fa-times _circle_icon_xs remove_image_multi"></span>';
             html += '<img class="_img_control" src="' + attachment_url + '" alt="' + attachment_id + '"/>';
             html += '</div>';
-            parent.find('.abprf_multiple_image').append(html);
-            let value = parent.find('.abprf_multiple_image_ids').val();
+            parent.find('.multiple_image').append(html);
+            let value = parent.find('.multiple_image_ids').val();
             value = value ? value + ',' + attachment_id : attachment_id;
-            parent.find('.abprf_multiple_image_ids').val(value);
+            parent.find('.multiple_image_ids').val(value);
         }
         wp.media.editor.open($(this));
         return false;
     });
     $(document).on('click', 'div.abprf_area .remove_image_multi', function () {
-        let parent = $(this).closest('.abprf_multiple_image_area');
-        let current_parent = $(this).closest('.abprf_multiple_image_item');
+        let parent = $(this).closest('.multiple_image_area');
+        let current_parent = $(this).closest('.multiple_image_item');
         let img_id = current_parent.data('image-id');
         current_parent.remove();
-        let all_img_ids = parent.find('.abprf_multiple_image_ids').val();
+        let all_img_ids = parent.find('.multiple_image_ids').val();
         all_img_ids = all_img_ids.replace(',' + img_id, '')
         all_img_ids = all_img_ids.replace(img_id + ',', '')
         all_img_ids = all_img_ids.replace(img_id, '')
-        parent.find('.abprf_multiple_image_ids').val(all_img_ids);
+        parent.find('.multiple_image_ids').val(all_img_ids);
     });
     $(document).on('click', 'div.abprf_area .icon_image_selection_area .icon_delete', function () {
         let parent = $(this).closest('.icon_image_selection_area');
@@ -493,7 +493,7 @@ function abprf_load_sortable_datepicker(parent, item) {
 //=================select icon=========================//
 (function ($) {
     'use strict';
-    let abprf_target_popup = $('.abprf_popup_icon');
+    let abprf_target_popup = $('div.abprf_admin .popup_icon');
     let abprf_category_list = abprf_target_popup.find('.item_category_list');
     let abprf_search_field = abprf_category_list.find('input');
     let abprf_icon_title = abprf_target_popup.find('.item_icon_title');
@@ -511,8 +511,8 @@ function abprf_load_sortable_datepicker(parent, item) {
     function check_emoji(str) {
         return !(/^fa[bsrld]\s/.test(str));
     }
-    $(document).on('click', 'div.abprf_area .icon_image_selection_area button.icon_add', function () {
-        let target_popup = $('.abprf_popup_icon');
+    $(document).on('click', 'div.abprf_admin .icon_image_selection_area button.icon_add', function () {
+        let target_popup = $('div.abprf_admin .popup_icon');
         load_icon_list();
         abprf_search_field.keyup(function () {
             let search_value = $(this).val().toLowerCase().trim();

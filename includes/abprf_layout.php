@@ -115,7 +115,7 @@
 			public static function popup_empty( $target_popup_id, $class = '' ) {
 				?>
                 <div class="abprf_popup abprf_area <?php echo esc_attr( $class ); ?>" data-popup="<?php echo esc_attr( $target_popup_id ); ?>">
-                    <div class="popup_main_area">
+                    <div class="popup_area">
                         <span class="popup_close"><i class="fas fa-times"></i></span>
                         <div class="popup_body"></div>
                     </div>
@@ -125,8 +125,8 @@
 
 			public static function icon_popup(): void {
 				?>
-                <div class="abprf_popup_icon abprf_popup abprf_area" data-popup="#abprf_popup_icon">
-                    <div class="popup_main_area">
+                <div class="popup_icon abprf_popup" data-popup="#abprf_popup_icon">
+                    <div class="popup_area">
                         <div class="popup_head _all_center">
                             <div class="dropdown_area item_category_list _max_400">
                                 <label class="_abprf_all_center">
@@ -401,16 +401,16 @@
 			public function add_image_multi( $name, $images ): void {
 				$images = is_array( $images ) ? ABPRF_Function::array_to_string( $images ) : $images;
 				?>
-                <div class="abprf_multiple_image_area">
-                    <input type="hidden" class="abprf_multiple_image_ids" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $images ); ?>"/>
-                    <div class="abprf_multiple_image">
+                <div class="multiple_image_area">
+                    <input type="hidden" class="multiple_image_ids" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $images ); ?>"/>
+                    <div class="multiple_image">
 						<?php
 							$all_images = explode( ',', $images );
 							if ( $images && sizeof( $all_images ) > 0 ) {
 								foreach ( $all_images as $image ) {
 									$img_url = ABPRF_Function::get_image_url( '', $image, 'medium' ) ?: ABPRF_BLANK_IMG_URL;
 									?>
-                                    <div class="abprf_multiple_image_item" data-image-id="<?php echo esc_attr( $image ); ?>">
+                                    <div class="multiple_image_item" data-image-id="<?php echo esc_attr( $image ); ?>">
                                         <span class="fas fa-times _circle_icon_xs remove_image_multi"></span>
                                         <img class="_img_control" src="<?php echo esc_attr( $img_url ); ?>" alt="<?php echo esc_attr( $image ); ?>"/>
                                     </div>
@@ -766,6 +766,8 @@
 					'name' => __( 'Note: You must enter the property name in the field above. This field is required — the data will not be saved if the property name is not provided.', 'abprf-rental-forge' ),
 					'icon' => __( 'Note: Here You can set an image, icon, or emoji for each property directly', 'abprf-rental-forge' ),
 					'qty' => __( 'Note: Property quantity represents the number of properties available. This field is required — the data will not be saved if the quantity is not provided.', 'abprf-rental-forge' ),
+					'qty_reserve' => __( 'Note: This defines the number of items kept reserved and unavailable for booking. This field is optional—if left empty, no quantity will be reserved and all items will be available for rent.', 'abprf-rental-forge' ),
+					'qty_min' => __( 'Note: If a user rents this property, they must select at least this quantity. This field is optional—if left empty, the minimum quantity will default to 1.', 'abprf-rental-forge' ),
 					'qty_max' => __( 'Note: Property max quantity defines the maximum number of properties a client can rent at one time. This field is optional — if not specified, clients will be able to rent any quantity based on the available stock.', 'abprf-rental-forge' ),
 					'price_hourly' => __( 'Note: If you want to allow hourly rental for this property, enter the hourly rate in the field above. If you do not want to offer hourly rental, you can leave this field empty.', 'abprf-rental-forge' ),
 					'min_hour' => __( 'Note: If an hourly rate is provided, this setting will be applied. You can specify the minimum number of hours required for rental here. If not set, the default minimum will be 1 hour.', 'abprf-rental-forge' ),
@@ -791,6 +793,8 @@
 					'active_global_form' => __( 'Note: Keep this switch ON to apply the global Client Form settings.Switch it OFF if you want to set special  Client Form rules for this property. Client Form configuration options will open when turned OFF. ', 'abprf-rental-forge' ),
 					'global_client_forms' => __( 'Note: This is a flexibility global form system. Once you design the structure here, it serves as a global form. You can effortlessly import this form into any property or use this setting at any property,', 'abprf-rental-forge' ),
 					//=============================//
+					'abprf_faqs'          => __( 'You can set all rental-related FAQs here and use them globally across all properties. You can also import these FAQs into any individual property and customize them as needed.', 'abprf-rental-forge' ),
+					//=============================//
 					'search_get_wrong_data_info' => __( 'Somethings went Wrong ! Please Try again', 'abprf-rental-forge' ),
 					'sale_close_msg' => __( 'This Category/Post rent close shortly. please try another Property.', 'abprf-rental-forge' ),
 					'not_found' => __( 'No Category/Post Found !', 'abprf-rental-forge' ),
@@ -810,7 +814,7 @@
 					'no_traveller_found' => __( 'Sorry ! We can not find any Traveller in your criteria.', 'abprf-rental-forge' ),
 					//''          => __( '', 'abprf-rental-forge' ),
 				);
-				$des          = apply_filters( 'abptm_info_array_filter', $des );
+				$des          = apply_filters( 'abprf_info_array_filter', $des );
 
 				return $des[ $key ];
 			}

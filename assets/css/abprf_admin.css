@@ -1,4 +1,73 @@
 @charset "utf-8";
+
+/******************************************************************** configuration ************************************************/
+@media only screen and (min-width: 10px) {
+	div.abprf_admin [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-bottom: var(--rf_gap_xs); background-color: var(--rf_color_light_2); width: 100%; }
+	div.abprf_admin .group_setting {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
+	div.abprf_admin .group_setting [class*="_setting_item"] {min-width: 400px;-webkit-flex: 1;flex: 1;}
+	div.abprf_admin label .info_text {width: 100%;margin: var(--rf_gap_xxs) 0 0 0;font-size: 11px;}
+	div.abprf_admin [class*="_form_control"] {max-width: 250px;min-width: 250px;}
+	div.abprf_admin .dropdown_area [class*="_form_control"] {max-width: 100%;}
+	div.abprf_admin textarea[class*="_form_control"] {max-width: 100%;}
+	div.abprf_admin input[class*="_form_control"][type="time"] {max-width: 125px;text-align: center;min-width: 125px;}
+	div.abprf_admin [class*="_form_control"].abprf_color_picker {min-width: 150px; height: 40px;padding: var(--rf_gap_xxs) var(--rf_gap_xs);}
+	div.abprf_admin .additional_service [class*="_form_control"] {min-width: auto;}
+	/*=============================*/
+	div.abprf_admin table thead {background: #F5F5F5;border-bottom: 1px solid var(--rf_color_border);}
+	div.abprf_admin table thead th {padding: var(--rf_gap_xxs) var(--rf_gap_xs); text-align: left; font-weight: 600; color: #333; font-size: var(--rf_fs); text-transform: uppercase;}
+	/*=============================*/
+	div.abprf_admin .wp-picker-holder {position: absolute;z-index: 1111;}
+	div.abprf_admin .wp-picker-input-wrap {display: -webkit-inline-flex;display: inline-flex;}
+	div.abprf_admin .wp-color-result-text {display: none;}
+	div.abprf_admin button.wp-color-result {width: 40px;height: 40px;margin: 0; border-right: none; border-radius: var(--rf_br) 0 0 var(--rf_br);border-color: var(--rf_color_border);}
+	div.abprf_admin .wp-picker-default {margin: 0; border-left: none; border-radius: 0 var(--rf_br) var(--rf_br) 0;border-color: var(--rf_color_border);}
+	/*=============================*/
+	#abprf_configuration div.abprf_admin {max-width: 100%;width: 100%;border-radius: var(--rf_br_xl); margin: 0}
+	/*=============================*/
+	#abprf_configuration .inside,
+	#abprf_configuration .form-section {margin: 0;padding: 0;}
+	#abprf_configuration .postbox-header { display: none;}
+	#abprf_configuration .postbox-header h2 {color: var(--rf_color_light);font-size: var(--rf_fs_h4);-webkit-justify-content: flex-start;justify-content: flex-start;padding: var(--rf_gap_xs) var(--rf_gap);}
+	#abprf_configuration .postbox-header h2 span {margin: 0 var(--rf_gap_xs) 0 0;}
+	#abprf_configuration .wp-editor-wrap {width: 100%;margin: var(--rf_gap_xs) 0 0 0;}
+	#abprf_configuration .wp-editor-wrap iframe {min-height: 300px;}
+}
+/******************************************************************** add Icon image/Image upload ************************************************/
+@media only screen and (min-width: 10px) {
+	div.abprf_admin .icon_image_selection_area {position: relative;max-width: 120px;}
+	div.abprf_admin .icon_image_selection_area [class*="_img_control"] {max-height: 100px;}
+	div.abprf_admin .icon_image_selection_area button {padding: var(--rf_gap_xxs);font-size: 12px;}
+	div.abprf_admin .icon_image_selection_area [class*="_img_control"] {border-radius: 0;padding: 0 var(--rf_gap_xxs) 0 0;}
+	div.abprf_admin .icon_image_selection_area div.icon_item {padding: var(--rf_gap_xxs);background-color: var(--rf_color_light);font-size: 30px; line-height: 1;}
+	div.abprf_admin .icon_item:hover .icon_close,
+	div.abprf_admin .image_item:hover .icon_close {opacity: 1;}
+	div.abprf_admin .popup_icon .popup_area {max-width: 100vw;width: 100%;height: 100vh;}
+	div.abprf_admin .popup_icon .popup_head { color: #FFF;height: 60px; margin: 0 auto;width: 100%;background-color: #222;position: relative; border-bottom: 1px solid #FFF; }
+	div.abprf_admin .popup_icon .popup_head h2 { color: #FFF;text-align: center; font-size: 30px !important; font-weight: 500; }
+	div.abprf_admin .popup_icon .popup_body {height: 100%;}
+	div.abprf_admin .popup_icon .item_icon_area { width: 100%; display: -webkit-flex;display: flex; -webkit-flex-wrap: wrap;flex-wrap: wrap; }
+	div.abprf_admin .popup_icon .icon_item {
+		min-width: 100px;font-size: 30px;margin: var(--rf_gap_xxs);padding: var(--rf_gap_xxs);cursor: pointer; border: 2px solid #FFF;background-color: #F2F2F2;
+		display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;-webkit-flex-direction: column; flex-direction: column;
+		-webkit-box-shadow: 0 1px 4px 1px #DBDBDB; box-shadow: 0 1px 4px 1px #DBDBDB;text-align: center;
+		-webkit-transition: var(--rf_transition); transition: var(--rf_transition);
+	}
+	div.abprf_admin .popup_icon .icon_item i {font-size: var(--rf_fs_small);margin-top: var(--rf_gap_xxs);}
+	div.abprf_admin .popup_icon .icon_item.active,
+	div.abprf_admin .popup_icon .icon_item:hover {border-color: var(--rf_color_theme);color: var(--rf_color_theme);border-radius: var(--rf_gap_xxs);}
+	/******************************************************************** Image upload  ************************************************/
+	div.abprf_admin .multiple_image { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;margin: 0 0 var(--rf_gap_xs_neg) 0;}
+	div.abprf_admin .multiple_image_item { position: relative; width: auto; height: 100px;margin: 0 var(--rf_gap_xs) var(--rf_gap_xs) 0;border: 2px solid var(--rf_color_theme);}
+	div.abprf_admin .multiple_image_item [class*="_img_control"] {height: 100%;width: auto;}
+	div.abprf_admin span.remove_image,
+	div.abprf_admin span.remove_image_multi { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--rf_color_danger);margin: 0; opacity: 0;color: var(--rf_color_white); }
+	div.abprf_admin .add_image_item:hover span.remove_image,
+	div.abprf_admin .add_image_item:hover span.remove_image:hover,
+	div.abprf_admin .multiple_image_item:hover span.remove_image_multi {opacity: 0.9;}
+	div.abprf_admin .add_image {max-width: 150px;width: 100%;}
+	div.abprf_admin .add_image_item {position: relative; width: 100%;}
+}
+/********************************************************************Custom ************************************************/
 @media only screen and (min-width: 10px) {
 	div.abprf_admin {margin: 0 0 0 -20px;max-width: calc(100% + 20px);width: calc(100% + 20px);}
 	div.abprf_admin .admin_head {background-color: var(--rf_color_dark);color: var(--rf_color_off_white);padding: var(--rf_gap_xs) var(--rf_gap); }
@@ -20,75 +89,6 @@
 	div.abprf_admin span.publish {padding: var(--rf_gap_xxs) var(--rf_gap_xs); background: #DCFCE7; color: #15803D;font-size: var(--rf_fs_small);font-weight: bold; border-radius: var(--rf_gap_xs); line-height: 1;}
 	div.abprf_admin span.trash {padding: var(--rf_gap_xxs) var(--rf_gap_xs); background: var(--rf_color_danger); color: var(--rf_color_white);font-size: var(--rf_fs_small);font-weight: bold; border-radius: var(--rf_gap_xs); line-height: 1;}
 	div.abprf_admin span.draft {padding: var(--rf_gap_xxs) var(--rf_gap_xs); background: var(--rf_color_yellow); color: var(--rf_color_white);font-size: var(--rf_fs_small);font-weight: bold; border-radius: var(--rf_gap_xs); line-height: 1;}
-}
-/******************************************************************** configuration ************************************************/
-@media only screen and (min-width: 10px) {
-	div.abprf_admin [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-bottom: var(--rf_gap_xs); background-color: var(--rf_color_light_2); width: 100%; }
-	div.abprf_admin .group_setting {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
-	div.abprf_admin .group_setting [class*="_setting_item"] {min-width: 400px;-webkit-flex: 1;flex: 1;}
-	div.abprf_admin label .info_text {width: 100%;margin: var(--rf_gap_xxs) 0 0 0;font-size: 11px;}
-	div.abprf_admin [class*="_form_control"] {max-width: 250px;min-width: 250px;}
-	div.abprf_admin .dropdown_area [class*="_form_control"] {max-width: 100%;}
-	div.abprf_admin textarea[class*="_form_control"] {max-width: 100%;}
-	div.abprf_admin input[class*="_form_control"][type="time"] {max-width: 125px;text-align: center;min-width: 125px;}
-	div.abprf_admin [class*="_form_control"].abprf_color_picker {min-width: 150px; height: 40px;padding: var(--rf_gap_xxs) var(--rf_gap_xs);}
-	div.abprf_admin .abprf_additional_service [class*="_form_control"] {min-width: auto;}
-	/*=============================*/
-	div.abprf_admin table thead {background: #F5F5F5;border-bottom: 1px solid var(--rf_color_border);}
-	div.abprf_admin table thead th {padding: var(--rf_gap_xxs) var(--rf_gap_xs); text-align: left; font-weight: 600; color: #333; font-size: var(--rf_fs); text-transform: uppercase;}
-	/*=============================*/
-	div.abprf_admin .wp-picker-holder {position: absolute;z-index: 1111;}
-	div.abprf_admin .wp-picker-input-wrap {display: -webkit-inline-flex;display: inline-flex;}
-	div.abprf_admin .wp-color-result-text {display: none;}
-	div.abprf_admin button.wp-color-result {width: 40px;height: 40px;margin: 0; border-right: none; border-radius: var(--rf_br) 0 0 var(--rf_br);border-color: var(--rf_color_border);}
-	div.abprf_admin .wp-picker-default {margin: 0; border-left: none; border-radius: 0 var(--rf_br) var(--rf_br) 0;border-color: var(--rf_color_border);}
-	/*=============================*/
-	#abprf_configuration div.abprf_admin {max-width: 100%;width: 100%;border-radius: var(--rf_br_xl); margin: 0}
-	/*=============================*/
-	#abprf_configuration .inside,
-	#abprf_configuration .form-section {margin: 0;padding: 0;}
-	#abprf_configuration .postbox-header { display: none;}
-	#abprf_configuration .postbox-header h2 {color: var(--rf_color_light);font-size: var(--rf_fs_h4);-webkit-justify-content: flex-start;justify-content: flex-start;padding: var(--rf_gap_xs) var(--rf_gap);}
-	#abprf_configuration .postbox-header h2 span {margin: 0 var(--rf_gap_xs) 0 0;}
-	#abprf_configuration .wp-editor-wrap {width: 100%;margin: var(--rf_gap_xs) 0 0 0;}
-	#abprf_configuration .wp-editor-wrap iframe {min-height: 300px;}
-}
-/******************************************************************** add Icon image ************************************************/
-@media only screen and (min-width: 10px) {
-	div.abprf_area .icon_image_selection_area {position: relative;max-width: 120px;}
-	div.abprf_area .icon_image_selection_area [class*="_img_control"] {max-height: 100px;}
-	div.abprf_area .icon_image_selection_area button {padding: var(--rf_gap_xxs);font-size: 12px;}
-	div.abprf_area .icon_image_selection_area [class*="_img_control"] {border-radius: 0;padding: 0 var(--rf_gap_xxs) 0 0;}
-	div.abprf_area .icon_image_selection_area div.icon_item {padding: var(--rf_gap_xxs);background-color: var(--rf_color_light);font-size: 30px; line-height: 1;}
-	div.icon_item:hover .icon_close,
-	div.image_item:hover .icon_close {opacity: 1;}
-	div.abprf_popup_icon .popup_main_area {max-width: 100vw;width: 100%;height: 100vh;}
-	div.abprf_popup_icon .popup_head { color: #FFF;height: 60px; margin: 0 auto;width: 100%;background-color: #222;position: relative; border-bottom: 1px solid #FFF; }
-	div.abprf_popup_icon .popup_head h2 { color: #FFF;text-align: center; font-size: 30px !important; font-weight: 500; }
-	div.abprf_popup_icon .popup_body {height: 100%;}
-	div.abprf_popup_icon .item_icon_area { width: 100%; display: -webkit-flex;display: flex; -webkit-flex-wrap: wrap;flex-wrap: wrap; }
-	div.abprf_popup_icon .icon_item {
-		min-width: 100px;font-size: 30px;margin: var(--rf_gap_xxs);padding: var(--rf_gap_xxs);cursor: pointer; border: 2px solid #FFF;background-color: #F2F2F2;
-		display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;-webkit-flex-direction: column; flex-direction: column;
-		-webkit-box-shadow: 0 1px 4px 1px #DBDBDB; box-shadow: 0 1px 4px 1px #DBDBDB;text-align: center;
-		-webkit-transition: var(--rf_transition); transition: var(--rf_transition);
-	}
-	div.abprf_popup_icon .icon_item i {font-size: var(--rf_fs_small);margin-top: var(--rf_gap_xxs);}
-	div.abprf_popup_icon .icon_item.active,
-	div.abprf_popup_icon .icon_item:hover {border-color: var(--rf_color_theme);color: var(--rf_color_theme);border-radius: var(--rf_gap_xxs);}
-}
-/******************************************************************** Image upload  ************************************************/
-@media only screen and (min-width: 10px) {
-	div.abprf_multiple_image { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;margin: 0 0 var(--rf_gap_xs_neg) 0;}
-	div.abprf_multiple_image_item { position: relative; width: auto; height: 100px;margin: 0 var(--rf_gap_xs) var(--rf_gap_xs) 0;border: 2px solid var(--rf_color_theme);}
-	div.abprf_multiple_image_item [class*="_img_control"] {height: 100%;width: auto;}
-	div.abprf_area span.remove_image,
-	div.abprf_area span.remove_image_multi { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--rf_color_danger);margin: 0; opacity: 0;color: var(--rf_color_white); }
-	div.abprf_area div.add_image_item:hover span.remove_image,
-	div.abprf_area div.add_image_item:hover span.remove_image:hover,
-	div.abprf_multiple_image_item:hover span.remove_image_multi {opacity: 0.9;}
-	div.abprf_area div.add_image {max-width: 150px;width: 100%;}
-	div.abprf_area div.add_image_item {position: relative; width: 100%;}
 }
 /********************************************************************Traveller list  ************************************************/
 @media only screen and (min-width: 10px) {
