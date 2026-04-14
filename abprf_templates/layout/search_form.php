@@ -1,58 +1,22 @@
 <?php
-	if (!defined('ABSPATH')) {
+	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Exit if accessed directly
 	}
-	$abprf_infos = $abprf_infos ?? [];
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$params = $params ?? [];
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$form_data = $form_data ?? ABPRF_Function::get_form_data($abprf_infos);
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	//================================//
-	$equipment_id = array_key_exists('_post_id', $form_data) ? $form_data['_post_id'] : 0;
-	$transport_bp = array_key_exists('_bp', $form_data) ? $form_data['_bp'] : '';
-	$transport_dp = array_key_exists('_dp', $form_data) ? $form_data['_dp'] : '';
-	$bp_date = array_key_exists('_j_date', $form_data) ? $form_data['_j_date'] : '';
-	$return_date = array_key_exists('_r_date', $form_data) ? $form_data['_r_date'] : '';
-	$single_post = array_key_exists('single_post', $form_data) ? $form_data['single_post'] : '';
-	$abptm_route_bp = ABPRF_Function::get_routes($equipment_id);
-	$abptm_route_dp = ABPRF_Function::get_routes($equipment_id, false);
-	//================================//
-	$params_form = array_key_exists('form', $params) ? $params['form'] : 'inline';
-	$params_transport = array_key_exists('transport', $params) ? $params['transport'] : '';
-	$params_return = array_key_exists('return', $params) ? $params['return'] : '';
-	//=============================//
-	$brand_icon = ABPRF_Function::get_brand_icon();
-	$brand_icon = $brand_icon ? $brand_icon . ' _mar_r_xs' : '';
-	//=============================//
-	$redirect_search = ABPRF_Function::get_options('abprf_configuration', 'redirect_search');
-	$submit_url = $redirect_search && !is_admin() && $equipment_id == 0 && !$single_post ? get_home_url() . '/' . get_page_uri($redirect_search) : '';
-?>
-    <div id="abprf_search_area">
-        <form class="_section_light <?php echo esc_attr($params_form == 'column' ? '_form_column' : '_form_inline'); ?>" method="get" action="<?php echo esc_url($submit_url); ?>">
-			<?php
-				wp_nonce_field('abprf_search_form_nonce', 'abprf_search_form_nonce');
-                if ($params_transport == 'on' || is_admin() || ($params_transport != 'off' && (($equipment_id && $single_post) || !$single_post))) {
-				//ABPRF_Layout::filter_transport($equipment_id);
-			}
-				if ($single_post) { ?>
-                    <input type="hidden" name="_post_id" value="<?php echo esc_attr($equipment_id); ?>"/>
-				<?php } ?>
-            <input type="hidden" name="single_post" value="<?php echo esc_attr($single_post); ?>"/>
-            <div class="abptm_bp dropdown_area _input_item"><?php ABPRF_Layout::boarding_from($abptm_route_bp, $transport_bp); ?></div>
-            <div class="abptm_dp dropdown_area _input_item"><?php ABPRF_Layout::dropping_from($abptm_route_dp, $transport_dp); ?></div>
-            <div class="abptm_bp_date _input_item"><?php ABPRF_Layout::departure_date($equipment_id, $transport_bp, $bp_date); ?></div>
-			<?php if ((!$single_post && $params_return != 'off') || $params_return == 'on') { ?>
-                <div class="abptm_return_date _input_item"><?php ABPRF_Layout::return_date($transport_bp, $transport_dp, $bp_date, $return_date); ?> </div>
-			<?php } ?>
-            <div class="_input_item_fj_between_fd_column">
-                <span></span>
-				<?php if ($submit_url) { ?>
-                    <button type="submit" class="_btn_theme abprf_submit"><span class="<?php echo esc_attr($brand_icon); ?>"></span><?php esc_html_e('Search', 'abprf-rental-forge'); ?></button>
-				<?php } else { ?>
-                    <button type="button" class="_btn_theme abprf_get_rental abprf_submit"><span class="<?php echo esc_attr($brand_icon); ?>"></span><?php esc_html_e('Search', 'abprf-rental-forge'); ?></button>
-				<?php } ?>
-            </div>
-        </form>
-    </div>
-<?php
+	add_action( 'abprf_template_search_form', function ( $all_dates, $params = [] ) {
+		$params_form = array_key_exists( 'form', $params ) ? $params['form'] : 'inline';
+		$post_id     = array_key_exists( 'post_id', $params ) ? $params['post_id'] : '';
+		$brand_icon  = ABPRF_Function::get_brand_icon();
+		?>
+        <div id="abprf_search_area">
+            <h2 class="_abprf_mar_b_xs"><span class="_mar_r_xxs">📅</span><?php esc_html_e( 'Select Rental Period', 'abprf-rental-forge' ); ?></h2>
+            <form class="<?php echo esc_attr( $params_form == 'column' ? '_form_column' : '_form_inline' ); ?>" method="post" action="">
+                <input type="hidden" name="post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
+                <div class="abprf_start_date _input_item"><?php ABPRF_Layout::rent_start_date( $all_dates ); ?></div>
+                <div class="_input_item_fj_between_fd_column">
+                    <span></span>
+                    <button type="button" class="_btn_theme abprf_get_rental"><?php ABPRF_Layout::image_icon( $brand_icon, '_mar_r_xs' ); ?><?php esc_html_e( 'Check Availability', 'abprf-rental-forge' ); ?></button>
+                </div>
+            </form>
+        </div>
+		<?php
+	}, 10, 2 );

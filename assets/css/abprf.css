@@ -4,22 +4,24 @@
 	.details_page_top {margin: var(--rf_gap) 0;border: 1px solid var(--rf_color_border);background-color: var(--rf_color_section);}
 	.details_page_top .details_page_info,
 	.details_page_top .abprf_slider {padding: var(--rf_gap_xs);}
-	/********************/
-	div.default_details_page #abprf_search_area form {max-width: 100%;background-color: var(--rf_color_border); border-radius: 0;padding: var(--rf_gap_xs);}
-	div.default_details_page #abprf_search_area {background-color: var(--rf_color_border);}
 	.details_page_top .details_page_info,
 	div.default_details_page div.abprf_slider {background-color: transparent;}
-	/********************/
 }
-/******************************************************************** equipment_item_area************************************************/
+/******************************************************************** Serch Form ************************************************/
 @media only screen and (min-width: 10px) {
-	div.equipment_item_area {display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: var(--rf_gap);}
-	div.equipment_item_area .equipment_item {background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; border: 2px solid transparent;}
-	div.equipment_item_area .equipment_item.rf_active {border-color: var(--rf_color_theme); box-shadow: 0 8px 30px rgba(99, 102, 241, 0.2);}
-	div.equipment_item_area .equipment_item:hover {transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);}
-	div.equipment_item .item_head {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap); text-align: center;}
-	div.equipment_item .item_body {padding: var(--rf_gap);}
-	div.equipment_item .item_img {height: 150px;width: 100%;overflow: hidden;font-size: 70px;}
+	#abprf_search_area {background: var(--rf_color_white);		border-radius: var(--rf_br_xl);		padding: var(--rf_gap);		box-shadow: 0 4px 20px rgba(0,0,0,0.08);		margin-bottom: var(--rf_gap);}
+	#abprf_search_area form {max-width: 100%;}
+
+}
+/******************************************************************** property_item_area************************************************/
+@media only screen and (min-width: 10px) {
+	div.property_item_area {display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: var(--rf_gap);}
+	div.property_item_area .property_item {background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; border: 2px solid transparent;}
+	div.property_item_area.property_item.rf_active {border-color: var(--rf_color_theme); box-shadow: 0 8px 30px rgba(99, 102, 241, 0.2);}
+	div.property_item_area .property_item:hover {transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);}
+	div.property_item .item_head {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap); text-align: center;}
+	div.property_item .item_body {padding: var(--rf_gap);}
+	div.property_item .item_img {height: 150px;width: 100%;overflow: hidden;font-size: 70px;}
 	div.item_body .item_spec {display: flex; flex-wrap: wrap; gap: var(--rf_gap_xs); margin-bottom: var(--rf_gap);}
 	div.item_body .spec_badge {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap_xxs) var(--rf_gap_xs); border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: var(--rf_color_dark);}
 	div.item_body .pricing_box { background: var(--rf_color_light); padding: var(--rf_gap_xs); border-radius: 8px; margin-bottom: var(--rf_gap);}
@@ -44,9 +46,9 @@
 	.seat_details_area {border-left: 1px solid var(--rf_color_border);}
 	.abprf_registration_item .total_continue {background-color: var(--rf_color_light);display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between;-webkit-align-items: center;align-items: center;}
 	div.abptm_pickup_drop,
-	div.additional_service,
-	div.total_continue,
-	div.attendee_item {border-top: 1px solid var(--rf_color_border); padding: var(--rf_gap);vertical-align: middle;}
+	div.abprf_ft .additional_service,
+	div.abprf_ft  div.total_continue,
+	div.abprf_ft  div.attendee_item {border-top: 1px solid var(--rf_color_border); padding: var(--rf_gap);vertical-align: middle;}
 	div.abprf_registration_item div.transport_selection table[class*="_abprf"],
 	div.abprf_registration_item div.transport_selection table[class*="_abprf"] th,
 	div.abprf_registration_item div.transport_selection table[class*="_abprf"] td {border-left: none;border-right: none;}
@@ -64,7 +66,7 @@
 		display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;
 	}
 	div.abptm_seat_plan_area div.seat_item.seat_sold {background-color: var(--rf_color_light_4);border-color: var(--rf_color_theme_88);color: var(--rf_color_theme_88);cursor: not-allowed;}
-	div.abptm_seat_plan_area div.seat_item.seat_cart {background-color: var(--rf_color_light);border-color: var(--rf_color_5);color: var(--rf_color_5);cursor: not-allowed;}
+	div.abptm_seat_plan_area div.seat_item.seat_cart {background-color: var(--rf_color_light);border-color: var(--rf_color_light);color: var(--rf_color_light);cursor: not-allowed;}
 	div.abptm_seat_plan_area div.seat_item.selected { background-color: var(--rf_color_theme);border-color: var(--rf_color_theme);color: var(--rf_color_theme_alter); -webkit-box-shadow: var(--rf_shadow_5); box-shadow: var(--rf_shadow_5); }
 	div.abptm_seat_plan_area div.seat_item.seat_sale {cursor: pointer;}
 	div.abptm_seat_plan_area div.seat_item.seat_sale:hover {border-color: var(--rf_color_theme);color: var(--rf_color_theme);}
@@ -91,7 +93,6 @@
 	div.details_item .details_item_info > div {-webkit-flex: 1;flex: 1;border-left: 1px dashed var(--rf_color_border);display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;-webkit-flex-direction: column;flex-direction: column;}
 	div.route_details {border-top: 1px solid var(--rf_color_border); padding: var(--rf_gap_xs);display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	div.transportation_item .seat_details_area {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;-webkit-justify-content: space-between;justify-content: space-between;}
-	#abprf_search_area,
 	div.abprf_rental_result {width: 100%; max-width: 100%;}
 }
 /******************************************************************** list shortcode************************************************/

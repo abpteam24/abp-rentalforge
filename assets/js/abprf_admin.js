@@ -14,7 +14,7 @@
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_deleting, 'error');
-            }, success: function (data) {
+            }, success: function () {
                 abprf_toast_msg(abprf_admin_data.msg.post_delete_success, 'warn');
                 window.location.reload();
             }
@@ -29,7 +29,7 @@
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_trashing, 'error');
-            }, success: function (data) {
+            }, success: function () {
                 abprf_toast_msg(abprf_admin_data.msg.post_trash_success, 'warn');
                 window.location.reload();
             }
@@ -44,7 +44,7 @@
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_restoring, 'info');
-            }, success: function (data) {
+            }, success: function () {
                 abprf_toast_msg(abprf_admin_data.msg.post_restored, 'success');
                 window.location.reload();
             }
@@ -97,11 +97,24 @@
         }
         abprf_load_property_list(parent, filter_args);
     });
-    $(document).on('submit', 'form.abprf_save_property', function (e) {
+    $(document).on('click', 'div.abprf_admin button.save_property', function (e) {
         e.preventDefault();
         let parent = $(this).closest('.abprf_admin');
         let target = $(this).closest('.popup_area');
-        let formData = new FormData(this);
+        let formData = new FormData();
+        target.find('input, select, textarea').each(function () {
+            let name = $(this).attr('name');
+            let value = $(this).val();
+            if (name) {
+                if ($(this).attr('type') === 'checkbox' || $(this).attr('type') === 'radio') {
+                    if ($(this).is(':checked')) {
+                        formData.append(name, value);
+                    }
+                } else {
+                    formData.append(name, value);
+                }
+            }
+        });
         formData.append('action', 'abprf_save_property');
         formData.append('nonce', abprf_admin_data.nonce);
         $.ajax({
@@ -118,6 +131,8 @@
                 let filter_args = {};
                 if (parent.find("[name='select_property_hidden']").length > 0) {
                     filter_args['post_id'] = parent.find("[name='select_property_hidden']").val();
+                }else {
+                    filter_args['post_id'] = target.find("[name='post_id']").val();
                 }
                 filter_args['page_number'] = 1;
                 if (parent.find("[name='page_item']").length > 0) {
@@ -129,7 +144,7 @@
     });
     $(document).on("rf_trigger", "div.abprf_admin [data-target-popup='#abprf_property_popup']", function () {
         let property_id = $(this).attr('data-property_id');
-        let property_copy = !!$(this).hasClass('.property_copy');
+        let property_copy = +$(this).hasClass('property_copy');
         let target_id = $(this).attr('data-active-popup', '').data('target-popup');
         let parent = $('body').find('[data-popup="' + target_id + '"]').find('.popup_area');
         let target = parent.find('.popup_body');
@@ -138,12 +153,14 @@
                 "action": "abprf_property_add_edit", 'property_id': property_id, 'property_copy': property_copy, 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
                 abprf_spinner(parent);
+                abprf_toast_msg(abprf_admin_data.msg.loading);
             }, success: function (data) {
                 target.html(data).promise().done(function () {
                     target.find('.sortable_area').sortable({
                         handle: jQuery(this).find('.sortable_handle')
                     });
                     abprf_spinner_remove(parent);
+                    abprf_toast_msg(abprf_admin_data.msg.loaded, 'success');
                 });
             }
         })
@@ -186,10 +203,11 @@
 (function ($) {
     "use strict";
 }(jQuery));
-//==========Date configuration=================//
+//==========Date/Additional/Client Form/Faq/Status configuration=================//
 (function ($) {
     "use strict";
-    $(document).on('submit', 'form.abprf_save_dates', function (e) {
+    //==========Date configuration=================//
+    $(document).on('submit', 'div.abprf_admin form.save_dates', function (e) {
         e.preventDefault();
         let parent = $(this).closest('.abprf_admin');
         let target = parent.find('.dashboard_content');
@@ -200,18 +218,16 @@
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
                 abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
-                alert(response.data);
                 abprf_spinner_remove(target);
+                abprf_toast_msg(response.data, 'success');
             }
         });
     });
-}(jQuery));
-//==========Additional Service=================//
-(function ($) {
-    "use strict";
-    $(document).on('submit', 'form.abprf_save_additional_service', function (e) {
+//==========Additional configuration=================//
+    $(document).on('submit', 'div.abprf_admin form.save_additional_service', function (e) {
         e.preventDefault();
         let parent = $(this).closest('.abprf_admin');
         let target = parent.find('.dashboard_content');
@@ -222,35 +238,35 @@
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
                 abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
-                alert(response.data);
                 abprf_spinner_remove(target);
+                abprf_toast_msg(response.data, 'success');
             }
         });
     });
-    $(document).on('click', 'button.abprf_import_additional', function () {
+    $(document).on('click', 'div.abprf_admin button.import_additional', function () {
         let parent = $(this).closest('.additional_configuration');
-        let target = parent.find('.abprf_additional_content');
+        let target = parent.find('.additional_content');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_import_additional", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
                 abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.importing);
             }, success: function (data) {
                 target.html(data).promise().done(function () {
                     target.find('.sortable_area').sortable({
                         handle: jQuery(this).find('.sortable_handle')
                     });
+                    abprf_toast_msg(abprf_admin_data.msg.imported, 'success');
                 });
             }
         });
     });
-}(jQuery));
-//==========Client Form=================//
-(function ($) {
-    "use strict";
-    $(document).on('submit', 'form.abprf_save_client_form', function (e) {
+//==========Client Form configuration=================//
+    $(document).on('submit', 'div.abprf_admin form.save_client_form', function (e) {
         e.preventDefault();
         let parent = $(this).closest('.abprf_admin');
         let target = parent.find('.dashboard_content');
@@ -261,14 +277,15 @@
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
                 abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
-                alert(response.data);
                 abprf_spinner_remove(target);
+                abprf_toast_msg(response.data, 'success');
             }
         });
     });
-    $(document).on('click', 'button.abprf_import_global_form', function () {
+    $(document).on('click', 'div.abprf_admin button.import_global_form', function () {
         let parent = $(this).closest('.abprf_client_form');
         let target = parent.find('.client_form_content');
         $.ajax({
@@ -276,21 +293,101 @@
                 "action": "abprf_import_global_form", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
                 abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.importing);
             }, success: function (data) {
                 target.html(data).promise().done(function () {
                     target.find('.sortable_area').sortable({
                         handle: jQuery(this).find('.sortable_handle')
                     });
+                    abprf_toast_msg(abprf_admin_data.msg.imported, 'success');
                 });
             }
         });
     });
-}(jQuery));
-//==========Status=================//
-(function ($) {
-    "use strict";
+    //==========Faq configuration=================//
+    $(document).on('submit', 'div.abprf_admin form.save_faq', function (e) {
+        e.preventDefault();
+        let parent = $(this).closest('.abprf_admin');
+        let target = parent.find('.dashboard_content');
+        let formData = new FormData(this);
+        formData.append('action', 'abprf_save_faqs');
+        formData.append('nonce', abprf_admin_data.nonce);
+        $.ajax({
+            type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
+            beforeSend: function () {
+                abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.saving);
+            },
+            success: function (response) {
+                abprf_spinner_remove(target);
+                abprf_toast_msg(response.data, 'success');
+                window.location.reload();
+            }
+        });
+    });
+    $(document).on('click', 'div.abprf_admin button.import_faq', function () {
+        let parent = $(this).closest('.faq_configuration');
+        let target = parent.find('.faq_content');
+        $.ajax({
+            type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                "action": "abprf_import_faq", 'nonce': abprf_admin_data.nonce
+            }, beforeSend: function () {
+                abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.importing);
+            }, success: function (data) {
+                target.html(data).promise().done(function () {
+                    target.find('.sortable_area').sortable({
+                        handle: jQuery(this).find('.sortable_handle')
+                    });
+                    target.find('.insertable_area .edit_area').each(function () {
+                        abprf_wp_editor_init($(this));
+                    });
+                    abprf_toast_msg(abprf_admin_data.msg.imported, 'success');
+                });
+            }
+        });
+    });
+    $(document).on('submit', 'div.abprf_admin form.save_tc', function (e) {
+        e.preventDefault();
+        let parent = $(this).closest('.abprf_admin');
+        let target = parent.find('.dashboard_content');
+        let formData = new FormData(this);
+        formData.append('action', 'abprf_save_tc');
+        formData.append('nonce', abprf_admin_data.nonce);
+        $.ajax({
+            type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
+            beforeSend: function () {
+                abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.saving);
+            },
+            success: function (response) {
+                abprf_spinner_remove(target);
+                abprf_toast_msg(response.data, 'success');
+                window.location.reload();
+            }
+        });
+    });
+    $(document).on('click', 'div.abprf_admin button.import_tc', function () {
+        let parent = $(this).closest('.tc_configuration');
+        let target = parent.find('.tc_content');
+        $.ajax({
+            type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                "action": "abprf_import_tc", 'nonce': abprf_admin_data.nonce
+            }, beforeSend: function () {
+                abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.importing);
+            }, success: function (data) {
+                target.html(data).promise().done(function () {
+                    target.find('.edit_area').each(function () {
+                        abprf_wp_editor_init($(this));
+                    });
+                    abprf_toast_msg(abprf_admin_data.msg.imported, 'success');
+                });
+            }
+        });
+    });
     //==========WooCommerce configuration=================//
-    $(document).on('click', 'button.abprf_install_and_active_wc', function () {
+    $(document).on('click', 'div.abprf_admin button.install_and_active_wc', function () {
         let parent = $(this).closest('.abprf_status');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
@@ -302,7 +399,7 @@
             }
         });
     });
-    $(document).on('click', 'button.abprf_active_wc', function () {
+    $(document).on('click', 'div.abprf_admin button.active_wc', function () {
         let parent = $(this).closest('.abprf_status');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
@@ -315,11 +412,11 @@
         });
     });
     //==========page create=================//
-    $(document).on('click', 'button.abprf_create_equipment_list_page', function () {
+    $(document).on('click', 'div.abprf_admin button.create_property_list_page', function () {
         let parent = $(this).closest('.abprf_status');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_create_equipment_list_page", 'nonce': abprf_admin_data.nonce
+                "action": "abprf_create_property_list_page", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
                 abprf_spinner(parent);
             }, success: function () {
@@ -327,11 +424,11 @@
             }
         });
     });
-    $(document).on('click', 'button.abprf_create_equipment_group_page', function () {
+    $(document).on('click', 'div.abprf_admin button.create_post_list_page', function () {
         let parent = $(this).closest('.abprf_status');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_create_equipment_group_page", 'nonce': abprf_admin_data.nonce
+                "action": "abprf_create_post_list_page", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
                 abprf_spinner(parent);
             }, success: function () {
@@ -340,7 +437,7 @@
         });
     });
     //==========Dummy data configuration=================//
-    $(document).on('click', 'button.abprf_import_dummy', function () {
+    $(document).on('click', 'div.abprf_admin button.import_dummy', function () {
         let parent = $(this).closest('.abprf_status');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
@@ -372,6 +469,38 @@ function abprf_load_sortable_datepicker(parent, item) {
     }
     return true;
 }
+function abprf_wp_editor_init(target) {
+    let textArea = target.find('textarea.wp-editor-area');
+    if (textArea.length > 0) {
+        let uniqueId = 'editor_' + Math.random().toString(36).substring(2, 11);
+        if (target.find('.wp-editor-wrap').length > 0) {
+            target.find('.wp-editor-wrap').replaceWith(textArea);
+        }
+        textArea.attr('id', uniqueId).show();
+        setTimeout(function () {
+            if (typeof wp !== 'undefined' && wp.editor) {
+                wp.editor.remove(uniqueId);
+                wp.editor.initialize(uniqueId, {
+                    tinymce: {
+                        wpautop: true,
+                        cleanup: false,
+                        verify_html: false,
+                        entity_encoding: 'raw',
+                        forced_root_block: false,
+                        valid_elements: '*[*]',
+                        setup: function (editor) {
+                            editor.on('change', function () {
+                                editor.save();
+                            });
+                        }
+                    },
+                    quicktags: true,
+                    mediaButtons: true
+                });
+            }
+        }, 100);
+    }
+}
 (function ($) {
     "use strict";
     $(document).ready(function () {
@@ -391,7 +520,7 @@ function abprf_load_sortable_datepicker(parent, item) {
         });
     });
     //=========select  image / image==============//
-    $(document).on('click', 'div.abprf_area .add_image', function () {
+    $(document).on('click', 'div.abprf_admin .add_image', function () {
         let parent = $(this);
         parent.find('.add_image_item').remove();
         wp.media.editor.send.attachment = function (props, attachment) {
@@ -407,14 +536,14 @@ function abprf_load_sortable_datepicker(parent, item) {
         wp.media.editor.open($(this));
         return false;
     });
-    $(document).on('click', 'div.abprf_area .remove_image', function (e) {
+    $(document).on('click', 'div.abprf_admin .remove_image', function (e) {
         e.stopPropagation();
         let parent = $(this).closest('.add_image');
         $(this).closest('.add_image_item').remove();
         parent.find('input').val('');
         parent.find('button').slideDown('fast');
     });
-    $(document).on('click', 'div.abprf_area .add_image_multi', function () {
+    $(document).on('click', 'div.abprf_admin .add_image_multi', function () {
         let parent = $(this).closest('.multiple_image_area');
         wp.media.editor.send.attachment = function (props, attachment) {
             let attachment_id = attachment.id;
@@ -430,7 +559,7 @@ function abprf_load_sortable_datepicker(parent, item) {
         wp.media.editor.open($(this));
         return false;
     });
-    $(document).on('click', 'div.abprf_area .remove_image_multi', function () {
+    $(document).on('click', 'div.abprf_admin .remove_image_multi', function () {
         let parent = $(this).closest('.multiple_image_area');
         let current_parent = $(this).closest('.multiple_image_item');
         let img_id = current_parent.data('image-id');
@@ -441,14 +570,14 @@ function abprf_load_sortable_datepicker(parent, item) {
         all_img_ids = all_img_ids.replace(img_id, '')
         parent.find('.multiple_image_ids').val(all_img_ids);
     });
-    $(document).on('click', 'div.abprf_area .icon_image_selection_area .icon_delete', function () {
+    $(document).on('click', 'div.abprf_admin .icon_image_selection_area .icon_delete', function () {
         let parent = $(this).closest('.icon_image_selection_area');
         parent.find('input[type="hidden"]').val('');
         parent.find('[data-add-icon]').removeAttr('class');
         parent.find('.icon_item').slideUp('fast');
         parent.find('.image_icon_select_area').slideDown('fast');
     });
-    $(document).on('click', 'div.abprf_area button.image_select', function () {
+    $(document).on('click', 'div.abprf_admin button.image_select', function () {
         let $this = $(this);
         let parent = $this.closest('.icon_image_selection_area');
         wp.media.editor.send.attachment = function (props, attachment) {
@@ -463,15 +592,15 @@ function abprf_load_sortable_datepicker(parent, item) {
         wp.media.editor.open($this);
         return false;
     });
-    $(document).on('click', 'div.abprf_area .icon_image_selection_area .image_delete', function () {
+    $(document).on('click', 'div.abprf_admin .icon_image_selection_area .image_delete', function () {
         let parent = $(this).closest('.icon_image_selection_area');
         parent.find('input[type="hidden"]').val('');
         parent.find('img').attr('src', '');
         parent.find('.image_item').slideUp('fast');
         parent.find('.image_icon_select_area').slideDown('fast');
     });
-    //=========Remove Setting Item ==============//
-    $(document).on('click', 'div.abprf_area .delete_hook', function () {
+    //========= ==============//
+    $(document).on('click', 'div.abprf_admin .delete_hook', function () {
         if (confirm(abprf_admin_data.msg.confirm_delete + ' \n\n' + abprf_admin_data.msg.confirm_ok + ' \n ' + abprf_admin_data.msg.confirm_cancel)) {
             // let parent = $(this).closest('.insertable_area');
             $(this).closest('.delete_area ').slideUp(250).remove();
@@ -479,15 +608,29 @@ function abprf_load_sortable_datepicker(parent, item) {
             // parent.trigger('rf_trigger');
         }
     });
-    //=========Add Setting Item==============//
-    $(document).on('click', 'div.abprf_area .add_new_hook', function () {
+    $(document).on('click', 'div.abprf_admin .add_new_hook', function () {
         let parent = $(this).closest('.configuration_content');
-        let item = $(this).next($('.abprf_d_none')).find(' .hidden_content').html();
+        let hidden_target = $(this).next($('.abprf_d_none')).find(' .hidden_content');
+        let item = hidden_target.html();
         if (!item || item === "undefined" || item === " ") {
             item = parent.find('.abprf_d_none').first().find('.hidden_content').html();
         }
-        abprf_load_sortable_datepicker(parent, item);
+        if (abprf_load_sortable_datepicker(parent, item)) {
+            let target = parent.find('.insertable_area .delete_area').last();
+            abprf_wp_editor_init(target);
+            target.find('.edit_area').slideDown('fast');
+        }
         $(this).trigger('rf_trigger');
+    });
+    $(document).on('click', 'div.abprf_admin .edit_hook', function () {
+        $(this).closest('.delete_area').find('.edit_area').slideToggle('fast');
+    });
+    $(document).on('keyup change', 'div.abprf_admin [data-pass]', function () {
+        let input_value = $(this).val();
+        let input_id = $(this).attr('data-pass');
+        $(this).closest('.delete_area').find("[data-paste='" + input_id + "']").each(function () {
+            $(this).html(input_value);
+        });
     });
 }(jQuery));
 //=================select icon=========================//

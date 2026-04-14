@@ -30,7 +30,7 @@
             <div class="abptm_seat_plan_area">
                 <div class="seat_plan_ld">
 					<?php if ($display_ud == 'on' && sizeof($sp_ud_infos) > 0 && $rows_ud > 0 && $columns_ud > 0) { ?>
-                        <h6 class="_abprf_text_center_color_1"><?php esc_html_e('Lower Deck', 'abprf-rental-forge'); ?></h6>
+                        <h6 class="_abprf_text_center"><?php esc_html_e('Lower Deck', 'abprf-rental-forge'); ?></h6>
 					<?php } ?>
                     <input type="hidden" name="selected_ld"/>
                     <input type="hidden" name="selected_ld_type"/>
@@ -38,7 +38,7 @@
                 </div>
 				<?php if ($display_ud == 'on' && sizeof($sp_ud_infos) > 0 && $rows_ud > 0 && $columns_ud > 0) { ?>
                     <div class="seat_plan_ud">
-                        <h6 class="_abprf_text_center_color_1"><?php esc_html_e('Upper Deck', 'abprf-rental-forge'); ?></h6>
+                        <h6 class="_abprf_text_center"><?php esc_html_e('Upper Deck', 'abprf-rental-forge'); ?></h6>
                         <input type="hidden" name="selected_ud"/>
                         <input type="hidden" name="selected_ud_type"/>
 						<?php ABPRF_Layout::get_seat_plan($abprf_infos, $bp, $dp, $bp_date, $sp_ud_infos, $sold_seats, true); ?>

@@ -1,20 +1,23 @@
 @charset "utf-8";
-
 /******************************************************************** configuration ************************************************/
 @media only screen and (min-width: 10px) {
+	div.abprf_admin table thead {background: #F5F5F5;border-bottom: 1px solid var(--rf_color_border);}
+	div.abprf_admin table thead th {padding: var(--rf_gap_xxs) var(--rf_gap_xs); text-align: left; font-weight: 600; color: #333; font-size: var(--rf_fs); text-transform: uppercase;}
+	/*=============================*/
 	div.abprf_admin [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-bottom: var(--rf_gap_xs); background-color: var(--rf_color_light_2); width: 100%; }
 	div.abprf_admin .group_setting {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	div.abprf_admin .group_setting [class*="_setting_item"] {min-width: 400px;-webkit-flex: 1;flex: 1;}
 	div.abprf_admin label .info_text {width: 100%;margin: var(--rf_gap_xxs) 0 0 0;font-size: 11px;}
 	div.abprf_admin [class*="_form_control"] {max-width: 250px;min-width: 250px;}
-	div.abprf_admin .dropdown_area [class*="_form_control"] {max-width: 100%;}
 	div.abprf_admin textarea[class*="_form_control"] {max-width: 100%;}
 	div.abprf_admin input[class*="_form_control"][type="time"] {max-width: 125px;text-align: center;min-width: 125px;}
 	div.abprf_admin [class*="_form_control"].abprf_color_picker {min-width: 150px; height: 40px;padding: var(--rf_gap_xxs) var(--rf_gap_xs);}
+	div.abprf_admin [class*="_form_control"][class*="_min_150"] {min-width: 150px;max-width: 100%;}
+	div.abprf_admin .dropdown_area [class*="_form_control"] {max-width: 100%;}
 	div.abprf_admin .additional_service [class*="_form_control"] {min-width: auto;}
+	div.abprf_admin .faq_configuration [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
 	/*=============================*/
-	div.abprf_admin table thead {background: #F5F5F5;border-bottom: 1px solid var(--rf_color_border);}
-	div.abprf_admin table thead th {padding: var(--rf_gap_xxs) var(--rf_gap_xs); text-align: left; font-weight: 600; color: #333; font-size: var(--rf_fs); text-transform: uppercase;}
+	div.abprf_admin .configuration_content .edit_area {display: none;}
 	/*=============================*/
 	div.abprf_admin .wp-picker-holder {position: absolute;z-index: 1111;}
 	div.abprf_admin .wp-picker-input-wrap {display: -webkit-inline-flex;display: inline-flex;}
@@ -79,10 +82,6 @@
 	div.admin_menu .menu_list button {border: none;}
 	/***********************/
 	div.abprf_admin .dashboard_content {margin: var(--rf_gap);}
-	/**************************************************************************************************************************/
-	div.abprf_admin .equipment_area {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
-	div.abprf_admin .equipment_item {min-width: 350px;margin: 0;-webkit-flex: 1;flex: 1;max-width: 600px;}
-	div.abprf_admin .equipment_item [class*="_form_control"] {min-width: auto;width: 100%;max-width: 50%;}
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/

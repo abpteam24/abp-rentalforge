@@ -9,16 +9,12 @@
 
 			public static function get_info() {
 				global $wpdb;
-				$order_table_name = $wpdb->prefix . 'abprf_orders';
-				// No prepare needed since there are no variables
+				$order_table_name    = $wpdb->prefix . 'abprf_orders';
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
-				$total_order         = (int) $wpdb->get_var( "SELECT COUNT(*) FROM $order_table_name" );
+				$total_order         = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i", $order_table_name ) );
 				$property_table_name = $wpdb->prefix . 'abprf_property';
-				// No prepare needed since there are no variables
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
-				$total_property               = (int) $wpdb->get_var( "SELECT COUNT(*) FROM $property_table_name" );
+				$total_property         = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i", $property_table_name ) );
 				$cpt                          = ABPRF_Function::get_cpt();
 				$abprf_info                   = array();
 				$abprf_configuration          = ABPRF_Function::get_option( 'abprf_configuration' );
@@ -75,17 +71,26 @@
 				if ( ! empty( $post_id ) && $post_id !== 'all' ) {
 					if ( $post_id == 'on' || $post_id == 'off' ) {
 						$conditions[] = "rent_continue = %s";
-						$params[] = sanitize_text_field($post_id);
+						$params[]     = sanitize_text_field( $post_id );
 					} else {
 						$conditions[] = "post_id = %d";
-						$params[] = intval($post_id);
+						$params[]     = intval( $post_id );
 					}
-
 				}
 				$property_id = array_key_exists( 'property_id', $filters ) && ! empty( $filters['property_id'] ) ? $filters['property_id'] : null;
 				if ( ! empty( $property_id ) ) {
 					$conditions[] = "id = %d";
 					$params[]     = $property_id;
+				}
+				$rent_continue = array_key_exists( 'rent_continue', $filters ) && ! empty( $filters['rent_continue'] ) ? $filters['rent_continue'] : null;
+				if ( ! empty( $rent_continue ) ) {
+					$conditions[] = "rent_continue = %s";
+					$params[]     = $rent_continue;
+				}
+				$status = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? $filters['status'] : null;
+				if ( ! empty( $status ) ) {
+					$conditions[] = "status = %s";
+					$params[]     = $status;
 				}
 				$order_by  = array_key_exists( 'order_by', $filters ) && ! empty( $filters['order_by'] ) ? sanitize_sql_orderby( $filters['order_by'] ) : 'created_at';
 				$order_dir = array_key_exists( 'order_dir', $filters ) && in_array( strtoupper( $filters['order_dir'] ), [ 'ASC', 'DESC' ] ) ? strtoupper( $filters['order_dir'] ) : 'DESC';
@@ -116,7 +121,7 @@
 				} else {
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()
-					$results = $wpdb->get_results( $query,ARRAY_A );
+					$results = $wpdb->get_results( $query, ARRAY_A );
 				}
 
 				return $results;

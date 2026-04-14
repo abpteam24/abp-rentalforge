@@ -70,6 +70,20 @@
 				<?php
 			}
 
+			public static function button_delete_sort_edit(): void {
+				?>
+                <div class="_all_center">
+                    <div class="_group_content">
+						<?php
+							self::button_edit();
+							self::button_sort();
+							self::button_delete();
+						?>
+                    </div>
+                </div>
+				<?php
+			}
+
 			public static function button_delete_sort(): void {
 				?>
                 <div class="_all_center">
@@ -80,6 +94,14 @@
 						?>
                     </div>
                 </div>
+				<?php
+			}
+
+			public static function button_edit( $class_edit = 'edit_hook' ): void {
+				?>
+                <button class="_btn_navy_blue_xs <?php echo esc_attr( $class_edit ); ?>" type="button" title="<?php esc_attr_e( 'Edit This Item', 'abprf-rental-forge' ); ?>">
+                    <span class="fas fa-edit"></span>
+                </button>
 				<?php
 			}
 
@@ -148,7 +170,7 @@
 			public static function info_text( $key ): void {
 				$data = ABPRF_Layout::array_info( $key );
 				if ( $data ) {
-					echo '<span class="info_text"><i class="fas fa-info-circle _color_theme_mar_r_xxs"></i>' . esc_html( $data ) . '</span>';
+					echo '<span class="info_text"><span class="_mar_r_xxs">ℹ️</span>' . esc_html( $data ) . '</span>';
 				}
 			}
 
@@ -391,7 +413,7 @@
                             <img class="_img_control" src="<?php echo esc_url( wp_get_attachment_image_url( $image_id, 'medium' ) ); ?>" alt="<?php echo esc_attr( $image_id ); ?>"/>
                         </div>
 					<?php } ?>
-                    <button type="button" class="_btn_default_xs_bg_color_1_w_full <?php echo esc_attr( $image_id ? '_d_none' : '' ); ?>">
+                    <button type="button" class="_btn_default_xs_bg_color_light_1_w_full <?php echo esc_attr( $image_id ? '_d_none' : '' ); ?>">
                         <span class="fas fa-image _mar_r_xs"></span><?php esc_html_e( 'Image', 'abprf-rental-forge' ); ?>
                     </button>
                 </div>
@@ -720,6 +742,18 @@
 				return apply_filters( 'abprf_filter_price_rule', $rules );
 			}
 
+			public static function date_option_rules(): array {
+				$rules = [
+					'specific_of_date' => __( 'Specific Off Dates', 'abprf-rental-forge' ),
+					'off_date_range' => __( 'Off Dates Range', 'abprf-rental-forge' ),
+					'weekend' => __( 'Weekend', 'abprf-rental-forge' ),
+					'special_on_dates' => __( 'Special On Dates', 'abprf-rental-forge' ),
+					'day_wise_time' => __( 'Operation Time day Wise', 'abprf-rental-forge' ),
+				];
+
+				return apply_filters( 'abprf_filter_price_rule', $rules );
+			}
+
 			public static function date_picker_format_array(): array {
 				$current_date = current_time( 'Y-m-d' );
 
@@ -746,19 +780,20 @@
 					'rent_continue' => __( 'Note: This switch indicate property rent close/continue . You can  rent close/continue  by this switch. By default rent will be  continue', 'abprf-rental-forge' ),
 					'abprf_template' => __( 'Note: Here You can change your details page template.', 'abprf-rental-forge' ),
 					//=============================//
-					'global_start_date' => __( 'Note: If you set this date, All property cannot be rented before this date.Leave it blank if you want the property to be available immediately.', 'abprf-rental-forge' ),
-					'global_end_date' => __( 'Note: If you set this date, All property cannot be rented after this date.Leave it blank to keep the property available indefinitely.', 'abprf-rental-forge' ),
 					'date_picker_format' => __( 'If you wish to edit the Date Picker Format, simply choose a different format. The default date is: ', 'abprf-rental-forge' ) . ' ' . date_i18n( 'D j M , Y', strtotime( $current_date ) ),
 					'ticket_sale_close_before' => __( 'Note: Enter the time in minutes to close  rent before current time. If not specified, it will default to 0 (e.g. 1 hour equals 60 minutes).', 'abprf-rental-forge' ),
-					'advance_date_number' => __( 'Note: Kindly provide the number of days in advance for booking. By default, the advance booking period is set to 15 days.(optional) ', 'abprf-rental-forge' ),
+					'advance_date_number' => __( 'Note: Kindly provide the number of days in advance for booking. By default, the advance booking period is set to 28 days.(optional) ', 'abprf-rental-forge' ),
 					'active_global_dates' => __( 'Note: Keep this switch ON to apply the global date settings.Switch it OFF if you want to set special date rules for this property.Date configuration options will open when turned OFF. ', 'abprf-rental-forge' ),
 					'date_type' => __( 'Note: Please Select your property operational date type. Default operational date will be Periodic', 'abprf-rental-forge' ),
 					'specific_dates' => __( 'Note: Please add your property operational Specific Date lists and Operation time length(optional). If operation time empty that means it will be 24 hours', 'abprf-rental-forge' ),
 					'operation_time' => __( 'Note: Please add your property rent  Operation time length(optional). If operation time empty that means it will be 24 hours(optional)', 'abprf-rental-forge' ),
-					'periodic_start_date' => __( 'Note: Please add your property rent Launching Date otherwise it will be start today or after Property Available From  ', 'abprf-rental-forge' ),
-					'periodic_end_date' => __( 'Note: Please add your property rent Terminate  Date otherwise it will be Continuously running periodically or after Property Available to', 'abprf-rental-forge' ),
+					'periodic_start_date' => __( 'Note: Please add your property rent Launching Date otherwise it will be start today ', 'abprf-rental-forge' ),
+					'periodic_end_date' => __( 'Note: Please add your property rent Terminate  Date otherwise it will be Continuously running periodically', 'abprf-rental-forge' ),
 					'periodic_after' => __( 'Note: Please add your periodically after days. if  your property rent operation day everyday this will be one(1).(optional)', 'abprf-rental-forge' ),
+					'date_rule' => __( 'Note: Enable this checkbox to configure special on/off date and time settings. This option is optional. If you set a date/time in the special “On” date, that date will remain active even if it falls within an “Off” date range or on weekends.', 'abprf-rental-forge' ),
+					'special_on_dates' => __( 'Note: If you add any date and time in Special On Dates, it will always remain active—even if that date falls within an off date range or on weekends.', 'abprf-rental-forge' ),
 					'weekend' => __( 'Note: Please select your weekend.Default all days open(optional)', 'abprf-rental-forge' ),
+					'day_wise_time' => __( 'Note: Day-wise operation time will apply only if the date does not fall within any Special On Date range. If the time field is left empty in Special On Dates, then the day-wise operation time will be applied for that date.', 'abprf-rental-forge' ),
 					'specific_off_dates' => __( 'Note: please add your specific Operation off dates.(optional)', 'abprf-rental-forge' ),
 					'off_date_range' => __( 'Note: If you have off days between two dates which can add here.(optional)', 'abprf-rental-forge' ),
 					//=============================//
@@ -770,11 +805,14 @@
 					'qty_min' => __( 'Note: If a user rents this property, they must select at least this quantity. This field is optional—if left empty, the minimum quantity will default to 1.', 'abprf-rental-forge' ),
 					'qty_max' => __( 'Note: Property max quantity defines the maximum number of properties a client can rent at one time. This field is optional — if not specified, clients will be able to rent any quantity based on the available stock.', 'abprf-rental-forge' ),
 					'price_hourly' => __( 'Note: If you want to allow hourly rental for this property, enter the hourly rate in the field above. If you do not want to offer hourly rental, you can leave this field empty.', 'abprf-rental-forge' ),
-					'min_hour' => __( 'Note: If an hourly rate is provided, this setting will be applied. You can specify the minimum number of hours required for rental here. If not set, the default minimum will be 1 hour.', 'abprf-rental-forge' ),
+					'min_hourly' => __( 'Note: If an hourly rate is provided, this setting will be applied. You can specify the minimum number of hours required for rental here. If not set, the default minimum will be 1 hour.', 'abprf-rental-forge' ),
 					'price_daily' => __( 'Note: If you want to allow daily rental for this property, enter the daily rate in the field above. If you do not want to offer daily rental, you can leave this field empty.', 'abprf-rental-forge' ),
-					'min_day' => __( 'Note: If an daily rate is provided, this setting will be applied. You can specify the minimum number of days required for rental here. If not set, the default minimum will be 1 day.', 'abprf-rental-forge' ),
+					'min_daily' => __( 'Note: If an daily rate is provided, this setting will be applied. You can specify the minimum number of days required for rental here. If not set, the default minimum will be 1 day.', 'abprf-rental-forge' ),
 					'price_monthly' => __( 'Note: If you want to allow monthly rental for this property, enter the monthly rate in the field above. If you do not want to offer monthly rental, you can leave this field empty.', 'abprf-rental-forge' ),
-					'min_month' => __( 'Note: If an monthly rate is provided, this setting will be applied. You can specify the minimum number of months required for rental here. If not set, the default minimum will be 1 month.', 'abprf-rental-forge' ),
+					'min_monthly' => __( 'Note: If an monthly rate is provided, this setting will be applied. You can specify the minimum number of months required for rental here. If not set, the default minimum will be 1 month.', 'abprf-rental-forge' ),
+					'active_deposit' => __( 'Note: If you enable this switch, the rental deposit feature will be activated. Turn it on if you want to collect a deposit amount for renting the property.', 'abprf-rental-forge' ),
+					'deposit_type' => __( 'Note: There are 3 types of deposit options available - Fixed Amount: The amount you set will be a fixed deposit for the customer, regardless of how many quantities they rent.- Percentage of Total Price: The deposit will be calculated as a percentage of the total rental cost - Fixed Amount per Quantity: The specified amount will be applied for each quantity the customer rents.', 'abprf-rental-forge' ),
+					'deposit_value' => __( 'Note: The deposit value depends on the selected deposit type. The entered amount will be applied based on the chosen deposit option.', 'abprf-rental-forge' ),
 					'brand' => __( 'Note: Add a brand name to enable the property sub-tile. Leave this blank if you dont want to show any brand information for this item.', 'abprf-rental-forge' ),
 					'description' => __( 'Note: Add short description about this property. Leave this blank if you dont want to show any property description for this item.', 'abprf-rental-forge' ),
 					'price_rule' => __( 'Note: You can select one or multiple price types from the pricing options below. However, at least one option must be selected — otherwise the data will not be saved. The price will be calculated based on the time selected by the client.', 'abprf-rental-forge' ),
@@ -793,10 +831,18 @@
 					'active_global_form' => __( 'Note: Keep this switch ON to apply the global Client Form settings.Switch it OFF if you want to set special  Client Form rules for this property. Client Form configuration options will open when turned OFF. ', 'abprf-rental-forge' ),
 					'global_client_forms' => __( 'Note: This is a flexibility global form system. Once you design the structure here, it serves as a global form. You can effortlessly import this form into any property or use this setting at any property,', 'abprf-rental-forge' ),
 					//=============================//
-					'abprf_faqs'          => __( 'You can set all rental-related FAQs here and use them globally across all properties. You can also import these FAQs into any individual property and customize them as needed.', 'abprf-rental-forge' ),
+					'abprf_tc' => __( 'You can set all rental-related Term & Condition here and use them globally across all properties. You can also import these Term & Condition into any individual property and customize them as needed.', 'abprf-rental-forge' ),
+					'tc_item' => __( 'Use the editor to customize and design your Terms & Conditions as you prefer. The content and formatting you create here will be displayed the same way on the frontend.', 'abprf-rental-forge' ),
+					'display_tc' => __( 'Use this switch to control whether the Term & Condition is displayed on the frontend. Turn the switch ON to show the Term & Condition, and OFF to hide it. By default, this option is set to ON.', 'abprf-rental-forge' ),
+					'active_global_tc' => __( 'Enable this switch to apply the global Term & Condition to this post. If you want to add custom Term & Condition specifically for this post, turn the switch OFF and add your custom Term & Condition below.You can also use the Import button to bring in global Term & Condition, which you can then edit or delete based on your needs.', 'abprf-rental-forge' ),
+					//=============================//
+					'abprf_faqs' => __( 'You can set all rental-related FAQs here and use them globally across all properties. You can also import these FAQs into any individual property and customize them as needed.', 'abprf-rental-forge' ),
+					'faq_item' => __( 'Both the Title and Description fields are required. If either field is left empty, this FAQ item will not be displayed on the frontend.', 'abprf-rental-forge' ),
+					'display_faq' => __( 'Use this switch to control whether the FAQ is displayed on the frontend. Turn the switch ON to show the FAQ, and OFF to hide it. By default, this option is set to ON.', 'abprf-rental-forge' ),
+					'active_global_faq' => __( 'Enable this switch to apply the global FAQ to this post. If you want to add custom FAQs specifically for this post, turn the switch OFF and add your custom FAQs below.You can also use the Import button to bring in global FAQs, which you can then edit or delete based on your needs.', 'abprf-rental-forge' ),
 					//=============================//
 					'search_get_wrong_data_info' => __( 'Somethings went Wrong ! Please Try again', 'abprf-rental-forge' ),
-					'sale_close_msg' => __( 'This Category/Post rent close shortly. please try another Property.', 'abprf-rental-forge' ),
+					'sale_close_msg' => __( 'This Property rent close shortly. please try another Property.', 'abprf-rental-forge' ),
 					'not_found' => __( 'No Category/Post Found !', 'abprf-rental-forge' ),
 					'not_post_found' => __( 'No Post Found !', 'abprf-rental-forge' ),
 					'not_property_found' => __( 'No Property Found !', 'abprf-rental-forge' ),
@@ -810,7 +856,7 @@
 					'sign_up_msg' => __( 'Please Login your account to Download/View ticket !', 'abprf-rental-forge' ),
 					'no_permit_msg' => __( 'You are not permitted to Download/View this ticket !', 'abprf-rental-forge' ),
 					'wrong_msg_id' => __( 'We see, this id are not valid !', 'abprf-rental-forge' ),
-					'no_transport_found' => __( 'Sorry ! We can not find any transport in your criteria.', 'abprf-rental-forge' ),
+					'no_property_found' => __( 'Property not found or  rent close shortly', 'abprf-rental-forge' ),
 					'no_traveller_found' => __( 'Sorry ! We can not find any Traveller in your criteria.', 'abprf-rental-forge' ),
 					//''          => __( '', 'abprf-rental-forge' ),
 				);
@@ -838,6 +884,28 @@
 					'additional_service_3' => [ 'icon' => 'fas fa-user-tie', 'name' => 'Tie', 'qty' => 100, 'price' => 1.00, 'returnable' => 'no', 'description' => 'Multiple color available', ],
 					'additional_service_4' => [ 'icon' => 'fas fa-shoe-prints', 'name' => 'Shoes', 'qty' => 100, 'price' => 1.00, 'returnable' => 'yes', 'description' => 'Multiple Size available', ]
 				];
+			}
+
+			//=============================//
+			public static function rent_start_date( $all_dates = [], $date = '' ): void {
+				if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
+					$date_format = ABPRF_Function::date_picker_format();
+					$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+					$date        = $date ?: current( $all_dates );
+					if ( sizeof( $all_dates ) > 10 ) {
+						$hidden_date  = $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
+						$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
+						?>
+                        <label>
+                            <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Start Date', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
+                            <input type="hidden" name="_j_date" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
+                            <input id="abprf_start_date" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="_form_control" placeholder="<?php echo esc_attr( $now ); ?>" data-alert="<?php esc_attr_e( 'Please Select Start Date', 'abprf-rental-forge' ); ?>" readonly required/>
+                            <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abprf-rental-forge' ); ?>"></span>
+                        </label>
+						<?php
+						do_action( 'abprf_load_date_picker', '#abprf_start_date', $all_dates );
+					}
+				}
 			}
 
 			//=============================//
@@ -877,46 +945,6 @@
 					<?php } ?>
                 </div>
 				<?php
-			}
-
-			public static function boarding_from( $route_bp, $transport_bp = '' ): void {
-				?>
-                <label>
-                    <span><i class="fas fa-map-marker-alt _mar_r_xxs"></i><?php esc_html_e( 'From', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
-                    <input type="hidden" name="_bp" value="<?php echo esc_attr( $transport_bp ); ?>" data-alert="<?php esc_attr_e( 'Please Select from below list.', 'abprf-rental-forge' ); ?>"/>
-                    <input type="text" class="_form_control_w_full " name="_bp_dummy" placeholder="<?php esc_attr_e( 'Boarding', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $transport_bp ); ?>" autocomplete="off" required/>
-                </label>
-				<?php ABPRF_Layout::input_dropdown( $route_bp, 'fas fa-map-marker-alt' );
-			}
-
-			public static function dropping_from( $route_dp, $transport_dp = '' ): void {
-				?>
-                <label>
-                    <span><i class="fas fa-map-marker-alt _mar_r_xxs"></i><?php esc_html_e( 'To', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
-                    <input type="hidden" name="_dp" value="<?php echo esc_attr( $transport_dp ); ?>" data-alert="<?php esc_attr_e( 'Please Select from below list.', 'abprf-rental-forge' ); ?>"/>
-                    <input type="text" class="_form_control_w_full " name="_dp_dummy" placeholder="<?php esc_attr_e( 'Dropping', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $transport_dp ); ?>" autocomplete="off" required/>
-                </label>
-				<?php ABPRF_Layout::input_dropdown( $route_dp, 'fas fa-map-marker-alt' ); ?>
-				<?php
-			}
-
-			public static function departure_date( $post_id = '', $bp = '', $date = '' ): void {
-				$date_format  = ABPRF_Function::date_picker_format();
-				$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
-				$hidden_date  = $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
-				$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
-				?>
-                <label>
-                    <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Journey Date', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
-                    <input type="hidden" name="_j_date" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
-                    <input id="abptm_bp_date" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="_form_control" placeholder="<?php echo esc_attr( $now ); ?>" data-alert="<?php esc_attr_e( 'Please Select Journey Route', 'abprf-rental-forge' ); ?>" readonly required/>
-                    <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abprf-rental-forge' ); ?>"></span>
-                </label>
-				<?php
-				if ( $bp || $post_id ) {
-					$all_dates = ABPRF_Function::get_dates( $post_id, $bp );
-					do_action( 'abprf_load_date_picker', '#abptm_bp_date', $all_dates );
-				}
 			}
 
 			public static function return_date( $bp, $dp, $bp_date, $return_date = '' ): void {
@@ -995,7 +1023,7 @@
 						do_action( 'abptm_search_list', $form_data, $transport_item );
 					}
 				} else {
-					ABPRF_Layout::layout_warning_info( 'no_transport_found' );
+					ABPRF_Layout::layout_warning_info( 'no_property_found' );
 				}
 			}
 

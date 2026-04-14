@@ -39,7 +39,7 @@
 					?>
                     <div class="transport_details">
                         <div class="details_left">
-                            <a class="_abprf" href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $bp . '&_dp=' . $dp . '&_j_date=' . $bp_date); ?>" target="_blank"><?php do_action('abprf_title', $abprf_infos); ?></a>
+                            <a class="_abprf" href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $bp . '&_dp=' . $dp . '&_j_date=' . $bp_date); ?>" target="_blank"><?php //do_action('abprf_template_title', $abprf_infos); ?></a>
                             <div class="details_item">
                                 <div class="item_left">
                                     <p class="_abprf"><span class="fas fa-map-marker-alt _mar_r_xs"></span><?php echo esc_html(__('From : ', 'abprf-rental-forge') . $bp); ?></p>

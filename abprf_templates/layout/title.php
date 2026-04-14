@@ -1,22 +1,22 @@
 <?php
-	if (!defined('ABSPATH')) {
+	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Exit if accessed directly
 	}
-	$abprf_infos = $abprf_infos ?? [];
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$post_id = array_key_exists('post_id', $abprf_infos) ? $abprf_infos['post_id'] : 0;
-	if ($post_id > 0) {
-		$display_equipment_id = array_key_exists('display_equipment_id', $abprf_infos) ? $abprf_infos['display_equipment_id'] : ABPRF_Function::get_post_info($post_id, 'display_equipment_id', 'on');
-		$equipment_id = array_key_exists('equipment_id', $abprf_infos) ? $abprf_infos['equipment_id'] : ABPRF_Function::get_post_info($post_id, 'equipment_id');
-		$brand_icon = ABPRF_Function::get_brand_icon();
-		$brand_icon = $brand_icon ? $brand_icon . ' _mar_r_xs' : '';
-		?>
-        <h1 class="_abprf_color_theme">
-            <span class="<?php echo esc_attr($brand_icon); ?> "></span>
-			<?php echo esc_html(get_the_title($post_id)); ?>
-			<?php if ($equipment_id && $display_equipment_id == 'on') { ?>
-                <small class="_abprf_color_gray">&nbsp;(<?php echo esc_html($equipment_id); ?>)</small>
-			<?php } ?>
-        </h1>
-		<?php
-	}
+	add_action( 'abprf_template_title', function ( $post_id, $abprf_infos = [] ) {
+		if ( $post_id > 0 ) {
+			$display_equipment_id = array_key_exists( 'display_equipment_id', $abprf_infos ) ? $abprf_infos['display_equipment_id'] : ABPRF_Function::get_post_info( $post_id, 'display_equipment_id', 'on' );
+			$equipment_id         = array_key_exists( 'equipment_id', $abprf_infos ) ? $abprf_infos['equipment_id'] : ABPRF_Function::get_post_info( $post_id, 'equipment_id' );
+			$brand_icon           = ABPRF_Function::get_brand_icon();
+			$brand_icon           = $brand_icon ? $brand_icon . ' _mar_r_xs' : '';
+			?>
+            <h1 class="_abprf_color_theme">
+                <span class="<?php echo esc_attr( $brand_icon ); ?> "></span>
+				<?php echo esc_html( get_the_title( $post_id ) ); ?>
+				<?php if ( $equipment_id && $display_equipment_id == 'on' ) { ?>
+                    <small class="_abprf_color_gray">&nbsp;(<?php echo esc_html( $equipment_id ); ?>)</small>
+				<?php } ?>
+            </h1>
+			<?php
+		}
+	}, 10, 2 );
+

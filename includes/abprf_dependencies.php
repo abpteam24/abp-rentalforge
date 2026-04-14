@@ -35,8 +35,12 @@
 						'confirm_delete' => __( 'Are you sure you want to delete this item?', 'abprf-rental-forge' ),
 						'confirm_ok' => __( '1. Ok : To Remove Item .', 'abprf-rental-forge' ),
 						'confirm_cancel' => __( '2. Cancel : To Cancel .', 'abprf-rental-forge' ),
-						'saving' => __( 'Saving...', 'abprf-rental-forge' ),
-						'saved' => __( 'Saved!', 'abprf-rental-forge' ),
+						'saving' => __( 'Saving.............!', 'abprf-rental-forge' ),
+						'saved' => __( 'Saved...............!', 'abprf-rental-forge' ),
+						'importing' => __( 'Importing........', 'abprf-rental-forge' ),
+						'imported' => __( 'Imported Successfully............. !', 'abprf-rental-forge' ),
+						'loading' => __( 'Loading........', 'abprf-rental-forge' ),
+						'loaded' => __( 'Loaded Successfully............. !', 'abprf-rental-forge' ),
 						'error' => __( 'An error occurred. Please try again.', 'abprf-rental-forge' ),
 						'delete_success' => __( 'Delete Successfully.............', 'abprf-rental-forge' ),
 						'property_loading' => __( 'Property List Loading.............', 'abprf-rental-forge' ),
@@ -180,17 +184,22 @@
 					require_once ABPRF_DIR . '/admin/abprf_dates.php';
 					require_once ABPRF_DIR . '/admin/abprf_additional.php';
 					require_once ABPRF_DIR . '/admin/abprf_form.php';
-					require_once ABPRF_DIR . '/admin/abprf_faq.php';
+					require_once ABPRF_DIR . '/admin/abprf_faq_tc.php';
 					require_once ABPRF_DIR . '/admin/abprf_configuration.php';
 					require_once ABPRF_DIR . '/admin/abprf_status.php';
 				}
 				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
-					require_once ABPRF_DIR . '/includes/ABPRF_Hooks.php';
+					require_once ABPRF_DIR . '/includes/abprf_hooks.php';
 					//require_once ABPRF_DIR . '/includes/ABPRF_Ajax.php';
-					require_once ABPRF_DIR . '/includes/ABPRF_Frontend.php';
+					require_once ABPRF_DIR . '/includes/abprf_frontend.php';
 					require_once ABPRF_DIR . '/includes/ABPRF_Shortcodes.php';
 					require_once ABPRF_DIR . '/includes/ABPRF_Woocommerce.php';
 					require_once ABPRF_DIR . '/admin/abprf_hidden_post.php';
+					//load template file
+					require_once ABPRF_Function::template_path( 'layout/title.php' );
+					require_once ABPRF_Function::template_path( 'layout/sub_title.php' );
+					require_once ABPRF_Function::template_path( 'layout/search_form.php' );
+					require_once ABPRF_Function::template_path( 'layout/property_item.php' );
 				}
 			}
 

@@ -23,13 +23,12 @@
 							$all_data[ $key ] = self::data_sanitize( $meta[0] );
 						}
 					}
-					$all_data['abprf_configuration'] = ABPRF_Function::get_option( 'abprf_configuration' );
+					$all_data['abprf_configuration'] = self::get_option( 'abprf_configuration' );
 				}
 
 				return $all_data;
 			}
 
-			//=============================//
 			public static function get_taxonomy( $name ): array|WP_Error|string {
 				return get_terms( array( 'taxonomy' => $name, 'hide_empty' => false ) );
 			}
@@ -52,7 +51,6 @@
 				return $all_data;
 			}
 
-			//=============================//
 			public static function data_sanitize( $data ) {
 				$data = maybe_unserialize( $data );
 				if ( is_string( $data ) ) {
@@ -75,7 +73,6 @@
 				return $data;
 			}
 
-			//=============================//
 			public static function get_option( $option, $default = [] ) {
 				$option_data = get_option( sanitize_key( $option ) );
 				if ( is_array( $default ) ) {
@@ -96,7 +93,146 @@
 				return $default;
 			}
 
+			public static function array_to_string( $array ) {
+				$ids = '';
+				if ( sizeof( $array ) > 0 ) {
+					foreach ( $array as $data ) {
+						if ( $data ) {
+							$ids = $ids ? $ids . ',' . $data : $data;
+						}
+					}
+				}
+
+				return $ids;
+			}
+
+			public static function serialize_array_convert( $form_data ): array {
+				$infos = [];
+				if ( sizeof( $form_data ) > 0 ) {
+					foreach ( $form_data as $data ) {
+						$_name = is_array( $data ) && array_key_exists( 'name', $data ) ? sanitize_text_field( $data['name'] ) : '';
+						$name  = explode( '[]', $_name )[0];
+						$value = is_array( $data ) && array_key_exists( 'value', $data ) ? sanitize_text_field( $data['value'] ) : '';
+						if ( $name ) {
+							if ( $_name !== $name ) {
+								$infos[ $name ][] = $value;
+							} else {
+								$infos[ $name ] = $value;
+							}
+						}
+					}
+				}
+
+				return $infos;
+			}
+
 			//============= Date Section================//
+			public static function get_post_dates( $post_id ): array {
+				$all_dates = [];
+				if ( $post_id > 0 ) {
+					$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
+					if ( $active_global_dates == 'on' ) {
+						$date_infos = self::get_option( 'abprf_dates' );
+					} else {
+						$date_infos = self::get_post_info( $post_id, 'abprf_dates', [] );
+					}
+					$date_type = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
+					$now       = current_time( 'Y-m-d' );
+					if ( $date_type == 'specific_date' ) {
+						$specific_dates = array_key_exists( 'specific_dates', $date_infos ) ? $date_infos['specific_dates'] : [];
+						if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
+							foreach ( $specific_dates as $specific_date ) {
+								$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
+								if ( ! empty( $date_item ) ) {
+									$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
+									if ( strtotime( $date_item ) >= strtotime( $now ) ) {
+										$all_dates[] = $date_item;
+									}
+								}
+							}
+						}
+					} else {
+						$start_date    = array_key_exists( 'periodic_start_date', $date_infos ) ? $date_infos['periodic_start_date'] : '';
+						$start_date    = $start_date ?: $now;
+						$sale_end_date = array_key_exists( 'periodic_end_date', $date_infos ) ? $date_infos['periodic_end_date'] : '';
+						$sale_end_date = $sale_end_date ? gmdate( 'Y-m-d', strtotime( $sale_end_date ) ) : '';
+						$active_days   = array_key_exists( 'advance_date_number', $date_infos ) ? $date_infos['advance_date_number'] : 28;
+						if ( strtotime( $now ) >= strtotime( $start_date ) ) {
+							$start_date = $now;
+						}
+						$end_date = gmdate( 'Y-m-d', strtotime( $start_date . ' +' . $active_days . ' day' ) );
+						if ( $sale_end_date && strtotime( $sale_end_date ) < strtotime( $end_date ) ) {
+							$end_date = $sale_end_date;
+						}
+						if ( strtotime( $start_date ) < strtotime( $end_date ) ) {
+							$off_dates       = [];
+							$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
+							$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
+							if ( in_array( 'off_date_range', $date_rule_array ) ) {
+								$off_date_range = array_key_exists( 'off_date_range', $date_infos ) ? $date_infos['off_date_range'] : [];
+								if ( is_array( $off_date_range ) && sizeof( $off_date_range ) > 0 ) {
+									foreach ( $off_date_range as $off_date ) {
+										if ( is_array( $off_date ) && array_key_exists( 'from', $off_date ) && $off_date['from'] && array_key_exists( 'to', $off_date ) && $off_date['to'] ) {
+											$from_date      = gmdate( 'Y-m-d', strtotime( $off_date['from'] ) );
+											$to_date        = gmdate( 'Y-m-d', strtotime( $off_date['to'] ) );
+											$off_date_lists = self::date_separate_period( $from_date, $to_date );
+											foreach ( $off_date_lists as $off_date_list ) {
+												$off_dates[] = $off_date_list->format( 'Y-m-d' );
+											}
+										}
+									}
+								}
+							}
+							if ( in_array( 'specific_of_date', $date_rule_array ) ) {
+								$particular_off_dates = array_key_exists( 'specific_off_dates', $date_infos ) ? $date_infos['specific_off_dates'] : [];
+								if ( is_array( $particular_off_dates ) && sizeof( $particular_off_dates ) > 0 ) {
+									foreach ( $particular_off_dates as $particular_off_date ) {
+										$particular_off_date = gmdate( 'Y-m-d', strtotime( $particular_off_date ) );
+										$off_dates[]         = $particular_off_date;
+									}
+								}
+							}
+							$off_dates     = array_unique( $off_dates );
+							$off_day_array = [];
+							if ( in_array( 'weekend', $date_rule_array ) ) {
+								$off_days      = array_key_exists( 'weekend', $date_infos ) ? $date_infos['weekend'] : '';
+								$off_day_array = $off_days ? explode( ',', $off_days ) : [];
+							}
+							$repeat = array_key_exists( 'periodic_after', $date_infos ) ? $date_infos['periodic_after'] : 1;
+							$dates  = self::date_separate_period( $start_date, $end_date, $repeat );
+							foreach ( $dates as $date ) {
+								$date = $date->format( 'Y-m-d' );
+								if ( strtotime( $date ) >= strtotime( $now ) ) {
+									$day = strtolower( gmdate( 'l', strtotime( $date ) ) );
+									if ( ! in_array( $date, $off_dates ) && ! in_array( $day, $off_day_array ) ) {
+										$all_dates[] = $date;
+									}
+								}
+							}
+							//==================//
+							if ( in_array( 'special_on_dates', $date_rule_array ) ) {
+								$special_on_dates = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];
+								if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
+									foreach ( $special_on_dates as $special_on_date ) {
+										$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
+										if ( ! empty( $date_item ) ) {
+											$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
+											if ( strtotime( $date_item ) >= strtotime( $now ) ) {
+												$all_dates[] = $date_item;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				$all_dates = array_unique( $all_dates );
+				usort( $all_dates, "ABPRF_Function::sort_date" );
+
+				return $all_dates;
+			}
+
 			public static function date_picker_format(): string {
 				$format      = ABPRF_Date_Format;
 				$date_format = 'Y-m-d';
@@ -226,58 +362,42 @@
 				return max( $price, 0 );
 			}
 
-			public static function wc_price( $post_id, $price, $args = array() ): string {
+			public static function tax_with_price( $post_id, $price ): string {
 				$num_of_decimal = get_option( 'woocommerce_price_num_decimals', 2 );
-				$args           = wp_parse_args( $args, array( 'qty' => '', 'price' => '', ) );
 				$_product       = self::get_post_info( $post_id, 'link_wc_id', $post_id );
 				$product        = wc_get_product( $_product );
-				$qty            = '' !== $args['qty'] ? max( 0.0, (float) $args['qty'] ) : 1;
-				$tax_with_price = get_option( 'woocommerce_tax_display_shop' );
+				$tax_display    = get_option( 'woocommerce_tax_display_shop' );
 				if ( '' === $price ) {
 					return '';
-				} elseif ( empty( $qty ) ) {
-					return 0.0;
 				}
-				$line_price   = (float) $price * (int) $qty;
-				$return_price = $line_price;
+				$return_price = (float) $price;
 				if ( $product && $product->is_taxable() ) {
-					$tax_rates      = WC_Tax::get_rates( $product->get_tax_class() );
-					$base_tax_rates = WC_Tax::get_base_tax_rates( $product->get_tax_class( 'unfiltered' ) );
-					if ( ! empty( WC()->customer ) && WC()->customer->get_is_vat_exempt() ) {
-						$remove_taxes = apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) ? WC_Tax::calc_tax( $line_price, $base_tax_rates, true ) : WC_Tax::calc_tax( $line_price, $tax_rates, true );
-						if ( 'yes' === get_option( 'woocommerce_tax_round_at_subtotal' ) ) {
-							$remove_taxes_total = array_sum( $remove_taxes );
+					$tax_rates = WC_Tax::get_rates( $product->get_tax_class() );
+					if ( ! empty( $tax_rates ) ) {
+						$taxes     = WC_Tax::calc_tax( $return_price, $tax_rates, false );
+						$tax_total = 'yes' === get_option( 'woocommerce_tax_round_at_subtotal' ) ? array_sum( $taxes ) : array_sum( array_map( 'wc_round_tax_total', $taxes ) );
+						if ( ! empty( WC()->customer ) && WC()->customer->get_is_vat_exempt() ) {
+							$return_price = round( $return_price, $num_of_decimal );
 						} else {
-							$remove_taxes_total = array_sum( array_map( 'wc_round_tax_total', $remove_taxes ) );
+							$return_price = $tax_display === 'excl' ? round( $return_price, $num_of_decimal ) : round( $return_price + $tax_total, $num_of_decimal );
 						}
-						// $return_price = round( $line_price, $num_of_decimal);
-						$return_price = round( $line_price - $remove_taxes_total, $num_of_decimal );
-					} else {
-						$base_taxes   = WC_Tax::calc_tax( $line_price, $base_tax_rates, true );
-						$modded_taxes = WC_Tax::calc_tax( $line_price - array_sum( $base_taxes ), $tax_rates );
-						if ( 'yes' === get_option( 'woocommerce_tax_round_at_subtotal' ) ) {
-							$base_taxes_total   = array_sum( $base_taxes );
-							$modded_taxes_total = array_sum( $modded_taxes );
-						} else {
-							$base_taxes_total   = array_sum( array_map( 'wc_round_tax_total', $base_taxes ) );
-							$modded_taxes_total = array_sum( array_map( 'wc_round_tax_total', $modded_taxes ) );
-						}
-						$return_price = $tax_with_price == 'excl' ? round( $line_price - $base_taxes_total, $num_of_decimal ) : round( $line_price - $base_taxes_total + $modded_taxes_total, $num_of_decimal );
 					}
 				}
-				$return_price   = apply_filters( 'woocommerce_get_price_including_tax', $return_price, $qty, $product );
-				$display_suffix = get_option( 'woocommerce_price_display_suffix' ) ? get_option( 'woocommerce_price_display_suffix' ) : '';
 
-				return wc_price( $return_price ) . ' ' . $display_suffix;
+				return apply_filters( 'woocommerce_get_price_to_display', $return_price, 1, $product );
 			}
 
 			public static function get_wc_raw_price( $post_id, $price ) {
-				$price = self::wc_price( $post_id, $price );
+				$price = self::tax_with_price( $post_id, $price );
 
 				return self::price_convert_raw( $price );
 			}
 
 			//=============================//
+			public static function get_brand_icon() { return self::get_options( 'abprf_configuration', 'brand_icon' ,'fas fa-hammer'); }
+
+			public static function get_cpt(): string { return 'abprf_post'; }
+
 			public static function get_image_url( $post_id = '', $image_id = '', $size = 'full' ): bool|string {
 				$image_id = $post_id && $post_id > 0 ? get_post_thumbnail_id( $post_id ) : $image_id;
 
@@ -302,7 +422,6 @@
 				return $page?->ID;
 			}
 
-			//=============================//
 			public static function check_wc(): int {
 				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 				$plugin_dir = ABSPATH . 'wp-content/plugins/woocommerce';
@@ -315,7 +434,44 @@
 				}
 			}
 
-			//=============================//
+			public static function already_in_cart( $post_id, $bp, $dp, $bp_date, $seat_name ) {
+				$count = 0;
+				if ( is_admin() && str_contains( wp_get_referer(), 'add_order' ) ) {
+					return $count;
+				}
+				global $woocommerce;
+				$cart_items = $woocommerce->cart->get_cart();
+				if ( is_array( $cart_items ) && sizeof( $cart_items ) > 0 ) {
+					foreach ( $cart_items as $cart_item ) {
+						$cart_post_id = array_key_exists( 'post_id', $cart_item ) ? $cart_item['post_id'] : '';
+						$cart_date    = array_key_exists( 'bp_time', $cart_item ) ? $cart_item['bp_time'] : '';
+						$cart_date    = $cart_date ? gmdate( 'Y-m-d', strtotime( $cart_date ) ) : '';
+						$bp_date      = $bp_date ? gmdate( 'Y-m-d', strtotime( $bp_date ) ) : '';
+						if ( $cart_post_id == $post_id && strtotime( $cart_date ) == strtotime( $bp_date ) ) {
+							$routes = self::get_post_info( $post_id, 'route_direction', [] );
+							if ( sizeof( $routes ) > 0 ) {
+								$cart_bp = array_key_exists( 'bp', $cart_item ) ? $cart_item['bp'] : '';
+								$cart_dp = array_key_exists( 'dp', $cart_item ) ? $cart_item['dp'] : '';
+								$sp      = array_search( $bp, $routes );
+								$ep      = array_search( $dp, $routes );
+								if ( in_array( $cart_bp, array_slice( $routes, 0, $ep ) ) && in_array( $cart_dp, array_slice( $routes, $sp + 1 ) ) ) {
+									$seat_infos = array_key_exists( 'ticket_info', $cart_item ) ? $cart_item['ticket_info'] : '';
+									if ( sizeof( $seat_infos ) > 0 ) {
+										foreach ( $seat_infos as $seat_info ) {
+											if ( array_key_exists( 'seat', $seat_info ) && strtolower( $seat_info['seat'] ) == strtolower( $seat_name ) ) {
+												$count += array_key_exists( 'qty', $cart_item ) ? $cart_item['qty'] : 1;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				return $count;
+			}
+
 			public static function get_user_role( $user_ID ): string {
 				global $wp_roles;
 				$user_role_list = '';
@@ -335,47 +491,10 @@
 				return $user_role_list;
 			}
 
-			//=============================//
-			public static function get_brand_icon() { return ABPRF_Function::get_options( 'abprf_configuration', 'brand_icon' ); }
-
-			//=============================//
-			public static function array_to_string( $array ) {
-				$ids = '';
-				if ( sizeof( $array ) > 0 ) {
-					foreach ( $array as $data ) {
-						if ( $data ) {
-							$ids = $ids ? $ids . ',' . $data : $data;
-						}
-					}
-				}
-
-				return $ids;
-			}
-
-			public static function serialize_array_convert( $form_data ): array {
-				$infos = [];
-				if ( sizeof( $form_data ) > 0 ) {
-					foreach ( $form_data as $data ) {
-						$_name = is_array( $data ) && array_key_exists( 'name', $data ) ? sanitize_text_field( $data['name'] ) : '';
-						$name  = explode( '[]', $_name )[0];
-						$value = is_array( $data ) && array_key_exists( 'value', $data ) ? sanitize_text_field( $data['value'] ) : '';
-						if ( $name ) {
-							if ( $_name !== $name ) {
-								$infos[ $name ][] = $value;
-							} else {
-								$infos[ $name ] = $value;
-							}
-						}
-					}
-				}
-
-				return $infos;
-			}
-
 			//=========== Template Related==================//
 			public static function details_template_path( $post_id ): string {
 				$post_id       = $post_id ?? get_the_id();
-				$template_name = ABPRF_Function::get_post_info( $post_id, 'abprf_template', 'default' );
+				$template_name = self::get_post_info( $post_id, 'abprf_template', 'default' );
 				$file_name     = 'details_theme/' . $template_name . '.php';
 				$dir           = ABPRF_DIR . '/abprf_templates/' . $file_name;
 				if ( ! file_exists( $dir ) ) {
@@ -391,9 +510,6 @@
 
 				return file_exists( $file_path ) ? $file_path : $default_dir;
 			}
-
-			//=============================//
-			public static function get_cpt(): string { return 'abprf_post'; }
 
 			//============== Category/Post Function===============//
 			public static function route_for_price( $routing_infos, $price_infos, $ticket_types ): array {
@@ -459,10 +575,10 @@
 				$route_lists = [];
 				if ( $post_id > 0 ) {
 					if ( $bp ) {
-						$route_lists = ABPRF_Function::get_post_info( $post_id, 'abptm_bp', [] );
+						$route_lists = self::get_post_info( $post_id, 'abptm_bp', [] );
 					} else {
 						if ( $bp_point ) {
-							$routes = ABPRF_Function::get_post_info( $post_id, 'routing_infos', [] );
+							$routes = self::get_post_info( $post_id, 'routing_infos', [] );
 							if ( sizeof( $routes ) > 0 ) {
 								$exit_bp = 0;
 								foreach ( $routes as $route ) {
@@ -478,7 +594,7 @@
 								}
 							}
 						} else {
-							$route_lists = ABPRF_Function::get_post_info( $post_id, 'abptm_dp', [] );
+							$route_lists = self::get_post_info( $post_id, 'abptm_dp', [] );
 						}
 					}
 				}
@@ -513,7 +629,7 @@
 				if ( $post_id > 0 ) {
 					$dates = self::get_post_dates( $post_id );
 					if ( sizeof( $dates ) > 0 ) {
-						$routes = ABPRF_Function::get_post_info( $post_id, 'routing_infos', [] );
+						$routes = self::get_post_info( $post_id, 'routing_infos', [] );
 						foreach ( $dates as $date ) {
 							$route_infos = self::get_route_info( $post_id, $date, $routes );
 							if ( sizeof( $route_infos ) > 0 ) {
@@ -540,80 +656,10 @@
 				return array_unique( $all_dates );
 			}
 
-			public static function get_post_dates( $post_id ): array {
-				$all_dates = [];
-				if ( $post_id > 0 ) {
-					$date_type = ABPRF_Function::get_post_info( $post_id, 'date_type', 'periodic_date' );
-					$now       = current_time( 'Y-m-d' );
-					if ( $date_type == 'specific_date' ) {
-						$specific_dates = ABPRF_Function::get_post_info( $post_id, 'specific_dates', array() );
-						if ( sizeof( $specific_dates ) ) {
-							foreach ( $specific_dates as $specific_date ) {
-								$date_item = gmdate( 'Y-m-d', strtotime( $specific_date ) );
-								if ( strtotime( $date_item ) >= strtotime( $now ) ) {
-									$all_dates[] = $date_item;
-								}
-							}
-						}
-					} else {
-						$start_date    = ABPRF_Function::get_post_info( $post_id, 'periodic_start_date' ) ?: ABPRF_Function::get_options( 'abprf_configuration', 'periodic_start_date', $now );
-						$sale_end_date = ABPRF_Function::get_options( 'abprf_configuration', 'periodic_end_date' ) ?: ABPRF_Function::get_post_info( $post_id, 'periodic_end_date' );
-						$sale_end_date = $sale_end_date ? gmdate( 'Y-m-d', strtotime( $sale_end_date ) ) : '';
-						$active_days   = ABPRF_Function::get_post_info( $post_id, 'advance_date_number' ) ?: ABPRF_Function::get_options( 'abprf_configuration', 'advance_date_number', 28 );
-						if ( strtotime( $now ) >= strtotime( $start_date ) ) {
-							$start_date = $now;
-						}
-						$end_date = gmdate( 'Y-m-d', strtotime( $start_date . ' +' . $active_days . ' day' ) );
-						if ( $sale_end_date && strtotime( $sale_end_date ) < strtotime( $end_date ) ) {
-							$end_date = $sale_end_date;
-						}
-						if ( strtotime( $start_date ) < strtotime( $end_date ) ) {
-							$off_dates     = [];
-							$all_off_dates = ABPRF_Function::get_post_info( $post_id, 'off_date_range', array() );
-							if ( sizeof( $all_off_dates ) > 0 ) {
-								foreach ( $all_off_dates as $off_date ) {
-									if ( $off_date['from'] && $off_date['to'] ) {
-										$from_date      = gmdate( 'Y-m-d', strtotime( $off_date['from'] ) );
-										$to_date        = gmdate( 'Y-m-d', strtotime( $off_date['to'] ) );
-										$off_date_lists = ABPRF_Function::date_separate_period( $from_date, $to_date );
-										foreach ( $off_date_lists as $off_date_list ) {
-											$off_dates[] = $off_date_list->format( 'Y-m-d' );
-										}
-									}
-								}
-							}
-							$particular_off_dates = ABPRF_Function::get_post_info( $post_id, 'specific_off_dates', array() );
-							if ( sizeof( $particular_off_dates ) > 0 ) {
-								foreach ( $particular_off_dates as $particular_off_date ) {
-									$particular_off_date = gmdate( 'Y-m-d', strtotime( $particular_off_date ) );
-									$off_dates[]         = $particular_off_date;
-								}
-							}
-							$off_dates     = array_unique( $off_dates );
-							$off_days      = ABPRF_Function::get_post_info( $post_id, 'weekend' );
-							$off_day_array = $off_days ? explode( ',', $off_days ) : [];
-							$repeat        = ABPRF_Function::get_post_info( $post_id, 'periodic_after', 1 );
-							$dates         = ABPRF_Function::date_separate_period( $start_date, $end_date, $repeat );
-							foreach ( $dates as $date ) {
-								$date = $date->format( 'Y-m-d' );
-								if ( strtotime( $date ) >= strtotime( $now ) ) {
-									$day = strtolower( gmdate( 'l', strtotime( $date ) ) );
-									if ( ! in_array( $date, $off_dates ) && ! in_array( $day, $off_day_array ) ) {
-										$all_dates[] = $date;
-									}
-								}
-							}
-						}
-					}
-				}
-
-				return array_unique( $all_dates );
-			}
-
 			public static function get_route_info( $post_id, $date, $route_infos = [] ): array {
 				$all_infos   = [];
 				$now         = current_time( 'Y-m-d H:i' );
-				$route_infos = sizeof( $route_infos ) > 0 ? $route_infos : ABPRF_Function::get_post_info( $post_id, 'routing_infos', [] );
+				$route_infos = sizeof( $route_infos ) > 0 ? $route_infos : self::get_post_info( $post_id, 'routing_infos', [] );
 				if ( $date && sizeof( $route_infos ) > 0 ) {
 					$prev_date      = $date;
 					$prev_full_date = $date;
@@ -648,7 +694,7 @@
 					$now   = current_time( 'Y-m-d H:i' );
 					$dates = self::get_post_dates( $post_id );
 					if ( sizeof( $dates ) > 0 ) {
-						$routes = ABPRF_Function::get_post_info( $post_id, 'routing_infos', [] );
+						$routes = self::get_post_info( $post_id, 'routing_infos', [] );
 						foreach ( $dates as $date ) {
 							$route_infos = self::get_route_info( $post_id, $date, $routes );
 							if ( sizeof( $route_infos ) > 0 ) {
@@ -674,7 +720,7 @@
 			}
 
 			public static function slice_buffer_time( $date ) {
-				$buffer_time = ABPRF_Function::get_options( 'abprf_configuration', 'ticket_sale_close_before', 0 ) * 60;
+				$buffer_time = self::get_options( 'abprf_configuration', 'ticket_sale_close_before', 0 ) * 60;
 				if ( $buffer_time > 0 ) {
 					$date = gmdate( 'Y-m-d H:i', strtotime( $date ) - $buffer_time );
 				}
@@ -691,10 +737,10 @@
 					$ticket_type = array_key_exists( 'ticket_type', $abprf_infos ) ? $abprf_infos['ticket_type'] : '';
 					$ticket_type = $ticket_type ? explode( ',', $ticket_type ) : [];
 					foreach ( $ticket_type as $key ) {
-						$ticket_types[ $key ] = ABPRF_Function::get_ticket_type( $key );
+						$ticket_types[ $key ] = self::get_ticket_type( $key );
 					}
 				} else {
-					$ticket_infos = array_key_exists( 'equipment_infos', $abprf_infos ) ? $abprf_infos['equipment_infos'] : ABPRF_Function::get_post_info( $post_id, 'equipment_infos', [] );
+					$ticket_infos = array_key_exists( 'equipment_infos', $abprf_infos ) ? $abprf_infos['equipment_infos'] : self::get_post_info( $post_id, 'equipment_infos', [] );
 					if ( sizeof( $ticket_infos ) > 0 ) {
 						foreach ( $ticket_infos as $key => $ticket_info ) {
 							$ticket_types[ $key ] = is_array( $ticket_info ) && array_key_exists( 'name', $ticket_info ) ? $ticket_info['name'] : '';
@@ -706,66 +752,28 @@
 			}
 
 			//=============================//
-			public static function already_in_cart( $post_id, $bp, $dp, $bp_date, $seat_name ) {
-				$count = 0;
-				if ( is_admin() && str_contains( wp_get_referer(), 'add_order' ) ) {
-					return $count;
-				}
-				global $woocommerce;
-				$cart_items = $woocommerce->cart->get_cart();
-				if ( is_array( $cart_items ) && sizeof( $cart_items ) > 0 ) {
-					foreach ( $cart_items as $cart_item ) {
-						$cart_post_id = array_key_exists( 'post_id', $cart_item ) ? $cart_item['post_id'] : '';
-						$cart_date    = array_key_exists( 'bp_time', $cart_item ) ? $cart_item['bp_time'] : '';
-						$cart_date    = $cart_date ? gmdate( 'Y-m-d', strtotime( $cart_date ) ) : '';
-						$bp_date      = $bp_date ? gmdate( 'Y-m-d', strtotime( $bp_date ) ) : '';
-						if ( $cart_post_id == $post_id && strtotime( $cart_date ) == strtotime( $bp_date ) ) {
-							$routes = ABPRF_Function::get_post_info( $post_id, 'route_direction', [] );
-							if ( sizeof( $routes ) > 0 ) {
-								$cart_bp = array_key_exists( 'bp', $cart_item ) ? $cart_item['bp'] : '';
-								$cart_dp = array_key_exists( 'dp', $cart_item ) ? $cart_item['dp'] : '';
-								$sp      = array_search( $bp, $routes );
-								$ep      = array_search( $dp, $routes );
-								if ( in_array( $cart_bp, array_slice( $routes, 0, $ep ) ) && in_array( $cart_dp, array_slice( $routes, $sp + 1 ) ) ) {
-									$seat_infos = array_key_exists( 'ticket_info', $cart_item ) ? $cart_item['ticket_info'] : '';
-									if ( sizeof( $seat_infos ) > 0 ) {
-										foreach ( $seat_infos as $seat_info ) {
-											if ( array_key_exists( 'seat', $seat_info ) && strtolower( $seat_info['seat'] ) == strtolower( $seat_name ) ) {
-												$count += array_key_exists( 'qty', $cart_item ) ? $cart_item['qty'] : 1;
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-
-				return $count;
-			}
-
 			//==============Price Section===============//
 			public static function get_price( $post_id, $bp, $dp, $type = 'price', $ud = false, $date = '' ) {
 				$price       = 0;
-				$price_infos = ABPRF_Function::get_post_info( $post_id, 'price_infos', [] );
+				$price_infos = self::get_post_info( $post_id, 'price_infos', [] );
 				if ( sizeof( $price_infos ) > 0 ) {
 					foreach ( $price_infos as $price_info ) {
 						if ( $price_info['bp'] == $bp && $price_info['dp'] == $dp ) {
 							$price = $price_info[ $type ];
 							if ( $ud && $price ) {
-								$ud_increase = (int) ABPRF_Function::get_post_info( $post_id, 'abptm_ud_price_increase', 0 );
+								$ud_increase = (int) self::get_post_info( $post_id, 'abptm_ud_price_increase', 0 );
 								$price       = $price + ( $price * $ud_increase / 100 );
 							}
 						}
 					}
 				}
 
-				return ABPRF_Function::get_wc_raw_price( $post_id, $price );
+				return self::get_wc_raw_price( $post_id, $price );
 			}
 
 			public static function get_additional_price( $post_id, $service_name ) {
-				$services = ABPRF_Function::get_post_info( $post_id, 'additional_services' );
-				$display  = ABPRF_Function::get_post_info( $post_id, 'display_additional_services', 'on' );
+				$services = self::get_post_info( $post_id, 'additional_services' );
+				$display  = self::get_post_info( $post_id, 'display_additional_services', 'on' );
 				$price    = 0;
 				if ( $display == 'on' && sizeof( $services ) > 0 ) {
 					foreach ( $services as $service ) {
@@ -776,7 +784,7 @@
 					}
 				}
 
-				return ABPRF_Function::get_wc_raw_price( $post_id, $price );
+				return self::get_wc_raw_price( $post_id, $price );
 			}
 
 			//=============================//
@@ -785,7 +793,7 @@
 				$equipment_ids = ABPRF_Query::get_equipment_id( $bp, $dp );
 				if ( sizeof( $equipment_ids ) > 0 ) {
 					foreach ( $equipment_ids as $equipment_id ) {
-						$full_infos = ABPRF_Function::get_route_full_info( $equipment_id, $bp, $bp_date );
+						$full_infos = self::get_route_full_info( $equipment_id, $bp, $bp_date );
 						if ( sizeof( $full_infos ) > 0 ) {
 							foreach ( $full_infos as $full_info ) {
 								if ( $full_info['stop'] == $bp ) {
@@ -798,7 +806,7 @@
 							}
 						}
 					}
-					usort( $list_infos, "ABPRF_Function::sort_date_array" );
+					usort( $list_infos, "self::sort_date_array" );
 				}
 
 				return $list_infos;
@@ -807,7 +815,7 @@
 			//=============================//
 			public static function get_seat_type( $type ): string {
 				if ( $type == 'adult' || $type == 'child' || $type == 'infant' ) {
-					$ticket_names_array = ABPRF_Function::get_ticket_type();
+					$ticket_names_array = self::get_ticket_type();
 
 					return '( ' . $ticket_names_array[ $type ] . ' )';
 				}

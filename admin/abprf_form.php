@@ -15,13 +15,16 @@
 			public function load_client_global_form(): void {
 				$abprf_forms = ABPRF_Function::get_option( 'abprf_forms', ABPRF_Layout::static_form() );
 				?>
-                <form class="_section_xs abprf_save_client_form" method="post" action="">
-                    <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abprf-rental-forge' ); ?></h4>
-					<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
-                    <div class="_divider_xs"></div>
-					<?php $this->passenger_form_settings( $abprf_forms ); ?>
-                    <div class="_divider_xs"></div>
-                    <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Client Form Configuration', 'abprf-rental-forge' ); ?></button>
+                <form class="_reflex_6_abp_panel_max_1200_mar_auto save_client_form" method="post" action="">
+                    <div class="_panel_head">
+                        <h4 class="_abprf"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abprf-rental-forge' ); ?></h4>
+						<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
+                    </div>
+                    <div class="_panel_body">
+						<?php $this->passenger_form_settings( $abprf_forms ); ?>
+                        <div class="_divider_xs"></div>
+                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Client Form Configuration', 'abprf-rental-forge' ); ?></button>
+                    </div>
                 </form>
 				<?php
 			}
@@ -52,7 +55,7 @@
                                     <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Client Form ?', 'abprf-rental-forge' ); ?></span>
                                 </div>
                                 <div data-collapse="#active_global_form" class=" <?php echo esc_attr( $active_global_form == 'on' ? '' : 'rf_active' ); ?>">
-                                    <button type="button" class="_btn_theme abprf_import_global_form"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Global Client Form', 'abprf-rental-forge' ); ?></button>
+                                    <button type="button" class="_btn_theme import_global_form"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Global Client Form', 'abprf-rental-forge' ); ?></button>
                                 </div>
                             </div>
                             <div class="_divider_xs"></div>
@@ -144,7 +147,7 @@
                 <tr class="delete_area data_single_collapse">
                     <td>
                         <label>
-                            <input type="text" class="_form_control validation_name" name="client_form_title[]" placeholder="<?php esc_attr_e( 'Name', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $label ); ?>"/>
+                            <input type="text" class="_form_control_min_150 validation_name" name="client_form_title[]" placeholder="<?php esc_attr_e( 'Name', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $label ); ?>"/>
                         </label>
                     </td>
                     <th class="_text_table_center">
@@ -152,13 +155,13 @@
                             <input type="hidden" value="<?php echo esc_attr( $id ); ?>" name="client_form_id[]" /><?php echo esc_html( $id ); ?>
 						<?php } else { ?>
                             <label>
-                                <input type="text" class="_form_control validation_id" name="client_form_id[]" placeholder="<?php esc_attr_e( 'Unique ID', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $id ); ?>"/>
+                                <input type="text" class="_form_control_min_150 validation_id" name="client_form_id[]" placeholder="<?php esc_attr_e( 'Unique ID', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $id ); ?>"/>
                             </label>
 						<?php } ?>
                     </th>
                     <td>
                         <label>
-                            <select class="_form_control" name="client_form_type[]" data-collapse-target data-collapse-target-multi>
+                            <select class="_form_control_min_150" name="client_form_type[]" data-collapse-target data-collapse-target-multi>
                                 <option value="text" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'text' ? 'selected' : '' ); ?>><?php esc_html_e( 'Text', 'abprf-rental-forge' ); ?></option>
                                 <option value="email" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'email' ? 'selected' : '' ); ?>><?php esc_html_e( 'E-Mail', 'abprf-rental-forge' ); ?></option>
                                 <option value="number" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'number' ? 'selected' : '' ); ?>><?php esc_html_e( 'Number', 'abprf-rental-forge' ); ?></option>
@@ -172,19 +175,19 @@
                     </td>
                     <td>
                         <label data-collapse="#client_form_type" class="<?php echo esc_attr( $active_type ); ?>">
-                            <input type="text" class="_form_control validation_name" name="client_form_option[]" placeholder="<?php esc_attr_e( 'Value Option', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $options ); ?>"/>
+                            <input type="text" class="_form_control_min_150 validation_name" name="client_form_option[]" placeholder="<?php esc_attr_e( 'Value Option', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $options ); ?>"/>
                         </label>
                     </td>
                     <td>
                         <div class="<?php echo esc_attr( $active_value ); ?>" data-collapse="#client_form_value">
                             <label>
-                                <input type="text" class="_form_control validation_name" name="client_form_value[]" placeholder="<?php esc_attr_e( 'Default Value', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $d_value ); ?>"/>
+                                <input type="text" class="_form_control_min_150 validation_name" name="client_form_value[]" placeholder="<?php esc_attr_e( 'Default Value', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $d_value ); ?>"/>
                             </label>
                         </div>
                         <div class="<?php echo esc_attr( $active_date ); ?>" data-collapse="#client_form_type_date">
                             <label>
                                 <input type="hidden" name="client_form_value_date[]" value="<?php echo esc_attr( $hidden_date ); ?>"/>
-                                <input type="text" readonly name="" class="_form_control abprf_datepicker" value="<?php echo esc_attr( $visible_date ); ?>" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                <input type="text" readonly name="" class="_form_control_min_150 abprf_datepicker" value="<?php echo esc_attr( $visible_date ); ?>" placeholder="<?php echo esc_attr( $now ); ?>"/>
                                 <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abprf-rental-forge' ); ?>"></span>
                             </label>
                         </div>

@@ -36,7 +36,7 @@
 							}
 							$post_id = array_key_exists('_post_id', $form_data) ? $form_data["_post_id"] : 0;
 							$abptm_route_bp = ABPRF_Function::get_routes($post_id);
-							ABPRF_Layout::boarding_from($abptm_route_bp);
+							//ABPRF_Layout::boarding_from($abptm_route_bp);
 						}
 					}
 				}
@@ -59,7 +59,7 @@
 						$post_id = array_key_exists('_post_id', $form_data) ? $form_data["_post_id"] : 0;
 						$bp = array_key_exists('_bp', $form_data) ? $form_data["_bp"] : '';
 						$abptm_route_dp = ABPRF_Function::get_routes($post_id, false, $bp);
-						ABPRF_Layout::dropping_from($abptm_route_dp);
+						//ABPRF_Layout::dropping_from($abptm_route_dp);
 					}
 				}
 				wp_die();
@@ -80,7 +80,7 @@
 						}
 						$post_id = array_key_exists('_post_id', $form_data) ? $form_data["_post_id"] : 0;
 						$bp = array_key_exists('_bp', $form_data) ? $form_data["_bp"] : '';
-						ABPRF_Layout::departure_date($post_id, $bp);
+						//ABPRF_Layout::departure_date($post_id, $bp);
 					}
 				}
 				wp_die();

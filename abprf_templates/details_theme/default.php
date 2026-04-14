@@ -2,107 +2,81 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Exit if accessed directly
 	}
-	$post_id = $post_id ?? get_the_id();
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	if ( $post_id > 0 ) {
-		$abprf_infos   = ABPRF_Function::get_all_meta( $post_id );
-		$rent_continue = array_key_exists( 'rent_continue', $abprf_infos ) ? $abprf_infos['rent_continue'] : 'on';
-		?>
-        <div id="abprf_area" class="abprf_area default_details_page">
-            <div class="abprf_container">
-                <div class="_abprf_row">
-                    <div class="_fd_column_mar_b">
-						<?php do_action( 'abprf_title', $abprf_infos ); ?>
-						<?php do_action( 'abprf_sub_title', $abprf_infos ); ?>
-                    </div>
-                </div>
-                <div class="_abprf_row">
-                    <div class="_col_12">
-                        <h2 class="_abprf_mar_b"><?php esc_html_e( 'Available Tools', 'abprf-rental-forge' ); ?></h2>
-                        <div class="equipment_item_area">
-							<?php
-								$price_type = array_key_exists( 'price_type', $abprf_infos ) ? $abprf_infos['price_type'] : 'hourly';
-								$infos      = array_key_exists( 'equipment_infos', $abprf_infos ) ? $abprf_infos['equipment_infos'] : [];
-								if ( sizeof( $infos ) > 0 ) {
-									foreach ( $infos as $info ) {
-										$icon_image = array_key_exists( 'icon', $info ) ? $info['icon'] : '';
-										$name = array_key_exists( 'name', $info ) ? $info['name'] : '';
-										$brand = array_key_exists( 'brand', $info ) ? $info['brand'] : '';
-										?>
-                                        <div class="equipment_item">
-                                            <div class="item_head">
-                                                <div class="item_img _all_center">
-													<?php ABPRF_Layout::image_icon($icon_image); ?>
-                                                </div>
-                                                <h4 class="_abprf"><?php echo esc_html( $name ); ?></h4>
-                                                <?php if($brand){ ?>
-                                                <p class="_abprf"><?php echo esc_html($brand); ?></p>
-                                            <?php } ?>
-                                            </div>
-                                            <div class="item_body">
-                                                <div class="item_spec">
-                                                    <span class="spec_badge">820W</span>
-                                                    <span class="spec_badge">2000 RPM</span>
-                                                    <span class="spec_badge">20V MAX</span>
-                                                    <span class="spec_badge">Battery Included</span>
-                                                </div>
-                                                <div class="pricing_box">
-                                                    <div class="price_row">
-                                                        <span class="price_label">Hourly Rate</span>
-                                                        <span class="price_value" data-rate="350">৳350/hr</span>
-                                                    </div>
-                                                    <div class="item_condition">Min. 2 hours • Deposit: ৳2,000</div>
-                                                    <div class="calculated_cost">
-                                                        <div class="cost_label">Total for 4 hours:</div>
-                                                        <div class="cost_value">৳1,400</div>
-                                                    </div>
-                                                </div>
-                                                <label class="select_checkbox">
-                                                    <input type="checkbox" class="item_checkbox" data-tool="Hammer Drill" data-rate="350">
-                                                    <span class="checkbox_label">Select this tool</span>
-                                                </label>
-                                            </div>
-                                        </div>
-									<?php }
-								} ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="_abprf_row details_page_top">
-                    <div class="_col_4_12_800_bg_border_all_center"> <?php do_action( 'abprf_slider', $abprf_infos ); ?></div>
-                    <div class="details_page_info _col_4_12_800 _all_center">
-                        <div>
-                            <div class="_fd_column_mar_t_xxs title_details">
-								<?php do_action( 'abprf_category', $abprf_infos ); ?>
-								<?php do_action( 'abprf_capacity', $abprf_infos ); ?>
-                            </div>
-                            <div class="_divider_xs"></div>
-                            <div class="_f_wrap">
-								<?php do_action( 'abptm_route_direction', $abprf_infos ); ?>
+	if ( ! function_exists( 'abprf_template_default' ) ) {
+		function abprf_template_default( $post_id ) {
+			$post_id = $post_id ?? get_the_id();
+			if ( $post_id > 0 ) {
+				$abprf_infos   = ABPRF_Function::get_all_meta( $post_id );
+				$rent_continue = array_key_exists( 'rent_continue', $abprf_infos ) ? $abprf_infos['rent_continue'] : 'on';
+				$properties    = ABPRF_Query::get_property( [ 'post_id' => $post_id, 'rent_continue' => 'on', 'status' => 'publish' ] );
+                $all_dates=ABPRF_Function::get_post_dates($post_id);
+				//echo '<pre>';print_r($all_dates);echo '</pre>';
+				?>
+                <div id="abprf_area" class="abprf_area default_details_page">
+                    <div class="abprf_container">
+                        <div class="_abprf_row">
+                            <div class="_fd_column_mar_b">
+								<?php do_action( 'abprf_template_title', $post_id, $abprf_infos );
+									do_action( 'abprf_template_sub_title', $post_id, $abprf_infos ); ?>
                             </div>
                         </div>
-                    </div>
-                    <div class="_col_4_12_800_bg_border_all_center">
-						<?php if ( $rent_continue == 'on' ) {
-							//do_action('abprf_search_form', $abprf_infos, ['form' => 'column'], $form_data);
-						} else {
-							ABPRF_Layout::layout_warning_info( 'sale_close_msg' );
-						}
-						?>
-                    </div>
-                </div>
-				<?php do_action( 'abptm_the_content', $abprf_infos ); ?>
-                <div class="_abprf_row">
-					<?php if ( $rent_continue == 'on' ) { ?>
-                        <div class=" abprf_rental_result">
-							<?php //ABPRF_Layout::transport_list($form_data); ?>
+                        <div class="_abprf_row">
+                            <div class="_col_12">
+	                            <?php if ( $rent_continue == 'on' ) {
+		                            do_action('abprf_template_search_form', $all_dates, ['form' => 'inline','post_id' => $post_id] );
+	                            } else {
+		                            ABPRF_Layout::layout_warning_info( 'sale_close_msg' );
+	                            }
+	                            ?>
+                            </div>
                         </div>
-					<?php } else {
-						ABPRF_Layout::layout_warning_info( 'sale_close_msg' );
-					}
-					?>
+                        <div class="_abprf_row">
+                            <div class="_col_12">
+                                <h2 class="_abprf_mar_b"><?php esc_html_e( 'Available Property', 'abprf-rental-forge' ); ?></h2>
+                                <div class="property_item_area">
+									<?php
+										if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
+											foreach ( $properties as $property ) {
+												do_action( 'abprf_template_property_item', $post_id, $property );
+											}
+										} else {
+											ABPRF_Layout::layout_warning_info( 'no_property_found' );
+										} ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="_abprf_row details_page_top">
+                            <div class="_col_4_12_800_bg_border_all_center"> <?php do_action( 'abprf_slider', $abprf_infos ); ?></div>
+                            <div class="details_page_info _col_4_12_800 _all_center">
+                                <div>
+                                    <div class="_fd_column_mar_t_xxs title_details">
+										<?php do_action( 'abprf_category', $abprf_infos ); ?>
+										<?php do_action( 'abprf_capacity', $abprf_infos ); ?>
+                                    </div>
+                                    <div class="_divider_xs"></div>
+                                    <div class="_f_wrap">
+										<?php do_action( 'abptm_route_direction', $abprf_infos ); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_col_4_12_800_bg_border_all_center">
+
+                            </div>
+                        </div>
+						<?php do_action( 'abptm_the_content', $abprf_infos ); ?>
+                        <div class="_abprf_row">
+							<?php if ( $rent_continue == 'on' ) { ?>
+                                <div class=" abprf_rental_result">
+									<?php //ABPRF_Layout::transport_list($form_data); ?>
+                                </div>
+							<?php } else {
+								ABPRF_Layout::layout_warning_info( 'sale_close_msg' );
+							}
+							?>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-		<?php
+				<?php
+			}
+		}
 	}

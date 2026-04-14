@@ -55,20 +55,18 @@
 				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 				?>
                 <div class="abprf_area" id="abprf_configuration">
-                    <div class="abprf_container">
-                        <div class="_reflex_6_abprf_panel">
-                            <div class="abprf_tabs tab_top">
-                                <ul class="_abprf tab_lists">
-									<?php foreach ( $this->configuration_section( $abprf_configuration ) as $tab ) { ?>
-                                        <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><span class="<?php echo esc_attr( array_key_exists( 'icon', $tab ) ? $tab['icon'] : '' ); ?>"></span><?php echo esc_html( $tab['menu'] ); ?></li>
-									<?php } ?>
-                                </ul>
-                                <div class="tab_content _bg_white">
-									<?php
-										do_action( 'abprf_configuration_content', $abprf_configuration );
-										$this->show_tab_content( $abprf_configuration );
-									?>
-                                </div>
+                    <div class="_reflex_6_abp_panel_max_1200_mar_auto">
+                        <div class="abprf_tabs tab_top">
+                            <ul class="_abprf tab_lists">
+								<?php foreach ( $this->configuration_section( $abprf_configuration ) as $tab ) { ?>
+                                    <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><span class="<?php echo esc_attr( array_key_exists( 'icon', $tab ) ? $tab['icon'] : '' ); ?>"></span><?php echo esc_html( $tab['menu'] ); ?></li>
+								<?php } ?>
+                            </ul>
+                            <div class="tab_content _bg_white">
+								<?php
+									do_action( 'abprf_configuration_content', $abprf_configuration );
+									$this->show_tab_content( $abprf_configuration );
+								?>
                             </div>
                         </div>
                     </div>

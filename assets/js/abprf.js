@@ -55,14 +55,14 @@
         let bp = parent.find("[name='_bp']").val();
         let dp = $this.val();
         if (bp && dp) {
-            parent.find("#abptm_bp_date").focus();
+            parent.find("#abprf_start_date").focus();
         } else {
             $this.val('');
             parent.find("[name='_dp_dummy']").val('');
         }
     });
     function load_bp_date(parent) {
-        let target = parent.find('.abptm_bp_date');
+        let target = parent.find('.abprf_start_date');
         $.ajax({
             type: 'POST', url: abprf_ajax.ajax_url,
             data: {'action': 'abptm_get_date', 'form_data': parent.find('form').serializeArray(), 'nonce': abprf_ajax.nonce},
@@ -123,7 +123,7 @@
             parent.find("[name='_dp_dummy']").trigger('click');
             return false;
         } else if (!bp_date || bp_date === '') {
-            parent.find("#abptm_bp_date").focus();
+            parent.find("#abprf_start_date").focus();
             return false;
         } else {
             let target = parent.closest('#abprf_area').find('.abprf_rental_result');

@@ -9,19 +9,23 @@
 				add_action( 'abprf_post_content', [ $this, 'post_additional_service' ] );
 				add_action( 'wp_ajax_abprf_save_additional_service', array( $this, 'save_global_additional_service' ) );
 				add_filter( 'abprf_get_additional_array', array( $this, 'get_additional_array' ) );
+				add_filter( 'abprf_get_faq_array', array( $this, 'get_additional_array' ) );
 				add_action( 'wp_ajax_abprf_import_additional', array( $this, 'import_additional' ) );
 			}
 
 			public function load_global_additional_service(): void {
 				$additional_services = ABPRF_Function::get_option( 'abprf_additional', ABPRF_Layout::static_additional() );
 				?>
-                <form class="_section_xs abprf_save_additional_service" method="post" action="">
-                    <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Global Additional services Configuration', 'abprf-rental-forge' ); ?></h4>
-					<?php ABPRF_Layout::info_text( 'additional_services' ); ?>
-                    <div class="_divider_xs"></div>
-					<?php $this->additional_service( $additional_services ); ?>
-                    <div class="_divider_xs"></div>
-                    <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Additional services Configuration', 'abprf-rental-forge' ); ?></button>
+                <form class="_reflex_6_abp_panel_max_1200_mar_auto save_additional_service" method="post" action="">
+                    <div class="_panel_head">
+                        <h4 class="_abprf_color"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Global Additional services Configuration', 'abprf-rental-forge' ); ?></h4>
+						<?php ABPRF_Layout::info_text( 'additional_services' ); ?>
+                    </div>
+                    <div class="_panel_body">
+						<?php $this->additional_service( $additional_services ); ?>
+                        <div class="_divider_xs"></div>
+                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Additional services Configuration', 'abprf-rental-forge' ); ?></button>
+                    </div>
                 </form>
 				<?php
 			}
@@ -32,7 +36,7 @@
 				$active_global_additional = array_key_exists( 'active_global_additional', $abprf_infos ) ? $abprf_infos['active_global_additional'] : 'on';
 				?>
                 <div class="tab_item additional_configuration" data-tabs="#abprf_additional_service">
-                    <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">💰</span><?php  esc_html_e( 'Additional services Configuration', 'abprf-rental-forge'  ); ?></h4>
+                    <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">💰</span><?php esc_html_e( 'Additional services Configuration', 'abprf-rental-forge' ); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="group_setting">
                         <div class="_setting_item">
@@ -52,7 +56,7 @@
                                     <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Additional Service ?', 'abprf-rental-forge' ); ?></span>
                                 </div>
                                 <div data-collapse="#active_global_additional" class=" <?php echo esc_attr( $active_global_additional == 'on' ? '' : 'rf_active' ); ?>">
-                                    <button type="button" class="_btn_theme abprf_import_additional"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Additional Service', 'abprf-rental-forge' ); ?></button>
+                                    <button type="button" class="_btn_theme import_additional"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Additional Service', 'abprf-rental-forge' ); ?></button>
                                 </div>
                             </div>
                             <div class="_divider_xs"></div>
@@ -60,7 +64,7 @@
                         </div>
                     </div>
                     <div class="<?php echo esc_attr( $active_global_additional == 'on' ? '' : 'rf_active' ); ?>" data-collapse="#active_global_additional">
-                        <div class="abprf_additional_content">
+                        <div class="additional_content">
 							<?php $this->additional_service( $additional_services ); ?>
                         </div>
                     </div>
