@@ -18,7 +18,7 @@
                             <div class="_d_flex">
                                 <h2 class="_abprf_all_center_mar_r_xs">🏘️</h2>
                                 <div class="_fd_column">
-                                    <h5 class="_abprf"><?php esc_html_e( 'Category/Post', 'abprf-rental-forge' ); ?></h5>
+                                    <h5 class="_abprf"><?php esc_html_e( 'Post', 'abprf-rental-forge' ); ?></h5>
                                     <h4 class="_abprf_color_theme"><?php echo esc_html( $total_post); ?></h4>
                                 </div>
                             </div>

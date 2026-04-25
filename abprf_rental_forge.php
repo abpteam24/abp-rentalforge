@@ -41,8 +41,14 @@
 					define( 'ABPRF_PLUGIN_FILE', __FILE__ );
 				}
 				require_once ABPRF_DIR . '/includes/abprf_dependencies.php';
+				if ( ! defined( 'ABPRF_Dates' ) ) {
+					define( 'ABPRF_Dates',  ABPRF_Function::get_option( 'abprf_dates' ));
+				}
 				if ( ! defined( 'ABPRF_Date_Format' ) ) {
-					define( 'ABPRF_Date_Format', ABPRF_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ) );
+					define( 'ABPRF_Date_Format', is_array(ABPRF_Dates) && array_key_exists('date_format',ABPRF_Dates)?ABPRF_Dates['date_format']: 'D d M , yy' );
+				}
+				if ( ! defined( 'ABPRF_Time_Format' ) ) {
+					define( 'ABPRF_Time_Format', is_array(ABPRF_Dates) && array_key_exists('time_format',ABPRF_Dates)?ABPRF_Dates['time_format']: get_option( 'time_format' ));
 				}
 			}
 		}

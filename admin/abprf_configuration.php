@@ -184,8 +184,8 @@
 						),
 						array(
 							'name' => 'brand_icon',
-							'label' => __( 'Category/Post Icon', 'abprf-rental-forge' ),
-							'desc' => __( 'If you wish to alter the Category/Post you can do so from this location. ', 'abprf-rental-forge' ),
+							'label' => __( 'RentalForge Icon', 'abprf-rental-forge' ),
+							'desc' => __( 'If you wish to alter the RentalForge you can do so from this location. ', 'abprf-rental-forge' ),
 							'type' => 'fontawesome',
 							'default' => 'fas fa-hammer'
 						),
@@ -613,7 +613,7 @@
                 <div class="_setting_item ">
                     <div class="_f_wrap_fj_between_fa_center">
                         <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
-                        <div class="abprf_radio _input_item _f_wrap">
+                        <div class="custom_radio _input_item _f_wrap">
                             <input type="hidden" class="_form_control" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $args['options'] as $key => $option ) { ?>
                                 <div class="radio_item">
@@ -661,7 +661,7 @@
                 <div class="_setting_item ">
                     <div class="_f_wrap_fj_between_fa_center">
                         <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
-                        <div class="abprf_checkbox">
+                        <div class="custom_checkbox">
                             <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $args['options'] as $key => $label ) { ?>
                                 <div class="checkbox_item">
@@ -698,7 +698,7 @@
                 <div class="_setting_item ">
                     <div class="_f_wrap_fj_between_fa_center">
                         <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
-                        <div class="abprf_checkbox">
+                        <div class="custom_checkbox">
                             <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $wp_roles->roles as $key => $label ) { ?>
                                 <div class="checkbox_item">

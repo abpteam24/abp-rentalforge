@@ -18,15 +18,6 @@
     //======================================================================Outer Close==========//
     $(document).click(function (e) {
         let target = $(e.target);
-        // let popup = target.closest('[data-popup]');
-        // if (popup.length > 0) {
-        //     let hLength = target.closest('.popup_head').length;
-        //     let bLength = target.closest('.popup_body').length;
-        //     let fLength = target.closest('.popup_foot').length;
-        //     if (hLength === 0 && bLength === 0 && fLength === 0) {
-        //         popup.find('.popup_close').trigger('click');
-        //     }
-        // }
         if (target.closest('.dropdown_area').length === 0) {
             $('body').find('.dropdown_input').slideUp(250);
         }
@@ -244,9 +235,17 @@ function abprf_load_tabs() {
         targetTab.trigger('click');
     });
 }
+function abprf_target_close(close_id) {
+    jQuery('body').find('[data-close="' + close_id + '"]').slideUp(250);
+    return true;
+}
+function abprf_target_open(close_id) {
+    jQuery('body').find('[data-close="' + close_id + '"]').slideDown(250);
+    return true;
+}
 (function ($) {
     "use strict";
-    $(document).on('click', '.abprf_area [data-tabs-target]', function () {
+    $(document).on('click', 'div.abprf_area [data-tabs-target]', function () {
         if (!$(this).hasClass('rf_active')) {
             let tabsTarget = $(this).data('tabs-target');
             let parent = $(this).closest('.abprf_tabs');
@@ -271,7 +270,7 @@ function abprf_load_tabs() {
         }
     });
     //================//
-    $(document).on('click', '.abprf_area [data-target-popup]', function () {
+    $(document).on('click', 'div.abprf_area [data-target-popup]', function () {
         let $this = $(this);
         let target = $this.attr('data-active-popup', '').data('target-popup');
         $('body').addClass('_stop_scroll').find('[data-popup="' + target + '"]').addClass('in').promise().done(function () {
@@ -286,7 +285,7 @@ function abprf_load_tabs() {
         return true;
     });
     //================//
-    $(document).on('click', '.abprf_area [data-collapse-target]', function () {
+    $(document).on('click', 'div.abprf_area [data-collapse-target]', function () {
         let currentTarget = $(this);
         let target_id = currentTarget.data('collapse-target');
         let close_id = currentTarget.data('close-target');
@@ -396,10 +395,10 @@ function abprf_load_tabs() {
         target.val(value).trigger('change').trigger('input');
     });
     //=======================================================Group checkbox ==============//
-    $(document).on('click', 'div.abprf_area .abprf_checkbox [data-checked]', function () {
+    $(document).on('click', 'div.abprf_area .custom_checkbox [data-checked]', function () {
         let $this = $(this);
         $this.toggleClass('rf_active').promise().done(function () {
-            let parent = $(this).closest('.abprf_checkbox');
+            let parent = $(this).closest('.custom_checkbox');
             let value = '';
             let separator = ',';
             parent.find(' [data-checked]').each(function () {
@@ -414,15 +413,23 @@ function abprf_load_tabs() {
         });
     });
     //======================================================= radio========================//
-    $(document).on('click', 'div.abprf_area  .abprf_radio [data-radio]', function () {
-        let parent = $(this).closest('.abprf_radio');
+    $(document).on('click', 'div.abprf_area  .custom_radio [data-radio]', function () {
+        let parent = $(this).closest('.custom_radio');
         let $this = $(this);
         if (!$this.hasClass('rf_active')) {
             let value = $this.attr('data-radio');
             parent.find('.rf_active[data-radio]').each(function () {
+                if ($(this).attr('data-close-target')) {
+                    let close_id = $(this).attr('data-close-target');
+                    abprf_target_close(close_id);
+                }
                 $(this).removeClass('rf_active');
                 abprf_data_change($(this));
             }).promise().done(function () {
+                if ($this.attr('data-close-target')) {
+                    let close_id = $this.attr('data-close-target');
+                    abprf_target_open(close_id);
+                }
                 $this.addClass('rf_active');
                 abprf_data_change($this);
                 parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
@@ -636,7 +643,7 @@ function abprf_load_datepicker(parent = jQuery('.abprf_area')) {
         jQuery(this).removeClass('hasDatepicker').attr('id', '').removeData('datepicker').unbind();
     }).promise().done(function () {
         parent.find(".abprf_datepicker").datepicker({
-            dateFormat: abprf_var.date_picker_format, autoSize: true, changeMonth: true, changeYear: true, //showButtonPanel: true,
+            dateFormat: abprf_var.date_format, autoSize: true, changeMonth: true, changeYear: true, //showButtonPanel: true,
             onSelect: function (dateString, data) {
                 let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
                 jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');

@@ -1,176 +1,145 @@
 (function ($) {
     "use strict";
-    $(document).on("rf_trigger", "#abprf_search_area [name='_post_id']", function () {
-        let $this = $(this);
-        let parent = $this.closest('#abprf_search_area');
-        let target = parent.find('.abptm_bp');
-        $('body').find('.woocommerce-notices-wrapper').slideUp('fast');
-        $.ajax({
-            type: 'POST', url: abprf_ajax.ajax_url,
-            data: {"action": "abptm_get_bp", 'form_data': $this.closest('form').serializeArray(), 'nonce': abprf_ajax.nonce},
-            beforeSend: function () {
-                abprf_spinner(parent);
-            },
-            success: function (data) {
-                target.html(data).promise().done(function () {
-                    abprf_spinner_remove(parent);
-                    parent.find("[name='_bp_dummy']").val('').trigger('click');
-                });
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        });
+    let abprf_date_infos = JSON.parse(abprf_infos.date_info);
+    $(document).ready(function () {
+        $('body').find('#abprf_search_area').each(function () {
+            load_start_time($(this));
+        })
     });
-    $(document).on("rf_trigger", "#abprf_search_area [name='_bp']", function () {
-        let $this = $(this);
-        let bp = $this.val();
-        if (bp) {
-            let parent = $this.closest('#abprf_search_area');
-            let target = parent.find('.abptm_dp');
-            $('body').find('.woocommerce-notices-wrapper').slideUp('fast');
-            $.ajax({
-                type: 'POST', url: abprf_ajax.ajax_url,
-                data: {"action": "abptm_get_dp", 'form_data': $this.closest('form').serializeArray(), 'nonce': abprf_ajax.nonce},
-                beforeSend: function () {
-                    abprf_spinner(parent);
-                },
-                success: function (data) {
-                    target.html(data).promise().done(function () {
-                        load_bp_date(parent);
-                    }).promise().done(function () {
-                        abprf_spinner_remove(parent);
-                        parent.find("[name='_dp_dummy']").val('').trigger('click');
-                    });
-                },
-                error: function (response) {
-                    console.log(response);
-                }
+    $(document).on("change", "#abprf_search_area [name='rent_start_date']", function (e) {
+        e.preventDefault();
+        let parent = $(this).closest("#abprf_search_area");
+        let rent_rule = $.trim(parent.find('[name="rent_rule"]').val());
+        if (rent_rule === 'hourly') {
+            load_start_time(parent);
+        }
+    });
+    $(document).on("change", "#abprf_search_area [name='start_time']", function (e) {
+        e.preventDefault();
+        let parent = $(this).closest("#abprf_search_area");
+        let rent_rule = $.trim(parent.find('[name="rent_rule"]').val());
+        if (rent_rule === 'hourly') {
+            let date = parent.find('[name="rent_start_date"]').val();
+            let start_time = parent.find('[name="start_time"]').val();
+            load_end_time(parent, date, start_time);
+        }
+    });
+    function load_start_time(parent) {
+        let post_id = parent.find('[name="post_id"]').val();
+        let date = parent.find('[name="rent_start_date"]').val();
+        let dateObj = new Date(date);
+        let day_name = dateObj.toLocaleDateString('en-US', {weekday: 'long'}).toLowerCase();
+        let selectedSlotString = "";
+        if (abprf_date_infos[post_id]) {
+            let date_info = abprf_date_infos[post_id];
+            if (date_info[date]) {
+                selectedSlotString = date_info[date];
+            } else if (date_info[day_name]) {
+                selectedSlotString = date_info[day_name];
+            } else {
+                selectedSlotString = date_info['slot'];
+            }
+        }
+        if (selectedSlotString) {
+            let slots = selectedSlotString.split('##');
+            let optionsHtml = '<option disabled selected>' + abprf_infos.msg.select_rent_start_time + '</option>';
+            slots.forEach(slot => {
+                let parts = slot.split('--');
+                let val = parts[0];
+                let label = parts[1];
+                optionsHtml += `<option value="${val}">${label}</option>`;
             });
+            parent.find('[name="start_time"]').html(optionsHtml);
         }
-    });
-    $(document).on("rf_trigger", "#abprf_search_area [name='_dp']", function () {
-        let $this = $(this);
-        let parent = $this.closest('#abprf_search_area');
-        let bp = parent.find("[name='_bp']").val();
-        let dp = $this.val();
-        if (bp && dp) {
-            parent.find("#abprf_start_date").focus();
-        } else {
-            $this.val('');
-            parent.find("[name='_dp_dummy']").val('');
-        }
-    });
-    function load_bp_date(parent) {
-        let target = parent.find('.abprf_start_date');
-        $.ajax({
-            type: 'POST', url: abprf_ajax.ajax_url,
-            data: {'action': 'abptm_get_date', 'form_data': parent.find('form').serializeArray(), 'nonce': abprf_ajax.nonce},
-            success: function (data) {
-                target.html(data);
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        });
     }
-    $(document).on("change", "#abprf_search_area [name='_j_date']", function () {
-        let $this = $(this);
-        let parent = $this.closest('#abprf_search_area');
-        let target = parent.find('.abptm_return_date');
-        let dp = parent.find("[name='_dp']").val();
-        if (target.length > 0 && dp) {
-            $.ajax({
-                type: 'POST', url: abprf_ajax.ajax_url,
-                data: {"action": "abptm_get_return_date", 'form_data': $this.closest('form').serializeArray(), 'nonce': abprf_ajax.nonce},
-                beforeSend: function () {
-                    abprf_spinner(parent);
-                },
-                success: function (data) {
-                    target.html(data);
-                    abprf_spinner_remove(parent);
-                },
-                error: function (response) {
-                    console.log(response);
+    function load_end_time(parent, date, start_time) {
+        let post_id = parent.find('[name="post_id"]').val();
+        let current_date = parent.find('[name="rent_start_date"]').val();
+        let dateObj = new Date(date);
+        let day_name = dateObj.toLocaleDateString('en-US', {weekday: 'long'}).toLowerCase();
+        let selectedSlotString = "";
+        if (abprf_date_infos[post_id]) {
+            let date_info = abprf_date_infos[post_id];
+            if (date_info[date]) {
+                selectedSlotString = date_info[date];
+            } else if (date_info[day_name]) {
+                selectedSlotString = date_info[day_name];
+            } else {
+                selectedSlotString = date_info['slot'];
+            }
+        }
+        if (selectedSlotString) {
+            let slots = selectedSlotString.split('##');
+            let optionsHtml = '<option disabled selected>' + abprf_infos.msg.select_rent_end_time + '</option>';
+            slots.forEach(slot => {
+                let parts = slot.split('--');
+                let val = parts[0];
+                let label = parts[1];
+                if (current_date === date) {
+                    if (timeToMinutes(val) > timeToMinutes(start_time)) {
+                        optionsHtml += `<option value="${val}">${label}</option>`;
+                    }
+                } else {
+                    optionsHtml += `<option value="${val}">${label}</option>`;
                 }
             });
+            parent.find('[name="end_time"]').html(optionsHtml);
         }
-    });
-    $(document).on("click", "#abprf_area .abptm_goto_date", function (e) {
+    }
+    function timeToMinutes(time) {
+        let parts = time.split(':');
+        return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    }
+}(jQuery));
+(function ($) {
+    "use strict";
+    $(document).on('submit', '#abprf_search_area form.abprf_property_form', function (e) {
         e.preventDefault();
-        let date = $(this).attr('data-go_date');
-        if (date) {
-            let parent = $(this).closest('#abprf_area');
-            let key = $(this).closest('.abptm_return_trip_area').length > 0 ? '_r_date' : '_j_date';
-            let target = parent.find("#abprf_search_area [name=" + key + "]");
-            let target_picker = target.closest('label').find('.hasDatepicker');
-            target.val(date).promise().done(function () {
-                target_picker.datepicker("setDate", new Date(date));
-                parent.find('.abprf_submit').trigger('click');
-            });
+        let parent = $(this).closest('#abprf_area');
+        let form_area = $(this).closest('#abprf_search_area');
+        let rent_rule = $.trim(form_area.find('[name="rent_rule"]').val());
+        if ($.trim(form_area.find('[name="rent_start_date"]').val()).length === 0) {
+            setTimeout(function () {
+                abprf_toast_msg(abprf_infos.msg.select_rent_start_date);
+                form_area.find('#start_date').focus();
+            }, 100);
+            return;
         }
-    });
-    $(document).on("click", "#abprf_search_area .abprf_get_rental", function (e) {
-        e.preventDefault();
-        let parent = $(this).closest('#abprf_search_area');
-        let bp = parent.find('input[name="_bp"]').val();
-        let dp = parent.find('input[name="_dp"]').val();
-        let bp_date = parent.find('input[name="_j_date"]').val();
-        if (!bp || bp === '') {
-            parent.find("[name='_bp_dummy']").trigger('click');
-            return false;
-        } else if (!dp || dp === '') {
-            parent.find("[name='_dp_dummy']").trigger('click');
-            return false;
-        } else if (!bp_date || bp_date === '') {
-            parent.find("#abprf_start_date").focus();
-            return false;
-        } else {
-            let target = parent.closest('#abprf_area').find('.abprf_rental_result');
-            abprf_get_rental($(this), target, parent)
+        if (rent_rule === 'hourly') {
+            if ($.trim(form_area.find('[name="start_time"]').val()).length === 0) {
+                abprf_toast_msg(abprf_infos.msg.select_rent_start_time);
+                form_area.find('[name="start_time"]').show().focus();
+                return;
+            }
+            if ($.trim(form_area.find('[name="end_time"]').val()).length === 0) {
+                abprf_toast_msg(abprf_infos.msg.select_rent_end_time);
+                form_area.find('[name="end_time"]').show().focus();
+                return;
+            }
         }
-    });
-    function abprf_get_rental($this, target, parent) {
+        let target = parent.find('.property_item_area');
+        let formData = new FormData(this);
+        formData.append('action', 'abprf_load_property');
+        formData.append('nonce', abprf_infos.nonce);
         $.ajax({
-            type: "POST", url: abprf_ajax.ajax_url,
-            data: {'action': 'abprf_get_rental', 'form_data': $this.closest('form').serializeArray(), 'nonce': abprf_ajax.nonce},
+            type: 'POST', url: abprf_infos.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(parent);
                 abprf_spinner(target);
+                abprf_spinner(form_area);
+                abprf_toast_msg(abprf_infos.msg.property_loading);
             },
-            success: function (data) {
-                target.html(data).promise().done(function () {
-                    abprf_spinner_remove(parent);
-                    abprf_spinner_remove(target);
-                    abprf_load_slider();
-                    abprf_load_bg_image();
-                });
-            },
-            error: function (response) {
-                console.log(response);
-            },
-        });
-    }
-    $(document).on("click", ".transportation_item .abprf_get_rental_details", function (e) {
-        e.preventDefault();
-        let parent = $(this).closest('.transportation_item');
-        let target = parent.find('.abprf_rental_details');
-        if (target.children().length > 0) {
-            target.html('');
-        } else {
-            let bp = parent.find('input[name="bp"]').val();
-            let dp = parent.find('input[name="dp"]').val();
-            let bp_date = parent.find('input[name="j_date"]').val();
-            let post_id = parent.find('[name="post_id"]').val();
-            if (bp && dp && bp_date && post_id) {
-                abprf_get_rental($(this), target, parent)
+            success: function (response) {
+                abprf_spinner_remove(target);
+                abprf_spinner_remove(form_area);
+                target.html(response.data.property_info);
+                form_area.find('.date_details').html(response.data.date_details);
+                abprf_toast_msg(abprf_infos.msg.property_loading_success, 'success');
             }
-        }
+        });
     });
 }(jQuery));
 (function ($) {
     "use strict";
-    
     $(document).on('click', 'div.abprf_registration_item .ticket_type_list li', function () {
         let current = $(this);
         let target = current.closest('th').find('.seat_sale');
@@ -186,7 +155,6 @@
             }
         });
     });
-
     $(document).on('change', 'div.abprf_registration_item .ex_price_calculate', function () {
         let parent = $(this).closest('div.abprf_registration_item');
         all_management(parent);
@@ -195,41 +163,6 @@
         let parent = $(this).closest('div.abprf_registration_item');
         all_management(parent);
     })
-    $(document).on('click', 'div.abprf_registration_item .abprf_book_continue', function (e) {
-        e.preventDefault();
-        let current = $(this);
-        let parent = current.closest('div.abprf_registration_item');
-        if (get_price(parent) > 0) {
-            if (submit_validation(current) < 1) {
-                let checkout_system = parent.find("[name='checkout_system']").val();
-                if (checkout_system === 'default') {
-                    parent.find("[name='add-to-cart']").trigger('click');
-                    parent.find("[name='add-admin-order']").trigger('click');
-                } else {
-                    $.ajax({
-                        type: "POST", url: abprf_ajax.ajax_url,
-                        data: {'action': 'abprf_book_continue', 'wc_link_id': parent.find('[name="add-to-cart"]').val(), 'form_data': current.closest('form').serializeArray(), 'nonce': abprf_ajax.nonce},
-                        beforeSend: function () {
-                            abprf_spinner(parent);
-                        },
-                        success: function (data) {
-                            if (data) {
-                                window.location.href = data;
-                            } else {
-                                alert(current.attr('data-msg'));
-                                $('body').find(".abprf_get_rental").trigger('click');
-                            }
-                        },
-                        error: function (response) {
-                            console.log(response);
-                        },
-                    });
-                }
-            }
-        } else {
-            abprf_alert(current);
-        }
-    });
     function submit_validation(current) {
         let exit = 0;
         current.closest('form').find("[required]").each(function () {

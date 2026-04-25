@@ -36,14 +36,14 @@
                             </div>
                         </div>
                         <div class="_group_content">
-                            <a class="_btn_default_mar_r" href="<?php echo esc_url( $new_post_url ); ?>"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Category/Post', 'abprf-rental-forge' ); ?></a>
+                            <a class="_btn_default_mar_r" href="<?php echo esc_url( $new_post_url ); ?>"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Post', 'abprf-rental-forge' ); ?></a>
                             <button type="button" class="_btn_default" data-property_id="" data-target-popup="#abprf_property_popup"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Property', 'abprf-rental-forge' ); ?></button>
                         </div>
                     </div>
                     <div class="admin_menu _bg_info">
                         <div class="menu_list _d_flex">
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'dashboard' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'dashboard' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xs">📊</span><?php esc_html_e( 'Dashboard', 'abprf-rental-forge' ); ?></a>
-                            <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'posts' ) ); ?>" class="_btn_light_info post_tab <?php echo esc_attr( $active_tab == 'posts' ? 'rf_active' : '' ); ?>"><?php ABPRF_Layout::image_icon( $brand_icon, '_mar_r_xs' ); ?><?php esc_html_e( 'Category/Post', 'abprf-rental-forge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_post ); ?></sup></a>
+                            <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'posts' ) ); ?>" class="_btn_light_info post_tab <?php echo esc_attr( $active_tab == 'posts' ? 'rf_active' : '' ); ?>"><?php ABPRF_Layout::image_icon( $brand_icon, '_mar_r_xs' ); ?><?php esc_html_e( 'Post Lists', 'abprf-rental-forge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_post ); ?></sup></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'properties' ) ); ?>" class="_btn_light_info properties_tab <?php echo esc_attr( $active_tab == 'properties' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🏠</span><?php esc_html_e( 'Properties', 'abprf-rental-forge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_property ); ?></sup></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'orders' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'orders' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">📋</span><?php esc_html_e( 'Orders', 'abprf-rental-forge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_order ); ?></sup></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'dates' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'dates' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🗓️</span><?php esc_html_e( 'Dates', 'abprf-rental-forge' ); ?></a>

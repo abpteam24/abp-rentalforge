@@ -75,13 +75,8 @@
 
 			public static function get_option( $option, $default = [] ) {
 				$option_data = get_option( sanitize_key( $option ) );
-				if ( is_array( $default ) ) {
-					$option_data = $option_data && is_array( $option_data ) ? $option_data : $default;
-				} else {
-					$option_data = $option_data ?: $default;
-				}
 
-				return $option_data;
+				return $option_data ?: $default;
 			}
 
 			public static function get_options( $option, $key, $default = '' ) {
@@ -126,100 +121,123 @@
 				return $infos;
 			}
 
-			//============= Date Section================//
-			public static function get_post_dates( $post_id ): array {
-				$all_dates = [];
-				if ( $post_id > 0 ) {
-					$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
-					if ( $active_global_dates == 'on' ) {
-						$date_infos = self::get_option( 'abprf_dates' );
-					} else {
-						$date_infos = self::get_post_info( $post_id, 'abprf_dates', [] );
-					}
-					$date_type = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
-					$now       = current_time( 'Y-m-d' );
-					if ( $date_type == 'specific_date' ) {
-						$specific_dates = array_key_exists( 'specific_dates', $date_infos ) ? $date_infos['specific_dates'] : [];
-						if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
-							foreach ( $specific_dates as $specific_date ) {
-								$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
-								if ( ! empty( $date_item ) ) {
-									$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
-									if ( strtotime( $date_item ) >= strtotime( $now ) ) {
-										$all_dates[] = $date_item;
-									}
-								}
-							}
-						}
-					} else {
-						$start_date    = array_key_exists( 'periodic_start_date', $date_infos ) ? $date_infos['periodic_start_date'] : '';
-						$start_date    = $start_date ?: $now;
-						$sale_end_date = array_key_exists( 'periodic_end_date', $date_infos ) ? $date_infos['periodic_end_date'] : '';
-						$sale_end_date = $sale_end_date ? gmdate( 'Y-m-d', strtotime( $sale_end_date ) ) : '';
-						$active_days   = array_key_exists( 'advance_date_number', $date_infos ) ? $date_infos['advance_date_number'] : 28;
-						if ( strtotime( $now ) >= strtotime( $start_date ) ) {
-							$start_date = $now;
-						}
-						$end_date = gmdate( 'Y-m-d', strtotime( $start_date . ' +' . $active_days . ' day' ) );
-						if ( $sale_end_date && strtotime( $sale_end_date ) < strtotime( $end_date ) ) {
-							$end_date = $sale_end_date;
-						}
-						if ( strtotime( $start_date ) < strtotime( $end_date ) ) {
-							$off_dates       = [];
-							$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
-							$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
-							if ( in_array( 'off_date_range', $date_rule_array ) ) {
-								$off_date_range = array_key_exists( 'off_date_range', $date_infos ) ? $date_infos['off_date_range'] : [];
-								if ( is_array( $off_date_range ) && sizeof( $off_date_range ) > 0 ) {
-									foreach ( $off_date_range as $off_date ) {
-										if ( is_array( $off_date ) && array_key_exists( 'from', $off_date ) && $off_date['from'] && array_key_exists( 'to', $off_date ) && $off_date['to'] ) {
-											$from_date      = gmdate( 'Y-m-d', strtotime( $off_date['from'] ) );
-											$to_date        = gmdate( 'Y-m-d', strtotime( $off_date['to'] ) );
-											$off_date_lists = self::date_separate_period( $from_date, $to_date );
-											foreach ( $off_date_lists as $off_date_list ) {
-												$off_dates[] = $off_date_list->format( 'Y-m-d' );
-											}
+			//============= Date function================//
+			public static function get_all_date_time_info( $rent_rule, $post_id = '' ) {
+				$all_info  = [];
+				$js_slots  = [];
+				if ( ! empty( $post_id ) ) {
+					$all_date = ABPRF_Function::get_post_dates( $post_id );
+					if ( ( $rent_rule == 'hourly' || $rent_rule == 'hourly_daily' ) && sizeof( $all_date ) > 0 ) {
+						$slots = ABPRF_Function::get_post_time_slot( $post_id );
+						if ( is_array( $slots ) && sizeof( $slots ) > 0 ) {
+							foreach ( $slots as $key => $slot ) {
+								if ( ! empty( $slot ) ) {
+									$slot_info  = explode( '-', $slot );
+									$start_time = $slot_info[0] ?? '';
+									$end_time   = $slot_info[1] ?? '';
+									if ( ! empty( $start_time ) && ! empty( $end_time ) ) {
+										$slot_data = self::generate_time_slot( $start_time, $end_time );
+										if ( ! empty( $slot_data ) ) {
+											$js_slots[ $key ] = $slot_data;
 										}
 									}
 								}
 							}
-							if ( in_array( 'specific_of_date', $date_rule_array ) ) {
-								$particular_off_dates = array_key_exists( 'specific_off_dates', $date_infos ) ? $date_infos['specific_off_dates'] : [];
-								if ( is_array( $particular_off_dates ) && sizeof( $particular_off_dates ) > 0 ) {
-									foreach ( $particular_off_dates as $particular_off_date ) {
-										$particular_off_date = gmdate( 'Y-m-d', strtotime( $particular_off_date ) );
-										$off_dates[]         = $particular_off_date;
+						}
+						$all_info['php_info'][ $post_id ]['time']         = $slots;
+						$all_info['php_info'][ $post_id ]['date'] = implode( ',', $all_date );
+						$all_info['js_info'][ $post_id ]          = $js_slots;
+					}
+				}
+
+				return $all_info;
+			}
+
+			public static function get_date( $date_infos ): array {
+				$all_dates = [];
+				$date_type = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
+				$now       = current_time( 'Y-m-d' );
+				if ( $date_type == 'specific_date' ) {
+					$specific_dates = array_key_exists( 'specific_dates', $date_infos ) ? $date_infos['specific_dates'] : [];
+					if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
+						foreach ( $specific_dates as $specific_date ) {
+							$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
+							if ( ! empty( $date_item ) ) {
+								$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
+								if ( strtotime( $date_item ) >= strtotime( $now ) ) {
+									$all_dates[] = $date_item;
+								}
+							}
+						}
+					}
+				} else {
+					$start_date    = array_key_exists( 'periodic_start_date', $date_infos ) ? $date_infos['periodic_start_date'] : '';
+					$start_date    = $start_date ?: $now;
+					$sale_end_date = array_key_exists( 'periodic_end_date', $date_infos ) ? $date_infos['periodic_end_date'] : '';
+					$sale_end_date = $sale_end_date ? gmdate( 'Y-m-d', strtotime( $sale_end_date ) ) : '';
+					$active_days   = array_key_exists( 'advance_date_number', $date_infos ) ? $date_infos['advance_date_number'] : 28;
+					if ( strtotime( $now ) >= strtotime( $start_date ) ) {
+						$start_date = $now;
+					}
+					$end_date = gmdate( 'Y-m-d', strtotime( $start_date . ' +' . $active_days . ' day' ) );
+					if ( $sale_end_date && strtotime( $sale_end_date ) < strtotime( $end_date ) ) {
+						$end_date = $sale_end_date;
+					}
+					if ( strtotime( $start_date ) < strtotime( $end_date ) ) {
+						$off_dates       = [];
+						$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
+						$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
+						if ( in_array( 'off_date_range', $date_rule_array ) ) {
+							$off_date_range = array_key_exists( 'off_date_range', $date_infos ) ? $date_infos['off_date_range'] : [];
+							if ( is_array( $off_date_range ) && sizeof( $off_date_range ) > 0 ) {
+								foreach ( $off_date_range as $off_date ) {
+									if ( is_array( $off_date ) && array_key_exists( 'from', $off_date ) && $off_date['from'] && array_key_exists( 'to', $off_date ) && $off_date['to'] ) {
+										$from_date      = gmdate( 'Y-m-d', strtotime( $off_date['from'] ) );
+										$to_date        = gmdate( 'Y-m-d', strtotime( $off_date['to'] ) );
+										$off_date_lists = self::date_separate_period( $from_date, $to_date );
+										foreach ( $off_date_lists as $off_date_list ) {
+											$off_dates[] = $off_date_list->format( 'Y-m-d' );
+										}
 									}
 								}
 							}
-							$off_dates     = array_unique( $off_dates );
-							$off_day_array = [];
-							if ( in_array( 'weekend', $date_rule_array ) ) {
-								$off_days      = array_key_exists( 'weekend', $date_infos ) ? $date_infos['weekend'] : '';
-								$off_day_array = $off_days ? explode( ',', $off_days ) : [];
-							}
-							$repeat = array_key_exists( 'periodic_after', $date_infos ) ? $date_infos['periodic_after'] : 1;
-							$dates  = self::date_separate_period( $start_date, $end_date, $repeat );
-							foreach ( $dates as $date ) {
-								$date = $date->format( 'Y-m-d' );
-								if ( strtotime( $date ) >= strtotime( $now ) ) {
-									$day = strtolower( gmdate( 'l', strtotime( $date ) ) );
-									if ( ! in_array( $date, $off_dates ) && ! in_array( $day, $off_day_array ) ) {
-										$all_dates[] = $date;
-									}
+						}
+						if ( in_array( 'specific_of_date', $date_rule_array ) ) {
+							$particular_off_dates = array_key_exists( 'specific_off_dates', $date_infos ) ? $date_infos['specific_off_dates'] : [];
+							if ( is_array( $particular_off_dates ) && sizeof( $particular_off_dates ) > 0 ) {
+								foreach ( $particular_off_dates as $particular_off_date ) {
+									$particular_off_date = gmdate( 'Y-m-d', strtotime( $particular_off_date ) );
+									$off_dates[]         = $particular_off_date;
 								}
 							}
-							//==================//
-							if ( in_array( 'special_on_dates', $date_rule_array ) ) {
-								$special_on_dates = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];
-								if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
-									foreach ( $special_on_dates as $special_on_date ) {
-										$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
-										if ( ! empty( $date_item ) ) {
-											$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
-											if ( strtotime( $date_item ) >= strtotime( $now ) ) {
-												$all_dates[] = $date_item;
-											}
+						}
+						$off_dates     = array_unique( $off_dates );
+						$off_day_array = [];
+						if ( in_array( 'weekend', $date_rule_array ) ) {
+							$off_days      = array_key_exists( 'weekend', $date_infos ) ? $date_infos['weekend'] : '';
+							$off_day_array = $off_days ? explode( ',', $off_days ) : [];
+						}
+						$repeat = array_key_exists( 'periodic_after', $date_infos ) ? $date_infos['periodic_after'] : 1;
+						$dates  = self::date_separate_period( $start_date, $end_date, $repeat );
+						foreach ( $dates as $date ) {
+							$date = $date->format( 'Y-m-d' );
+							if ( strtotime( $date ) >= strtotime( $now ) ) {
+								$day = strtolower( gmdate( 'l', strtotime( $date ) ) );
+								if ( ! in_array( $date, $off_dates ) && ! in_array( $day, $off_day_array ) ) {
+									$all_dates[] = $date;
+								}
+							}
+						}
+						//==================//
+						if ( in_array( 'special_on_dates', $date_rule_array ) ) {
+							$special_on_dates = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];
+							if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
+								foreach ( $special_on_dates as $special_on_date ) {
+									$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
+									if ( ! empty( $date_item ) ) {
+										$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
+										if ( strtotime( $date_item ) >= strtotime( $now ) ) {
+											$all_dates[] = $date_item;
 										}
 									}
 								}
@@ -227,32 +245,217 @@
 						}
 					}
 				}
+
+				return $all_dates;
+			}
+
+			public static function get_post_dates( $post_id ): array {
+				$all_dates = [];
+				if ( $post_id > 0 ) {
+					$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
+					if ( $active_global_dates == 'on' ) {
+						$date_infos = ABPRF_Dates;
+					} else {
+						$date_infos = self::get_post_info( $post_id, 'abprf_dates', [] );
+					}
+					$all_dates = self::get_date( $date_infos );
+				}
 				$all_dates = array_unique( $all_dates );
 				usort( $all_dates, "ABPRF_Function::sort_date" );
 
 				return $all_dates;
 			}
 
-			public static function date_picker_format(): string {
-				$format      = ABPRF_Date_Format;
-				$date_format = 'Y-m-d';
-				$date_format = $format == 'yy/mm/dd' ? 'Y/m/d' : $date_format;
-				$date_format = $format == 'yy-dd-mm' ? 'Y-d-m' : $date_format;
-				$date_format = $format == 'yy/dd/mm' ? 'Y/d/m' : $date_format;
-				$date_format = $format == 'dd-mm-yy' ? 'd-m-Y' : $date_format;
-				$date_format = $format == 'dd/mm/yy' ? 'd/m/Y' : $date_format;
-				$date_format = $format == 'mm-dd-yy' ? 'm-d-Y' : $date_format;
-				$date_format = $format == 'mm/dd/yy' ? 'm/d/Y' : $date_format;
-				$date_format = $format == 'd M , yy' ? 'j M , Y' : $date_format;
-				$date_format = $format == 'D d M , yy' ? 'D j M , Y' : $date_format;
-				$date_format = $format == 'M d , yy' ? 'M  j, Y' : $date_format;
+			public static function get_time( $post_id, $date, $abprf_infos = [] ): array {
+				$all_times = [];
+				if ( $post_id > 0 && ! empty( $date ) ) {
+					$rent_type = is_array( $abprf_infos ) && array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : self::get_post_info( $post_id, 'rent_rule' );
+					if ( $rent_type == 'hourly' || $rent_type == 'hourly_daily' ) {
+						$active_global_dates = is_array( $abprf_infos ) && array_key_exists( 'active_global_dates', $abprf_infos ) ? $abprf_infos['active_global_dates'] : self::get_post_info( $post_id, 'active_global_dates', 'on' );
+						if ( $active_global_dates == 'on' ) {
+							$date_infos = ABPRF_Dates;
+						} else {
+							$date_infos = is_array( $abprf_infos ) && array_key_exists( 'abprf_dates', $abprf_infos ) ? $abprf_infos['abprf_dates'] : self::get_post_info( $post_id, 'abprf_dates', [] );
+						}
+						$date_type = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
+						if ( $date_type == 'specific_date' ) {
+							$specific_dates = array_key_exists( 'specific_dates', $date_infos ) ? $date_infos['specific_dates'] : [];
+							if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
+								foreach ( $specific_dates as $specific_date ) {
+									$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
+									if ( ! empty( $date_item ) && strtotime( $date_item ) == strtotime( $date ) ) {
+										$start_time = is_array( $specific_date ) && array_key_exists( 'start', $specific_date ) ? $specific_date['start'] : '';
+										$end_time   = is_array( $specific_date ) && array_key_exists( 'end', $specific_date ) ? $specific_date['end'] : '';
+										if ( ! empty( $start_time ) && ! empty( $end_time ) ) {
+											$all_times['start'] = $date . ' ' . $start_time;
+											$all_times['end']   = $date . ' ' . $end_time;
+										}
+									}
+								}
+							}
+						} else {
+							$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
+							$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
+							$exit            = 0;
+							if ( in_array( 'special_on_dates', $date_rule_array ) ) {
+								$special_on_dates = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];
+								if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
+									foreach ( $special_on_dates as $special_on_date ) {
+										$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
+										if ( ! empty( $date_item ) && strtotime( $date_item ) == strtotime( $date ) ) {
+											$start_time = is_array( $special_on_date ) && array_key_exists( 'start', $special_on_date ) ? $special_on_date['start'] : '';
+											$end_time   = is_array( $special_on_date ) && array_key_exists( 'end', $special_on_date ) ? $special_on_date['end'] : '';
+											if ( ! empty( $start_time ) && ! empty( $end_time ) ) {
+												$all_times['start'] = $date . ' ' . $start_time;
+												$all_times['end']   = $date . ' ' . $end_time;
+												$exit               = 1;
+											}
+										}
+									}
+								}
+							}
+							if ( $exit == 0 && in_array( 'day_wise_time', $date_rule_array ) ) {
+								$key            = strtolower( gmdate( 'D', strtotime( $date ) ) );
+								$start_time_key = $key . '_time_start';
+								$end_time_key   = $key . '_time_end';
+								if ( array_key_exists( $start_time_key, $date_infos ) && array_key_exists( $end_time_key, $date_infos ) && ! empty( $date_infos[ $start_time_key ] ) && ! empty( $date_infos[ $end_time_key ] ) ) {
+									$all_times['start'] = $date . ' ' . $date_infos[ $start_time_key ];
+									$all_times['end']   = $date . ' ' . $date_infos[ $end_time_key ];
+									$exit               = 1;
+								}
+							}
+							if ( $exit == 0 && array_key_exists( 'operation_time_start', $date_infos ) && array_key_exists( 'operation_time_end', $date_infos ) && ! empty( $date_infos['operation_time_start'] ) && ! empty( $date_infos['operation_time_end'] ) ) {
+								$all_times['start'] = $date . ' ' . $date_infos['operation_time_start'];
+								$all_times['end']   = $date . ' ' . $date_infos['operation_time_end'];
+							}
+						}
+					}
+				}
 
-				return $format == 'D M d , yy' ? 'D M  j, Y' : $date_format;
+				return $all_times;
+			}
+
+			public static function get_time_slot( $date_infos ) {
+				$all_slots            = [];
+				$date_type            = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
+				$operation_time_start = array_key_exists( 'operation_time_start', $date_infos ) && ! empty( $date_infos['operation_time_start'] ) ? $date_infos['operation_time_start'] : "00:00";
+				$operation_time_end   = array_key_exists( 'operation_time_end', $date_infos ) && ! empty( $date_infos['operation_time_end'] ) ? $date_infos['operation_time_end'] : "23:59";
+				if ( strtotime($operation_time_start)<strtotime($operation_time_end) ) {
+					$all_slots['slot'] = $operation_time_start . '-' . $operation_time_end;
+				}
+				if ( $date_type == 'specific_date' ) {
+					$specific_dates = array_key_exists( 'specific_dates', $date_infos ) ? $date_infos['specific_dates'] : [];
+					if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
+						foreach ( $specific_dates as $specific_date ) {
+							$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
+							if ( ! empty( $date_item ) ) {
+								$start_time = is_array( $specific_date ) && array_key_exists( 'start', $specific_date ) ? $specific_date['start'] : '';
+								$end_time   = is_array( $specific_date ) && array_key_exists( 'end', $specific_date ) ? $specific_date['end'] : '';
+								if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime($start_time)<strtotime($end_time) ) {
+									$all_slots[ $date_item ] = $start_time . '-' . $end_time;
+								}
+							}
+						}
+					}
+				} else {
+					$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
+					$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
+					if ( in_array( 'special_on_dates', $date_rule_array ) ) {
+						$special_on_dates = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];
+						if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
+							foreach ( $special_on_dates as $special_on_date ) {
+								$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
+								if ( ! empty( $date_item ) ) {
+									$start_time = is_array( $special_on_date ) && array_key_exists( 'start', $special_on_date ) ? $special_on_date['start'] : '';
+									$end_time   = is_array( $special_on_date ) && array_key_exists( 'end', $special_on_date ) ? $special_on_date['end'] : '';
+									if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime($start_time)<strtotime($end_time) ) {
+										$all_slots[ $date_item ] = $start_time . '-' . $end_time;
+									}
+								}
+							}
+						}
+					}
+					$operation_times = array_key_exists( 'day_wise_time', $date_infos ) ? $date_infos['day_wise_time'] : [];
+					if ( in_array( 'day_wise_time', $date_rule_array ) && sizeof( $operation_times ) > 0 ) {
+						$days = ABPRF_Layout::week_day();
+						foreach ( $days as $key => $day ) {
+							$times      = array_key_exists( $key, $operation_times ) && sizeof( $operation_times[ $key ] ) > 0 ? $operation_times[ $key ] : [];
+							$start_time = array_key_exists( 'start', $times ) ? $times['start'] : '';
+							$end_time   = array_key_exists( 'end', $times ) ? $times['end'] : '';
+							if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime($start_time)<strtotime($end_time) ) {
+								$all_slots[ $key ] = $start_time . '-' . $end_time;
+							}
+						}
+					}
+				}
+
+				return $all_slots;
+			}
+
+			public static function get_post_time_slot( $post_id ): array {
+				$all_slots = [];
+				if ( $post_id > 0 ) {
+					$rent_type = self::get_post_info( $post_id, 'rent_rule', 'hourly' );
+					if ( $rent_type == 'hourly' || $rent_type == 'hourly_daily' ) {
+						$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
+						if ( $active_global_dates == 'on' ) {
+							$date_infos = ABPRF_Dates;
+						} else {
+							$date_infos = self::get_post_info( $post_id, 'abprf_dates', ABPRF_Dates );
+						}
+						$all_slots = self::get_time_slot( $date_infos, );
+					}
+				}
+
+				return $all_slots;
+			}
+
+			public static function generate_time_slot( $start_time, $end_time, $interval = 60 ): string {
+				$slots = [];
+				try {
+					if ( ! empty( $start_time ) && ! empty( $end_time ) ) {
+						$start  = new DateTime( $start_time );
+						$end    = new DateTime( $end_time );
+						$minute = (int) $start->format( 'i' );
+						if ( $minute > 0 && $minute % $interval !== 0 ) {
+							$diff = $interval - ( $minute % $interval );
+							$start->modify( "+$diff minutes" );
+						}
+						$start->setTime( (int) $start->format( 'H' ), (int) $start->format( 'i' ), 0 );
+						while ( $start < $end ) {
+							$current_slot_start = $start->format( 'H:i' );
+							$start->add( new DateInterval( "PT{$interval}M" ) );
+							$slots[] = $current_slot_start . '--' . self::date_format( $current_slot_start, 'time' );
+						}
+					}
+				} catch ( Exception $e ) {
+					error_log( $e->getMessage() );
+				}
+
+				return implode( '##', $slots );
+			}
+
+			public static function date_picker_format(): string {
+				$formats = [
+					'yy/mm/dd' => 'Y/m/d',
+					'yy-dd-mm' => 'Y-d-m',
+					'yy/dd/mm' => 'Y/d/m',
+					'dd-mm-yy' => 'd-m-Y',
+					'dd/mm/yy' => 'd/m/Y',
+					'mm-dd-yy' => 'm-d-Y',
+					'mm/dd/yy' => 'm/d/Y',
+					'd M , yy' => 'j M , Y',
+					'D d M , yy' => 'D j M , Y',
+					'M d , yy' => 'M  j, Y',
+					'D M d , yy' => 'D M  j, Y',
+				];
+
+				return $formats[ ABPRF_Date_Format ] ?? 'Y-m-d';
 			}
 
 			public static function date_format( $date, $format = 'date' ): string {
-				$date_format = get_option( 'date_format' );
-				$time_format = get_option( 'time_format' );
+				$date_format = ABPRF_Date_Format;
+				$time_format = ABPRF_Time_Format;
 				$wp_settings = $date_format . '  ' . $time_format;
 				//$timezone = wp_timezone_string();
 				$timestamp = strtotime( $date );
@@ -308,8 +511,9 @@
 				}
 			}
 
-			public static function get_date_time_difference( $date1, $date2 ): string {
+			public static function get_date_time_difference( $date1, $date2 ): array {
 				$text = '';
+				$info = [];
 				if ( $date1 && $date2 ) {
 					$date1   = date_create( $date1 );
 					$date2   = date_create( $date2 );
@@ -321,31 +525,62 @@
 					$minutes = $diff->i;
 					$seconds = $diff->s;
 					if ( $years > 0 ) {
-						$text = $years > 1 ? $years . ' ' . __( 'Years', 'abprf-rental-forge' ) : $years . ' ' . __( 'Year', 'abprf-rental-forge' );
+						$text         .= sprintf(
+						/* translators: %s =Years */
+							_n( ' %s Year', ' %s Years', $years, 'abprf-rental-forge' ), $years );
+						$info['year'] = $years;
 					}
 					if ( $months > 0 ) {
-						$month_text = $months > 1 ? $months . ' ' . __( 'Months', 'abprf-rental-forge' ) : $months . ' ' . __( 'Month', 'abprf-rental-forge' );
-						$text       .= $text ? ' , ' . $month_text : $month_text;
+						$text          .= sprintf(
+						/* translators: %s = Months */
+							_n( ' %s Month', ' %s Months', $months, 'abprf-rental-forge' ), $months );
+						$info['month'] = $months;
 					}
 					if ( $days > 0 ) {
-						$day_text = $days > 1 ? $days . ' ' . __( 'Days', 'abprf-rental-forge' ) : $days . ' ' . __( 'Day', 'abprf-rental-forge' );
-						$text     .= $text ? ' , ' . $day_text : $day_text;
+						$text        .= sprintf(
+						/* translators: %s = Days */
+							_n( ' %s Day', ' %s Days', $days, 'abprf-rental-forge' ), $days );
+						$info['day'] = $days;
 					}
 					if ( $hours > 0 ) {
-						$hour_text = $hours > 1 ? $hours . ' ' . __( 'Hours', 'abprf-rental-forge' ) : $hours . ' ' . __( 'Hour', 'abprf-rental-forge' );
-						$text      .= $text ? ' , ' . $hour_text : $hour_text;
+						$text         .= sprintf(
+						/* translators: %s = Hours */
+							_n( ' %s Hour', ' %s Hours', $hours, 'abprf-rental-forge' ), $hours );
+						$info['hour'] = $hours;
 					}
 					if ( $minutes > 0 ) {
-						$minute_text = $minutes > 1 ? $minutes . ' ' . __( 'Minutes', 'abprf-rental-forge' ) : $minutes . ' ' . __( 'Minute', 'abprf-rental-forge' );
-						$text        .= $text ? ' , ' . $minute_text : $minute_text;
+						$text        .= sprintf(
+						/* translators: %s = Minutes */
+							_n( ' %s Minute', ' %s Minutes', $minutes, 'abprf-rental-forge' ), $minutes );
+						$info['min'] = $minutes;
 					}
 					if ( $seconds > 0 ) {
-						$second_text = $seconds > 1 ? $seconds . ' ' . __( 'Seconds', 'abprf-rental-forge' ) : $seconds . ' ' . __( 'Second', 'abprf-rental-forge' );
-						$text        .= $text ? ' , ' . $second_text : $second_text;
+						$text        .= sprintf(
+						/* translators: %s = Seconds */
+							_n( ' %s Second', ' %s Seconds', $seconds, 'abprf-rental-forge' ), $seconds );
+						$info['sec'] = $seconds;
 					}
 				}
+				$date_info['text'] = $text;
+				$date_info['info'] = $info;
 
-				return $text;
+				return $date_info;
+			}
+			public static function check_time_slot_exit($main_slots,$input_slots): bool {
+				if(!empty($main_slots) && !empty($input_slots)) {
+					$main_slots=explode('-',$main_slots);
+					$input_slots=explode('-',$input_slots);
+					if(isset($main_slots[0]) && isset($main_slots[1]) && isset($input_slots[0]) && isset($input_slots[1])) {
+						$main_start=strtotime($main_slots[0]);
+						$main_end=strtotime($main_slots[1]);
+						$input_start=strtotime($input_slots[0]);
+						$input_end=strtotime($input_slots[1]);
+						if($main_start<=$input_start && $main_end>=$input_end && $main_start<$input_end && $main_end>$input_start ) {
+							return  true;
+						}
+					}
+				}
+				return false;
 			}
 
 			//=============================//
@@ -394,7 +629,7 @@
 			}
 
 			//=============================//
-			public static function get_brand_icon() { return self::get_options( 'abprf_configuration', 'brand_icon' ,'fas fa-hammer'); }
+			public static function get_brand_icon() { return self::get_options( 'abprf_configuration', 'brand_icon', 'fas fa-hammer' ); }
 
 			public static function get_cpt(): string { return 'abprf_post'; }
 
@@ -511,49 +746,7 @@
 				return file_exists( $file_path ) ? $file_path : $default_dir;
 			}
 
-			//============== Category/Post Function===============//
-			public static function route_for_price( $routing_infos, $price_infos, $ticket_types ): array {
-				$full_price = [];
-				if ( sizeof( $routing_infos ) > 0 ) {
-					foreach ( $routing_infos as $key => $routing_info ) {
-						if ( $routing_info['type'] == 'bp' || $routing_info['type'] == 'both' ) {
-							$bp         = $routing_info['stop'];
-							$next_infos = array_slice( $routing_infos, $key + 1 );
-							if ( sizeof( $next_infos ) > 0 ) {
-								foreach ( $next_infos as $next_info ) {
-									if ( $next_info['type'] == 'dp' || $next_info['type'] == 'both' ) {
-										$dp               = $next_info['stop'];
-										$path_price       = [];
-										$path_price['bp'] = $bp;
-										$path_price['dp'] = $dp;
-										if ( sizeof( $price_infos ) > 0 ) {
-											foreach ( $price_infos as $price_info ) {
-												if ( strtolower( $price_info['bp'] ) == strtolower( $bp ) && strtolower( $price_info['dp'] ) == strtolower( $dp ) ) {
-													if ( sizeof( $ticket_types ) > 0 ) {
-														foreach ( $ticket_types as $key => $ticket_type ) {
-															$price = array_key_exists( $key, $price_info ) && $price_info[ $key ] ? (float) $price_info[ $key ] : '';
-															if ( $key == 'adult' && ! $price ) {
-																$price = array_key_exists( 'price', $price_info ) && $price_info['price'] ? (float) $price_info['price'] : '';
-															}
-															$path_price[ $key ] = $price;
-														}
-													} else {
-														$path_price['price'] = array_key_exists( 'price', $price_info ) && $price_info['price'] ? (float) $price_info['price'] : '';
-													}
-												}
-											}
-										}
-										$full_price[] = $path_price;
-									}
-								}
-							}
-						}
-					}
-				}
-
-				return $full_price;
-			}
-
+			//============== Post Function===============//
 			public static function get_routes( $post_id = 0, $bp = true, $bp_point = '' ): array {
 				$route_lists = [];
 				if ( $post_id > 0 ) {
@@ -600,60 +793,6 @@
 				}
 
 				return $route_lists;
-			}
-
-			//=============Date Section================//
-			public static function get_dates( $post_id = 0, $bp = '', $dp = '' ): array {
-				$all_dates = [];
-				if ( $post_id > 0 ) {
-					$all_dates = self::get_bus_dates( $post_id, $bp );
-				} else {
-					if ( $bp ) {
-						$bus_ids = ABPRF_Query::get_equipment_id( $bp, $dp );
-						if ( sizeof( $bus_ids ) > 0 ) {
-							foreach ( $bus_ids as $bus_id ) {
-								$dates     = self::get_bus_dates( $bus_id, $bp );
-								$all_dates = array_merge( $all_dates, $dates );
-							}
-						}
-					}
-				}
-				$all_dates = array_unique( $all_dates );
-				usort( $all_dates, "ABPRF_Function::sort_date" );
-
-				return $all_dates;
-			}
-
-			public static function get_bus_dates( $post_id, $bp = '' ): array {
-				$all_dates = [];
-				if ( $post_id > 0 ) {
-					$dates = self::get_post_dates( $post_id );
-					if ( sizeof( $dates ) > 0 ) {
-						$routes = self::get_post_info( $post_id, 'routing_infos', [] );
-						foreach ( $dates as $date ) {
-							$route_infos = self::get_route_info( $post_id, $date, $routes );
-							if ( sizeof( $route_infos ) > 0 ) {
-								foreach ( $route_infos as $route_info ) {
-									if ( sizeof( $route_info ) > 0 ) {
-										foreach ( $route_info as $info ) {
-											if ( array_key_exists( 'type', $info ) && ( $info['type'] == 'bp' || $info['type'] == 'both' ) ) {
-												if ( $bp ) {
-													if ( $bp == $info['stop'] ) {
-														$all_dates[] = gmdate( 'Y-m-d', strtotime( $info['time'] ) );
-													}
-												} else {
-													$all_dates[] = gmdate( 'Y-m-d', strtotime( $info['time'] ) );
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-
-				return array_unique( $all_dates );
 			}
 
 			public static function get_route_info( $post_id, $date, $route_infos = [] ): array {
@@ -720,7 +859,7 @@
 			}
 
 			public static function slice_buffer_time( $date ) {
-				$buffer_time = self::get_options( 'abprf_configuration', 'ticket_sale_close_before', 0 ) * 60;
+				$buffer_time = self::get_options( 'abprf_configuration', 'sale_close_before', 0 ) * 60;
 				if ( $buffer_time > 0 ) {
 					$date = gmdate( 'Y-m-d H:i', strtotime( $date ) - $buffer_time );
 				}
@@ -728,31 +867,6 @@
 				return $date;
 			}
 
-			//=============================//
-			public static function get_ticket_type_key( $abprf_infos ): array {
-				$post_id      = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : 0;
-				$seat_type    = array_key_exists( 'seat_type', $abprf_infos ) ? $abprf_infos['seat_type'] : 'seat_plan';
-				$ticket_types = [];
-				if ( $seat_type == 'seat_plan' ) {
-					$ticket_type = array_key_exists( 'ticket_type', $abprf_infos ) ? $abprf_infos['ticket_type'] : '';
-					$ticket_type = $ticket_type ? explode( ',', $ticket_type ) : [];
-					foreach ( $ticket_type as $key ) {
-						$ticket_types[ $key ] = self::get_ticket_type( $key );
-					}
-				} else {
-					$ticket_infos = array_key_exists( 'equipment_infos', $abprf_infos ) ? $abprf_infos['equipment_infos'] : self::get_post_info( $post_id, 'equipment_infos', [] );
-					if ( sizeof( $ticket_infos ) > 0 ) {
-						foreach ( $ticket_infos as $key => $ticket_info ) {
-							$ticket_types[ $key ] = is_array( $ticket_info ) && array_key_exists( 'name', $ticket_info ) ? $ticket_info['name'] : '';
-						}
-					}
-				}
-
-				return $ticket_types;
-			}
-
-			//=============================//
-			//==============Price Section===============//
 			public static function get_price( $post_id, $bp, $dp, $type = 'price', $ud = false, $date = '' ) {
 				$price       = 0;
 				$price_infos = self::get_post_info( $post_id, 'price_infos', [] );
@@ -787,7 +901,6 @@
 				return self::get_wc_raw_price( $post_id, $price );
 			}
 
-			//=============================//
 			public static function get_transport_list_details( $bp, $dp, $bp_date ): array {
 				$list_infos    = [];
 				$equipment_ids = ABPRF_Query::get_equipment_id( $bp, $dp );
@@ -812,7 +925,6 @@
 				return $list_infos;
 			}
 
-			//=============================//
 			public static function get_seat_type( $type ): string {
 				if ( $type == 'adult' || $type == 'child' || $type == 'infant' ) {
 					$ticket_names_array = self::get_ticket_type();
@@ -823,7 +935,6 @@
 				return '';
 			}
 
-			//=============================//
 			public static function get_form_data( $abprf_infos = [] ): array {
 				$post_id_form      = $post_id_url = 0;
 				$transport_bp_form = $transport_bp_url = $transport_dp_form = $transport_dp_url = $bp_date_form = $bp_date_url = $return_date_form = $return_date_url = '';
@@ -862,31 +973,6 @@
 				return $form_data;
 			}
 
-			//=============================//
-			public static function get_available_text( $seat_type, $available_seat ): string {
-				if ( $seat_type == 'seat_plan' ) {
-					if ( $available_seat > 1 ) {
-						return __( 'Seats Available !', 'abprf-rental-forge' );
-					} else {
-						return __( 'Seat Available !', 'abprf-rental-forge' );
-					}
-				} else {
-					if ( $available_seat > 1 ) {
-						return __( 'Tickets Available !', 'abprf-rental-forge' );
-					} else {
-						return __( 'Ticket Available !', 'abprf-rental-forge' );
-					}
-				}
-			}
-
-			public static function get_view_text( $seat_type ): string {
-				if ( $seat_type == 'seat_plan' ) {
-					return __( 'View Seats', 'abprf-rental-forge' );
-				} else {
-					return __( 'View Tickets', 'abprf-rental-forge' );
-				}
-			}
-
 			public static function status_text( $status ) {
 				$status_array = wc_get_order_statuses();
 
@@ -902,7 +988,6 @@
 
 				return $type ? ( array_key_exists( $type, $types ) ? $types[ $type ] : '' ) : $types;
 			}
-			//=============================//
 		}
 		new ABPRF_Function();
 	}

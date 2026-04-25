@@ -9,12 +9,12 @@
 
 			public static function get_info() {
 				global $wpdb;
-				$order_table_name    = $wpdb->prefix . 'abprf_orders';
+				$order_table_name = $wpdb->prefix . 'abprf_orders';
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$total_order         = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i", $order_table_name ) );
 				$property_table_name = $wpdb->prefix . 'abprf_property';
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$total_property         = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i", $property_table_name ) );
+				$total_property               = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i", $property_table_name ) );
 				$cpt                          = ABPRF_Function::get_cpt();
 				$abprf_info                   = array();
 				$abprf_configuration          = ABPRF_Function::get_option( 'abprf_configuration' );
@@ -67,7 +67,8 @@
 				$table_name = $wpdb->prefix . 'abprf_property';
 				$conditions = [];
 				$params     = [];
-				$post_id    = array_key_exists( 'post_id', $filters ) && ! empty( $filters['post_id'] ) ? $filters['post_id'] : null;
+				/***************/
+				$post_id = array_key_exists( 'post_id', $filters ) && ! empty( $filters['post_id'] ) ? $filters['post_id'] : null;
 				if ( ! empty( $post_id ) && $post_id !== 'all' ) {
 					if ( $post_id == 'on' || $post_id == 'off' ) {
 						$conditions[] = "rent_continue = %s";
@@ -77,21 +78,38 @@
 						$params[]     = intval( $post_id );
 					}
 				}
+				/***************/
 				$property_id = array_key_exists( 'property_id', $filters ) && ! empty( $filters['property_id'] ) ? $filters['property_id'] : null;
 				if ( ! empty( $property_id ) ) {
 					$conditions[] = "id = %d";
-					$params[]     = $property_id;
+					$params[]     = intval($property_id);
 				}
+				/***************/
 				$rent_continue = array_key_exists( 'rent_continue', $filters ) && ! empty( $filters['rent_continue'] ) ? $filters['rent_continue'] : null;
 				if ( ! empty( $rent_continue ) ) {
 					$conditions[] = "rent_continue = %s";
-					$params[]     = $rent_continue;
+					$params[]     = trim($rent_continue);
 				}
+				/***************/
+				$price_rules = array_key_exists( 'price_rule', $filters ) && ! empty( $filters['price_rule'] ) ? $filters['price_rule'] : null;
+				if ( ! empty( $price_rules ) ) {
+					$price_rules = explode( ',', $price_rules );
+					if ( is_array( $price_rules ) && sizeof( $price_rules ) > 0 ) {
+						$price_rule_condition =[];
+						foreach ( $price_rules as $rule ) {
+							$price_rule_condition[]="FIND_IN_SET(%s, price_rule) > 0";
+							$params[]             = trim($rule);
+						}
+						$conditions[] = '(' . implode( ' OR ', $price_rule_condition ) . ')';
+					}
+				}
+				/***************/
 				$status = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? $filters['status'] : null;
 				if ( ! empty( $status ) ) {
 					$conditions[] = "status = %s";
-					$params[]     = $status;
+					$params[]     = trim($status);
 				}
+				/***************/
 				$order_by  = array_key_exists( 'order_by', $filters ) && ! empty( $filters['order_by'] ) ? sanitize_sql_orderby( $filters['order_by'] ) : 'created_at';
 				$order_dir = array_key_exists( 'order_dir', $filters ) && in_array( strtoupper( $filters['order_dir'] ), [ 'ASC', 'DESC' ] ) ? strtoupper( $filters['order_dir'] ) : 'DESC';
 				if ( $count ) {

@@ -3,27 +3,30 @@
 		exit; // Exit if accessed directly
 	}
 	if ( ! function_exists( 'abprf_template_default' ) ) {
-		function abprf_template_default( $post_id ) {
+		function abprf_template_default( $post_id ): void {
 			$post_id = $post_id ?? get_the_id();
 			if ( $post_id > 0 ) {
 				$abprf_infos   = ABPRF_Function::get_all_meta( $post_id );
 				$rent_continue = array_key_exists( 'rent_continue', $abprf_infos ) ? $abprf_infos['rent_continue'] : 'on';
-				$properties    = ABPRF_Query::get_property( [ 'post_id' => $post_id, 'rent_continue' => 'on', 'status' => 'publish' ] );
-                $all_dates=ABPRF_Function::get_post_dates($post_id);
-				//echo '<pre>';print_r($all_dates);echo '</pre>';
+                $rent_rule=array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : 'hourly';
+				$properties    = ABPRF_Query::get_property( [ 'post_id' => $post_id, 'rent_continue' => 'on','price_rule' => $rent_rule, 'status' => 'publish' ] );
+
+				$abprf_infos['form']='inline';
+
+				//echo '<pre>';print_r(ABPRF_Function::time_slot_generate($times));echo '</pre>';
 				?>
                 <div id="abprf_area" class="abprf_area default_details_page">
                     <div class="abprf_container">
                         <div class="_abprf_row">
                             <div class="_fd_column_mar_b">
-								<?php do_action( 'abprf_template_title', $post_id, $abprf_infos );
-									do_action( 'abprf_template_sub_title', $post_id, $abprf_infos ); ?>
+								<?php do_action( 'abprf_title', $post_id, $abprf_infos );
+									do_action( 'abprf_sub_title', $post_id, $abprf_infos ); ?>
                             </div>
                         </div>
                         <div class="_abprf_row">
                             <div class="_col_12">
 	                            <?php if ( $rent_continue == 'on' ) {
-		                            do_action('abprf_template_search_form', $all_dates, ['form' => 'inline','post_id' => $post_id] );
+		                            do_action('abprf_search_form', $abprf_infos);
 	                            } else {
 		                            ABPRF_Layout::layout_warning_info( 'sale_close_msg' );
 	                            }
@@ -37,7 +40,7 @@
 									<?php
 										if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
 											foreach ( $properties as $property ) {
-												do_action( 'abprf_template_property_item', $post_id, $property );
+												do_action( 'abprf_property_item', $abprf_infos, $property );
 											}
 										} else {
 											ABPRF_Layout::layout_warning_info( 'no_property_found' );

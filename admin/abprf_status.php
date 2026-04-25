@@ -177,20 +177,20 @@
 				?>
                 <form class="_section_xs" method="post" action="">
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"><?php esc_html_e( 'Category/Post List Page', 'abprf-rental-forge' ); ?></h6>
+                        <h6 class="_abprf"><?php esc_html_e( 'RentalForge List Page', 'abprf-rental-forge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'equipment_search' ) ) { ?>
                             <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 create_property_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Category/Post List Page', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 create_property_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add RentalForge List Page', 'abprf-rental-forge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"><?php esc_html_e( 'Category/Post Page', 'abprf-rental-forge' ); ?></h6>
+                        <h6 class="_abprf"><?php esc_html_e( 'RentalForge Page', 'abprf-rental-forge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'equipment_group' ) ) { ?>
                             <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 create_post_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Category/Post Page', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 create_post_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add RentalForge Page', 'abprf-rental-forge' ); ?></button>
 						<?php } ?>
                     </div>
 					<?php do_action( 'abprf_page_create' ); ?>
@@ -204,7 +204,7 @@
 						$page = array(
 							'post_type' => 'page',
 							'post_name' => 'equipment_search',
-							'post_title' => __( 'Category/Post List', 'abprf-rental-forge' ),
+							'post_title' => __( 'Post List', 'abprf-rental-forge' ),
 							'post_content' => '[abprf-equipment]',
 							'post_status' => 'publish',
 						);
@@ -221,7 +221,7 @@
 						$page = array(
 							'post_type' => 'page',
 							'post_name' => 'equipment_group',
-							'post_title' => __( 'Category/Post', 'abprf-rental-forge' ),
+							'post_title' => __( 'Post', 'abprf-rental-forge' ),
 							'post_content' => '[abprf-list]',
 							'post_status' => 'publish',
 						);
@@ -238,17 +238,17 @@
 				?>
                 <form class="_section_xs" method="post" action="">
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"> <?php esc_html_e( 'Number of Category/Post', 'abprf-rental-forge' ); ?> </h6>
+                        <h6 class="_abprf"> <?php esc_html_e( 'Number of Post', 'abprf-rental-forge' ); ?> </h6>
 						<?php if ( $total > 0 ) { ?>
                             <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $total ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Category/Post', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Post', 'abprf-rental-forge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
                         <h6 class="_abprf"> <?php esc_html_e( 'Dummy Import', 'abprf-rental-forge' ); ?> </h6>
-                        <button class="<?php echo esc_attr( $total > 0 ? '_btn_light_success_xs' : '_btn_warning_xs' ); ?>_btn_theme_min_125 import_dummy" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add New Dummy Category/Post', 'abprf-rental-forge' ); ?></button>
+                        <button class="<?php echo esc_attr( $total > 0 ? '_btn_light_success_xs' : '_btn_warning_xs' ); ?>_btn_theme_min_125 import_dummy" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add New Dummy Post', 'abprf-rental-forge' ); ?></button>
                     </div>
                 </form>
 				<?php

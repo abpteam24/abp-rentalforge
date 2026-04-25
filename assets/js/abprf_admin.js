@@ -2,7 +2,7 @@
 (function ($) {
     "use strict";
 }(jQuery));
-//==========Category/post=================//
+//==========Post=================//
 (function ($) {
     "use strict";
     $(document).on("click", "div.abprf_admin button.post_permanent_remove", function () {

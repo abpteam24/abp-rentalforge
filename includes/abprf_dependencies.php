@@ -45,8 +45,8 @@
 						'delete_success' => __( 'Delete Successfully.............', 'abprf-rental-forge' ),
 						'property_loading' => __( 'Property List Loading.............', 'abprf-rental-forge' ),
 						'property_loading_success' => __( 'Property List already Loaded !', 'abprf-rental-forge' ),
-						'post_loading' => __( 'Category/Post List Loading.............', 'abprf-rental-forge' ),
-						'post_loading_success' => __( 'Category/Post List already Loaded !', 'abprf-rental-forge' ),
+						'post_loading' => __( 'Post List Loading.............', 'abprf-rental-forge' ),
+						'post_loading_success' => __( 'Post List already Loaded !', 'abprf-rental-forge' ),
 						'post_deleting' => __( 'Post Permanent Deleting.........!', 'abprf-rental-forge' ),
 						'post_delete_success' => __( 'Post Delete successfully!', 'abprf-rental-forge' ),
 						'post_trashing' => __( 'Post move to Trashing.........!', 'abprf-rental-forge' ),
@@ -89,7 +89,7 @@
 						'decimal_num' => ABPRF_Function::get_option( 'woocommerce_price_num_decimals', 2 ),
 						'currency_suffix' => ABPRF_Function::get_option( 'woocommerce_price_display_suffix', '' ),
 						'blank_image' => ABPRF_BLANK_IMG_URL,
-						'date_picker_format' => ABPRF_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ),
+						'date_format' => ABPRF_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ),
 					] );
 				} else {
 					wp_localize_script( 'abprf_lib', 'abprf_var', [
@@ -100,14 +100,13 @@
 						'decimal_num' => '',
 						'wc_suffix' => '',
 						'blank_image' => ABPRF_BLANK_IMG_URL,
-						'date_picker_format' => ABPRF_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ),
+						'date_format' => ABPRF_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ),
 					] );
 				}
 			}
 
 			public function global_enqueue(): void {
-				wp_enqueue_script( 'abprf', ABPRF_URL . '/assets/js/abprf.js', array( 'jquery' ), time(), true );
-				wp_localize_script( 'abprf', 'abprf_ajax', array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'abprf_ajax_nonce' ) ) );
+
 				wp_enqueue_style( 'abprf', ABPRF_URL . '/assets/css/abprf.css', array(), time() );
 				do_action( 'abprf_global_script' );
 				$abprf_css_var   = ABPRF_Function::get_option( 'abprf_css_var' );
@@ -190,16 +189,11 @@
 				}
 				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
 					require_once ABPRF_DIR . '/includes/abprf_hooks.php';
-					//require_once ABPRF_DIR . '/includes/ABPRF_Ajax.php';
+					require_once ABPRF_DIR . '/includes/abprf_ajax.php';
 					require_once ABPRF_DIR . '/includes/abprf_frontend.php';
 					require_once ABPRF_DIR . '/includes/ABPRF_Shortcodes.php';
 					require_once ABPRF_DIR . '/includes/ABPRF_Woocommerce.php';
 					require_once ABPRF_DIR . '/admin/abprf_hidden_post.php';
-					//load template file
-					require_once ABPRF_Function::template_path( 'layout/title.php' );
-					require_once ABPRF_Function::template_path( 'layout/sub_title.php' );
-					require_once ABPRF_Function::template_path( 'layout/search_form.php' );
-					require_once ABPRF_Function::template_path( 'layout/property_item.php' );
 				}
 			}
 
@@ -214,29 +208,29 @@
 					'singular_name' => esc_html( $label ),
 					'menu_name' => esc_html( $label ),
 					'name_admin_bar' => esc_html( $label ),
-					'archives' => __( 'Category/Post List', 'abprf-rental-forge' ),
-					'attributes' => __( 'Category/Post List', 'abprf-rental-forge' ),
-					'parent_item_colon' => __( 'Category/Post Item:', 'abprf-rental-forge' ),
-					'all_items' => __( 'Category/Post', 'abprf-rental-forge' ),
-					'add_new_item' => __( 'Add Category/Post', 'abprf-rental-forge' ),
-					'add_new' => __( 'Add Category/Post', 'abprf-rental-forge' ),
-					'new_item' => __( 'Add Category/Post', 'abprf-rental-forge' ),
-					'edit_item' => __( 'Edit Category/Post', 'abprf-rental-forge' ),
-					'update_item' => __( 'Update Category/Post', 'abprf-rental-forge' ),
-					'view_item' => __( 'View Category/Post', 'abprf-rental-forge' ),
-					'view_items' => __( 'View Category/Post', 'abprf-rental-forge' ),
-					'search_items' => __( 'Search Category/Post', 'abprf-rental-forge' ),
-					'not_found' => __( 'Category/Post Not Found', 'abprf-rental-forge' ),
-					'not_found_in_trash' => __( 'Category/Post Not found in Trash', 'abprf-rental-forge' ),
-					'featured_image' => __( 'Category/Post Image', 'abprf-rental-forge' ),
-					'set_featured_image' => __( 'Category/Post Image', 'abprf-rental-forge' ),
-					'remove_featured_image' => __( 'Remove Category/Post Image', 'abprf-rental-forge' ),
-					'use_featured_image' => __( 'Use image Category/Post as featured image', 'abprf-rental-forge' ),
-					'insert_into_item' => __( 'Insert  Category/Post', 'abprf-rental-forge' ),
-					'uploaded_to_this_item' => __( 'Uploaded  Category/Post', 'abprf-rental-forge' ),
-					'items_list' => __( 'Category/Post List', 'abprf-rental-forge' ),
+					'archives' => __( 'Post List', 'abprf-rental-forge' ),
+					'attributes' => __( 'Post List', 'abprf-rental-forge' ),
+					'parent_item_colon' => __( 'Post Item:', 'abprf-rental-forge' ),
+					'all_items' => __( 'Post', 'abprf-rental-forge' ),
+					'add_new_item' => __( 'Add Post', 'abprf-rental-forge' ),
+					'add_new' => __( 'Add Post', 'abprf-rental-forge' ),
+					'new_item' => __( 'Add Post', 'abprf-rental-forge' ),
+					'edit_item' => __( 'Edit Post', 'abprf-rental-forge' ),
+					'update_item' => __( 'Update Post', 'abprf-rental-forge' ),
+					'view_item' => __( 'View Post', 'abprf-rental-forge' ),
+					'view_items' => __( 'View Post', 'abprf-rental-forge' ),
+					'search_items' => __( 'Search Post', 'abprf-rental-forge' ),
+					'not_found' => __( 'Post Not Found', 'abprf-rental-forge' ),
+					'not_found_in_trash' => __( 'Post Not found in Trash', 'abprf-rental-forge' ),
+					'featured_image' => __( 'Post Image', 'abprf-rental-forge' ),
+					'set_featured_image' => __( 'Post Image', 'abprf-rental-forge' ),
+					'remove_featured_image' => __( 'Remove Post Image', 'abprf-rental-forge' ),
+					'use_featured_image' => __( 'Use image Post as featured image', 'abprf-rental-forge' ),
+					'insert_into_item' => __( 'Insert  Post', 'abprf-rental-forge' ),
+					'uploaded_to_this_item' => __( 'Uploaded  Post', 'abprf-rental-forge' ),
+					'items_list' => __( 'Post List', 'abprf-rental-forge' ),
 					'items_list_navigation' => __( 'Category list navigation', 'abprf-rental-forge' ),
-					'filter_items_list' => __( 'Filter Category/Post List', 'abprf-rental-forge' )
+					'filter_items_list' => __( 'Filter Post List', 'abprf-rental-forge' )
 				];
 				$args                = [
 					'public' => true,

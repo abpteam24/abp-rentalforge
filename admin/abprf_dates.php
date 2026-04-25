@@ -19,7 +19,7 @@
                         <h4 class="_abprf"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abprf-rental-forge' ); ?></h4>
                     </div>
                     <div class="_panel_body">
-						<?php $this->date_format_buffer( $date_infos );
+						<?php $this->date_time_format( $date_infos );
 							$this->date_content( $date_infos ); ?>
                         <div class="_divider_xs"></div>
                         <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Date Configuration', 'abprf-rental-forge' ); ?></button>
@@ -53,11 +53,11 @@
 			public function date_content( $date_infos ): void {
 				$date_type = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
 				//echo '<pre>';print_r($date_rule_array);echo '</pre>';
+				$this->operation_time_slot_buffer( $date_infos );
 				$this->date_type_advance_date( $date_infos );
 				$this->specific_date_settings( $date_infos ); ?>
-                <div class="<?php echo esc_attr( $date_type == 'periodic_date' ? 'rf_active' : '' ); ?>" data-collapse="#periodic_date">
+                <div class="<?php echo esc_attr( $date_type == 'periodic_date' ? 'rf_active' : '' ); ?>" data-close="#periodic_date">
 					<?php $this->rent_start_end_date( $date_infos );
-						$this->operation_time_periodic( $date_infos );
 						$this->date_rule( $date_infos );
 						$this->off_dates( $date_infos );
 						$this->off_date_range( $date_infos );
@@ -70,9 +70,9 @@
 
 			public function save_global_date() {
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$date_infos                             = $this->get_date_array();
-					$date_infos['date_picker_format']       = isset( $_POST['date_picker_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_picker_format'] ) ) : '';
-					$date_infos['ticket_sale_close_before'] = isset( $_POST['ticket_sale_close_before'] ) ? sanitize_text_field( wp_unslash( $_POST['ticket_sale_close_before'] ) ) : '';
+					$date_infos                = $this->get_date_array();
+					$date_infos['date_format'] = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
+					$date_infos['time_format'] = isset( $_POST['time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['time_format'] ) ) : '';
 					update_option( 'abprf_dates', $date_infos );
 					wp_send_json_success( esc_html__( 'Date Configuration Saved Successfully ! ', 'abprf-rental-forge' ) );
 				} else {
@@ -84,13 +84,16 @@
 			public function get_date_array( $date_infos = [] ) {
 				if ( is_admin() && ( ( isset( $_POST['abprf_post_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['abprf_post_nonce'] ) ), 'abprf_post_nonce' ) ) || check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) ) ) {
 					$date_infos['date_type']            = isset( $_POST['date_type'] ) ? sanitize_text_field( wp_unslash( $_POST['date_type'] ) ) : 'periodic_date';
+					$date_infos['operation_time_start'] = isset( $_POST['operation_time_start'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_time_start'] ) ) : '';
+					$date_infos['operation_time_end']   = isset( $_POST['operation_time_end'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_time_end'] ) ) : '';
+					$date_infos['time_slot_length'] = isset( $_POST['time_slot_length'] ) ? sanitize_text_field( wp_unslash( $_POST['time_slot_length'] ) ) : '60';
 					$date_infos['advance_date_number']  = isset( $_POST['advance_date_number'] ) ? sanitize_text_field( wp_unslash( $_POST['advance_date_number'] ) ) : '28';
+					$date_infos['sale_close_before']    = isset( $_POST['sale_close_before'] ) ? sanitize_text_field( wp_unslash( $_POST['sale_close_before'] ) ) : '';
+					$date_infos['sale_close_after']     = isset( $_POST['sale_close_after'] ) ? sanitize_text_field( wp_unslash( $_POST['sale_close_after'] ) ) : '';
 					$periodic_start_date                = isset( $_POST['periodic_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['periodic_start_date'] ) ) : '';
 					$periodic_end_date                  = isset( $_POST['periodic_end_date'] ) ? sanitize_text_field( wp_unslash( $_POST['periodic_end_date'] ) ) : '';
 					$date_infos['periodic_start_date']  = $periodic_start_date ? gmdate( 'Y-m-d', strtotime( $periodic_start_date ) ) : '';
 					$date_infos['periodic_end_date']    = $periodic_end_date ? gmdate( 'Y-m-d', strtotime( $periodic_end_date ) ) : '';
-					$date_infos['operation_time_start'] = isset( $_POST['operation_time_start'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_time_start'] ) ) : '';
-					$date_infos['operation_time_end']   = isset( $_POST['operation_time_end'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_time_end'] ) ) : '';
 					$date_infos['periodic_after']       = isset( $_POST['periodic_after'] ) ? sanitize_text_field( wp_unslash( $_POST['periodic_after'] ) ) : '1';
 					$date_infos['date_rule']            = isset( $_POST['date_rule'] ) ? sanitize_text_field( wp_unslash( $_POST['date_rule'] ) ) : '';
 					$date_infos['weekend']              = isset( $_POST['weekend'] ) ? sanitize_text_field( wp_unslash( $_POST['weekend'] ) ) : '';
@@ -170,17 +173,17 @@
 			}
 
 			//=============================//
-			public function date_format_buffer( $date_infos ): void {
-				$format_array = ABPRF_Layout::date_picker_format_array();
-				$date_format  = array_key_exists( 'date_picker_format', $date_infos ) ? $date_infos['date_picker_format'] : 'D d M , yy';
-				$buffer_time  = array_key_exists( 'ticket_sale_close_before', $date_infos ) ? $date_infos['ticket_sale_close_before'] : '0';
+			public function date_time_format( $date_infos ): void {
+				$format_array = ABPRF_Layout::array_date_format();
+				$date_format  = array_key_exists( 'date_format', $date_infos ) ? $date_infos['date_format'] : 'D d M , yy';
+				$time_format  = array_key_exists( 'time_format', $date_infos ) ? $date_infos['time_format'] : ABPRF_Time_Format;
 				?>
                 <div class="group_setting">
                     <div class="_setting_item">
                         <label class="_f_wrap_fj_between_fa_center">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Date Picker Format', 'abprf-rental-forge' ); ?></span>
+                            <span class="_mar_r_xs"><?php esc_html_e( 'Date Format', 'abprf-rental-forge' ); ?></span>
 							<?php if ( sizeof( $format_array ) > 0 ) { ?>
-                                <select class="_form_control " name="date_picker_format">
+                                <select class="_form_control " name="date_format">
 									<?php foreach ( $format_array as $key => $format ) { ?>
                                         <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $date_format == $key ? 'selected' : '' ); ?>><?php echo esc_html( $format ); ?></option>
 									<?php } ?>
@@ -188,15 +191,56 @@
 							<?php } ?>
                         </label>
                         <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'date_picker_format' ); ?>
+						<?php ABPRF_Layout::info_text( 'date_format' ); ?>
                     </div>
                     <div class="_setting_item">
                         <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Buffer time in MIN (Optional)', 'abprf-rental-forge' ); ?></span>
-                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="ticket_sale_close_before" placeholder="Ex: 15" value="<?php echo esc_attr( $buffer_time ); ?>"/>
+                            <span class="_mar_r_xs"><?php esc_html_e( 'Time Format', 'abprf-rental-forge' ); ?></span>
+                            <input type="text" class="_form_control" name="time_format" placeholder="<?php echo esc_attr( ABPRF_Time_Format ); ?>" value="<?php echo esc_attr( $time_format ); ?>"/>
                         </label>
                         <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'ticket_sale_close_before' ); ?>
+						<?php ABPRF_Layout::info_text( 'time_format' ); ?>
+                    </div>
+                </div>
+				<?php
+			}
+
+			public function operation_time_slot_buffer( $date_infos ): void {
+				$operation_time_start = array_key_exists( 'operation_time_start', $date_infos ) ? $date_infos['operation_time_start'] : '';
+				$operation_time_end   = array_key_exists( 'operation_time_end', $date_infos ) ? $date_infos['operation_time_end'] : '';
+				$buffer_time_before   = array_key_exists( 'sale_close_before', $date_infos ) ? $date_infos['sale_close_before'] : 0;
+				$buffer_time_after    = array_key_exists( 'sale_close_after', $date_infos ) ? $date_infos['sale_close_after'] : 0;
+				$time_slot_length            = array_key_exists( 'time_slot_length', $date_infos ) ? $date_infos['time_slot_length'] : 60;
+				?>
+                <div class="group_setting">
+                    <div class="_setting_item">
+                        <div class="_f_wrap_fj_between_fa_center">
+                            <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Operation Time(optional)', 'abprf-rental-forge' ); ?></span>
+                            <div class="_group_content">
+								<?php ABPRF_Layout::input_time( 'operation_time_start', $operation_time_start );
+									ABPRF_Layout::input_time( 'operation_time_end', $operation_time_end ); ?>
+                            </div>
+                        </div>
+                        <label class="_f_equal_f_wrap">
+                            <span class="_mar_r_xs"><?php esc_html_e( 'Time Slot length in Min', 'abprf-rental-forge' ); ?></span>
+                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="time_slot_length" placeholder="Ex:30" value="<?php echo esc_attr( $time_slot_length ); ?>"/>
+                        </label>
+                        <div class="_divider_xs"></div>
+						<?php ABPRF_Layout::info_text( 'operation_time' ); ?>
+	                    <?php ABPRF_Layout::info_text( 'time_slot_length' ); ?>
+                    </div>
+                    <div class="_setting_item">
+                        <label class="_f_equal_f_wrap">
+                            <span class="_mar_r_xs"><?php esc_html_e( 'Before Buffer time in MIN (Optional)', 'abprf-rental-forge' ); ?></span>
+                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="sale_close_before" placeholder="Ex: 15" value="<?php echo esc_attr( $buffer_time_before ); ?>"/>
+                        </label>
+                        <label class="_f_equal_f_wrap">
+                            <span class="_mar_r_xs"><?php esc_html_e( 'After Buffer time in MIN (Optional)', 'abprf-rental-forge' ); ?></span>
+                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="sale_close_after" placeholder="Ex: 15" value="<?php echo esc_attr( $buffer_time_after ); ?>"/>
+                        </label>
+                        <div class="_divider_xs"></div>
+						<?php ABPRF_Layout::info_text( 'sale_close_after' ); ?>
+						<?php ABPRF_Layout::info_text( 'sale_close_before' ); ?>
                     </div>
                 </div>
 				<?php
@@ -204,18 +248,26 @@
 
 			public function date_type_advance_date( $date_infos ): void {
 				$date_type           = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
-				$advance_date_number = array_key_exists( 'advance_date_number', $date_infos ) ? $date_infos['advance_date_number'] : '28';
+				$advance_date_number = array_key_exists( 'advance_date_number', $date_infos ) ? $date_infos['advance_date_number'] : 28;
 				?>
                 <div class="group_setting">
                     <div class="_setting_item">
-                        <label class="_f_wrap_fj_between_fa_center">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Operational Date Type', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
-                            <select class="_form_control " name="date_type" data-collapse-target required>
-                                <option disabled selected><?php esc_html_e( 'Please Select', 'abprf-rental-forge' ); ?></option>
-                                <option value="specific_date" data-option-target="#specific_date" <?php echo esc_attr( $date_type == 'specific_date' ? 'selected' : '' ); ?>><?php esc_html_e( 'Specific Dates', 'abprf-rental-forge' ); ?></option>
-                                <option value="periodic_date" data-option-target="#periodic_date" <?php echo esc_attr( $date_type == 'periodic_date' ? 'selected' : '' ); ?>><?php esc_html_e( 'Periodic Dates', 'abprf-rental-forge' ); ?></option>
-                            </select>
-                        </label>
+                        <div class="custom_radio _fj_between">
+                            <h5 class="_abprf_color_theme"><?php esc_html_e( 'Operational Date Type', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></h5>
+                            <input type="hidden" class="_form_control" name="date_type" value="<?php echo esc_attr( $date_type ); ?>"/>
+                            <div class="_f_wrap">
+                                <div class="radio_item">
+                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( $date_type == 'specific_date' ? 'rf_active' : '' ); ?>" data-close-target="#specific_date" data-radio="specific_date" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
+                                        <span data-icon class="_mar_r_xs <?php echo esc_attr( $date_type == 'specific_date' ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php esc_html_e( 'Specific Dates', 'abprf-rental-forge' ); ?>
+                                    </button>
+                                </div>
+                                <div class="radio_item">
+                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( $date_type == 'periodic_date' ? 'rf_active' : '' ); ?>" data-close-target="#periodic_date" data-radio="periodic_date" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
+                                        <span data-icon class="_mar_r_xs <?php echo esc_attr( $date_type == 'periodic_date' ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php esc_html_e( 'Periodic Dates', 'abprf-rental-forge' ); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="_divider_xs"></div>
 						<?php ABPRF_Layout::info_text( 'date_type' ); ?>
                     </div>
@@ -232,8 +284,9 @@
 			}
 
 			public function rent_start_end_date( $date_infos ): void {
-				$start_date = array_key_exists( 'periodic_start_date', $date_infos ) ? $date_infos['periodic_start_date'] : '';
-				$end_date   = array_key_exists( 'periodic_end_date', $date_infos ) ? $date_infos['periodic_end_date'] : '';
+				$start_date     = array_key_exists( 'periodic_start_date', $date_infos ) ? $date_infos['periodic_start_date'] : '';
+				$end_date       = array_key_exists( 'periodic_end_date', $date_infos ) ? $date_infos['periodic_end_date'] : '';
+				$periodic_after = array_key_exists( 'periodic_after', $date_infos ) ? $date_infos['periodic_after'] : '1';
 				?>
                 <div class="group_setting">
                     <div class="_setting_item">
@@ -241,37 +294,13 @@
                             <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Property Rent From (Optional)', 'abprf-rental-forge' ); ?></span>
 							<?php ABPRF_Layout::input_date( 'periodic_start_date', $start_date ); ?>
                         </div>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'periodic_start_date' ); ?>
-                    </div>
-                    <div class="_setting_item">
                         <div class="_f_wrap_fj_between_fa_center">
                             <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Property Rent To (Optional)', 'abprf-rental-forge' ); ?></span>
 							<?php ABPRF_Layout::input_date( 'periodic_end_date', $end_date ); ?>
                         </div>
                         <div class="_divider_xs"></div>
+						<?php ABPRF_Layout::info_text( 'periodic_start_date' ); ?>
 						<?php ABPRF_Layout::info_text( 'periodic_end_date' ); ?>
-                    </div>
-                </div>
-				<?php
-			}
-
-			public function operation_time_periodic( $date_infos ): void {
-				$operation_time_start = array_key_exists( 'operation_time_start', $date_infos ) ? $date_infos['operation_time_start'] : '';
-				$operation_time_end   = array_key_exists( 'operation_time_end', $date_infos ) ? $date_infos['operation_time_end'] : '';
-				$periodic_after       = array_key_exists( 'periodic_after', $date_infos ) ? $date_infos['periodic_after'] : '1';
-				?>
-                <div class="group_setting">
-                    <div class=" _setting_item">
-                        <div class="_f_wrap_fj_between_fa_center">
-                            <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Operation Time(optional)', 'abprf-rental-forge' ); ?></span>
-                            <div class="_group_content">
-								<?php ABPRF_Layout::input_time( 'operation_time_start', $operation_time_start );
-									ABPRF_Layout::input_time( 'operation_time_end', $operation_time_end ); ?>
-                            </div>
-                        </div>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'operation_time' ); ?>
                     </div>
                     <div class="_setting_item">
                         <label class="_f_wrap_fj_between_fa_center">
@@ -285,14 +314,14 @@
 				<?php
 			}
 
-			public function date_rule( $date_infos ) {
+			public function date_rule( $date_infos ): void {
 				$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
 				$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
 				$date_rules      = ABPRF_Layout::date_option_rules();
 				?>
                 <div class="_fj_between">
                     <h5 class="_abprf_color_theme"><?php esc_html_e( 'Special On/Off Date Time(optional)', 'abprf-rental-forge' ); ?></h5>
-                    <div class="abprf_checkbox">
+                    <div class="custom_checkbox">
                         <input type="hidden" name="date_rule" value="<?php echo esc_attr( $date_rule ); ?>"/>
 						<?php foreach ( $date_rules as $key => $rule ) { ?>
                             <div class="checkbox_item _min_100">
@@ -342,7 +371,7 @@
 				<?php
 			}
 
-			public function off_date_range( $date_infos ) {
+			public function off_date_range( $date_infos ): void {
 				$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
 				$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
 				$off_date_range  = array_key_exists( 'off_date_range', $date_infos ) ? $date_infos['off_date_range'] : [];
@@ -386,7 +415,7 @@
                     <div class="_setting_item ">
                         <div class="_f_wrap_fj_between_fa_center">
                             <span class="_fs_label_mar_r_xs"><?php esc_html_e( 'Weekend(optional)', 'abprf-rental-forge' ); ?></span>
-                            <div class="abprf_checkbox">
+                            <div class="custom_checkbox">
                                 <input type="hidden" name="weekend" value="<?php echo esc_attr( $weekend ); ?>"/>
 								<?php foreach ( $days as $key => $day ) { ?>
                                     <div class="checkbox_item _min_100">
@@ -404,7 +433,7 @@
 				<?php
 			}
 
-			public function on_dates( $date_infos ) {
+			public function on_dates( $date_infos ): void {
 				$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
 				$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
 				$special_dates   = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];
@@ -439,7 +468,7 @@
 				<?php
 			}
 
-			public function day_wise_time( $date_infos ) {
+			public function day_wise_time( $date_infos ): void {
 				$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
 				$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
 				$operation_times = array_key_exists( 'day_wise_time', $date_infos ) ? $date_infos['day_wise_time'] : [];
@@ -507,7 +536,7 @@
 				$date_type      = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
 				$specific_dates = array_key_exists( 'specific_dates', $date_infos ) ? $date_infos['specific_dates'] : [];
 				?>
-                <div class="_setting_item  <?php echo esc_attr( $date_type == 'specific_date' ? 'rf_active' : '' ); ?>" data-collapse="#specific_date">
+                <div class="_setting_item  <?php echo esc_attr( $date_type == 'specific_date' ? 'rf_active' : '' ); ?>" data-close="#specific_date">
                     <div class="_f_wrap_fj_between">
                         <span class="_fs_label_mar_r_xs"><?php esc_html_e( 'Specific Dates & Operation Times', 'abprf-rental-forge' ); ?></span>
                         <div class="configuration_content">
