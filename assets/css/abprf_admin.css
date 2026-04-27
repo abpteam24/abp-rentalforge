@@ -85,9 +85,7 @@
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
-	div.abprf_admin span.publish {padding: var(--rf_gap_xxs) var(--rf_gap_xs); background: #DCFCE7; color: #15803D;font-size: var(--rf_fs_small);font-weight: bold; border-radius: var(--rf_gap_xs); line-height: 1;}
-	div.abprf_admin span.trash {padding: var(--rf_gap_xxs) var(--rf_gap_xs); background: var(--rf_color_danger); color: var(--rf_color_white);font-size: var(--rf_fs_small);font-weight: bold; border-radius: var(--rf_gap_xs); line-height: 1;}
-	div.abprf_admin span.draft {padding: var(--rf_gap_xxs) var(--rf_gap_xs); background: var(--rf_color_yellow); color: var(--rf_color_white);font-size: var(--rf_fs_small);font-weight: bold; border-radius: var(--rf_gap_xs); line-height: 1;}
+
 }
 /********************************************************************Traveller list  ************************************************/
 @media only screen and (min-width: 10px) {

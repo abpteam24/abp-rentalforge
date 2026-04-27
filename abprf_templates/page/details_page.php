@@ -9,7 +9,7 @@
             <meta charset="<?php bloginfo( 'charset' ); ?>">
             <title></title>
 			<?php
-				$block_content = do_blocks( '<div class="wp-block-group"></div>' );
+				do_blocks( '<div class="wp-block-group"></div>' );
 				wp_head();
 			?>
         </head>
@@ -25,7 +25,7 @@
 		get_header();
 		the_post();
 	}
-	do_action( 'woocommerce_before_single_product' );
+	//do_action( 'woocommerce_before_single_product' );
 	require ABPRF_Function::details_template_path( get_the_id() );
 	function_exists( 'abprf_template_default' ) && abprf_template_default( get_the_id() );
 	if ( wp_is_block_theme() ) {

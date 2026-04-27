@@ -287,8 +287,8 @@ function abprf_target_open(close_id) {
     //================//
     $(document).on('click', 'div.abprf_area [data-collapse-target]', function () {
         let currentTarget = $(this);
-        let target_id = currentTarget.data('collapse-target');
-        let close_id = currentTarget.data('close-target');
+        let target_id = currentTarget.attr('data-collapse-target');
+        let close_id = currentTarget.attr('data-close-target');
         let target = $('[data-collapse="' + target_id + '"]');
         if (target_close(close_id, target_id) && collapse_close_inside(currentTarget) && target_collapse(target, currentTarget)) {
             abprf_data_change(currentTarget);

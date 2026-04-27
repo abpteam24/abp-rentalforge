@@ -65,12 +65,14 @@
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce' => wp_create_nonce( 'abprf_ajax_nonce' ),
 					'date_info' => json_encode( $js_all_info ),
+					'now' =>current_time('Y-m-d H:i'),
 					'msg' => [
 						'property_loading' => __( 'Property List Loading.............', 'abprf-rental-forge' ),
 						'property_loading_success' => __( 'Property List already Loaded !', 'abprf-rental-forge' ),
 						'select_rent_start_date' => __( 'Please Select rent Start Date', 'abprf-rental-forge' ),
 						'select_rent_start_time' => __( 'Please Select rent Start Time', 'abprf-rental-forge' ),
 						'select_rent_end_time' => __( 'Please Select rent End Time', 'abprf-rental-forge' ),
+						'free' => __( 'FREE', 'abprf-rental-forge' ),
 					],
 				);
 				wp_localize_script( 'abprf_infos', 'abprf_infos', $rental_data );
@@ -264,26 +266,29 @@
 			public static function quantity_input( $input_info = [] ): void {
 				$name        = array_key_exists( 'name', $input_info ) ? $input_info['name'] : '';
 				$price       = array_key_exists( 'price', $input_info ) ? $input_info['price'] : 0;
-				$available   = array_key_exists( 'available', $input_info ) ? $input_info['available'] : 1;
-				$default_qty = array_key_exists( 'd_qty', $input_info ) ? $input_info['d_qty'] : 0;
-				$min_qty     = array_key_exists( 'min_qty', $input_info ) ? $input_info['min_qty'] : 0;
-				$max_qty     = array_key_exists( 'max_qty', $input_info ) ? $input_info['max_qty'] : '';
+				$min_qty     = array_key_exists( 'min_qty', $input_info ) ? $input_info['min_qty'] : 1;
+				$max_qty     = array_key_exists( 'max_qty', $input_info ) ? $input_info['max_qty'] : 1;
 				$class       = array_key_exists( 'class', $input_info ) ? $input_info['class'] : '';
-				$min_qty     = max( $default_qty, $min_qty );
-				if ( $name && $available > $min_qty ) {
+				$collapse_id = array_key_exists( 'collapse_id', $input_info ) ? $input_info['collapse_id'] : '';
+				if ( $name && $max_qty >= $min_qty ) {
+					if ( ! empty( $collapse_id ) ) {
+						?> <div data-collapse="<?php echo esc_attr( $collapse_id ); ?>"><?php
+					}
 					?>
                     <div class="_group_content qty_input">
-                        <div class="qty_decrease _ag_content"><span class="fas fa-minus"></span></div>
+                        <div class="qty_decrease _ag_content"> ➖</div>
                         <label>
                             <input type="text" class="_form_control  validation_number <?php echo esc_attr( $class ); ?>"
-                                   name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( max( 0, $default_qty ) ); ?>"
-                                   data-price="<?php echo esc_attr( $price ); ?>" data-min="<?php echo esc_attr( $min_qty ); ?>"
-                                   data-max="<?php echo esc_attr( $max_qty > 0 ? $max_qty : $available ); ?>"
+                                   name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $min_qty ); ?>"
+                                   data-price="<?php echo esc_attr( $price ); ?>" data-min="<?php echo esc_attr( $min_qty ); ?>" data-max="<?php echo esc_attr( $max_qty ); ?>"
                             />
                         </label>
-                        <div class="qty_increase _ag_content"><span class="fas fa-plus"></span></div>
+                        <div class="qty_increase _ag_content">➕</div>
                     </div>
 					<?php
+					if ( ! empty( $collapse_id ) ) {
+						?></div><?php
+					}
 				}
 			}
 
@@ -876,7 +881,7 @@
 					'enable_tax_msg' => __( 'Note: Your Woo-commerce Tax setting already disable. If you want to enable tax please enable woo-commerce tax.', 'abprf-rental-forge' ),
 					//=============================//
 					'display_additional_services' => __( 'Note: If you want sale/rent additional product/equipment with regular property then active this button and add additional service. Additional item not depends on  operation time.', 'abprf-rental-forge' ),
-					'additional_services' => __( 'Note: In order to sell/rent additional product/equipment with your regular property, you need to add additional services. Which imports easily from any property or use this setting at any property.', 'abprf-rental-forge' ),
+					'additional_services' => __( 'Note: Add extra services for products/equipment with your property—import or set per Post (also usable globally); stock applies per Post, empty quantity = unlimited, empty max qty = no limit, empty/Zero price = free.', 'abprf-rental-forge' ),
 					'active_global_additional' => __( 'Note: Keep this switch ON to apply the global additional settings.Switch it OFF if you want to set special additional rules for this property.additional configuration options will open when turned OFF. ', 'abprf-rental-forge' ),
 					//=============================//
 					'client_form_option' => __( 'Use comma( , ) to separate option.', 'abprf-rental-forge' ),
@@ -899,6 +904,7 @@
 					'not_found' => __( 'No Post Found !', 'abprf-rental-forge' ),
 					'not_post_found' => __( 'No Post Found !', 'abprf-rental-forge' ),
 					'not_property_found' => __( 'No Property Found !', 'abprf-rental-forge' ),
+					'property_not_available' => __( 'The property is not available for the selected date and time. Please choose a different schedule.', 'abprf-rental-forge' ),
 					//=============================//
 					//=============================//
 					'abptm_pickup' => __( 'Here you can set traveller Pickup Point . If you want visible Pickup point select option for traveller , please switch on. default pickup point off', 'abprf-rental-forge' ),
@@ -961,6 +967,66 @@
 				}
 			}
 
+			public static function property_condition( $rent_rule, $min_hour, $max_hour = '' ) {
+                $condition='';
+				if ( $rent_rule == 'hourly' ) {
+					if ( $min_hour == $max_hour ) {
+						$condition .= sprintf(
+						/* translators: %s = minimum number of hours */
+							_n( 'Rental is available for %s hour Only', 'Rental is available for  %s hours Only', $min_hour, 'abprf-rental-forge' ), $min_hour ) ;
+					} else {
+						$condition .= '📉 ' ;
+						$condition .= sprintf(
+						/* translators: %s = minimum number of hours */
+							_n( 'Min. %s hour', 'Min. %s hours', $min_hour, 'abprf-rental-forge' ), $min_hour ) ;
+						if ( ! empty( $max_hour ) ) {
+							$condition .=  '  📈  ' ;
+							$condition .=  sprintf(
+							/* translators: %s = maximum number of hours */
+								_n( 'Max. %s hour', 'Max. %s hours', $max_hour, 'abprf-rental-forge' ), $max_hour );
+						}
+					}
+				}
+                return $condition;
+			}
+			public static function create_client_form($form, $name): void {
+				$type = array_key_exists('type', $form) ? $form['type'] : '';
+				$required = array_key_exists('required', $form) && $form['required'] == 'on' ? 'required' : '';
+				$label = array_key_exists('label', $form) ? $form['label'] : '';
+				$d_value = array_key_exists('d_value', $form) ? $form['d_value'] : '';
+				$validation_class = '';
+				if ($type == 'text' || $type == 'number' || $type == 'email') {
+					$validation_class = $type == 'text' ? 'validation_name' : $validation_class;
+					$validation_class = $type == 'number' ? 'validation_number' : $validation_class;
+					?>
+                    <label class="_input_item">
+						<?php ABPRF_Layout::input_title($label, $required); ?>
+                        <input type="<?php echo esc_attr($type); ?>" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($d_value); ?>" class="_form_control <?php echo esc_attr($validation_class); ?>" placeholder="<?php echo esc_attr($label); ?>" title="<?php echo esc_attr($label); ?>" <?php echo esc_attr($required); ?> />
+                    </label>
+					<?php
+				}
+				if ($type == 'date') {
+					ABPRF_Layout::input_date($name, $d_value, $label, $required);
+				}
+				if ($type == 'textarea') {
+					ABPRF_Layout::textarea($name, $d_value, $label, $required);
+				}
+				if ($type == 'select') {
+					$options = array_key_exists('option', $form) ? $form['option'] : '';
+					$options = $options ? explode(',', $options) : '';
+					ABPRF_Layout::select($name, $d_value, $label, $required, $options);
+				}
+				if ($type == 'checkbox') {
+					$options = array_key_exists('option', $form) ? $form['option'] : '';
+					$options = $options ? explode(',', $options) : '';
+					ABPRF_Layout::checkbox($name, $d_value, $label, $required, $options);
+				}
+				if ($type == 'radio') {
+					$options = array_key_exists('option', $form) ? $form['option'] : '';
+					$options = $options ? explode(',', $options) : '';
+					ABPRF_Layout::radio($name, $d_value, $label, $required, $options);
+				}
+			}
 			//=============================//
 			public static function filter_transport( $post_id = 0 ): void {
 				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
@@ -1015,7 +1081,7 @@
 							$form_data['j_date'] = $_j_date;
 						}
 						$form_data['post_id'] = max( $_post_id, $post_id );
-						do_action( 'abptm_registration', $form_data );
+						do_action( 'abprf_registration', $form_data );
 					} else {
 						$form_data['bp']     = $_bp;
 						$form_data['dp']     = $_dp;
@@ -1044,114 +1110,15 @@
 				$transport_items = ABPRF_Function::get_transport_list_details( $bp, $dp, $j_date );
 				if ( sizeof( $transport_items ) > 0 ) {
 					foreach ( $transport_items as $transport_item ) {
-						do_action( 'abptm_search_list', $form_data, $transport_item );
+						do_action( 'abprf_search_list', $form_data, $transport_item );
 					}
 				} else {
 					ABPRF_Layout::layout_warning_info( 'no_property_found' );
 				}
 			}
 
-			public static function hidden_search_form( $form_data ): void {
-				?>
-                <input type="hidden" name="_post_id" value="<?php echo esc_attr( array_key_exists( '_post_id', $form_data ) ? $form_data['_post_id'] : '' ); ?>"/>
-                <input type="hidden" name="_bp" value="<?php echo esc_attr( array_key_exists( '_bp', $form_data ) ? $form_data['_bp'] : '' ); ?>"/>
-                <input type="hidden" name="_dp" value="<?php echo esc_attr( array_key_exists( '_dp', $form_data ) ? $form_data['_dp'] : '' ); ?>"/>
-                <input type="hidden" name="_j_date" value="<?php echo esc_attr( array_key_exists( '_j_date', $form_data ) ? $form_data['_j_date'] : '' ); ?>"/>
-                <input type="hidden" name="_r_date" value="<?php echo esc_attr( array_key_exists( '_r_date', $form_data ) ? $form_data['_r_date'] : '' ); ?>"/>
-				<?php
-			}
 
-			public static function get_seat_plan( $abprf_infos, $bp, $dp, $bp_date, $sp_infos, $sold_seats, $ud = false ): void {
-				$post_id             = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : 0;
-				$display_ticket_type = array_key_exists( 'display_ticket_type', $abprf_infos ) ? $abprf_infos['display_ticket_type'] : 'off';
-				$ticket_type         = array_key_exists( 'ticket_type', $abprf_infos ) ? $abprf_infos['ticket_type'] : '';
-				$ticket_type_array   = $ticket_type ? explode( ',', $ticket_type ) : [ 'default' ];
-				$ticket_names_array  = ABPRF_Function::get_ticket_type();
-				$ticket_type_key     = 'price';
-				$adult_price         = '';
-				$child_price         = '';
-				$infant_price        = '';
-				if ( $display_ticket_type == 'on' && sizeof( $ticket_type_array ) > 0 ) {
-					$adult_price     = in_array( 'adult', $ticket_type_array ) ? ABPRF_Function:: get_price( $post_id, $bp, $dp, 'adult', $ud ) : '';
-					$adult_price     = $adult_price ? ABPRF_Function::get_wc_raw_price( $post_id, $adult_price ) : '';
-					$child_price     = in_array( 'child', $ticket_type_array ) ? ABPRF_Function:: get_price( $post_id, $bp, $dp, 'child', $ud ) : '';
-					$child_price     = $child_price ? ABPRF_Function::get_wc_raw_price( $post_id, $child_price ) : '';
-					$infant_price    = in_array( 'infant', $ticket_type_array ) ? ABPRF_Function:: get_price( $post_id, $bp, $dp, 'infant', $ud ) : '';
-					$infant_price    = $infant_price ? ABPRF_Function::get_wc_raw_price( $post_id, $infant_price ) : '';
-					$ticket_type_key = $infant_price ? 'infant' : 'child';
-					$ticket_type_key = $adult_price ? 'adult' : $ticket_type_key;
-				}
-				$d_price = $d_price ?? ABPRF_Function:: get_price( $post_id, $bp, $dp, $ticket_type_key, true );
-				?>
-                <table class="_abprf">
-					<?php foreach ( $sp_infos as $sp_ud_info ) {
-						if ( is_array( $sp_ud_info ) && sizeof( $sp_ud_info ) > 0 ) { ?>
-                            <tr>
-								<?php foreach ( $sp_ud_info as $sp_ld ) {
-									$seat_type = explode( '_@@_', $sp_ld )[0];
-									$text      = explode( '_@@_', $sp_ld )[1];
-									$text      = explode( '_&&_', $text )[0];
-									$colspan   = max( (int) explode( '_&&_', $sp_ld )[1], 0 );
-									if ( $colspan > 0 ) { ?>
-                                        <th colspan="<?php echo esc_attr( $colspan ); ?>">
-											<?php if ( $seat_type == 'ticket' ) {
-												if ( in_array( $text, $sold_seats ) ) {
-													$seat_class = 'seat_sold';
-													$seat_title = __( 'Sold', 'abprf-rental-forge' ) . ' :  ' . $text;
-												} elseif ( ABPRF_Function::already_in_cart( $post_id, $bp, $dp, $bp_date, $text ) > 0 ) {
-													$seat_class = 'seat_cart';
-													$seat_title = __( 'Already in Cart', 'abprf-rental-forge' ) . ' :  ' . $text;
-												} else {
-													$seat_class = 'seat_sale';
-													$seat_title = __( 'On Sale ', 'abprf-rental-forge' ) . ' :  ' . $text;
-												}
-												?>
-                                                <div class="seat_item <?php echo esc_attr( $seat_class ); ?>" title="<?php echo esc_attr( $seat_title ); ?>"
-                                                     data-name="<?php echo esc_attr( $text ); ?>" data-price="<?php echo esc_attr( $d_price ); ?>" data-type="<?php echo esc_attr( $ticket_type_key ); ?>"
-													<?php if ( $seat_class == 'seat_sale' && $display_ticket_type == 'on' && sizeof( $ticket_type_array ) > 0 ) { ?>
-                                                        data-label="<?php echo esc_attr( $ticket_names_array['adult'] ); ?>"
-													<?php } ?>
-                                                >
-													<?php if ( in_array( $text, $sold_seats ) ) { ?>
-                                                        <span class="fas fa-times"></span>
-													<?php } else {
-														echo esc_html( $text );
-													} ?>
-                                                </div>
-												<?php if ( $seat_class == 'seat_sale' && $display_ticket_type == 'on' && sizeof( $ticket_type_array ) > 0 ) { ?>
-                                                    <div class="_transition ticket_type_list">
-                                                        <ul class="_abprf_list">
-															<?php if ( $adult_price ) { ?>
-                                                                <li data-price="<?php echo esc_attr( $adult_price ); ?>" data-type="adult" data-label="<?php echo esc_attr( $ticket_names_array['adult'] ); ?>"><?php echo esc_html( $ticket_names_array['adult'] . esc_html__( ' : ', 'abprf-rental-forge' ) ); ?><strong class="_abprf"><?php echo $adult_price > 0 ? wp_kses_post( wc_price( $adult_price ) ) : esc_html__( 'Free', 'abprf-rental-forge' ); ?></strong></li>
-															<?php }
-																if ( $child_price ) { ?>
-                                                                    <li data-price="<?php echo esc_attr( $child_price ); ?>" data-type="child" data-label="<?php echo esc_attr( $ticket_names_array['child'] ); ?>"><?php echo esc_html( $ticket_names_array['child'] ) . esc_html__( ' : ', 'abprf-rental-forge' ); ?><strong class="_abprf"><?php echo $child_price > 0 ? wp_kses_post( wc_price( $child_price ) ) : esc_html__( 'Free', 'abprf-rental-forge' ); ?></strong></li>
-																<?php }
-																if ( $infant_price ) { ?>
-                                                                    <li data-price="<?php echo esc_attr( $infant_price ); ?>" data-type="infant" data-label="<?php echo esc_attr( $ticket_names_array['infant'] ); ?>"><?php echo esc_html( $ticket_names_array['infant'] ) . esc_html__( ' : ', 'abprf-rental-forge' ); ?><strong class="_abprf"><?php echo $infant_price > 0 ? wp_kses_post( wc_price( $infant_price ) ) : esc_html__( 'Free', 'abprf-rental-forge' ); ?></strong></li>
-																<?php } ?>
-                                                        </ul>
-                                                    </div>
-													<?php
-												}
-											} else if ( $seat_type == 'driver' ) { ?>
-                                                <div class="bg_img">
-                                                    <div data-bg-image="<?php echo esc_url( ABPRF_URL . '/assets/images/suspension.png' ); ?>"></div>
-                                                </div>
-											<?php } else if ( $seat_type == 'text' ) {
-												echo esc_html( $text );
-											} else {
-												echo esc_html( '' );
-											} ?>
-                                        </th>
-									<?php }
-								} ?>
-                            </tr>
-						<?php } ?>
-					<?php } ?>
-                </table>
-				<?php
-			}
+
 		}
 		new ABPRF_Layout();
 	}

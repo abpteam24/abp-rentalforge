@@ -1,10 +1,7 @@
 @charset "utf-8";
 /******************************************************************** Details page ************************************************/
 @media only screen and (min-width: 10px) {
-	.details_page_top {margin: var(--rf_gap) 0;border: 1px solid var(--rf_color_border);background-color: var(--rf_color_section);}
-	.details_page_top .details_page_info,
-	.details_page_top .abprf_slider {padding: var(--rf_gap_xs);}
-	.details_page_top .details_page_info,
+
 	div.default_details_page div.abprf_slider {background-color: transparent;}
 }
 /******************************************************************** Search Form ************************************************/
@@ -12,53 +9,59 @@
 	#abprf_search_area {background: var(--rf_color_white); border-radius: var(--rf_br_xl); padding: var(--rf_gap); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); margin-bottom: var(--rf_gap);}
 	#abprf_search_area form {max-width: 100%;}
 	#abprf_search_area .duration_area {background: linear-gradient(135deg, var(--rf_color_theme), var(--rf_color_primary)); color: var(--rf_color_white); padding: var(--rf_gap); border-radius: var(--rf_br_xl); text-align: center;}
-	#abprf_search_area .duration_area h2{color: var(--rf_color_white);}
-	#abprf_search_area .duration_area h5{color: var(--rf_color_light);}
-	#abprf_search_area .duration_area h6{color: var(--rf_color_light_1);}
+	#abprf_search_area .duration_area h2 {color: var(--rf_color_white);}
+	#abprf_search_area .duration_area h5 {color: var(--rf_color_light);}
+	#abprf_search_area .duration_area h6 {color: var(--rf_color_light_1);}
 }
 /******************************************************************** property_item_area************************************************/
 @media only screen and (min-width: 10px) {
 	div.property_item_area {display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: var(--rf_gap);}
-	div.property_item_area .property_item {background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; border: 2px solid transparent;}
-	div.property_item_area.property_item.rf_active {border-color: var(--rf_color_theme); box-shadow: 0 8px 30px rgba(99, 102, 241, 0.2);}
-	div.property_item_area .property_item:hover {transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);}
-	div.property_item .item_head {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap); text-align: center;}
-	div.property_item .item_body {padding: var(--rf_gap);}
+	div.property_item_area .property_item {}
+	div.property_item .item_head {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap_xs); text-align: center;}
+	div.property_item .item_body {padding: var(--rf_gap_xs);}
 	div.property_item .item_img {height: 150px;width: 100%;overflow: hidden;font-size: 70px;}
-	div.item_body .item_spec {display: flex; flex-wrap: wrap; gap: var(--rf_gap_xs); margin-bottom: var(--rf_gap);}
+	div.item_body .item_spec {display: flex; flex-wrap: wrap; gap: var(--rf_gap_xs); margin-bottom: var(--rf_gap_xs);}
 	div.item_body .spec_badge {background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: var(--rf_gap_xxs) var(--rf_gap_xs); border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: var(--rf_color_dark);}
 	div.item_body .pricing_box { background: var(--rf_color_light); padding: var(--rf_gap_xs); border-radius: 8px;}
-	div.item_body .price_row {display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rf_gap);}
+	div.item_body .price_row {display: flex; justify-content: space-between; align-items: center; }
 	div.item_body .price_label {font-size: 0.9rem; color: #6B7280;}
 	div.item_body .price_value {font-size: 1.5rem; font-weight: 800; color: var(--rf_color_theme);}
-	div.item_body .item_condition {font-size: 0.8rem; color: #6B7280;}
-	div.item_body .calculated_cost {background: white; padding: var(--rf_gap); border-radius: 6px; margin-top: var(--rf_ga_xs); border: 2px dashed var(--rf_color_border);}
+	div.item_body .item_condition {font-size: 0.8rem; color: #6B7280;margin-top: var(--rf_gap_xs);}
+	div.item_body .calculated_cost {background: white; padding: var(--rf_gap); border-radius: 6px; margin-top: var(--rf_gap_xs); border: 2px dashed var(--rf_color_border);}
 	div.item_body .cost_label {font-size: 0.8rem; color: #6B7280; margin-bottom: var(--rf_gap_xs);}
 	div.item_body .cost_value {font-size: 2rem; font-weight: 800; color: var(--rf_color_secondary);}
-	div.item_body .select_checkbox {display: flex; align-items: center; gap: var(--rf_gap_xs); padding: var(--rf_gap_xs); margin-top: var(--rf_gap_xs); background: var(--rf_color_light); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;}
-	div.item_body .item_checkbox {width: 24px; height: 24px; accent-color: var(--rf_color_primary); cursor: pointer;}
-	div.item_body .checkbox_label {font-weight: 600; cursor: pointer;}
+	div.item_body .cost_condition {font-size: 1rem; font-weight: 800; color: var(--rf_color_secondary);}
+	div.item_body .select_property {display: flex; align-items: center; justify-content: space-between; gap: var(--rf_gap_xs); padding: var(--rf_gap_xs); margin-top: var(--rf_gap_xs); background: var(--rf_color_light); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;}
+	div.item_body .select_property .custom_checkbox {margin: 0 var(--rf_gap_xs) 0 0;}
+	div.item_body .select_property .custom_checkbox .checkbox_item {margin: 0;}
+	/*div.item_body .item_checkbox {width: 24px; height: 24px; accent-color: var(--rf_color_primary); cursor: pointer;}*/
+	/*div.item_body .checkbox_label {font-weight: 600; cursor: pointer;margin: 0 var(--rf_gap_xs);}*/
 }
 /******************************************************************** Registration section************************************************/
 @media only screen and (min-width: 10px) {
-	div.abptm_pickup_drop,
-	div.transport_selection,
-	div.transport_additional_service {display: none;width: 100%; }
+	div.abprf_registration_item div.bg_img {max-width: 50px;margin: 0 auto;}
+	div.abprf_registration_item .client_info_area,
+	div.abprf_registration_item .total_continue_area,
+	div.abprf_registration_item .additional_service_area {width: 100%;margin-top: var(--rf_gap);display: none; }
+	div.additional_service_area .additional_service { padding: var(--rf_gap);}
+	div.abprf_registration_item .total_continue {background-color: var(--rf_color_light);display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between;-webkit-align-items: center;align-items: center;padding: var(--rf_gap);;}
+	div.client_info_area div.attendee_item {position: relative;display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap; flex-wrap: wrap;-webkit-justify-content: space-between; justify-content: space-between; padding: var(--rf_gap);}
+	div.attendee_item [class*="_input_item"] {display: inline-block;margin: var(--rf_gap_xs) 0 0 0;width: 50%;}
+	div.attendee_item [class*="_input_item"] [class*="_form_control"] {width: 100%;border-radius: 0;}
+	div.attendee_item [class*="_input_item"].abprf_textarea,
+	div.attendee_item [class*="_input_item"].custom_checkbox,
+	div.attendee_item [class*="_input_item"].custom_radio {width: 100%;}
+}
+/******************************************************************** Passenger form ************************************************/
+@media only screen and (min-width: 10px) {
+}
+/******************************************************************** ************************************************/
+@media only screen and (min-width: 10px) {
+
 	div.abprf_rental_result div.abprf_registration_item {padding: 0;margin: 0;}
 	div.transport_route_details_info {padding: var(--rf_gap);}
 	.seat_details_area {border-left: 1px solid var(--rf_color_border);}
-	.abprf_registration_item .total_continue {background-color: var(--rf_color_light);display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between;-webkit-align-items: center;align-items: center;}
-	div.abptm_pickup_drop,
-	div.abprf_ft .additional_service,
-	div.abprf_ft div.total_continue,
-	div.abprf_ft div.attendee_item {border-top: 1px solid var(--rf_color_border); padding: var(--rf_gap);vertical-align: middle;}
-	div.abprf_registration_item div.transport_selection table[class*="_abprf"],
-	div.abprf_registration_item div.transport_selection table[class*="_abprf"] th,
-	div.abprf_registration_item div.transport_selection table[class*="_abprf"] td {border-left: none;border-right: none;}
 	div.abptm_ticket_area {padding: var(--rf_gap);}
-}
-/******************************************************************** Seat configuration ************************************************/
-@media only screen and (min-width: 10px) {
 	#abprf_area {}
 	div.abptm_seat_plan_area {overflow: auto;display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;padding: var(--rf_gap_xs);}
 	div.abptm_seat_plan_area table[class*="_abprf"] {table-layout: fixed;border: 1px dashed var(--rf_color_border);margin: 0 auto;width: auto;border-collapse: inherit;padding: var(--rf_gap_xs);}
@@ -73,14 +76,10 @@
 	div.abptm_seat_plan_area div.seat_item.selected { background-color: var(--rf_color_theme);border-color: var(--rf_color_theme);color: var(--rf_color_theme_alter); -webkit-box-shadow: var(--rf_shadow_5); box-shadow: var(--rf_shadow_5); }
 	div.abptm_seat_plan_area div.seat_item.seat_sale {cursor: pointer;}
 	div.abptm_seat_plan_area div.seat_item.seat_sale:hover {border-color: var(--rf_color_theme);color: var(--rf_color_theme);}
-	div.abprf_registration_item table[class*="_abprf"] div.bg_img {max-width: 50px;margin: 0 auto;}
 	/*=============================*/
 	div.ticket_type_list {position: absolute;z-index: 11111;display: none;left: 5px;min-width: 120px;border: 1px solid var(--rf_color_border);border-radius: var(--rf_br);background-color: var(--rf_color_white);}
 	div.abptm_seat_plan_area th:hover div.ticket_type_list {display: block;}
 	div.ticket_type_list ul li:hover {background-color: var(--rf_color_theme);color: var(--rf_color_theme_alter);cursor: pointer;}
-}
-/******************************************************************** Post List ************************************************/
-@media only screen and (min-width: 10px) {
 	div.transportation_item_content {display: -webkit-flex;display: flex;position: relative;}
 	div.transportation_item div.transportation_item_content > div.bg_img {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);height: auto;}
 	div.transportation_item div.transport_slider {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);}
@@ -97,9 +96,6 @@
 	div.route_details {border-top: 1px solid var(--rf_color_border); padding: var(--rf_gap_xs);display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	div.transportation_item .seat_details_area {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;-webkit-justify-content: space-between;justify-content: space-between;}
 	div.abprf_rental_result {width: 100%; max-width: 100%;}
-}
-/******************************************************************** list shortcode************************************************/
-@media only screen and (min-width: 10px) {
 	div.abptm_grid .list_item {position: relative;}
 	div.abptm_grid a.list_title {position: absolute;left: 0;right: 0;bottom: 0;padding: var(--rf_gap_xs);color: var(--rf_color_theme);z-index: 111;text-align: center;font-size: var(--rf_fs_h6);}
 	div.abptm_grid a.list_title:hover {background-color: var(--rf_color_theme_alter);}

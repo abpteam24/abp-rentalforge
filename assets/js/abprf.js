@@ -24,10 +24,57 @@
             load_end_time(parent, date, start_time);
         }
     });
+    $(document).on('submit', '#abprf_search_area form.abprf_property_form', function (e) {
+        e.preventDefault();
+        let parent = $(this).closest('#abprf_area');
+        let form_area = $(this).closest('#abprf_search_area');
+        let rent_rule = $.trim(form_area.find('[name="rent_rule"]').val());
+        if ($.trim(form_area.find('[name="rent_start_date"]').val()).length === 0) {
+            setTimeout(function () {
+                abprf_toast_msg(abprf_infos.msg.select_rent_start_date);
+                form_area.find('#start_date').focus();
+            }, 100);
+            return;
+        }
+        if (rent_rule === 'hourly') {
+            if ($.trim(form_area.find('[name="start_time"]').val()).length === 0) {
+                abprf_toast_msg(abprf_infos.msg.select_rent_start_time);
+                form_area.find('[name="start_time"]').show().focus();
+                return;
+            }
+            if ($.trim(form_area.find('[name="end_time"]').val()).length === 0) {
+                abprf_toast_msg(abprf_infos.msg.select_rent_end_time);
+                form_area.find('[name="end_time"]').show().focus();
+                return;
+            }
+        }
+        let target = parent.find('.property_registration');
+        let formData = new FormData(this);
+        formData.append('action', 'abprf_load_property');
+        formData.append('nonce', abprf_infos.nonce);
+        $.ajax({
+            type: 'POST', url: abprf_infos.ajax_url, contentType: false, processData: false, data: formData,
+            beforeSend: function () {
+                abprf_spinner(target);
+                abprf_spinner(form_area);
+                abprf_toast_msg(abprf_infos.msg.property_loading);
+            },
+            success: function (response) {
+                abprf_spinner_remove(target);
+                abprf_spinner_remove(form_area);
+                target.html(response.data.property_info);
+                form_area.find('.date_details').html(response.data.date_details).promise().done(function (){
+                    abprf_load_datepicker(target);
+                });
+                abprf_toast_msg(abprf_infos.msg.property_loading_success, 'success');
+            }
+        });
+    });
     function load_start_time(parent) {
         let post_id = parent.find('[name="post_id"]').val();
         let date = parent.find('[name="rent_start_date"]').val();
         let dateObj = new Date(date);
+        let now = new Date(abprf_infos.now);
         let day_name = dateObj.toLocaleDateString('en-US', {weekday: 'long'}).toLowerCase();
         let selectedSlotString = "";
         if (abprf_date_infos[post_id]) {
@@ -47,7 +94,10 @@
                 let parts = slot.split('--');
                 let val = parts[0];
                 let label = parts[1];
-                optionsHtml += `<option value="${val}">${label}</option>`;
+                let inputDate = new Date(date + 'T' + val);
+                if (inputDate > now) {
+                    optionsHtml += `<option value="${val}">${label}</option>`;
+                }
             });
             parent.find('[name="start_time"]').html(optionsHtml);
         }
@@ -93,124 +143,90 @@
 }(jQuery));
 (function ($) {
     "use strict";
-    $(document).on('submit', '#abprf_search_area form.abprf_property_form', function (e) {
+    $(document).on("rf_trigger", "div.abprf_registration_item [name='property_check[]']", function (e) {
         e.preventDefault();
-        let parent = $(this).closest('#abprf_area');
-        let form_area = $(this).closest('#abprf_search_area');
-        let rent_rule = $.trim(form_area.find('[name="rent_rule"]').val());
-        if ($.trim(form_area.find('[name="rent_start_date"]').val()).length === 0) {
-            setTimeout(function () {
-                abprf_toast_msg(abprf_infos.msg.select_rent_start_date);
-                form_area.find('#start_date').focus();
-            }, 100);
-            return;
+        let $this = $(this);
+        let parent = $this.closest(".select_property");
+        let data_id = $this.attr('data-id');
+        let target = parent.find('[data-collapse="' + data_id + '"]');
+        if (target.length > 0) {
+            target.slideToggle('fast');
         }
-        if (rent_rule === 'hourly') {
-            if ($.trim(form_area.find('[name="start_time"]').val()).length === 0) {
-                abprf_toast_msg(abprf_infos.msg.select_rent_start_time);
-                form_area.find('[name="start_time"]').show().focus();
-                return;
-            }
-            if ($.trim(form_area.find('[name="end_time"]').val()).length === 0) {
-                abprf_toast_msg(abprf_infos.msg.select_rent_end_time);
-                form_area.find('[name="end_time"]').show().focus();
-                return;
-            }
-        }
-        let target = parent.find('.property_item_area');
-        let formData = new FormData(this);
-        formData.append('action', 'abprf_load_property');
-        formData.append('nonce', abprf_infos.nonce);
-        $.ajax({
-            type: 'POST', url: abprf_infos.ajax_url, contentType: false, processData: false, data: formData,
-            beforeSend: function () {
-                abprf_spinner(target);
-                abprf_spinner(form_area);
-                abprf_toast_msg(abprf_infos.msg.property_loading);
-            },
-            success: function (response) {
-                abprf_spinner_remove(target);
-                abprf_spinner_remove(form_area);
-                target.html(response.data.property_info);
-                form_area.find('.date_details').html(response.data.date_details);
-                abprf_toast_msg(abprf_infos.msg.property_loading_success, 'success');
-            }
-        });
+        parent.find('[name="property_qty[]"]').trigger('change');
     });
-}(jQuery));
-(function ($) {
-    "use strict";
-    $(document).on('click', 'div.abprf_registration_item .ticket_type_list li', function () {
-        let current = $(this);
-        let target = current.closest('th').find('.seat_sale');
-        let label = current.attr('data-label');
-        let price = current.attr('data-price');
-        let type = current.attr('data-type');
-        let parent = current.closest('div.abprf_registration_item');
-        target.attr('data-label', label).attr('data-price', price).attr('data-type', type).promise().done(function () {
-            if (target.hasClass('selected')) {
-                all_management(parent);
-            } else {
-                target.trigger('click');
-            }
-        });
-    });
+    $(document).on('change', 'div.abprf_registration_item [name="property_qty[]"]', function () {
+        let parent = $(this).closest('div.abprf_registration_item');
+        all_management(parent);
+    })
     $(document).on('change', 'div.abprf_registration_item .ex_price_calculate', function () {
         let parent = $(this).closest('div.abprf_registration_item');
         all_management(parent);
     });
-    $(document).on('change', 'div.abprf_registration_item [name="equipment_qty[]"]', function () {
-        let parent = $(this).closest('div.abprf_registration_item');
-        all_management(parent);
-    })
-    function submit_validation(current) {
-        let exit = 0;
-        current.closest('form').find("[required]").each(function () {
-            let value = $(this).val();
-            if (!value || value === ' ' || value === 'undefined' || value === '') {
-                $(this).trigger('focus').addClass('abprf_required');
-                exit++;
+    $(document).on('click', 'div.abprf_registration_item .abprf_book_continue', function (e) {
+        e.preventDefault();
+        let current = $(this);
+        let parent = current.closest('div.abprf_registration_item');
+        if (get_quantity(parent) > 0) {
+            if (submit_validation(current) < 1) {
+                parent.find("[name='add-to-cart']").trigger('click');
+                parent.find("[name='add-admin-order']").trigger('click');
             }
-        });
-        return exit;
-    }
+        } else {
+            abprf_alert(current);
+        }
+    });
     function all_management(parent) {
         let qty = get_quantity(parent);
         let price = 0;
         let total = 0;
-        ticket_management(parent, qty);
-        traveller_management(parent, qty);
-        additional_management(parent, qty);
+        let ex_price = 0;
+        let deposit_price = 0;
         if (qty > 0) {
             price = get_price(parent);
-            let ex_price = get_additional_price(parent);
-            total = price + ex_price;
-            parent.find('.transport_additional_service').slideDown('fast');
-            parent.find('.transport_selection').slideDown('fast');
-            parent.find('.abptm_pickup_drop').slideDown('fast');
+            ex_price = get_additional_price(parent);
+            deposit_price = get_deposit_price(parent);
+            total = price + ex_price + deposit_price;
+            parent.find('.additional_service_area').slideDown('fast');
+            parent.find('.client_info_area').slideDown('fast');
+            parent.find('.total_continue_area').slideDown('fast');
         } else {
-            parent.find('.transport_selection').slideUp('fast');
-            parent.find('.transport_additional_service').slideUp('fast');
-            parent.find('.abptm_pickup_drop').slideUp('fast');
+            parent.find('.client_info_area').slideUp('fast');
+            parent.find('.additional_service_area').slideUp('fast');
+            parent.find('.total_continue_area').slideUp('fast');
         }
-        parent.find('.abptm_sub_total').html(abprf_wc_price_format(price));
-        parent.find('.abptm_total').html(abprf_wc_price_format(total));
-        abprf_load_bg_image();
+        price = price > 0 ? abprf_wc_price_format(price) : abprf_infos.msg.free;
+        ex_price = ex_price > 0 ? abprf_wc_price_format(ex_price) : abprf_infos.msg.free;
+        total = total > 0 ? abprf_wc_price_format(total) : abprf_infos.msg.free;
+        deposit_price = deposit_price > 0 ? abprf_wc_price_format(deposit_price) : abprf_infos.msg.free;
+        parent.find('.item_total').html(price);
+        parent.find('.additional_total').html(ex_price);
+        parent.find('.deposit_total').html(deposit_price);
+        parent.find('.abprf_total').html(total);
+        // abprf_load_bg_image();
+    }
+    function get_quantity(parent) {
+        let qty = 0;
+        parent.find('.select_property').each(function () {
+            let current = $(this);
+            let active_property = parseInt($.trim(current.find('[name="property_check[]"]').val()));
+            if (active_property === 1) {
+                qty = qty + parseInt($.trim(current.find('[name="property_qty[]"]').val()));
+            }
+        })
+        return qty;
     }
     function get_price(parent) {
         let total = 0;
-        if (parent.find('.abptm_seat_plan_area').length > 0) {
-            parent.find('.seat_sale.selected').each(function () {
-                total = total + parseFloat($(this).attr('data-price'));
-            });
-        } else {
-            parent.find('[name="equipment_qty[]"]').each(function () {
-                let qty = parseInt($(this).val());
-                let price = parseFloat($(this).attr('data-price'));
+        parent.find('.select_property').each(function () {
+            let current = $(this);
+            let active_property = parseInt($.trim(current.find('[name="property_check[]"]').val()));
+            if (active_property === 1) {
+                let target = current.find('[name="property_qty[]"]');
+                let price = parseFloat($.trim(target.attr('data-price')));
                 price = price && price >= 0 ? price : 0;
-                total = total + price * qty;
-            });
-        }
+                total = total + price * parseInt($.trim(target.val()));
+            }
+        })
         return total;
     }
     function get_additional_price(parent) {
@@ -223,199 +239,38 @@
         });
         return total;
     }
-    function get_quantity(parent) {
-        let qty = 0;
-        if (parent.find('.abptm_seat_plan_area').length > 0) {
-            parent.find('.seat_sale.selected').each(function () {
-                qty++;
-            });
-        } else {
-            parent.find('[name="equipment_qty[]"]').each(function () {
-                qty = qty + parseInt($(this).val());
-            });
-        }
-        return qty;
-    }
-    function ticket_management(parent, total_qty) {
-        if (parent.find('.abptm_seat_plan_area').length > 0) {
-            let target_ld = parent.find('.seat_plan_ld');
-            if (target_ld.length > 0) {
-                let seats = '';
-                let seats_type = '';
-                target_ld.find('.seat_sale.selected').each(function () {
-                    seats = seats ? seats + ',' + $(this).attr('data-name') : $(this).attr('data-name');
-                    seats_type = seats_type ? seats_type + ',' + $(this).attr('data-type') : $(this).attr('data-type');
-                }).promise().done(function () {
-                    target_ld.find('[name="selected_ld"]').val(seats);
-                    target_ld.find('[name="selected_ld_type"]').val(seats_type);
-                });
+    function get_deposit_price(parent) {
+        let total = 0;
+        parent.find('.select_property').each(function () {
+            let current = $(this);
+            let active_property = parseInt($.trim(current.find('[name="property_check[]"]').val()));
+            if (active_property === 1) {
+                let target = current.find('[name="property_qty[]"]');
+                let deposit_type = current.find('[name="deposit_type[]"]').val();
+                let price = parseFloat($.trim(current.find('[name="deposit_value[]"]').val()));
+                price = price && price >= 0 ? price : 0;
+                if (deposit_type === 'fixed') {
+                    total = total + price;
+                } else if (deposit_type === 'percent') {
+                    let price_current = parseFloat($.trim(target.attr('data-price'))) * parseInt($.trim(target.val()));
+                    total = total + price * price_current / 100;
+                } else {
+                    total = total + price * parseInt($.trim(target.val()));
+                }
             }
-            let target_ud = parent.find('.seat_plan_ud');
-            if (target_ud.length > 0) {
-                let seats_dd = '';
-                let seats_dd_type = '';
-                target_ud.find('.seat_sale.selected').each(function () {
-                    seats_dd = seats_dd ? seats_dd + ',' + $(this).attr('data-name') : $(this).attr('data-name');
-                    seats_dd_type = seats_dd_type ? seats_dd_type + ',' + $(this).attr('data-type') : $(this).attr('data-type');
-                }).promise().done(function () {
-                    target_ud.find('[name="selected_ud"]').val(seats_dd);
-                    target_ud.find('[name="selected_ud_type"]').val(seats_dd_type);
-                });
-            }
-            seat_management(parent, total_qty)
-        }
+        })
+        return total;
     }
-    function seat_management(parent, total_qty) {
-        if (parent.find('.abptm_seat_plan_area').length > 0) {
-            let target = parent.find('.transport_selection .insert_item');
-            if (total_qty > 0) {
-                let item_length = target.find('tr').length;
-                let hidden_tr = parent.find('.abprf_d_none .delete_area ');
-                parent.find('.seat_sale.selected').each(function () {
-                    let seat_name = $(this).attr('data-name');
-                    let seat_type = $(this).attr('data-type');
-                    if (target.find('[data-name="' + seat_name + '"]').length === 0) {
-                        seat_selected($(this), hidden_tr, target);
-                    } else {
-                        if (target.find('[data-name="' + seat_name + '"]').length === 1 && target.find('[data-type="' + seat_type + '"]').length === 0) {
-                            target.find('[data-name="' + seat_name + '"]').remove();
-                            seat_selected($(this), hidden_tr, target);
-                        }
-                    }
-                }).promise().done(function () {
-                    item_length = target.find('tr').length;
-                    if (item_length !== total_qty) {
-                        target.find('tr').each(function () {
-                            let seat_name = $(this).attr('data-name');
-                            if (parent.find('.seat_sale.selected[data-name="' + seat_name + '"]').length === 0) {
-                                $(this).remove();
-                            }
-                        });
-                    }
-                });
-            } else {
-                target.html('');
+    function submit_validation(current) {
+        let exit = 0;
+        current.closest('form').find("[required]").each(function () {
+            let value = $(this).val();
+            if (!value || value === ' ' || value === 'undefined' || value === '') {
+                $(this).trigger('focus').addClass('abprf_required');
+                exit++;
             }
-        }
-    }
-    function seat_selected(current, hidden_tr, target) {
-        let label = current.attr('data-label');
-        let price = current.attr('data-price');
-        let name = current.attr('data-name');
-        let type = current.attr('data-type');
-        let text = label ? name + '(' + label + ')' : name;
-        hidden_tr.attr('data-type', type).attr('data-name', name).promise().done(function () {
-            hidden_tr.find('.seat_name').html(text);
-            hidden_tr.find('.seat_price').html(abprf_wc_price_format(price));
-        }).promise().done(function () {
-            target.append(hidden_tr.clone());
         });
-    }
-    function traveller_management(parent, qty) {
-        let target = parent.find('.abprf_client_info');
-        let single_attendee = parent.find('[name="display_single_form"]').val();
-        if (single_attendee === 'on') {
-            if (qty > 0) {
-                target.slideDown(250).promise().done(function () {
-                    abprf_load_datepicker(target);
-                });
-            } else {
-                target.slideUp(250);
-            }
-        } else {
-            if (target.length > 0 && qty > 0) {
-                target.slideDown(250);
-                let form_length = target.find('.attendee_item').length;
-                if (form_length !== qty) {
-                    let hidden_target = parent.find('.attendee_item_hidden');
-                    if (parent.find('.abptm_seat_plan_area').length > 0) {
-                        parent.find('.seat_sale.selected').each(function () {
-                            let seat_name = $(this).attr('data-name');
-                            if (target.find('[data-name="' + seat_name + '"]').length === 0) {
-                                hidden_target.find('.attendee_item').attr('data-name', seat_name);
-                                hidden_target.find('.attendee_seat_name').html(seat_name).promise().done(function () {
-                                    target.append(hidden_target.html());
-                                });
-                            }
-                        }).promise().done(function () {
-                            abprf_load_datepicker(target);
-                            form_length = target.find('.attendee_item').length;
-                            if (form_length !== qty) {
-                                target.find('.attendee_item').each(function () {
-                                    let seat_name = $(this).attr('data-name');
-                                    if (parent.find('.seat_sale.selected[data-name="' + seat_name + '"]').length === 0) {
-                                        $(this).remove();
-                                    }
-                                });
-                            }
-                        });
-                    } else {
-                        if (form_length > qty) {
-                            for (let i = form_length; i > qty; i--) {
-                                target.find('.attendee_item:last-child').slideUp(250).remove();
-                            }
-                        } else {
-                            for (let i = form_length; i < qty; i++) {
-                                hidden_target.find('.attendee_seat_name').html(i + 1).promise().done(function () {
-                                    target.append(hidden_target.html());
-                                }).promise().done(function () {
-                                    abprf_load_datepicker(target);
-                                });
-                            }
-                        }
-                    }
-                }
-            } else {
-                target.html('').slideUp(250);
-            }
-        }
-    }
-    function additional_management(parent, qty) {
-        let target = parent.find('.abprf_additional_info');
-        let display_single_additional = parent.find('[name="display_single_additional"]').val();
-        if (display_single_additional === 'off' && target.length > 0) {
-            if (qty > 0) {
-                target.slideDown(250);
-                let form_length = target.find('.transport_additional_service').length;
-                if (form_length !== qty) {
-                    let hidden_target = parent.find('.additional_item_hidden');
-                    if (parent.find('.abptm_seat_plan_area').length > 0) {
-                        parent.find('.seat_sale.selected').each(function () {
-                            let seat_name = $(this).attr('data-name');
-                            if (target.find('[data-additional="' + seat_name + '"]').length === 0) {
-                                hidden_target.find('.transport_additional_service').attr('data-additional', seat_name);
-                                hidden_target.find('.additional_seat_name').html(seat_name).promise().done(function () {
-                                    target.append(hidden_target.html());
-                                });
-                            }
-                        }).promise().done(function () {
-                            form_length = target.find('.transport_additional_service').length;
-                            if (form_length !== qty) {
-                                target.find('.transport_additional_service').each(function () {
-                                    let seat_name = $(this).attr('data-additional');
-                                    if (parent.find('.seat_sale.selected[data-name="' + seat_name + '"]').length === 0) {
-                                        $(this).remove();
-                                    }
-                                });
-                            }
-                        });
-                    } else {
-                        if (form_length > qty) {
-                            for (let i = form_length; i > qty; i--) {
-                                target.find('.transport_additional_service:last-child').slideUp(250).remove();
-                            }
-                        } else {
-                            for (let i = form_length; i < qty; i++) {
-                                hidden_target.find('.additional_seat_name').html(i + 1).promise().done(function () {
-                                    target.append(hidden_target.html());
-                                });
-                            }
-                        }
-                    }
-                }
-            } else {
-                target.html('').slideUp(250);
-            }
-        }
+        return exit;
     }
 }(jQuery));
+

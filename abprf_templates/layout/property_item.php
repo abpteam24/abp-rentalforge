@@ -11,19 +11,18 @@
 			$dif_exit       = 0;
 			$post_id        = array_key_exists( 'post_id', $property ) ? $property['post_id'] : '';
 			$property_id    = array_key_exists( 'id', $property ) ? $property['id'] : '';
-			$qty_info   = array_key_exists( 'qty_info', $property ) ? $property['qty_info'] : '';
-			$qty_info   = ! empty( $qty_info ) ? json_decode( $qty_info, true ) : [];
-			$price_rule = array_key_exists( 'price_rule', $property ) ? $property['price_rule'] : '';
-			$price_rule = $price_rule ? explode( ',', $price_rule ) : [];
-			$price_info = array_key_exists( 'price_info', $property ) ? $property['price_info'] : '';
-			$price_info = ! empty( $price_info ) ? json_decode( $price_info, true ) : [];
+			$price_rule     = array_key_exists( 'price_rule', $property ) ? $property['price_rule'] : '';
+			$price_rule     = $price_rule ? explode( ',', $price_rule ) : [];
+			$price_info     = array_key_exists( 'price_info', $property ) ? $property['price_info'] : '';
+			$price_info     = ! empty( $price_info ) ? json_decode( $price_info, true ) : [];
 			if ( sizeof( $price_rule ) > 0 ) {
-				$icon_image  = array_key_exists( 'icon', $property ) ? $property['icon'] : '';
-				$name        = array_key_exists( 'name', $property ) ? $property['name'] : '';
-				$brand       = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
-				$total_price = 0;
+				$icon_image         = array_key_exists( 'icon', $property ) ? $property['icon'] : '';
+				$name               = array_key_exists( 'name', $property ) ? $property['name'] : '';
+				$brand              = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
+				$total_price        = 0;
+				$property_condition = '';
 				?>
-                <div class="property_item">
+                <div class="property_item _box_1">
                     <div class="item_head">
                         <div class="item_img _all_center">
 							<?php ABPRF_Layout::image_icon( $icon_image ); ?>
@@ -41,8 +40,9 @@
                                 <div class="item_spec">
 									<?php foreach ( $features as $feature ) {
 										$value = is_array( $feature ) && array_key_exists( 'value', $feature ) ? $feature['value'] : '';
+										$icon  = is_array( $feature ) && array_key_exists( 'icon', $feature ) ? $feature['icon'] : '';
 										if ( $value ) { ?>
-                                            <span class="spec_badge"><?php echo esc_html( $value ); ?></span>
+                                            <span class="spec_badge"><?php ABPRF_Layout::image_icon( $icon ); ?><?php echo esc_html( $value ); ?></span>
 										<?php }
 									} ?>
                                 </div>
@@ -72,22 +72,8 @@
                                             <span class="price_label"><?php esc_html_e( 'Hourly Rate', 'abprf-rental-forge' ); ?></span>
                                             <span class="item_condition">
                                                 <?php
-	                                                if ( $min_hour == $max_hour ) {
-		                                                echo esc_html( sprintf(
-		                                                /* translators: %s = minimum number of hours */
-			                                                _n( 'Rental is available for %s hour Only', 'Rental is available for  %s hours Only', $min_hour, 'abprf-rental-forge' ), $min_hour ) );
-	                                                } else {
-		                                                echo esc_html( '📉' ) . ' ';
-		                                                echo esc_html( sprintf(
-		                                                /* translators: %s = minimum number of hours */
-			                                                _n( 'Min. %s hour', 'Min. %s hours', $min_hour, 'abprf-rental-forge' ), $min_hour ) );
-		                                                if ( ! empty( $max_hour ) ) {
-			                                                echo esc_html( '  📈  ' );
-			                                                echo esc_html( sprintf(
-			                                                /* translators: %s = maximum number of hours */
-				                                                _n( 'Max. %s hour', 'Max. %s hours', $max_hour, 'abprf-rental-forge' ), $max_hour ) );
-		                                                }
-	                                                }
+	                                                $property_condition = ABPRF_Layout::property_condition( $rent_rule, $min_hour, $max_hour );
+	                                                echo esc_html( $property_condition );
                                                 ?>
                                             </span>
                                         </div>
@@ -146,25 +132,64 @@
 									?>
                                 </div>
 							<?php } ?>
-							<?php if ( is_array( $date_time_info ) && sizeof( $date_time_info ) > 0 && $dif_exit > 0 ) { ?>
+							<?php if ( is_array( $date_time_info ) && sizeof( $date_time_info ) > 0 ) { ?>
                                 <div class="calculated_cost">
                                     <div class="cost_label"><?php echo esc_html__( 'Total for ', 'abprf-rental-forge' ) . ' ' . esc_html( $dif_text ); ?></div>
-                                    <div class="cost_value"><?php echo wp_kses_post( wc_price( $total_price ) ); ?></div>
+									<?php if ( $dif_exit > 0 ) { ?>
+                                        <div class="cost_value">
+											<?php echo $total_price > 0 ? wp_kses_post( wc_price( $total_price ) ) : esc_html__( 'Free ', 'abprf-rental-forge' ); ?>
+                                        </div>
+									<?php } else { ?>
+                                        <div class="cost_condition">
+											<?php echo esc_html( $property_condition ); ?>
+                                        </div>
+									<?php } ?>
                                 </div>
 							<?php } ?>
                         </div>
-						<?php if ( is_array( $date_time_info ) && sizeof( $date_time_info ) > 0 && $dif_exit > 0 ) { ?>
-                            <input type="hidden" name="post_id[]" value="<?php echo esc_attr( $post_id ); ?> "/>
-                            <input type="hidden" name="property_id[]" value="<?php echo esc_attr( $property_id ); ?> "/>
-                            <input type="hidden" name="rent_rule[]" value="<?php echo esc_attr( $rent_rule ); ?> "/>
-                            <input type="hidden" name="duration[]" value="<?php echo esc_attr( $dif ); ?> "/>
-                            <div class="select_checkbox">
-                                <label>
-                                    <input type="checkbox" class="item_checkbox" data-tool="<?php echo esc_attr( $name ); ?>" data-rate="<?php echo esc_attr( $total_price ); ?>">
-                                    <span class="checkbox_label"><?php echo esc_html__( 'Select ', 'abprf-rental-forge' ) . ' ' . esc_html( $name ); ?></span>
-                                </label>
-                            </div>
-						<?php } ?>
+						<?php if ( is_array( $date_time_info ) && sizeof( $date_time_info ) > 0 && $dif_exit > 0 ) {
+							//echo '<pre>';print_r( $date_time_info);					echo '</pre>';
+							$start_time    = array_key_exists( 'start_time', $date_time_info ) ? $date_time_info['start_time'] : '';
+							$end_time      = array_key_exists( 'end_time', $date_time_info ) ? $date_time_info['end_time'] : '';
+							$qty_info      = array_key_exists( 'qty_info', $property ) ? $property['qty_info'] : '';
+							$qty_info      = ! empty( $qty_info ) ? json_decode( $qty_info, true ) : [];
+							$total_qty     = array_key_exists( 'qty', $qty_info ) ? $qty_info['qty'] : 0;
+							$reserve_qty   = array_key_exists( 'reserve', $qty_info ) ? $qty_info['reserve'] : 0;
+							$min_qty       = array_key_exists( 'min', $qty_info ) ? $qty_info['min'] : 1;
+							$max_qty       = array_key_exists( 'max', $qty_info ) ? $qty_info['max'] : '';
+							$available_qty = $total_qty - $reserve_qty;
+							$max_qty       = ! empty( $max_qty ) && $max_qty <= $available_qty ? $max_qty : $available_qty;
+							$min_qty       = max( $min_qty, 1 );
+							if ( $max_qty >= $min_qty ) {
+								$collapse_id = '#' . $post_id . '_' . $property_id;
+								?>
+                                <div class="select_property">
+                                    <input type="hidden" name="property_id[]" value="<?php echo esc_attr( $property_id ); ?>"/>
+                                    <input type="hidden" name="deposit_type[]" value="<?php echo esc_attr( $deposit_type ); ?>"/>
+                                    <input type="hidden" name="deposit_value[]" value="<?php echo esc_attr( $deposit_value ); ?>"/>
+                                    <div class="custom_checkbox">
+                                        <input type="hidden" name="property_check[]" value="" data-id="<?php echo esc_attr( $collapse_id ); ?>"/>
+                                        <div class="checkbox_item _fa_center _fs_label" data-checked="1" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
+                                            <h3 class="_abprf"><span data-icon class="_mar_r_xs far fa-square"></span></h3><?php echo esc_html__( 'Select ', 'abprf-rental-forge' ) . ' ' . esc_html( $name ); ?>
+                                        </div>
+                                    </div>
+									<?php
+										if ( $max_qty > $min_qty ) {
+											$input_info['name']        = 'property_qty[]';
+											$input_info['price']       = $total_price;
+											$input_info['available']   = $available_qty;
+											$input_info['min_qty']     = $min_qty;
+											$input_info['max_qty']     = $max_qty;
+											$input_info['collapse_id'] = $collapse_id;
+											ABPRF_Layout::quantity_input( $input_info );
+										} else { ?>
+                                            <input type="hidden" name="property_qty[]" value="<?php echo esc_attr( $min_qty ); ?>" data-price="<?php echo esc_attr( $total_price ); ?>"/>
+										<?php } ?>
+                                </div>
+							<?php } else {
+								ABPRF_Layout::layout_warning_info( 'property_not_available' );
+							}
+						} ?>
                     </div>
                 </div>
 				<?php

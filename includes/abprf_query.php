@@ -11,10 +11,10 @@
 				global $wpdb;
 				$order_table_name = $wpdb->prefix . 'abprf_orders';
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$total_order         = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i", $order_table_name ) );
+				$total_order         = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %d", $order_table_name ) );
 				$property_table_name = $wpdb->prefix . 'abprf_property';
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$total_property               = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i", $property_table_name ) );
+				$total_property               = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %d", $property_table_name ) );
 				$cpt                          = ABPRF_Function::get_cpt();
 				$abprf_info                   = array();
 				$abprf_configuration          = ABPRF_Function::get_option( 'abprf_configuration' );
@@ -126,19 +126,20 @@
 					$params[] = $limit;
 					$params[] = $offset;
 				}
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->prepare()
 				if ( ! empty( $params ) ) {
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching.
+					// phpcs:ignore WordPress.PreparedSQL.NotPrepared -- Prepared later using wpdb->prepare()
 					$query = $wpdb->prepare( $sql, ...$params );
 				} else {
 					$query = $sql;
 				}
 				if ( $count ) {
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching.
+					// phpcs:ignore WordPress.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
 					$results = $wpdb->get_var( $query );
 				} else {
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()
+					// phpcs:ignore WordPress.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()
 					$results = $wpdb->get_results( $query, ARRAY_A );
 				}
 
@@ -185,7 +186,8 @@
 					$dp_array            = array_slice( $routes, $sp + 1 );
 					$bp_placeholders     = implode( ',', array_fill( 0, count( $bp_array ), '%s' ) );
 					$dp_placeholders     = implode( ',', array_fill( 0, count( $dp_array ), '%s' ) );
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->prepare()
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
 					$query = $wpdb->prepare( "SELECT {$key} FROM {$table_name}  WHERE post_id = %d AND bp IN ($bp_placeholders)  AND dp IN ($dp_placeholders) AND order_status IN ($status_placeholders) AND DATE(origin_time) = %s AND TIME(origin_time) = %s", array_merge( [ $post_id ], $bp_array, $dp_array, $booked_status, [ $date ], [ $time ] ) );
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()
@@ -199,7 +201,8 @@
 				if ( $item_id && $item_id > 0 ) {
 					global $wpdb;
 					$table_name = $wpdb->prefix . 'abprf_orders';
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->prepare()
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
 					$query = $wpdb->prepare( "SELECT  {$key}  FROM {$table_name}  WHERE item_id = %d ", array_merge( [ $item_id ] ) );
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()

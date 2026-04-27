@@ -1,42 +1,42 @@
 <?php
-	if (!defined('ABSPATH')) {
+	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Exit if accessed directly
 	}
-	$params = $params ?? [];
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$from = array_key_exists('from', $params) ? $params['from'] : '';
-	$to = array_key_exists('to', $params) ? $params['to'] : '';
-	$cat = array_key_exists('cat', $params) ? $params['cat'] : '';
-	$show_post = array_key_exists('post', $params) && $params['post'] ? $params['post'] : 50;
-	$transports = ABPRF_Query::get_equipment_id($from, $to, $cat);
-	if (sizeof($transports) > 0) {
-		$post_count = 0;
-		$args['total'] = sizeof($transports);
-		$args['page_item'] = $show_post;
-		$all_equipment_ids = [];
-		foreach ($transports as $equipment_id) {
-			$all_equipment_ids[$equipment_id] = get_the_title($equipment_id);
-		}
-		asort($all_equipment_ids);
-		?>
-        <div class=" abptm_list pagination_content_area">
-            <div class="_f_wrap_mar_t_xs">
-                <ul class="_abprf_list">
-					<?php foreach ($all_equipment_ids as $equipment_id => $title) {
-						$post_count++;
-						$display_category = ABPRF_Function::get_post_info($equipment_id, 'display_category', 'on');
-						$category = ABPRF_Function::get_post_info($equipment_id, 'category'); ?>
-                        <li class="pagination_item  <?php echo esc_attr($show_post >= $post_count ? '' : '_d_none'); ?>">
-                            <a class="_abprf " href="<?php echo esc_url(get_the_permalink($equipment_id) . '?_bp= ' . $from . '&_dp=' . $to); ?>">
-								<?php echo esc_html(get_the_title($equipment_id) . ($category && $display_category == 'on') ? '-' . $category : ''); ?>
-                            </a>
-                        </li>
-					<?php } ?>
-                </ul>
+	add_action( 'abprf_list_template', function ( $params = [] ) {
+		$from       = array_key_exists( 'from', $params ) ? $params['from'] : '';
+		$to         = array_key_exists( 'to', $params ) ? $params['to'] : '';
+		$cat        = array_key_exists( 'cat', $params ) ? $params['cat'] : '';
+		$show_post  = array_key_exists( 'post', $params ) && $params['post'] ? $params['post'] : 50;
+		$transports = ABPRF_Query::get_equipment_id( $from, $to, $cat );
+		if ( sizeof( $transports ) > 0 ) {
+			$post_count        = 0;
+			$args['total']     = sizeof( $transports );
+			$args['page_item'] = $show_post;
+			$all_equipment_ids = [];
+			foreach ( $transports as $equipment_id ) {
+				$all_equipment_ids[ $equipment_id ] = get_the_title( $equipment_id );
+			}
+			asort( $all_equipment_ids );
+			?>
+            <div class=" abptm_list pagination_content_area">
+                <div class="_f_wrap_mar_t_xs">
+                    <ul class="_abprf_list">
+						<?php foreach ( $all_equipment_ids as $equipment_id => $title ) {
+							$post_count ++;
+							$display_category = ABPRF_Function::get_post_info( $equipment_id, 'display_category', 'on' );
+							$category         = ABPRF_Function::get_post_info( $equipment_id, 'category' ); ?>
+                            <li class="pagination_item  <?php echo esc_attr( $show_post >= $post_count ? '' : '_d_none' ); ?>">
+                                <a class="_abprf " href="<?php echo esc_url( get_the_permalink( $equipment_id ) . '?_bp= ' . $from . '&_dp=' . $to ); ?>">
+									<?php echo esc_html( get_the_title( $equipment_id ) . ( $category && $display_category == 'on' ) ? '-' . $category : '' ); ?>
+                                </a>
+                            </li>
+						<?php } ?>
+                    </ul>
+                </div>
+				<?php do_action( 'abprf_pagination', $args ); ?>
             </div>
-			<?php do_action('abprf_pagination', $args); ?>
-        </div>
-		<?php
-	} else {
-		ABPRF_Layout::layout_warning_info('not_found');
-	}
+			<?php
+		} else {
+			ABPRF_Layout::layout_warning_info( 'not_found' );
+		}
+	}, 10, 2 );

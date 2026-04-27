@@ -123,8 +123,8 @@
 
 			//============= Date function================//
 			public static function get_all_date_time_info( $rent_rule, $post_id = '' ) {
-				$all_info  = [];
-				$js_slots  = [];
+				$all_info = [];
+				$js_slots = [];
 				if ( ! empty( $post_id ) ) {
 					$all_date = ABPRF_Function::get_post_dates( $post_id );
 					if ( ( $rent_rule == 'hourly' || $rent_rule == 'hourly_daily' ) && sizeof( $all_date ) > 0 ) {
@@ -144,7 +144,7 @@
 								}
 							}
 						}
-						$all_info['php_info'][ $post_id ]['time']         = $slots;
+						$all_info['php_info'][ $post_id ]['time'] = $slots;
 						$all_info['php_info'][ $post_id ]['date'] = implode( ',', $all_date );
 						$all_info['js_info'][ $post_id ]          = $js_slots;
 					}
@@ -340,7 +340,7 @@
 				$date_type            = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
 				$operation_time_start = array_key_exists( 'operation_time_start', $date_infos ) && ! empty( $date_infos['operation_time_start'] ) ? $date_infos['operation_time_start'] : "00:00";
 				$operation_time_end   = array_key_exists( 'operation_time_end', $date_infos ) && ! empty( $date_infos['operation_time_end'] ) ? $date_infos['operation_time_end'] : "23:59";
-				if ( strtotime($operation_time_start)<strtotime($operation_time_end) ) {
+				if ( strtotime( $operation_time_start ) < strtotime( $operation_time_end ) ) {
 					$all_slots['slot'] = $operation_time_start . '-' . $operation_time_end;
 				}
 				if ( $date_type == 'specific_date' ) {
@@ -351,7 +351,7 @@
 							if ( ! empty( $date_item ) ) {
 								$start_time = is_array( $specific_date ) && array_key_exists( 'start', $specific_date ) ? $specific_date['start'] : '';
 								$end_time   = is_array( $specific_date ) && array_key_exists( 'end', $specific_date ) ? $specific_date['end'] : '';
-								if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime($start_time)<strtotime($end_time) ) {
+								if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime( $start_time ) < strtotime( $end_time ) ) {
 									$all_slots[ $date_item ] = $start_time . '-' . $end_time;
 								}
 							}
@@ -368,7 +368,7 @@
 								if ( ! empty( $date_item ) ) {
 									$start_time = is_array( $special_on_date ) && array_key_exists( 'start', $special_on_date ) ? $special_on_date['start'] : '';
 									$end_time   = is_array( $special_on_date ) && array_key_exists( 'end', $special_on_date ) ? $special_on_date['end'] : '';
-									if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime($start_time)<strtotime($end_time) ) {
+									if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime( $start_time ) < strtotime( $end_time ) ) {
 										$all_slots[ $date_item ] = $start_time . '-' . $end_time;
 									}
 								}
@@ -382,7 +382,7 @@
 							$times      = array_key_exists( $key, $operation_times ) && sizeof( $operation_times[ $key ] ) > 0 ? $operation_times[ $key ] : [];
 							$start_time = array_key_exists( 'start', $times ) ? $times['start'] : '';
 							$end_time   = array_key_exists( 'end', $times ) ? $times['end'] : '';
-							if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime($start_time)<strtotime($end_time) ) {
+							if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime( $start_time ) < strtotime( $end_time ) ) {
 								$all_slots[ $key ] = $start_time . '-' . $end_time;
 							}
 						}
@@ -429,7 +429,7 @@
 						}
 					}
 				} catch ( Exception $e ) {
-					error_log( $e->getMessage() );
+					//error_log( $e->getMessage() );
 				}
 
 				return implode( '##', $slots );
@@ -561,25 +561,26 @@
 						$info['sec'] = $seconds;
 					}
 				}
-				$date_info['text'] = $text;
-				$date_info['info'] = $info;
+				$info['text'] = $text;
 
-				return $date_info;
+				return $info;
 			}
-			public static function check_time_slot_exit($main_slots,$input_slots): bool {
-				if(!empty($main_slots) && !empty($input_slots)) {
-					$main_slots=explode('-',$main_slots);
-					$input_slots=explode('-',$input_slots);
-					if(isset($main_slots[0]) && isset($main_slots[1]) && isset($input_slots[0]) && isset($input_slots[1])) {
-						$main_start=strtotime($main_slots[0]);
-						$main_end=strtotime($main_slots[1]);
-						$input_start=strtotime($input_slots[0]);
-						$input_end=strtotime($input_slots[1]);
-						if($main_start<=$input_start && $main_end>=$input_end && $main_start<$input_end && $main_end>$input_start ) {
-							return  true;
+
+			public static function check_time_slot_exit( $main_slots, $input_slots ): bool {
+				if ( ! empty( $main_slots ) && ! empty( $input_slots ) ) {
+					$main_slots  = explode( '-', $main_slots );
+					$input_slots = explode( '-', $input_slots );
+					if ( isset( $main_slots[0] ) && isset( $main_slots[1] ) && isset( $input_slots[0] ) && isset( $input_slots[1] ) ) {
+						$main_start  = strtotime( $main_slots[0] );
+						$main_end    = strtotime( $main_slots[1] );
+						$input_start = strtotime( $input_slots[0] );
+						$input_end   = strtotime( $input_slots[1] );
+						if ( $main_start <= $input_start && $main_end >= $input_end && $main_start < $input_end && $main_end > $input_start ) {
+							return true;
 						}
 					}
 				}
+
 				return false;
 			}
 
@@ -619,13 +620,8 @@
 					}
 				}
 
+				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				return apply_filters( 'woocommerce_get_price_to_display', $return_price, 1, $product );
-			}
-
-			public static function get_wc_raw_price( $post_id, $price ) {
-				$price = self::tax_with_price( $post_id, $price );
-
-				return self::price_convert_raw( $price );
 			}
 
 			//=============================//
@@ -867,28 +863,51 @@
 				return $date;
 			}
 
-			public static function get_price( $post_id, $bp, $dp, $type = 'price', $ud = false, $date = '' ) {
-				$price       = 0;
-				$price_infos = self::get_post_info( $post_id, 'price_infos', [] );
-				if ( sizeof( $price_infos ) > 0 ) {
-					foreach ( $price_infos as $price_info ) {
-						if ( $price_info['bp'] == $bp && $price_info['dp'] == $dp ) {
-							$price = $price_info[ $type ];
-							if ( $ud && $price ) {
-								$ud_increase = (int) self::get_post_info( $post_id, 'abptm_ud_price_increase', 0 );
-								$price       = $price + ( $price * $ud_increase / 100 );
-							}
+			public static function get_price( $abprf_infos = [] ) {
+				$post_id = $price = 0;
+				if ( is_array( $abprf_infos ) && sizeof( $abprf_infos ) > 0 ) {
+					$start_time        = array_key_exists( 'start_time', $abprf_infos ) ? $abprf_infos['start_time'] : '';
+					$end_time          = array_key_exists( 'end_time', $abprf_infos ) ? $abprf_infos['end_time'] : '';
+					$rent_rule         = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : '';
+					$date_length_infos = array_key_exists( 'date_length_infos', $abprf_infos ) ? $abprf_infos['date_length_infos'] : [];
+					$post_id           = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : 0;
+					$property_id       = array_key_exists( 'property_id', $abprf_infos ) ? $abprf_infos['property_id'] : 0;
+					$property          = array_key_exists( 'property_info', $abprf_infos ) ? $abprf_infos['property_info'] : [];
+					$property          = is_array( $property ) && sizeof( $property ) > 0 ? $property : ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+					$price_rule        = array_key_exists( 'price_rule', $property ) ? $property['price_rule'] : '';
+					$price_rule        = $price_rule ? explode( ',', $price_rule ) : [];
+					$price_info        = array_key_exists( 'price_info', $property ) ? $property['price_info'] : '';
+					$price_info        = ! empty( $price_info ) ? json_decode( $price_info, true ) : [];
+					if ( ! empty( $start_time ) && ! empty( $end_time ) && ! empty( $price_rule ) && ! empty( $rent_rule ) && ! empty( $property ) ) {
+						if ( $rent_rule == 'hourly' ) {
+							$hourly_info                  = in_array( 'hourly', $price_rule ) && array_key_exists( 'hourly', $price_info ) ? $price_info['hourly'] : [];
+							$price_hourly                 = is_array( $hourly_info ) && array_key_exists( 'price', $hourly_info ) ? $hourly_info['price'] : 0;
+							$date_length_infos            = ! empty( $date_length_infos ) ? $date_length_infos : ABPRF_Function::get_date_time_difference( $start_time, $end_time );
+							$hour_dif                     = array_key_exists( 'hour', $date_length_infos ) ? $date_length_infos['hour'] : 0;
+							$min_dif                      = array_key_exists( 'min', $date_length_infos ) ? $date_length_infos['min'] : 0;
+							$dif                          = $min_dif > 0 ? $hour_dif + 1 : $hour_dif;
+							$dif                          = max( 1, $dif );
+							$abprf_infos['duration']      = $dif;
+							$abprf_infos['property_info'] = $property;
+							$price                        = $price_hourly * $dif;
+							$price                        = apply_filters( 'abprf_filter_property_price', $price, $abprf_infos );
+							$price                        = ABPRF_Function::tax_with_price( $post_id, $price );
 						}
 					}
 				}
 
-				return self::get_wc_raw_price( $post_id, $price );
+				return $price > 0 ? self::tax_with_price( $post_id, $price ) : 0;
 			}
 
-			public static function get_additional_price( $post_id, $service_name ) {
-				$services = self::get_post_info( $post_id, 'additional_services' );
-				$display  = self::get_post_info( $post_id, 'display_additional_services', 'on' );
-				$price    = 0;
+			public static function get_additional_price( $post_id, $service_name, $abprf_infos = [] ) {
+				$display                  = array_key_exists( 'display_additional_services', $abprf_infos ) ? $abprf_infos['display_additional_services'] : ABPRF_Function::get_post_info( $post_id, 'display_additional_services', 'on' );
+				$active_global_additional = array_key_exists( 'active_global_additional', $abprf_infos ) ? $abprf_infos['active_global_additional'] : ABPRF_Function::get_post_info( $post_id, 'active_global_additional', 'on' );
+				if ( $active_global_additional == 'on' ) {
+					$services = ABPRF_Function::get_option( 'abprf_additional' );
+				} else {
+					$services = array_key_exists( 'abprf_additional', $abprf_infos ) ? $abprf_infos['abprf_additional'] : ABPRF_Function::get_post_info( $post_id, 'abprf_additional', [] );
+				}
+				$price = 0;
 				if ( $display == 'on' && sizeof( $services ) > 0 ) {
 					foreach ( $services as $service ) {
 						$ex_name = array_key_exists( 'name', $service ) ? $service['name'] : '';
@@ -898,7 +917,7 @@
 					}
 				}
 
-				return self::get_wc_raw_price( $post_id, $price );
+				return $price > 0 ? self::tax_with_price( $post_id, $price ) : 0;
 			}
 
 			public static function get_transport_list_details( $bp, $dp, $bp_date ): array {

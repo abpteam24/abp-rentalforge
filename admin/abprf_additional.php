@@ -9,7 +9,6 @@
 				add_action( 'abprf_post_content', [ $this, 'post_additional_service' ] );
 				add_action( 'wp_ajax_abprf_save_additional_service', array( $this, 'save_global_additional_service' ) );
 				add_filter( 'abprf_get_additional_array', array( $this, 'get_additional_array' ) );
-				add_filter( 'abprf_get_faq_array', array( $this, 'get_additional_array' ) );
 				add_action( 'wp_ajax_abprf_import_additional', array( $this, 'import_additional' ) );
 			}
 
@@ -96,7 +95,7 @@
 					$additional_description = isset( $_POST['additional_description'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['additional_description'] ) ) : [];
 					if ( sizeof( $additional_ids ) > 0 ) {
 						foreach ( $additional_ids as $key => $additional_id ) {
-							if ( $additional_name[ $key ] && $additional_price[ $key ] >= 0 ) {
+							if ( $additional_name[ $key ]) {
 								$additional_id                                        = array_key_exists( $additional_id, $additional_services ) ? uniqid() : $additional_id;
 								$additional_services[ $additional_id ]['icon']        = $additional_icon[ $key ] ?? '';
 								$additional_services[ $additional_id ]['name']        = $additional_name[ $key ];
@@ -108,7 +107,7 @@
 							}
 						}
 					}
-					$additional_services = apply_filters( 'additional_services_filter', $additional_services );
+					$additional_services = apply_filters( 'abprf_additional_services_filter', $additional_services );
 				}
 
 				return $additional_services;
@@ -123,8 +122,8 @@
                             <tr>
                                 <th class="_w_125"><?php esc_html_e( 'Icon / Image', 'abprf-rental-forge' ); ?></th>
                                 <th class="_min_200"><?php esc_html_e( 'Name', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></th>
-                                <th class="_min_100"><?php esc_html_e( 'Quantity', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></th>
-                                <th class="_min_100"><?php esc_html_e( 'Price', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></th>
+                                <th class="_min_100"><?php esc_html_e( 'Quantity', 'abprf-rental-forge' ); ?></th>
+                                <th class="_min_100"><?php esc_html_e( 'Price', 'abprf-rental-forge' ); ?></th>
                                 <th class="_min_100"><?php esc_html_e( 'Max qty', 'abprf-rental-forge' ); ?></th>
                                 <th class="_min_100"><?php esc_html_e( 'Returnable or Not', 'abprf-rental-forge' ); ?></th>
                                 <th class="_min_250"><?php esc_html_e( 'Description', 'abprf-rental-forge' ); ?></th>

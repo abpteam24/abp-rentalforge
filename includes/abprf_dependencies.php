@@ -191,8 +191,8 @@
 					require_once ABPRF_DIR . '/includes/abprf_hooks.php';
 					require_once ABPRF_DIR . '/includes/abprf_ajax.php';
 					require_once ABPRF_DIR . '/includes/abprf_frontend.php';
-					require_once ABPRF_DIR . '/includes/ABPRF_Shortcodes.php';
-					require_once ABPRF_DIR . '/includes/ABPRF_Woocommerce.php';
+					require_once ABPRF_DIR . '/includes/abprf_shortcodes.php';
+					require_once ABPRF_DIR . '/includes/abprf_woocommerce.php';
 					require_once ABPRF_DIR . '/admin/abprf_hidden_post.php';
 				}
 			}

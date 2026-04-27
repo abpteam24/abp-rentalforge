@@ -90,7 +90,7 @@
 					$meta_info['abprf_faqs']        = apply_filters( 'abprf_get_faq_array', [] );
 					$meta_info['display_tc']        = isset( $_POST['display_tc'] ) ? sanitize_text_field( wp_unslash( $_POST['display_tc'] ) ) : 'on';
 					$meta_info['active_global_tc']  = isset( $_POST['active_global_tc'] ) ? sanitize_text_field( wp_unslash( $_POST['active_global_tc'] ) ) : 'on';
-					$meta_info['abprf_tc']          = isset( $_POST['tc_content'] ) ? wp_kses_post( html_entity_decode( wp_unslash( $_POST['tc_content'] ) ) ) : '';
+					$meta_info['abprf_tc']          = isset( $_POST['tc_content'] ) ? wp_kses_post( wp_unslash( $_POST['tc_content'] ) ) : '';
 					//=============tax================//
 					if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) {
 						$meta_info['_tax_status'] = isset( $_POST['_tax_status'] ) ? sanitize_text_field( wp_unslash( $_POST['_tax_status'] ) ) : 'none';
@@ -161,6 +161,7 @@
 						wp_delete_post( $post_id, true );
 						global $wpdb;
 						$table_name = $wpdb->prefix . 'abprf_property';
+						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 						$wpdb->delete( $table_name, [ 'post_id' => $post_id ], [ '%d' ] );
 					}
 				}
