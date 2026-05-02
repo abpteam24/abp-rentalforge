@@ -5,27 +5,26 @@
 	if ( ! class_exists( 'ABPRF_Additional' ) ) {
 		class ABPRF_Additional {
 			public function __construct() {
-				add_action( 'abprf_load_additional_service', array( $this, 'load_global_additional_service' ) );
+				add_action( 'abprf_global_additional_service', array( $this, 'global_additional_service' ) );
 				add_action( 'abprf_post_content', [ $this, 'post_additional_service' ] );
 				add_action( 'wp_ajax_abprf_save_additional_service', array( $this, 'save_global_additional_service' ) );
 				add_filter( 'abprf_get_additional_array', array( $this, 'get_additional_array' ) );
 				add_action( 'wp_ajax_abprf_import_additional', array( $this, 'import_additional' ) );
 			}
 
-			public function load_global_additional_service(): void {
+			public function global_additional_service(): void {
 				$additional_services = ABPRF_Function::get_option( 'abprf_additional', ABPRF_Layout::static_additional() );
 				?>
-                <form class="_reflex_6_abp_panel_max_1200_mar_auto save_additional_service" method="post" action="">
-                    <div class="_panel_head">
+                <div class="tab_item" data-tabs="#abprf_global_additional_service">
+                    <form class=" save_additional_service" method="post" action="">
                         <h4 class="_abprf_color"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Global Additional services Configuration', 'abprf-rental-forge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'additional_services' ); ?>
-                    </div>
-                    <div class="_panel_body">
+                        <div class="_divider_xs"></div>
 						<?php $this->additional_service( $additional_services ); ?>
                         <div class="_divider_xs"></div>
                         <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Additional services Configuration', 'abprf-rental-forge' ); ?></button>
-                    </div>
-                </form>
+                    </form>
+                </div>
 				<?php
 			}
 
@@ -95,7 +94,7 @@
 					$additional_description = isset( $_POST['additional_description'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['additional_description'] ) ) : [];
 					if ( sizeof( $additional_ids ) > 0 ) {
 						foreach ( $additional_ids as $key => $additional_id ) {
-							if ( $additional_name[ $key ]) {
+							if ( $additional_name[ $key ] ) {
 								$additional_id                                        = array_key_exists( $additional_id, $additional_services ) ? uniqid() : $additional_id;
 								$additional_services[ $additional_id ]['icon']        = $additional_icon[ $key ] ?? '';
 								$additional_services[ $additional_id ]['name']        = $additional_name[ $key ];

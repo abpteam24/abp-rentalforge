@@ -200,6 +200,12 @@
 					echo '<div class="_section_bg_warning_mar_zero"><h4 class="_abprf_text_center_color_white">' . esc_html( $data ) . '</h4></div>';
 				}
 			}
+			public static function layout_warning_info_xs( $key ): void {
+				$data = ABPRF_Layout::array_info( $key );
+				if ( $data ) {
+					echo '<div class="_abprf_text_center_color_white_bg_warning_padding_xxs_fs_label">' . esc_html( $data ) . '</div>';
+				}
+			}
 
 			public static function bg_image( $post_id = '', $image_id = '', $url = '', $class = '' ): void {
 				$image_url = ( $post_id > 0 || $image_id ) ? ABPRF_Function::get_image_url( $post_id, $image_id ) : $url;
@@ -831,6 +837,7 @@
 					'rent_continue' => __( 'Note: This switch indicate property rent close/continue . You can  rent close/continue  by this switch. By default rent will be  continue', 'abprf-rental-forge' ),
 					'post_sku' => __( 'Note: Here you can add an SKU for this post. You can also show or hide it on the frontend by turning the switch On or Off.', 'abprf-rental-forge' ),
 					'abprf_template' => __( 'Note: Here You can change your details page template.', 'abprf-rental-forge' ),
+					'display_category' => __('This switch indicate Transport Category . You can on/off by this switch.', 'abprf-rental-forge'),
 					//=============================//
 					'date_format' => __( 'Note:  If you want to change the Date  Format, simply choose a different format. The default date is: ', 'abprf-rental-forge' ) . ' ' . date_i18n( 'D j M , Y', strtotime( $current_date ) ),
 					'time_format' => __( 'Note : If you want to change the Time Format, simply choose a different format. The default Time Format is: ', 'abprf-rental-forge' ) . ' ' . date_i18n( get_option( 'time_format' ), strtotime( $current_date ) ),
@@ -850,6 +857,7 @@
 					'day_wise_time' => __( 'Note: Day-wise operation time will apply only if the date does not fall within any Special On Date range. If the time field is left empty in Special On Dates, then the day-wise operation time will be applied for that date.', 'abprf-rental-forge' ),
 					'specific_off_dates' => __( 'Note: please add your specific Operation off dates.(optional)', 'abprf-rental-forge' ),
 					'off_date_range' => __( 'Note: If you have off days between two dates which can add here.(optional)', 'abprf-rental-forge' ),
+					'abprf_dates' => __( 'Note: Set a global date configuration for your property rentals that can be reused across all posts, with options to import and customize anytime.', 'abprf-rental-forge' ),
 					//=============================//
 					'post_id' => __( 'Note: You must select the category under which this property belongs here. Selecting a category is required — the data will not be saved if no category is selected.', 'abprf-rental-forge' ),
 					'name' => __( 'Note: You must enter the property name in the field above. This field is required — the data will not be saved if the property name is not provided.', 'abprf-rental-forge' ),
@@ -885,7 +893,7 @@
 					'active_global_additional' => __( 'Note: Keep this switch ON to apply the global additional settings.Switch it OFF if you want to set special additional rules for this property.additional configuration options will open when turned OFF. ', 'abprf-rental-forge' ),
 					//=============================//
 					'client_form_option' => __( 'Use comma( , ) to separate option.', 'abprf-rental-forge' ),
-					'display_client_form' => __( 'If you want to get Client information then active this button and add form/import global form or use global form as a client form', 'abprf-rental-forge' ),
+					'display_client_form' => __( 'Note: If you want to get Client information then active this button and add form/import global form or use global form as a client form', 'abprf-rental-forge' ),
 					'active_global_form' => __( 'Note: Keep this switch ON to apply the global Client Form settings.Switch it OFF if you want to set special  Client Form rules for this property. Client Form configuration options will open when turned OFF. ', 'abprf-rental-forge' ),
 					'global_client_forms' => __( 'Note: This is a flexibility global form system. Once you design the structure here, it serves as a global form. You can effortlessly import this form into any property or use this setting at any property,', 'abprf-rental-forge' ),
 					//=============================//
@@ -904,6 +912,7 @@
 					'not_found' => __( 'No Post Found !', 'abprf-rental-forge' ),
 					'not_post_found' => __( 'No Post Found !', 'abprf-rental-forge' ),
 					'not_property_found' => __( 'No Property Found !', 'abprf-rental-forge' ),
+					'no_category' => __( 'No Category Found ! Please add category to use category feature', 'abprf-rental-forge' ),
 					'property_not_available' => __( 'The property is not available for the selected date and time. Please choose a different schedule.', 'abprf-rental-forge' ),
 					//=============================//
 					//=============================//

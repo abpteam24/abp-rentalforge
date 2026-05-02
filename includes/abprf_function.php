@@ -44,7 +44,7 @@
 				$taxonomies = self::get_taxonomy( $term_name );
 				if ( $taxonomies && is_array( $taxonomies ) && sizeof( $taxonomies ) > 0 ) {
 					foreach ( $taxonomies as $taxonomy ) {
-						$all_data[] = $taxonomy->$value;
+						$all_data[$taxonomy->term_id] = $taxonomy->name;
 					}
 				}
 
@@ -871,9 +871,10 @@
 					$rent_rule         = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : '';
 					$date_length_infos = array_key_exists( 'date_length_infos', $abprf_infos ) ? $abprf_infos['date_length_infos'] : [];
 					$post_id           = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : 0;
+					$qty            = array_key_exists( 'qty', $abprf_infos ) ? $abprf_infos['qty'] : 0;
 					$property_id       = array_key_exists( 'property_id', $abprf_infos ) ? $abprf_infos['property_id'] : 0;
 					$property          = array_key_exists( 'property_info', $abprf_infos ) ? $abprf_infos['property_info'] : [];
-					$property          = is_array( $property ) && sizeof( $property ) > 0 ? $property : ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+					$property          = is_array( $property ) && sizeof( $property ) > 0 ? $property : current( ABPRF_Query::get_property( [ 'property_id' => $property_id ] ) );
 					$price_rule        = array_key_exists( 'price_rule', $property ) ? $property['price_rule'] : '';
 					$price_rule        = $price_rule ? explode( ',', $price_rule ) : [];
 					$price_info        = array_key_exists( 'price_info', $property ) ? $property['price_info'] : '';
@@ -889,7 +890,7 @@
 							$dif                          = max( 1, $dif );
 							$abprf_infos['duration']      = $dif;
 							$abprf_infos['property_info'] = $property;
-							$price                        = $price_hourly * $dif;
+							$price                        = $price_hourly * $dif*$qty;
 							$price                        = apply_filters( 'abprf_filter_property_price', $price, $abprf_infos );
 							$price                        = ABPRF_Function::tax_with_price( $post_id, $price );
 						}
@@ -897,6 +898,34 @@
 				}
 
 				return $price > 0 ? self::tax_with_price( $post_id, $price ) : 0;
+			}
+
+			public static function get_deposit_price( $abprf_infos = [] ) {
+				$price = 0;
+				if ( is_array( $abprf_infos ) && sizeof( $abprf_infos ) > 0 ) {
+					$property_id    = array_key_exists( 'property_id', $abprf_infos ) ? $abprf_infos['property_id'] : 0;
+					$qty            = array_key_exists( 'qty', $abprf_infos ) ? $abprf_infos['qty'] : 0;
+					$property       = array_key_exists( 'property_info', $abprf_infos ) ? $abprf_infos['property_info'] : [];
+					$property       = is_array( $property ) && sizeof( $property ) > 0 ? $property : current( ABPRF_Query::get_property( [ 'property_id' => $property_id ] ) );
+					$price_info     = array_key_exists( 'price_info', $property ) ? $property['price_info'] : '';
+					$price_info     = ! empty( $price_info ) ? json_decode( $price_info, true ) : [];
+					$deposit_info   = array_key_exists( 'deposit', $price_info ) ? $price_info['deposit'] : [];
+					$deposit_type   = is_array( $deposit_info ) && array_key_exists( 'type', $deposit_info ) ? $deposit_info['type'] : '';
+					$deposit_value  = is_array( $deposit_info ) && array_key_exists( 'value', $deposit_info ) ? $deposit_info['value'] : '';
+					$active_deposit = $deposit_type && $deposit_value ? 'on' : 'off';
+					if ( $active_deposit == 'on' && $qty > 0 && ! empty( $property ) ) {
+						if ( $deposit_type == 'fixed' ) {
+							$price = $deposit_value;
+						} elseif ( $deposit_type == 'percent' ) {
+							$price = array_key_exists( 'price', $abprf_infos ) ? $abprf_infos['price'] : 0;
+							$price = $price * $deposit_value / 100;
+						} else {
+							$price = $qty * $deposit_value;
+						}
+					}
+				}
+
+				return $price;
 			}
 
 			public static function get_additional_price( $post_id, $service_name, $abprf_infos = [] ) {

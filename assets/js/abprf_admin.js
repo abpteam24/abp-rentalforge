@@ -304,6 +304,27 @@
             }
         });
     });
+    //==========Category configuration=================//
+    $(document).on('submit', 'div.abprf_admin form.save_category', function (e) {
+        e.preventDefault();
+        let parent = $(this).closest('.abprf_admin');
+        let target = parent.find('.dashboard_content');
+        let formData = new FormData(this);
+        formData.append('action', 'abprf_save_category');
+        formData.append('nonce', abprf_admin_data.nonce);
+        $.ajax({
+            type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
+            beforeSend: function () {
+                abprf_spinner(target);
+                abprf_toast_msg(abprf_admin_data.msg.saving);
+            },
+            success: function (response) {
+                abprf_spinner_remove(target);
+                abprf_toast_msg(response.data, 'success');
+                window.location.reload();
+            }
+        });
+    });
     //==========Faq configuration=================//
     $(document).on('submit', 'div.abprf_admin form.save_faq', function (e) {
         e.preventDefault();

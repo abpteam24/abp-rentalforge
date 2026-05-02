@@ -6,6 +6,7 @@
 		class ABPRF_ADMIN {
 			public function __construct() {
 				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+				add_action( 'abprf_load_global', array( $this, 'load_global' ) );
 			}
 
 			public function admin_menu(): void {
@@ -18,6 +19,7 @@
 			public function load_main_page(): void {
 				$abprf_info     = ABPRF_Query::get_info();
 				$brand_label    = isset( $abprf_info['label'] ) && $abprf_info['label'] ? $abprf_info['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+				$category_label = isset( $abprf_info['category_label'] ) && $abprf_info['category_label'] ? $abprf_info['category_label'] : __( 'Category', 'abprf-rental-forge' );
 				$brand_icon     = isset( $abprf_info['brand_icon'] ) && $abprf_info['brand_icon'] ? $abprf_info['brand_icon'] : 'fas fa-hammer';
 				$total_post     = isset( $abprf_info['total_post'] ) && $abprf_info['total_post'] ? $abprf_info['total_post'] : 0;
 				$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
@@ -46,11 +48,8 @@
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'posts' ) ); ?>" class="_btn_light_info post_tab <?php echo esc_attr( $active_tab == 'posts' ? 'rf_active' : '' ); ?>"><?php ABPRF_Layout::image_icon( $brand_icon, '_mar_r_xs' ); ?><?php esc_html_e( 'Post Lists', 'abprf-rental-forge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_post ); ?></sup></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'properties' ) ); ?>" class="_btn_light_info properties_tab <?php echo esc_attr( $active_tab == 'properties' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🏠</span><?php esc_html_e( 'Properties', 'abprf-rental-forge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_property ); ?></sup></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'orders' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'orders' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">📋</span><?php esc_html_e( 'Orders', 'abprf-rental-forge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_order ); ?></sup></a>
-                            <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'dates' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'dates' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🗓️</span><?php esc_html_e( 'Dates', 'abprf-rental-forge' ); ?></a>
-                            <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'additional_service' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'additional_service' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">💰</span><?php esc_html_e( 'Additional Services', 'abprf-rental-forge' ); ?></a>
-                            <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'client_form' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'client_form' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">📋</span><?php esc_html_e( 'Client Form', 'abprf-rental-forge' ); ?></a>
-                            <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'tc' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'tc' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Term & Conditions', 'abprf-rental-forge' ); ?></a>
-                            <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'faq' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'faq' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'FAQ', 'abprf-rental-forge' ); ?></a>
+                            <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'category' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'category' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🏘️</span><?php echo esc_html( $category_label ); ?></a>
+                            <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'global' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'global' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🌐</span><?php esc_html_e( 'Global Data', 'abprf-rental-forge' ); ?></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'configuration' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'configuration' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">⚙️</span><?php esc_html_e( 'Configuration', 'abprf-rental-forge' ); ?></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'status' ) ); ?>" class="_btn_light_info <?php echo esc_attr( $active_tab == 'status' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🛡️</span><?php esc_html_e( 'Status', 'abprf-rental-forge' ); ?></a>
                         </div>
@@ -58,9 +57,34 @@
                     <div class="dashboard_content">
 						<?php do_action( 'abprf_load_' . $active_tab, $abprf_info ); ?>
                     </div>
-					<?php ABPRF_Layout::popup_empty('#abprf_property_popup'); ?>
+					<?php ABPRF_Layout::popup_empty( '#abprf_property_popup' ); ?>
 					<?php ABPRF_Layout::icon_popup(); ?>
                     <div class="toast_msg_area"></div>
+                </div>
+				<?php
+			}
+
+			public function load_global(): void {
+				?>
+                <div class="_reflex_6_abp_panel_max_1200_mar_auto">
+                    <div class="abprf_tabs tab_top">
+                        <ul class="_abprf tab_lists">
+                            <li data-tabs-target="#abprf_global_dates"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Dates', 'abprf-rental-forge' ); ?></li>
+                            <li data-tabs-target="#abprf_global_additional_service"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Additional services', 'abprf-rental-forge' ); ?></li>
+                            <li data-tabs-target="#abprf_global_client_form"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Form', 'abprf-rental-forge' ); ?></li>
+                            <li data-tabs-target="#abprf_global_tc"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e( 'Term & Conditions', 'abprf-rental-forge' ); ?></li>
+                            <li data-tabs-target="#abprf_global_faq"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'FAQ', 'abprf-rental-forge' ); ?></li>
+                        </ul>
+                        <div class="tab_content _bg_white">
+							<?php
+								do_action( 'abprf_global_dates' );
+								do_action( 'abprf_global_additional_service' );
+								do_action( 'abprf_global_client_form' );
+								do_action( 'abprf_global_tc' );
+								do_action( 'abprf_global_faq' );
+							?>
+                        </div>
+                    </div>
                 </div>
 				<?php
 			}

@@ -69,7 +69,7 @@
 								<?php foreach ( $rent_rules as $key => $rent_rule ) { ?>
                                     <div class="radio_item">
                                         <button type="button" class="_btn_white_xs <?php echo esc_attr( $rent_type == $key ? 'rf_active' : '' ); ?>" data-close-target="#<?php echo esc_attr( $key ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                            <h3 class="_abprf"><span data-icon class="_mar_r_xs <?php echo esc_attr( $rent_type == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span></h3><span class="_text_left_fs_label"><?php echo esc_html( $rent_rule['label'] ); ?><br><small><?php echo esc_html( $rent_rule['des'] ); ?></small></span>
+                                            <i class="_abprf_fs_h4"><span data-icon class="_mar_r_xs <?php echo esc_attr( $rent_type == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html( $rent_rule['label'] ); ?><br><small><?php echo esc_html( $rent_rule['des'] ); ?></small></span>
                                         </button>
                                     </div>
 								<?php } ?>
@@ -167,7 +167,7 @@
 						$feature_names                  = isset( $_POST['feature_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_name'] ) ) : [];
 						$feature_values                 = isset( $_POST['feature_value'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_value'] ) ) : [];
 						$feature_icon                   = isset( $_POST['feature_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_icon'] ) ) : [];
-						if ( is_array( $feature_names ) && sizeof( $feature_names ) > 0 && is_array( $feature_values ) && sizeof( $feature_values ) > 0 ) {
+						if ( sizeof( $feature_names ) > 0 && sizeof( $feature_values ) > 0 ) {
 							foreach ( $feature_names as $key => $feature_name ) {
 								if ( $feature_name && $feature_values[ $key ] ) {
 									$features[ $key ]['label'] = $feature_name;
@@ -183,6 +183,7 @@
 							'icon' => isset( $_POST['icon'] ) ? sanitize_text_field( wp_unslash( $_POST['icon'] ) ) : '',
 							'qty_info' => json_encode( $qty_info ),
 							'brand' => isset( $_POST['brand'] ) ? sanitize_text_field( wp_unslash( $_POST['brand'] ) ) : '',
+							'category' => ABPRF_Function::get_post_info( $post_id, 'category' ),
 							'description' => isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : '',
 							'price_rule' => $price_rule,
 							'price_info' => json_encode( $price_info ),
@@ -348,7 +349,7 @@
 			public function add_property( $property_id = '', $property_copy = 0 ): void {
 				$cpt      = ABPRF_Function::get_cpt();
 				$post_ids = ABPRF_Query::get_all_post_id( $cpt, - 1, 1, [ 'publish', 'draft', 'private', 'trash' ] );
-				if ( ! empty( $post_ids ) && is_array( $post_ids ) && sizeof( $post_ids ) > 0 ) {
+				if ( ! empty( $post_ids ) && sizeof( $post_ids ) > 0 ) {
 					$save_text = __( 'Save Property Configuration', 'abprf-rental-forge' );
 					$property  = [];
 					if ( $property_id ) {

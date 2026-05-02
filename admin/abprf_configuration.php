@@ -190,6 +190,22 @@
 							'default' => 'fas fa-hammer'
 						),
 						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
+						array(
+							'name' => 'category_label',
+							'label' => __('Category Label', 'abprf-rental-forge'),
+							'desc' => __('If you wish to modify the category label you can do so here. ', 'abprf-rental-forge'),
+							'type' => 'text',
+							'default' => __('Category', 'abprf-rental-forge')
+						),
+						array(
+							'name' => 'cat_slug',
+							'label' => __('Category Slug', 'abprf-rental-forge'),
+							'desc' => __('Please input the desired slug name for the category. Do not forget, after updating this slug, you must refresh permalinks. Simply navigate to  ', 'abprf-rental-forge') . '<strong class="_abprf_color_theme">' . __('configuration-> Permalinks', 'abprf-rental-forge') . '</strong> ' . __('and click on the Save Configuration button. ', 'abprf-rental-forge'),
+							'type' => 'text',
+							'default' => 'cat_rent'
+						),
+						array( 'name' => 'group_end', ),
 					) ),
 					'abprf_contact' => apply_filters( 'abprf_contact_filter', array(
 						array(

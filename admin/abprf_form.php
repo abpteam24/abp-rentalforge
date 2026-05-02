@@ -5,27 +5,26 @@
 	if ( ! class_exists( 'ABPRF_Form' ) ) {
 		class ABPRF_Form {
 			public function __construct() {
-				add_action( 'abprf_load_client_form', array( $this, 'load_client_global_form' ) );
+				add_action( 'abprf_global_client_form', array( $this, 'global_client_form' ) );
 				add_action( 'abprf_post_content', [ $this, 'post_client_form' ] );
 				add_filter( 'abprf_get_form_array', array( $this, 'get_form_array' ) );
 				add_action( 'wp_ajax_abprf_save_client_form', array( $this, 'save_global_client_form' ) );
 				add_action( 'wp_ajax_abprf_import_global_form', array( $this, 'import_global_form' ) );
 			}
 
-			public function load_client_global_form(): void {
+			public function global_client_form(): void {
 				$abprf_forms = ABPRF_Function::get_option( 'abprf_forms', ABPRF_Layout::static_form() );
 				?>
-                <form class="_reflex_6_abp_panel_max_1200_mar_auto save_client_form" method="post" action="">
-                    <div class="_panel_head">
+                <div class="tab_item" data-tabs="#abprf_global_client_form">
+                    <form class="save_client_form" method="post" action="">
                         <h4 class="_abprf"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abprf-rental-forge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
-                    </div>
-                    <div class="_panel_body">
+                        <div class="_divider_xs"></div>
 						<?php $this->passenger_form_settings( $abprf_forms ); ?>
                         <div class="_divider_xs"></div>
                         <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Client Form Configuration', 'abprf-rental-forge' ); ?></button>
-                    </div>
-                </form>
+                    </form>
+                </div>
 				<?php
 			}
 

@@ -5,8 +5,8 @@
 	if ( ! class_exists( 'ABPRF_FAQ' ) ) {
 		class ABPRF_FAQ {
 			public function __construct() {
-				add_action( 'abprf_load_tc', array( $this, 'load_tc' ) );
-				add_action( 'abprf_load_faq', array( $this, 'load_faq' ) );
+				add_action( 'abprf_global_tc', array( $this, 'global_tc' ) );
+				add_action( 'abprf_global_faq', array( $this, 'global_faq' ) );
 				add_action( 'abprf_post_content', array( $this, 'post_faq' ) );
 				add_action( 'abprf_post_content', array( $this, 'post_tc' ) );
 				add_action( 'wp_ajax_abprf_save_faqs', array( $this, 'save_faqs' ) );
@@ -16,37 +16,35 @@
 				add_filter( 'abprf_get_faq_array', array( $this, 'get_faq_array' ) );
 			}
 
-			public function load_tc() {
+			public function global_tc() {
 				$tcs = ABPRF_Function::get_option( 'abprf_tc', '' );
 				?>
-                <form class=" save_tc _reflex_6_abp_panel_max_1200_mar_auto" method="post" action="">
-                    <div class="_panel_head">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e( 'Term & Conditions', 'abprf-rental-forge' ); ?></h4>
+                <div class="tab_item" data-tabs="#abprf_global_tc">
+                    <form class=" save_tc " method="post" action="">
+                        <h4 class="_abprf"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e( 'Global Term & Conditions Configuration', 'abprf-rental-forge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'abprf_tc' ); ?>
-                    </div>
-                    <div class="_panel_body">
+                        <div class="_divider_xs"></div>
 						<?php $this->tc( $tcs ); ?>
                         <div class="_divider_xs"></div>
                         <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Term & Conditions Configuration', 'abprf-rental-forge' ); ?></button>
-                    </div>
-                </form>
+                    </form>
+                </div>
 				<?php
 			}
 
-			public function load_faq() {
+			public function global_faq() {
 				$faqs = ABPRF_Function::get_option( 'abprf_faqs' );
 				?>
-                <form class=" save_faq _reflex_6_abp_panel_max_1200_mar_auto" method="post" action="">
-                    <div class="_panel_head">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'FAQ', 'abprf-rental-forge' ); ?></h4>
+                <div class="tab_item" data-tabs="#abprf_global_faq">
+                    <form class=" save_faq " method="post" action="">
+                        <h4 class="_abprf"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'Global FAQ Configuration', 'abprf-rental-forge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'abprf_faqs' ); ?>
-                    </div>
-                    <div class="_panel_body">
+                        <div class="_divider_xs"></div>
 						<?php $this->faq( $faqs ); ?>
                         <div class="_divider_xs"></div>
                         <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save FAQs Configuration', 'abprf-rental-forge' ); ?></button>
-                    </div>
-                </form>
+                    </form>
+                </div>
 				<?php
 			}
 

@@ -5,26 +5,26 @@
 	if ( ! class_exists( 'ABPRF_Dates' ) ) {
 		class ABPRF_Dates {
 			public function __construct() {
-				add_action( 'abprf_load_dates', array( $this, 'load_global_dates' ) );
+				add_action( 'abprf_global_dates', array( $this, 'global_dates' ) );
 				add_action( 'abprf_post_content', array( $this, 'post_content_dates' ) );
 				add_action( 'wp_ajax_abprf_save_dates', array( $this, 'save_global_date' ) );
 				add_filter( 'abprf_get_date_array', array( $this, 'get_date_array' ) );
 			}
 
-			public function load_global_dates(): void {
+			public function global_dates(): void {
 				$date_infos = ABPRF_Function::get_option( 'abprf_dates' );
 				?>
-                <form class="_reflex_6_abp_panel_max_1200_mar_auto save_dates" method="post" action="">
-                    <div class="_panel_head">
+                <div class="tab_item" data-tabs="#abprf_global_dates">
+                    <form class="save_dates" method="post" action="">
                         <h4 class="_abprf"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abprf-rental-forge' ); ?></h4>
-                    </div>
-                    <div class="_panel_body">
+	                    <?php ABPRF_Layout::info_text( 'abprf_dates' ); ?>
+                        <div class="_divider_xs"></div>
 						<?php $this->date_time_format( $date_infos );
 							$this->date_content( $date_infos ); ?>
                         <div class="_divider_xs"></div>
                         <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Date Configuration', 'abprf-rental-forge' ); ?></button>
-                    </div>
-                </form>
+                    </form>
+                </div>
 				<?php
 			}
 
@@ -86,7 +86,7 @@
 					$date_infos['date_type']            = isset( $_POST['date_type'] ) ? sanitize_text_field( wp_unslash( $_POST['date_type'] ) ) : 'periodic_date';
 					$date_infos['operation_time_start'] = isset( $_POST['operation_time_start'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_time_start'] ) ) : '';
 					$date_infos['operation_time_end']   = isset( $_POST['operation_time_end'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_time_end'] ) ) : '';
-					$date_infos['time_slot_length'] = isset( $_POST['time_slot_length'] ) ? sanitize_text_field( wp_unslash( $_POST['time_slot_length'] ) ) : '60';
+					$date_infos['time_slot_length']     = isset( $_POST['time_slot_length'] ) ? sanitize_text_field( wp_unslash( $_POST['time_slot_length'] ) ) : '60';
 					$date_infos['advance_date_number']  = isset( $_POST['advance_date_number'] ) ? sanitize_text_field( wp_unslash( $_POST['advance_date_number'] ) ) : '28';
 					$date_infos['sale_close_before']    = isset( $_POST['sale_close_before'] ) ? sanitize_text_field( wp_unslash( $_POST['sale_close_before'] ) ) : '';
 					$date_infos['sale_close_after']     = isset( $_POST['sale_close_after'] ) ? sanitize_text_field( wp_unslash( $_POST['sale_close_after'] ) ) : '';
@@ -210,7 +210,7 @@
 				$operation_time_end   = array_key_exists( 'operation_time_end', $date_infos ) ? $date_infos['operation_time_end'] : '';
 				$buffer_time_before   = array_key_exists( 'sale_close_before', $date_infos ) ? $date_infos['sale_close_before'] : 0;
 				$buffer_time_after    = array_key_exists( 'sale_close_after', $date_infos ) ? $date_infos['sale_close_after'] : 0;
-				$time_slot_length            = array_key_exists( 'time_slot_length', $date_infos ) ? $date_infos['time_slot_length'] : 60;
+				$time_slot_length     = array_key_exists( 'time_slot_length', $date_infos ) ? $date_infos['time_slot_length'] : 60;
 				?>
                 <div class="group_setting">
                     <div class="_setting_item">
@@ -227,7 +227,7 @@
                         </label>
                         <div class="_divider_xs"></div>
 						<?php ABPRF_Layout::info_text( 'operation_time' ); ?>
-	                    <?php ABPRF_Layout::info_text( 'time_slot_length' ); ?>
+						<?php ABPRF_Layout::info_text( 'time_slot_length' ); ?>
                     </div>
                     <div class="_setting_item">
                         <label class="_f_equal_f_wrap">

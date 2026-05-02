@@ -126,3 +126,6 @@
 	div.transportation_item div.transport_slider {max-width: 100%;}
 	div.abptm_grid .list_item {width: 100%; }
 }
+span[aria-hidden="true"] {
+	display: none !important;
+}

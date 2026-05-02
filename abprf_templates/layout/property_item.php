@@ -149,8 +149,6 @@
                         </div>
 						<?php if ( is_array( $date_time_info ) && sizeof( $date_time_info ) > 0 && $dif_exit > 0 ) {
 							//echo '<pre>';print_r( $date_time_info);					echo '</pre>';
-							$start_time    = array_key_exists( 'start_time', $date_time_info ) ? $date_time_info['start_time'] : '';
-							$end_time      = array_key_exists( 'end_time', $date_time_info ) ? $date_time_info['end_time'] : '';
 							$qty_info      = array_key_exists( 'qty_info', $property ) ? $property['qty_info'] : '';
 							$qty_info      = ! empty( $qty_info ) ? json_decode( $qty_info, true ) : [];
 							$total_qty     = array_key_exists( 'qty', $qty_info ) ? $qty_info['qty'] : 0;

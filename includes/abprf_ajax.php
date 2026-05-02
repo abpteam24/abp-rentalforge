@@ -46,6 +46,11 @@
 					ob_start();
 					if ( ! empty( $post_id ) && $post_id > 0 ) {
 						$date_infos = json_decode( get_transient( 'abprf_date_infos_' . $post_id ), true );
+                        if(empty($date_infos)){
+	                        $all_date_time_info = ABPRF_Function::get_all_date_time_info( $rent_rule, $post_id );
+	                        $date_infos       = is_array( $all_date_time_info ) && array_key_exists( 'php_info', $all_date_time_info ) ? $all_date_time_info['php_info'] : [];
+	                        set_transient( 'abprf_date_infos_' . $post_id, json_encode( $date_infos ), HOUR_IN_SECONDS );
+                        }
 					}
 					//echo '<pre>';print_r( $date_infos);					echo '</pre>';
 					$exit_property = 0;
@@ -94,8 +99,6 @@
                             </div>
 							<?php
 						}
-					} else {
-						ABPRF_Layout::layout_warning_info( 'no_property_found' );
 					}
 					if ( $exit_property == 0 ) {
 						ABPRF_Layout::layout_warning_info( 'no_property_found' );
