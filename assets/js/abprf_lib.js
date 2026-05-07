@@ -18,8 +18,8 @@
     //======================================================================Outer Close==========//
     $(document).click(function (e) {
         let target = $(e.target);
-        if (target.closest('.dropdown_area').length === 0) {
-            $('body').find('.dropdown_input').slideUp(250);
+        if (target.closest('.abp_dropdown').length === 0) {
+            $('body').find('.dropdown_list').slideUp(250);
         }
     });
 }(jQuery));
@@ -243,6 +243,9 @@ function abprf_target_open(close_id) {
     jQuery('body').find('[data-close="' + close_id + '"]').slideDown(250);
     return true;
 }
+function abprf_popup_close() {
+    jQuery('body').find('.popup_close').trigger('click');
+}
 (function ($) {
     "use strict";
     $(document).on('click', 'div.abprf_area [data-tabs-target]', function () {
@@ -345,7 +348,9 @@ function abprf_target_open(close_id) {
             target.slideDown(250);
         } else {
             target.each(function () {
-                $(this).slideToggle(250).toggleClass('rf_active');
+                $(this).stop(true, true).slideToggle(250, function() {
+                    $(this).toggleClass('rf_active');
+                });
             });
         }
         return true;
@@ -489,41 +494,37 @@ function abprf_target_open(close_id) {
         }
     }
     //==============================================================================custom select ================//
-    $(document).on("click", "div.abprf_area .dropdown_area .dropdown_input li", function (e) {
+    $(document).on("click", "div.abprf_area .abp_dropdown .dropdown_list li", function (e) {
         e.preventDefault();
         let current = $(this);
-        let parent = $(this).closest('.dropdown_area');
-        let value = current.data('value');
-        let text = current.find('[data-text]').html();
-        parent.find('.dropdown_input').slideUp(250);
+        let parent = $(this).closest('.abp_dropdown');
+        let value = current.attr('data-value');
+        let text = current.attr('data-text');
+        parent.find('.dropdown_list').slideUp(250);
         parent.find('input[type="text"]').val(text);
-        if (parent.find('input[type="hidden"]').length > 0) {
-            parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
-        } else {
-            parent.find('input[type="text"]').trigger('change');
-        }
+        parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
     });
     $(document).on({
         keyup: function () {
             let input = $(this).val().toLowerCase();
-            $(this).closest('.dropdown_area').find('.dropdown_input li').each(function () {
-                $(this).toggle($(this).find('[data-text]').html().toLowerCase().indexOf(input) > -1);
+            $(this).closest('.abp_dropdown').find('.dropdown_list li').each(function () {
+                $(this).toggle($(this).attr('data-text').toLowerCase().indexOf(input) > -1);
             });
-            $(this).closest('.dropdown_area').find('.dropdown_input').slideDown(200);
+            $(this).closest('.abp_dropdown').find('.dropdown_list').slideDown(200);
         }, click: function () {
             let $this = $(this);
             let input = '';
-            let target = $(this).closest('.dropdown_area').find('.dropdown_input ');
+            let target = $(this).closest('.abp_dropdown').find('.dropdown_list ');
             if (target.is(':visible')) {
-                $('body').find('.dropdown_area .dropdown_input').slideUp(250);
-                let parent = $this.closest('.dropdown_area');
+                $('body').find('.abp_dropdown .dropdown_list').slideUp(250);
+                let parent = $this.closest('.abp_dropdown');
                 input = parent.find('input[type="text"]').val().toLowerCase();
             } else {
-                $('body').find('.dropdown_area .dropdown_input').slideUp(250);
+                $('body').find('.abp_dropdown .dropdown_list').slideUp(250);
                 target.slideDown(250);
             }
             target.find('li').each(function () {
-                let data = $(this).find('[data-text]').html().toLowerCase();
+                let data = $(this).attr('data-text').toLowerCase();
                 if (!input || input === data) {
                     $(this).slideDown('fast');
                 }
@@ -531,41 +532,36 @@ function abprf_target_open(close_id) {
         }, blur: function (e) {
             let target = $(e.relatedTarget);
             let $this = $(this);
-            $('body').find('.dropdown_input').slideUp(250);
-            let parent = $this.closest('.dropdown_area');
-            if ($this.hasClass('abprf_allow')) {
-                if (parent.find('input[type="hidden"]').length > 0) {
-                    parent.find('input[type="hidden"]').val($this.val());
-                } else {
-                    parent.find('input[type="text"]').val($this.val());
-                }
-            } else {
-                if (target.closest('.dropdown_area').length === 0) {
-                    let current_val = parent.find('input[type="text"]').val();
-                    let input = '';
-                    if (parent.find('input[type="hidden"]').length > 0) {
-                        input = parent.find('input[type="hidden"]').val().toLowerCase();
+            let parent = $this.closest('.abp_dropdown');
+            setTimeout(function () {
+                if (target.closest('.abp_dropdown').length === 0) {
+                    $('body').find('.dropdown_list').slideUp(250);
+                    if ($this.hasClass('abprf_allow')) {
+                        parent.find('input[type="hidden"]').val($this.val());
+                        parent.find('input[type="text"]').val($this.val());
+                    } else {
+                        if (target.closest('.abp_dropdown').length === 0) {
+                            let current_val = parent.find('input[type="text"]').val().toLowerCase();
+                            let input = parent.find('input[type="hidden"]').val();
+                            let exit = 0;
+                            $this.closest('.abp_dropdown').find('.dropdown_list li').each(function () {
+                                let data_value = $(this).attr('data-value');
+                                let data_text = $(this).attr('data-text').toLowerCase();
+                                if (input === data_value && current_val === data_text) {
+                                    exit = 1;
+                                }
+                            }).promise().done(function () {
+                                if (exit < 1) {
+                                    parent.find('input[type="text"]').val('');
+                                    parent.find('input[type="hidden"]').val('');
+                                }
+                            });
+                        }
                     }
-                    let exit = 0;
-                    $this.closest('.dropdown_area').find('.dropdown_input li').each(function () {
-                        let data = $(this).find('[data-text]').html().toLowerCase();
-                        if (input === data && current_val) {
-                            exit = 1;
-                        }
-                    }).promise().done(function () {
-                        if (exit < 1) {
-                            parent.find('input[type="text"]').val('');
-                            if (parent.find('input[type="hidden"]').length > 0) {
-                                parent.find('input[type="hidden"]').val('');
-                            } else {
-                                parent.find('input[type="text"]');
-                            }
-                        }
-                    });
                 }
-            }
+            }, 200);
         }
-    }, 'div.abprf_area .dropdown_area input[type="text"]');
+    }, 'div.abprf_area .abp_dropdown input[type="text"]');
 }(jQuery));
 //================================================================================pagination=================//
 (function ($) {
@@ -613,7 +609,6 @@ function abprf_load_bg_image(body = jQuery('body')) {
     body.find('.abprf_area [data-image-href]:visible').each(function () {
         let target = jQuery(this);
         let bg_url = target.data('image-href');
-        // alert(bg_url);
         target.attr('data-image-href', '');
         if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
             bg_url = abprf_var.blank_image;
@@ -639,10 +634,10 @@ function abprf_bg_img_resize(target, bg_url) {
 }
 //=================================================================================Date picker & Sticky & Price Format & Page Scroll==============//
 function abprf_load_datepicker(parent = jQuery('.abprf_area')) {
-    parent.find(".abprf_datepicker.hasDatepicker").each(function () {
+    parent.find(".abp_datepicker.hasDatepicker").each(function () {
         jQuery(this).removeClass('hasDatepicker').attr('id', '').removeData('datepicker').unbind();
     }).promise().done(function () {
-        parent.find(".abprf_datepicker").datepicker({
+        parent.find(".abp_datepicker").datepicker({
             dateFormat: abprf_var.date_format, autoSize: true, changeMonth: true, changeYear: true, //showButtonPanel: true,
             onSelect: function (dateString, data) {
                 let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);

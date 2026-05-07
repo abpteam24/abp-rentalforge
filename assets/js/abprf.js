@@ -63,7 +63,7 @@
                 abprf_spinner_remove(target);
                 abprf_spinner_remove(form_area);
                 target.html(response.data.property_info);
-                form_area.find('.date_details').html(response.data.date_details).promise().done(function (){
+                form_area.find('.date_details').html(response.data.date_details).promise().done(function () {
                     abprf_load_datepicker(target);
                 });
                 abprf_toast_msg(abprf_infos.msg.property_loading_success, 'success');
@@ -143,7 +143,13 @@
 }(jQuery));
 (function ($) {
     "use strict";
-    $(document).on("rf_trigger", "div.abprf_registration_item [name='property_check[]']", function (e) {
+    $(document).ready(function () {
+        let add_to_cart = $('body').find('.abprf_add_to_cart_notice');
+        if (add_to_cart.length > 0) {
+            abprf_toast_msg(add_to_cart.html(), 'success');
+        }
+    });
+    $(document).on("rf_trigger", "div.abprf_booking [name='property_check[]']", function (e) {
         e.preventDefault();
         let $this = $(this);
         let parent = $this.closest(".select_property");
@@ -154,18 +160,18 @@
         }
         parent.find('[name="property_qty[]"]').trigger('change');
     });
-    $(document).on('change', 'div.abprf_registration_item [name="property_qty[]"]', function () {
-        let parent = $(this).closest('div.abprf_registration_item');
+    $(document).on('change', 'div.abprf_booking [name="property_qty[]"]', function () {
+        let parent = $(this).closest('div.abprf_booking');
         all_management(parent);
     })
-    $(document).on('change', 'div.abprf_registration_item .ex_price_calculate', function () {
-        let parent = $(this).closest('div.abprf_registration_item');
+    $(document).on('change', 'div.abprf_booking .ex_price_calculate', function () {
+        let parent = $(this).closest('div.abprf_booking');
         all_management(parent);
     });
-    $(document).on('click', 'div.abprf_registration_item .abprf_book_continue', function (e) {
+    $(document).on('click', 'div.abprf_booking .abprf_book_continue', function (e) {
         e.preventDefault();
         let current = $(this);
-        let parent = current.closest('div.abprf_registration_item');
+        let parent = current.closest('div.abprf_booking');
         if (get_quantity(parent) > 0) {
             if (submit_validation(current) < 1) {
                 parent.find("[name='add-to-cart']").trigger('click');

@@ -16,6 +16,8 @@
 			}
 
 			public function admin_enqueue(): void {
+				$configuration                = ABPRF_Function::get_option( 'abprf_configuration' );
+				$label=isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
 				$this->lib_enqueue();
 				wp_enqueue_editor();
 				wp_enqueue_media();
@@ -41,7 +43,9 @@
 						'imported' => __( 'Imported Successfully............. !', 'abprf-rental-forge' ),
 						'loading' => __( 'Loading........', 'abprf-rental-forge' ),
 						'loaded' => __( 'Loaded Successfully............. !', 'abprf-rental-forge' ),
+						'order_loading' => __( 'Order Loading........ !', 'abprf-rental-forge' ),
 						'error' => __( 'An error occurred. Please try again.', 'abprf-rental-forge' ),
+						'deleting' => __( 'Deleting.............', 'abprf-rental-forge' ),
 						'delete_success' => __( 'Delete Successfully.............', 'abprf-rental-forge' ),
 						'property_loading' => __( 'Property List Loading.............', 'abprf-rental-forge' ),
 						'property_loading_success' => __( 'Property List already Loaded !', 'abprf-rental-forge' ),
@@ -53,6 +57,10 @@
 						'post_trash_success' => __( 'Post move to trashed successfully!', 'abprf-rental-forge' ),
 						'post_restoring' => __( 'Post Restoring.........!', 'abprf-rental-forge' ),
 						'post_restored' => __( 'Post Restored successfully!', 'abprf-rental-forge' ),
+						'wc_install' => __( 'Woocommerce Downloading And Installing.........!', 'abprf-rental-forge' ),
+						'wc_installing' => __( 'Woocommerce  Installing.........!', 'abprf-rental-forge' ),
+						'create_post_page' => $label.' '.__( 'Post Page Creating ........!', 'abprf-rental-forge' ),
+						'create_property_page' => $label.' '.__( 'Property Page Creating ........!', 'abprf-rental-forge' ),
 					],
 				] );
 				wp_enqueue_style( 'abprf_admin', ABPRF_URL . '/assets/css/abprf_admin.css', array(), time() );

@@ -1,8 +1,7 @@
 @charset "utf-8";
 /******************************************************************** configuration ************************************************/
 @media only screen and (min-width: 10px) {
-	div.abprf_admin table thead {background: #F5F5F5;border-bottom: 1px solid var(--rf_color_border);}
-	div.abprf_admin table thead th {padding: var(--rf_gap_xxs) var(--rf_gap_xs); text-align: left; font-weight: 600; color: #333; font-size: var(--rf_fs); text-transform: uppercase;}
+	div.abprf_admin table thead {background: #F5F5F5;border-bottom: 3px solid var(--rf_color_theme);}
 	/*=============================*/
 	div.abprf_admin [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-bottom: var(--rf_gap_xs); background-color: var(--rf_color_light_2); width: 100%; }
 	div.abprf_admin .group_setting {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
@@ -13,7 +12,7 @@
 	div.abprf_admin input[class*="_form_control"][type="time"] {max-width: 125px;text-align: center;min-width: 125px;}
 	div.abprf_admin [class*="_form_control"].abprf_color_picker {min-width: 150px; height: 40px;padding: var(--rf_gap_xxs) var(--rf_gap_xs);}
 	div.abprf_admin [class*="_form_control"][class*="_min_150"] {min-width: 150px;max-width: 100%;}
-	div.abprf_admin .dropdown_area [class*="_form_control"] {max-width: 100%;}
+	div.abprf_admin .abp_dropdown [class*="_form_control"] {max-width: 100%;}
 	div.abprf_admin .additional_service [class*="_form_control"] {min-width: auto;}
 	div.abprf_admin .faq_configuration [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
 	/*=============================*/
@@ -82,16 +81,17 @@
 	div.admin_menu .menu_list button {border: none;}
 	/***********************/
 	div.abprf_admin .dashboard_content {margin: var(--rf_gap);}
+	div.abprf_admin .properties_list {overflow-x: auto;}
+	div.abprf_admin .category_list table {text-align: left;}
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
-
 }
 /********************************************************************Traveller list  ************************************************/
 @media only screen and (min-width: 10px) {
-	div.abprf_area .abprf_traveller_list table[class*="_abprf"] tbody th,
-	div.abprf_area .abprf_traveller_list table[class*="_abprf"] tbody td {padding: 5px;vertical-align: top;}
-	div.abprf_traveller_list [class*="_form_inline"] [class*="_input_item"] {width: 180px;min-width: 180px;margin: 5px;}
-	div.abprf_traveller_list [class*="_form_inline"] [class*="_input_item"][class*="_g_input"] {width: 370px;min-width: 370px; max-width: inherit;}
-	div.abprf_traveller_list [class*="_form_inline"] [class*="_input_item"][class*="_g_input"] [class*="_form_control"] {border-radius: 0;}
+	div.abprf_admin .abprf_orders table[class*="_abprf"] tbody th,
+	div.abprf_admin .abprf_orders table[class*="_abprf"] tbody td {padding: 5px;vertical-align: top;text-wrap: nowrap;}
+	div.abprf_admin div.abprf_orders [class*="_input_item"] {max-width: 250px;margin: 5px;-webkit-flex: 1;flex: 1;}
+	div.abprf_admin div.abprf_orders [class*="_input_item"][class*="_g_input"] {max-width: 500px;}
+	div.abprf_admin div.abprf_orders [class*="_input_item"][class*="_g_input"] [class*="_form_control"] {border-radius: 0;}
 }

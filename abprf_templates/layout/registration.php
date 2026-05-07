@@ -7,7 +7,7 @@
 		$post_id    = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : '';
 		$properties = ABPRF_Query::get_property( [ 'post_id' => $post_id, 'rent_continue' => 'on', 'price_rule' => $rent_rule, 'status' => 'publish' ] );
 		?>
-        <div class="abprf_registration_item">
+        <div class="abprf_booking">
             <form class="" action="" method="post">
                 <h2 class="_abprf_mar_b"><?php esc_html_e( 'Available Property', 'abprf-rental-forge' ); ?></h2>
 				<?php wp_nonce_field( 'abprf_registration_nonce' );

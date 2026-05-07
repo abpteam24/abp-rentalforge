@@ -59,7 +59,7 @@
 									$label = array_key_exists( 'label', $attendee_info ) ? $attendee_info['label'] : '';
 									$value = array_key_exists( 'value', $attendee_info ) ? $attendee_info['value'] : '';
 									if (  ! empty( $label) &&  ! empty( $value) ) { ?>
-                                        <li><span class="_fs_label_mar_r_xs"><?php echo esc_html( $label . __( ' : ', 'abprf-rental-forge-pro' ) ); ?></span> <?php echo esc_html( $value ); ?></li>
+                                        <li><span class="_fs_label_mar_r_xs"><?php echo esc_html( $label . __( ' : ', 'abprf-rental-forge' ) ); ?></span> <?php echo esc_html( $value ); ?></li>
 										<?php
 									}
 								}

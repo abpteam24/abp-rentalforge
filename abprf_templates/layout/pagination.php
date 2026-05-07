@@ -7,9 +7,8 @@
 		$page     = array_key_exists( 'page_number', $args ) ? $args['page_number'] : 1;
 		$per_page = array_key_exists( 'page_item', $args ) ? $args['page_item'] : $total;
 		$style    = array_key_exists( 'style', $args ) ? $args['style'] : 'live';
-		if ( $total > $per_page ) { ?>
+		if ( $total > $per_page ) {			?>
             <div class="pagination_area _all_center">
-                <input type="hidden" name="page_item" value="<?php echo esc_attr( $per_page ); ?>"/>
 				<?php if ( $style == 'live' ) { ?>
                     <button type="button" class="_btn_theme_min_200 live_pagination" data-load-more="0"><?php esc_html_e( 'View More', 'abprf-rental-forge' ); ?></button>
 				<?php } else {
@@ -41,6 +40,7 @@
                     </div>
 				<?php } ?>
             </div>
-			<?php
-		}
+		<?php } else { ?>
+            <input type="hidden" name="page_item" value="<?php echo esc_attr( $per_page ); ?>"/>
+		<?php }
 	}, 10, 2 );

@@ -176,8 +176,8 @@
 			public function get_faq_array() {
 				$abprf_faqs = array();
 				if ( is_admin() && ( ( isset( $_POST['abprf_post_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['abprf_post_nonce'] ) ), 'abprf_post_nonce' ) ) || check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) ) ) {
-					$titles      = isset( $_POST['title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['title'] ) ) : [];
-					$description = isset( $_POST['description'] ) ? array_map( 'wp_kses_post', wp_unslash( $_POST['description'] ) ) : [];
+					$titles      = isset( $_POST['faq_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['faq_title'] ) ) : [];
+					$description = isset( $_POST['fag_description'] ) ? array_map( 'wp_kses_post', wp_unslash( $_POST['fag_description'] ) ) : [];
 					if ( sizeof( $titles ) > 0 && sizeof( $description ) > 0 ) {
 						foreach ( $titles as $key => $title ) {
 							if ( $title && array_key_exists( $key, $description ) && $description[ $key ] ) {
@@ -256,7 +256,7 @@
                         <div class="_divider_xs"></div>
                         <label class="_f_equal_f_wrap">
                             <span class="_mar_r_xs"><?php esc_html_e( 'FAQ Title', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
-                            <input type="text" class="_form_control" name="title[]" data-pass="#faq_title" placeholder="<?php esc_attr_e( 'EX: What is the check-in time?', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $title ); ?>"/>
+                            <input type="text" class="_form_control" name="faq_title[]" data-pass="#faq_title" placeholder="<?php esc_attr_e( 'EX: What is the check-in time?', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $title ); ?>"/>
                         </label>
                         <divl class="_fd_column_mar_t_xs">
                             <span class="_fs_label_mar_b_xs"><?php esc_html_e( 'Description', 'abprf-rental-forge' ); ?></span>
@@ -265,7 +265,7 @@
 									$description,
 									$editor_id,
 									array(
-										'textarea_name' => 'description[]',
+										'textarea_name' => 'fag_description[]',
 										'textarea_rows' => 6,
 										'media_buttons' => true,
 										'teeny' => false,

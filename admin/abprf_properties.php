@@ -10,6 +10,7 @@
 				add_action( 'wp_ajax_abprf_save_property', array( $this, 'save_property' ) );
 				add_action( 'wp_ajax_abprf_property_add_edit', array( $this, 'property_add_edit' ) );
 				add_action( 'wp_ajax_abprf_reload_property_list', array( $this, 'reload_property_list' ) );
+				add_action( 'wp_ajax_abprf_property_delete', array( $this, 'property_delete' ) );
 			}
 
 			public function load_properties( $abprf_info ): void {
@@ -20,21 +21,23 @@
                 <div class="abprf_properties">
                     <div class="_fj_between_f_wrap">
                         <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">🏠</span> <?php esc_html_e( 'Properties', 'abprf-rental-forge' ); ?></h4>
-                        <div class="dropdown_area _max_400">
+                        <div class="abp_dropdown _max_400">
                             <label class="_abprf_all_center">
                                 <input type="hidden" name="select_property_hidden" value=""/>
                                 <input type="text" class="_form_control_text_center validation_name" name="select_property" placeholder="<?php esc_attr_e( 'Search  Post', 'abprf-rental-forge' ); ?>" value=""/>
                             </label>
-                            <ul class="_abprf dropdown_input">
-                                <li data-value="all"><span data-text><?php esc_html_e( 'All Post', 'abprf-rental-forge' ); ?></span></li>
-                                <li data-value="on"><span data-text><?php esc_html_e( 'Rent Active', 'abprf-rental-forge' ); ?></span></li>
-                                <li data-value="off"><span data-text><?php esc_html_e( 'Rent De-active', 'abprf-rental-forge' ); ?></span></li>
-								<?php if ( ! empty( $post_ids ) && is_array( $post_ids ) && sizeof( $post_ids ) > 0 ) { ?>
-									<?php foreach ( $post_ids as $post_id ) { ?>
-                                        <li data-value="<?php echo esc_attr( $post_id ); ?>"><span data-text><?php echo esc_html( get_the_title( $post_id ) ); ?></span></li>
+                            <div class="dropdown_list">
+                                <ul class="_abprf">
+                                    <li data-value="all" data-text="<?php esc_attr_e( 'All Post', 'abprf-rental-forge' ); ?>"><?php esc_html_e( 'All Post', 'abprf-rental-forge' ); ?></li>
+                                    <li data-value="on" data-text="<?php esc_attr_e( 'Rent Active', 'abprf-rental-forge' ); ?>"><?php esc_html_e( 'Rent Active', 'abprf-rental-forge' ); ?></li>
+                                    <li data-value="off" data-text="<?php esc_attr_e( 'Rent De-active', 'abprf-rental-forge' ); ?>"><?php esc_html_e( 'Rent De-active', 'abprf-rental-forge' ); ?></li>
+									<?php if ( ! empty( $post_ids ) && is_array( $post_ids ) && sizeof( $post_ids ) > 0 ) { ?>
+										<?php foreach ( $post_ids as $post_id ) { ?>
+                                            <li data-value="<?php echo esc_attr( $post_id ); ?>" data-text="<?php echo esc_attr( get_the_title( $post_id ) ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></li>
+										<?php } ?>
 									<?php } ?>
-								<?php } ?>
-                            </ul>
+                                </ul>
+                            </div>
                         </div>
                         <button type="button" class="_btn_default" data-property_id="" data-target-popup="#abprf_property_popup"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Property', 'abprf-rental-forge' ); ?></button>
                     </div>
@@ -147,6 +150,7 @@
 					$name        = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 					$qty         = isset( $_POST['qty'] ) ? sanitize_text_field( wp_unslash( $_POST['qty'] ) ) : '';
 					$price_rule  = isset( $_POST['price_rule'] ) ? sanitize_text_field( wp_unslash( $_POST['price_rule'] ) ) : '';
+					//echo '<pre>'; print_r($_POST); echo '</pre>';die();
 					if ( $post_id && $name && $qty > 0 && $price_rule ) {
 						$rent_continue       = isset( $_POST['rent_continue'] ) ? sanitize_text_field( wp_unslash( $_POST['rent_continue'] ) ) : 'on';
 						$qty_info['qty']     = intval( $qty );
@@ -176,16 +180,17 @@
 								}
 							}
 						}
-						$data = [
+						$category = ABPRF_Function::get_post_info( $post_id, 'category' );
+						$data     = [
 							'post_id' => intval( $post_id ),
 							'rent_continue' => $rent_continue,
 							'name' => sanitize_text_field( $name ),
 							'icon' => isset( $_POST['icon'] ) ? sanitize_text_field( wp_unslash( $_POST['icon'] ) ) : '',
 							'qty_info' => json_encode( $qty_info ),
 							'brand' => isset( $_POST['brand'] ) ? sanitize_text_field( wp_unslash( $_POST['brand'] ) ) : '',
-							'category' => ABPRF_Function::get_post_info( $post_id, 'category' ),
+							'category' => $category,
 							'description' => isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : '',
-							'price_rule' => $price_rule,
+							'price_rule' => sanitize_text_field( $price_rule ),
 							'price_info' => json_encode( $price_info ),
 							'features' => json_encode( $features ),
 							'gallery' => isset( $_POST['abprf_sliders'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_sliders'] ) ) : '',
@@ -209,7 +214,7 @@
 						wp_send_json_success( esc_html__( 'Property not Saved !', 'abprf-rental-forge' ) );
 					}
 				} else {
-					wp_send_json_success( esc_html__( 'Property not Saved !', 'abprf-rental-forge' ) );
+					wp_send_json_success( esc_html__( 'Property not Saved ! Authentication Error', 'abprf-rental-forge' ) );
 				}
 				wp_die();
 			}
@@ -229,6 +234,31 @@
 					$post_id                = array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] != '' ? $filter_args['post_id'] : 'all';
 					$filter_args['post_id'] = $post_id;
 					$this->properties_table( $filter_args );
+				}
+				wp_die();
+			}
+
+			public function property_delete() {
+				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
+					$property_id = isset( $_POST['property_id'] ) ? sanitize_text_field( wp_unslash( $_POST['property_id'] ) ) : '';
+					if ( ! empty( $property_id ) && $property_id > 0 ) {
+						$properties = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+						if ( ! empty( $properties ) && sizeof( $properties ) > 0 ) {
+							global $wpdb;
+							$table_name = $wpdb->prefix . 'abprf_property';
+							// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+							$wpdb->delete( $table_name, array( 'id' => $property_id ), array( '%d' ) );
+						}
+					}
+					ob_start();
+					$filter_args            = isset( $_POST['filter_args'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['filter_args'] ) ) : [];
+					$post_id                = array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] != '' ? $filter_args['post_id'] : 'all';
+					$filter_args['post_id'] = $post_id;
+					$this->properties_table( $filter_args );
+					$html = ob_get_clean();
+					wp_send_json_success( [ 'html' => $html, 'msg' => esc_html__( 'Deleted Successfully............. ! ', 'abprf-rental-forge' ) ] );
+				} else {
+					wp_send_json_success( [ 'html' => esc_html__( 'Something Error Occur !', 'abprf-rental-forge' ), 'msg' => esc_html__( 'Something Error Occur !', 'abprf-rental-forge' ) ] );
 				}
 				wp_die();
 			}
@@ -255,11 +285,11 @@
 							<?php if ( ( empty( $filter_post_id ) || is_string( $filter_post_id ) ) && empty( $copy_post_id ) ) { ?>
                                 <th><?php esc_html_e( 'Post', 'abprf-rental-forge' ); ?></th>
 							<?php } ?>
+                            <th><?php esc_html_e( 'Shortcode', 'abprf-rental-forge' ); ?></th>
 							<?php foreach ( $price_rules as $rule ) { ?>
                                 <th class="_w_100"><?php echo esc_html( $rule ); ?></th>
 							<?php } ?>
-                            <th class="_w_100"><?php esc_html_e( 'On Rent', 'abprf-rental-forge' ); ?></th>
-                            <th class="_w_100"><?php esc_html_e( 'In House', 'abprf-rental-forge' ); ?></th>
+                            <th class="_w_100"><?php esc_html_e( 'Stock', 'abprf-rental-forge' ); ?></th>
                             <th class="_w_150"><?php esc_html_e( 'Actions', 'abprf-rental-forge' ); ?></th>
                         </tr>
                         </thead>
@@ -302,12 +332,13 @@
                                     <td>
                                         <a href="<?php echo esc_url( get_edit_post_link( $post_id ) ); ?>" class="_abprf_fs_h5 _color_theme"><?php echo esc_html( get_the_title( $post_id ) ); ?></a>
                                         <div class="_d_flex">
-                                            <span class="_mar_r_xxs publish"><?php echo esc_html( __( 'Category Id : ', 'abprf-rental-forge' ) . ' ' . $post_id ); ?></span>
+                                            <span class="_mar_r_xxs publish"><?php echo esc_html( __( 'Post Id : ', 'abprf-rental-forge' ) . ' ' . $post_id ); ?></span>
                                             <span class="_mar_r_xxs <?php echo esc_attr( $post_rent_continue == 'on' ? 'publish' : 'trash' ); ?>"><?php echo esc_html( $post_rent_continue == 'on' ? __( 'Rent On', 'abprf-rental-forge' ) : __( 'Rent Off', 'abprf-rental-forge' ) ); ?></span>
                                             <span class="_mar_r_xxs <?php echo esc_attr( $post_status ); ?>"><?php echo esc_html( $post_status ); ?></span>
                                         </div>
                                     </td>
 								<?php } ?>
+                                <th><code> [abprf_property id="<?php echo esc_attr( $property_id ); ?>"]</code></th>
 								<?php foreach ( $price_rules as $key => $rule ) { ?>
                                     <th><?php
 											$prices = in_array( $key, $price_rule ) && array_key_exists( $key, $price_info ) ? $price_info[ $key ] : [];
@@ -319,8 +350,7 @@
 											}
 										?></th>
 								<?php } ?>
-                                <th>0/<?php echo esc_html( $qty ); ?></th>
-                                <th>0/<?php echo esc_html( $qty ); ?></th>
+                                <th><?php echo esc_html( $qty ); ?></th>
                                 <th>
 									<?php if ( empty( $copy_post_id ) ) { ?>
                                         <div class="_f_wrap">
@@ -516,7 +546,7 @@
 			}
 
 			public function property_price( $property = [] ): void {
-				$price_rule       = array_key_exists( 'price_rule', $property ) ? $property['price_rule'] : '';
+				$price_rule       = array_key_exists( 'price_rule', $property ) ? $property['price_rule'] : 'hourly,daily';
 				$price_info       = array_key_exists( 'price_info', $property ) ? $property['price_info'] : '';
 				$price_info       = ! empty( $price_info ) ? json_decode( $price_info, true ) : [];
 				$hourly_info      = array_key_exists( 'hourly', $price_info ) ? $price_info['hourly'] : [];

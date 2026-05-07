@@ -1,5 +1,5 @@
 === RentalForge ===
-Contributors: abpTeam
+Contributors: abpteam
 Tags: Rental, equipment rental,Property Rental, Booking,Tools rental
 Requires at least: 6.2
 Stable tag: 1.0.0

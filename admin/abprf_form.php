@@ -186,7 +186,7 @@
                         <div class="<?php echo esc_attr( $active_date ); ?>" data-collapse="#client_form_type_date">
                             <label>
                                 <input type="hidden" name="client_form_value_date[]" value="<?php echo esc_attr( $hidden_date ); ?>"/>
-                                <input type="text" readonly name="" class="_form_control_min_150 abprf_datepicker" value="<?php echo esc_attr( $visible_date ); ?>" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                <input type="text" readonly name="" class="_form_control_min_150 abp_datepicker" value="<?php echo esc_attr( $visible_date ); ?>" placeholder="<?php echo esc_attr( $now ); ?>"/>
                                 <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abprf-rental-forge' ); ?>"></span>
                             </label>
                         </div>

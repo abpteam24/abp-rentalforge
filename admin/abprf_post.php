@@ -42,7 +42,7 @@
                     <div class="_divider_xs"></div>
                 </div>
                 <div class="_section_xs post_list">
-					<?php $this->past_table( $filter_args ); ?>
+					<?php $this->post_table( $filter_args ); ?>
                 </div>
 				<?php
 			}
@@ -67,8 +67,8 @@
 					$meta_info['display_sku']       = isset( $_POST['display_sku'] ) ? sanitize_text_field( wp_unslash( $_POST['display_sku'] ) ) : 'off';
 					$meta_info['post_sku']          = isset( $_POST['post_sku'] ) ? sanitize_text_field( wp_unslash( $_POST['post_sku'] ) ) : '';
 					$meta_info['abprf_template']    = isset( $_POST['abprf_template'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_template'] ) ) : 'default';
-					$meta_info['display_category'] = isset($_POST['display_category']) ? sanitize_text_field(wp_unslash($_POST['display_category'])) : 'off';
-					$meta_info['category'] = isset($_POST['category']) ? sanitize_text_field(wp_unslash($_POST['category'])) : '';
+					$meta_info['display_category']  = isset( $_POST['display_category'] ) ? sanitize_text_field( wp_unslash( $_POST['display_category'] ) ) : 'off';
+					$meta_info['category']          = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
 					//=============rent_rule================//
 					$meta_info['rent_rule']      = isset( $_POST['rent_rule'] ) ? sanitize_text_field( wp_unslash( $_POST['rent_rule'] ) ) : 'hourly';
 					$meta_info['day_time_start'] = isset( $_POST['day_time_start'] ) ? sanitize_text_field( wp_unslash( $_POST['day_time_start'] ) ) : '';
@@ -141,7 +141,7 @@
 					} else {
 						if ( $old_rent_continue == $meta_info['rent_continue'] ) {
 							$data = [
-                                'status' => get_post_status( $post_id ) ,
+								'status' => get_post_status( $post_id ),
 								'category' => $meta_info['category']
 							];
 						} else {
@@ -216,13 +216,13 @@
 			public function reload_post_list() {
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					$filter_args = isset( $_POST['filter_args'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['filter_args'] ) ) : [];
-					$this->past_table( $filter_args );
+					$this->post_table( $filter_args );
 				}
 				wp_die();
 			}
 
 			//=============================//
-			public function past_table( $filter_args ): void {
+			public function post_table( $filter_args ): void {
 				//echo '<pre>';print_r($filter_args);echo '</pre>';
 				$status = array_key_exists( 'status', $filter_args ) && $filter_args['status'] ? $filter_args['status'] : '';
 				if ( empty( $status ) || $status == 'all' ) {
@@ -244,6 +244,7 @@
                             <th class="_w_50"><?php esc_html_e( 'SI', 'abprf-rental-forge' ); ?></th>
                             <th class="_w_100"><?php esc_html_e( 'Image', 'abprf-rental-forge' ); ?></th>
                             <th><?php esc_html_e( 'Post', 'abprf-rental-forge' ); ?></th>
+                            <th><?php esc_html_e( 'Shortcode', 'abprf-rental-forge' ); ?></th>
                             <th class="_w_100"><?php esc_html_e( 'Property', 'abprf-rental-forge' ); ?></th>
                             <th class="_w_175"><?php esc_html_e( 'Actions', 'abprf-rental-forge' ); ?></th>
                         </tr>
@@ -266,11 +267,12 @@
                                             <a href="<?php echo esc_url( $edit_link ); ?>" class="_abprf_fs_h5 _color_theme"><?php echo esc_html( $title ); ?></a>
 										<?php } ?>
                                         <div class="_d_flex">
-                                            <span class="_mar_r_xxs publish"><?php echo esc_html( __( 'Category Id : ', 'abprf-rental-forge' ) . ' ' . $post_id ); ?></span>
+                                            <span class="_mar_r_xxs publish"><?php echo esc_html( __( 'Category : ', 'abprf-rental-forge' ) . ' ' . $post_id ); ?></span>
                                             <span class="_mar_r_xxs <?php echo esc_attr( $post_rent_continue == 'on' ? 'publish' : 'trash' ); ?>"><?php echo esc_html( $post_rent_continue == 'on' ? __( 'Rent On', 'abprf-rental-forge' ) : __( 'Rent Off', 'abprf-rental-forge' ) ); ?></span>
                                             <span class="_mar_r_xxs <?php echo esc_attr( $post_status ); ?>"><?php echo esc_html( $post_status ); ?></span>
                                         </div>
                                     </td>
+                                    <th><code> [abprf_post id="<?php echo esc_attr( $post_id ); ?>"]</code></th>
                                     <th><?php echo esc_html( ABPRF_Query::get_property( [ 'post_id' => $post_id ], - 1, 0, true ) ); ?></th>
                                     <th>
                                         <div class="_f_wrap">
@@ -333,6 +335,7 @@
                         </div>
                     </div>
 					<?php ABPRF_Layout::popup_empty( '#abprf_property_popup' ); ?>
+					<?php ABPRF_Layout::popup_empty( '#abprf_category_popup' ); ?>
 					<?php ABPRF_Layout::icon_popup(); ?>
                     <div class="toast_msg_area"></div>
                 </div>
@@ -350,7 +353,6 @@
 				$category_label    = isset( $configuration['category_label'] ) && $configuration['category_label'] ? $configuration['category_label'] : __( 'Category', 'abprf-rental-forge' );
 				$category          = array_key_exists( 'category', $abprf_infos ) ? $abprf_infos['category'] : '';
 				$display_category  = array_key_exists( 'display_category', $abprf_infos ) ? $abprf_infos['display_category'] : 'on';
-				$all_categories    = ABPRF_Function::get_all_term_data( 'abprf_category' );
 				?>
                 <div class="tab_item" data-tabs="#abprf_general">
                     <h4 class="_abprf_color_theme"><?php esc_html_e( 'General Configuration', 'abprf-rental-forge' ); ?></h4>
@@ -385,18 +387,9 @@
 									<?php ABPRF_Layout::switch_checkbox( 'display_category', $display_category ); ?>
                                     <span class="_fs_label_mar_lr_xs"><?php echo esc_html( $category_label ); ?></span>
                                 </div>
-								<?php if ( sizeof( $all_categories ) > 0 ) { ?>
-                                    <label>
-                                        <select class="_form_control" name="category">
-                                            <option disabled selected><?php esc_html_e( 'Please Select', 'abprf-rental-forge' ); ?></option>
-											<?php foreach ( $all_categories as $key=>$_category ) { ?>
-                                                <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $key == $category ? 'selected' : '' ); ?>><?php echo esc_html( $_category ); ?></option>
-											<?php } ?>
-                                        </select>
-                                    </label>
-								<?php }else{
-                                    ABPRF_Layout::layout_warning_info_xs('no_category');
-                                } ?>
+                                <div class="category_selection">
+									<?php ABPRF_Layout::category_selection( $category ); ?>
+                                </div>
                             </div>
                             <div class="_divider_xs"></div>
 							<?php ABPRF_Layout::info_text( 'display_category' ); ?>

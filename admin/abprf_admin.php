@@ -39,7 +39,8 @@
                         </div>
                         <div class="_group_content">
                             <a class="_btn_default_mar_r" href="<?php echo esc_url( $new_post_url ); ?>"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Post', 'abprf-rental-forge' ); ?></a>
-                            <button type="button" class="_btn_default" data-property_id="" data-target-popup="#abprf_property_popup"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Property', 'abprf-rental-forge' ); ?></button>
+                            <button type="button" class="_btn_default_mar_r" data-target-popup="#abprf_property_popup"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Property', 'abprf-rental-forge' ); ?></button>
+                            <button type="button" class="_btn_default" data-target-popup="#abprf_category_popup"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abprf-rental-forge' ) . ' ' . esc_html( $category_label ); ?></button>
                         </div>
                     </div>
                     <div class="admin_menu _bg_info">
@@ -58,6 +59,7 @@
 						<?php do_action( 'abprf_load_' . $active_tab, $abprf_info ); ?>
                     </div>
 					<?php ABPRF_Layout::popup_empty( '#abprf_property_popup' ); ?>
+					<?php ABPRF_Layout::popup_empty( '#abprf_category_popup' ); ?>
 					<?php ABPRF_Layout::icon_popup(); ?>
                     <div class="toast_msg_area"></div>
                 </div>

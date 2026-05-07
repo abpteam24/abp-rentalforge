@@ -19,7 +19,7 @@
 				$total_property               = (int) $wpdb->get_var( "SELECT COUNT(*) FROM $property_table_name" );
 				$cpt                          = ABPRF_Function::get_cpt();
 				$abprf_info                   = array();
-				$configuration          = ABPRF_Function::get_option( 'abprf_configuration' );
+				$configuration                = ABPRF_Function::get_option( 'abprf_configuration' );
 				$post_ids                     = self::get_all_post_id( $cpt, - 1, 1, [ 'publish', 'draft', 'private', 'trash' ] );
 				$post_counts                  = wp_count_posts( $cpt );
 				$total_publish                = $post_counts->publish ?? 0;
@@ -36,7 +36,7 @@
 				$abprf_info['total_order']    = $total_order;
 				$abprf_info['new_post_url']   = admin_url( 'post-new.php?post_type=' . $cpt );
 				$abprf_info['label']          = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$abprf_info['category_label']          = isset( $configuration['category_label'] ) && $configuration['category_label'] ? $configuration['category_label'] : __( 'Category', 'abprf-rental-forge' );
+				$abprf_info['category_label'] = isset( $configuration['category_label'] ) && $configuration['category_label'] ? $configuration['category_label'] : __( 'Category', 'abprf-rental-forge' );
 				$abprf_info['brand_icon']     = isset( $configuration['brand_icon'] ) && $configuration['brand_icon'] ? $configuration['brand_icon'] : 'fas fa-hammer';
 
 				return $abprf_info;
@@ -53,7 +53,7 @@
 				return new WP_Query( $args );
 			}
 
-			public static function get_all_post_id( $post_type, $show = - 1, $page = 1, $status = 'publish' ): array {
+			public static function get_all_post_id( $post_type = 'abprf_post', $show = - 1, $page = 1, $status = 'publish' ): array {
 				$all_data = get_posts( array(
 					'fields' => 'ids',
 					'post_type' => $post_type,
@@ -85,23 +85,23 @@
 				$property_id = array_key_exists( 'property_id', $filters ) && ! empty( $filters['property_id'] ) ? $filters['property_id'] : null;
 				if ( ! empty( $property_id ) ) {
 					$conditions[] = "id = %d";
-					$params[]     = intval($property_id);
+					$params[]     = intval( $property_id );
 				}
 				/***************/
 				$rent_continue = array_key_exists( 'rent_continue', $filters ) && ! empty( $filters['rent_continue'] ) ? $filters['rent_continue'] : null;
 				if ( ! empty( $rent_continue ) ) {
 					$conditions[] = "rent_continue = %s";
-					$params[]     = trim($rent_continue);
+					$params[]     = trim( $rent_continue );
 				}
 				/***************/
 				$price_rules = array_key_exists( 'price_rule', $filters ) && ! empty( $filters['price_rule'] ) ? $filters['price_rule'] : null;
 				if ( ! empty( $price_rules ) ) {
 					$price_rules = explode( ',', $price_rules );
 					if ( is_array( $price_rules ) && sizeof( $price_rules ) > 0 ) {
-						$price_rule_condition =[];
+						$price_rule_condition = [];
 						foreach ( $price_rules as $rule ) {
-							$price_rule_condition[]="FIND_IN_SET(%s, price_rule) > 0";
-							$params[]             = trim($rule);
+							$price_rule_condition[] = "FIND_IN_SET(%s, price_rule) > 0";
+							$params[]               = trim( $rule );
 						}
 						$conditions[] = '(' . implode( ' OR ', $price_rule_condition ) . ')';
 					}
@@ -110,7 +110,7 @@
 				$status = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? $filters['status'] : null;
 				if ( ! empty( $status ) ) {
 					$conditions[] = "status = %s";
-					$params[]     = trim($status);
+					$params[]     = trim( $status );
 				}
 				/***************/
 				$order_by  = array_key_exists( 'order_by', $filters ) && ! empty( $filters['order_by'] ) ? sanitize_sql_orderby( $filters['order_by'] ) : 'created_at';
@@ -201,7 +201,7 @@
 			}
 
 			public static function get_item_query( $item_id, $key = '*' ) {
-				if ( !empty($item_id) && $item_id > 0 ) {
+				if ( ! empty( $item_id ) && $item_id > 0 ) {
 					global $wpdb;
 					$table_name = $wpdb->prefix . 'abprf_orders';
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -268,33 +268,28 @@
 
 			public static function get_booking_query( $filters = array(), $limit = 0, $offset = 0, $count = false ) {
 				global $wpdb;
-				$table_name       = $wpdb->prefix . 'abprf_orders';
-				$conditions       = [];
-				$params           = [];
-				$status           = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? sanitize_text_field( $filters['status'] ) : null;
-				$booked_status    = $status ?: ABPRF_Function::get_options( 'abprf_configuration', 'booked_status', 'wc-processing,wc-completed' );
-				$booked_status    = $booked_status ? explode( ',', $booked_status ) : [];
-				$query_status     = current( $booked_status ) == 'all' ? '' : implode( ',', array_fill( 0, count( $booked_status ), '%s' ) );
-				$post_id          = array_key_exists( 'post_id', $filters ) && ! empty( $filters['post_id'] ) ? intval( $filters['post_id'] ) : null;
-				$user_id          = array_key_exists( 'user_id', $filters ) && ! empty( $filters['user_id'] ) ? intval( $filters['user_id'] ) : null;
-				$item_id          = array_key_exists( 'item_id', $filters ) && ! empty( $filters['item_id'] ) ? intval( $filters['item_id'] ) : null;
-				$order_id         = array_key_exists( 'order_id', $filters ) && ! empty( $filters['order_id'] ) ? intval( $filters['order_id'] ) : null;
-
-				$origin_time      = array_key_exists( 'origin_time', $filters ) && ! empty( $filters['origin_time'] ) ? gmdate( 'Y-m-d', strtotime( $filters['origin_time'] ) ) : null;
-				$origin_time_from = array_key_exists( 'origin_time_from', $filters ) && ! empty( $filters['origin_time_from'] ) ? gmdate( 'Y-m-d', strtotime( $filters['origin_time_from'] ) ) : null;
-				$origin_time_to   = array_key_exists( 'origin_time_to', $filters ) && ! empty( $filters['origin_time_to'] ) ? gmdate( 'Y-m-d', strtotime( $filters['origin_time_to'] ) ) : null;
-				$bp               = array_key_exists( 'bp', $filters ) && ! empty( $filters['bp'] ) ? sanitize_text_field( $filters['bp'] ) : null;
-				$bp_time          = array_key_exists( 'bp_time', $filters ) && ! empty( $filters['bp_time'] ) ? gmdate( 'Y-m-d', strtotime( $filters['bp_time'] ) ) : null;
-				$dp               = array_key_exists( 'dp', $filters ) && ! empty( $filters['dp'] ) ? sanitize_text_field( $filters['dp'] ) : null;
-				$order_time       = array_key_exists( 'order_date', $filters ) && ! empty( $filters['order_date'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date'] ) ) : '';
+				$table_name    = $wpdb->prefix . 'abprf_orders';
+				$conditions    = [];
+				$params        = [];
+				$status        = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? sanitize_text_field( $filters['status'] ) : null;
+				$booked_status = $status ?: ABPRF_Function::get_options( 'abprf_configuration', 'booked_status', 'wc-processing,wc-completed' );
+				$booked_status = $booked_status ? explode( ',', $booked_status ) : [];
+				$query_status  = current( $booked_status ) == 'all' ? '' : implode( ',', array_fill( 0, count( $booked_status ), '%s' ) );
+				$post_id       = array_key_exists( 'post_id', $filters ) && ! empty( $filters['post_id'] ) ? intval( $filters['post_id'] ) : null;
+				$user_id       = array_key_exists( 'user_id', $filters ) && ! empty( $filters['user_id'] ) ? intval( $filters['user_id'] ) : null;
+				$item_id       = array_key_exists( 'item_id', $filters ) && ! empty( $filters['item_id'] ) ? intval( $filters['item_id'] ) : null;
+				$order_id      = array_key_exists( 'order_id', $filters ) && ! empty( $filters['order_id'] ) ? intval( $filters['order_id'] ) : null;
+				$start_time      = array_key_exists( 'start_time', $filters ) && ! empty( $filters['start_time'] ) ? gmdate( 'Y-m-d', strtotime( $filters['start_time'] ) ) : null;
+				$order_date     = array_key_exists( 'order_date', $filters ) && ! empty( $filters['order_date'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date'] ) ) : '';
+				$booking_time_from = array_key_exists( 'booking_time_from', $filters ) && ! empty( $filters['booking_time_from'] ) ? gmdate( 'Y-m-d', strtotime( $filters['booking_time_from'] ) ) : null;
+				$booking_time_to   = array_key_exists( 'booking_time_to', $filters ) && ! empty( $filters['booking_time_to'] ) ? gmdate( 'Y-m-d', strtotime( $filters['booking_time_to'] ) ) : null;
 				$order_time_from  = array_key_exists( 'order_date_from', $filters ) && ! empty( $filters['order_date_from'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date_from'] ) ) : null;
 				$order_time_to    = array_key_exists( 'order_date_to', $filters ) && ! empty( $filters['order_date_to'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date_to'] ) ) : null;
-
-				$billing_name     = array_key_exists( 'billing_name', $filters ) && ! empty( $filters['billing_name'] ) ? '%' . sanitize_text_field( $filters['billing_name'] ) . '%' : null;
-				$billing_email    = array_key_exists( 'billing_email', $filters ) && ! empty( $filters['billing_email'] ) ? '%' . sanitize_text_field( $filters['billing_email'] ) . '%' : null;
-				$billing_phone    = array_key_exists( 'billing_phone', $filters ) && ! empty( $filters['billing_phone'] ) ? '%' . sanitize_text_field( $filters['billing_phone'] ) . '%' : null;
-				$order_by         = array_key_exists( 'order_by', $filters ) && ! empty( $filters['order_by'] ) ? sanitize_sql_orderby( $filters['order_by'] ) : 'order_id';
-				$order_dir        = array_key_exists( 'order_dir', $filters ) && in_array( strtoupper( $filters['order_dir'] ), [ 'ASC', 'DESC' ] ) ? strtoupper( $filters['order_dir'] ) : 'DESC';
+				$billing_name  = array_key_exists( 'billing_name', $filters ) && ! empty( $filters['billing_name'] ) ? '%' . sanitize_text_field( $filters['billing_name'] ) . '%' : null;
+				$billing_email = array_key_exists( 'billing_email', $filters ) && ! empty( $filters['billing_email'] ) ? '%' . sanitize_text_field( $filters['billing_email'] ) . '%' : null;
+				$billing_phone = array_key_exists( 'billing_phone', $filters ) && ! empty( $filters['billing_phone'] ) ? '%' . sanitize_text_field( $filters['billing_phone'] ) . '%' : null;
+				$order_by      = array_key_exists( 'order_by', $filters ) && ! empty( $filters['order_by'] ) ? sanitize_sql_orderby( $filters['order_by'] ) : 'order_id';
+				$order_dir     = array_key_exists( 'order_dir', $filters ) && in_array( strtoupper( $filters['order_dir'] ), [ 'ASC', 'DESC' ] ) ? strtoupper( $filters['order_dir'] ) : 'DESC';
 				if ( ! empty( $query_status ) ) {
 					$conditions[] = "order_status IN ($query_status)";
 					$params       = array_merge( $params, $booked_status );
@@ -315,31 +310,18 @@
 					$conditions[] = "order_id = %d";
 					$params[]     = $order_id;
 				}
-				if ( ! empty( $origin_time ) ) {
-					$conditions[] = "DATE(origin_time) = %s ";
-					$params[]     = $origin_time;
+				if ( ! empty( $start_time ) ) {
+					$conditions[] = "DATE(start_time) = %s ";
+					$params[]     = $start_time;
 				}
-				if ( ! empty( $origin_time_from ) && ! empty( $origin_time_to ) ) {
-					$conditions[] = "DATE(origin_time) BETWEEN %s AND %s";
-					$params[]     = $origin_time_from;
-					$params[]     = $origin_time_to;
-				}
-				if ( ! empty( $bp ) ) {
-					$conditions[] = "bp = %s";
-					$params[]     = $bp;
-				}
-				if ( ! empty( $bp_time ) ) {
-					$conditions[] = "DATE(bp_time) = %s ";
-					$params[]     = $bp_time;
-				}
-				if ( ! empty( $dp ) ) {
-					$conditions[] = "dp = %s";
-					$params[]     = $dp;
-				}
-
-				if ( ! empty( $order_time ) ) {
+				if ( ! empty( $order_date ) ) {
 					$conditions[] = "DATE(created_at) = %s ";
-					$params[]     = $order_time;
+					$params[]     = $order_date;
+				}
+				if ( ! empty( $booking_time_from ) && ! empty( $booking_time_to ) ) {
+					$conditions[] = "DATE(start_time) BETWEEN %s AND %s";
+					$params[]     = $booking_time_from;
+					$params[]     = $booking_time_to;
 				}
 				if ( ! empty( $order_time_from ) && ! empty( $order_time_to ) ) {
 					$conditions[] = "DATE(created_at) BETWEEN %s AND %s";
@@ -371,34 +353,39 @@
 					$params[] = $limit;
 					$params[] = $offset;
 				}
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->prepare()
-				$query = $wpdb->prepare( $sql, ...$params );
+				if ( ! empty( $params ) ) {
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching.
+					// phpcs:ignore WordPress.PreparedSQL.NotPrepared -- Prepared later using wpdb->prepare()
+					$query = $wpdb->prepare( $sql, ...$params );
+				} else {
+					$query = $sql;
+				}
 				if ( $count ) {
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching.
+					// phpcs:ignore WordPress.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
 					$results = $wpdb->get_var( $query );
 				} else {
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()
-					$results = $wpdb->get_results( $query,ARRAY_A );
+					// phpcs:ignore WordPress.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()
+					$results = $wpdb->get_results( $query, ARRAY_A );
 				}
 
 				return $results;
 			}
+
 			public static function get_booking_query_ex( $filters = array(), $limit = 0, $offset = 0, $count = false ) {
 				global $wpdb;
-				$table_name       = $wpdb->prefix . 'abprf_orders_ex';
-				$conditions       = [];
-				$params           = [];
-				$status           = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? sanitize_text_field( $filters['status'] ) : null;
-				$booked_status    = $status ?: ABPRF_Function::get_options( 'abprf_configuration', 'booked_status', 'wc-processing,wc-completed' );
-				$booked_status    = $booked_status ? explode( ',', $booked_status ) : [];
-				$query_status     = current( $booked_status ) == 'all' ? '' : implode( ',', array_fill( 0, count( $booked_status ), '%s' ) );
-				$post_id          = array_key_exists( 'post_id', $filters ) && ! empty( $filters['post_id'] ) ? intval( $filters['post_id'] ) : null;
-				$user_id          = array_key_exists( 'user_id', $filters ) && ! empty( $filters['user_id'] ) ? intval( $filters['user_id'] ) : null;
-				$item_id          = array_key_exists( 'item_id', $filters ) && ! empty( $filters['item_id'] ) ? intval( $filters['item_id'] ) : null;
-				$order_id         = array_key_exists( 'order_id', $filters ) && ! empty( $filters['order_id'] ) ? intval( $filters['order_id'] ) : null;
-
+				$table_name    = $wpdb->prefix . 'abprf_orders_ex';
+				$conditions    = [];
+				$params        = [];
+				$status        = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? sanitize_text_field( $filters['status'] ) : null;
+				$booked_status = $status ?: ABPRF_Function::get_options( 'abprf_configuration', 'booked_status', 'wc-processing,wc-completed' );
+				$booked_status = $booked_status ? explode( ',', $booked_status ) : [];
+				$query_status  = current( $booked_status ) == 'all' ? '' : implode( ',', array_fill( 0, count( $booked_status ), '%s' ) );
+				$post_id       = array_key_exists( 'post_id', $filters ) && ! empty( $filters['post_id'] ) ? intval( $filters['post_id'] ) : null;
+				$user_id       = array_key_exists( 'user_id', $filters ) && ! empty( $filters['user_id'] ) ? intval( $filters['user_id'] ) : null;
+				$item_id       = array_key_exists( 'item_id', $filters ) && ! empty( $filters['item_id'] ) ? intval( $filters['item_id'] ) : null;
+				$order_id      = array_key_exists( 'order_id', $filters ) && ! empty( $filters['order_id'] ) ? intval( $filters['order_id'] ) : null;
 				$origin_time      = array_key_exists( 'origin_time', $filters ) && ! empty( $filters['origin_time'] ) ? gmdate( 'Y-m-d', strtotime( $filters['origin_time'] ) ) : null;
 				$origin_time_from = array_key_exists( 'origin_time_from', $filters ) && ! empty( $filters['origin_time_from'] ) ? gmdate( 'Y-m-d', strtotime( $filters['origin_time_from'] ) ) : null;
 				$origin_time_to   = array_key_exists( 'origin_time_to', $filters ) && ! empty( $filters['origin_time_to'] ) ? gmdate( 'Y-m-d', strtotime( $filters['origin_time_to'] ) ) : null;
@@ -408,12 +395,11 @@
 				$order_time       = array_key_exists( 'order_date', $filters ) && ! empty( $filters['order_date'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date'] ) ) : '';
 				$order_time_from  = array_key_exists( 'order_date_from', $filters ) && ! empty( $filters['order_date_from'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date_from'] ) ) : null;
 				$order_time_to    = array_key_exists( 'order_date_to', $filters ) && ! empty( $filters['order_date_to'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date_to'] ) ) : null;
-
-				$billing_name     = array_key_exists( 'billing_name', $filters ) && ! empty( $filters['billing_name'] ) ? '%' . sanitize_text_field( $filters['billing_name'] ) . '%' : null;
-				$billing_email    = array_key_exists( 'billing_email', $filters ) && ! empty( $filters['billing_email'] ) ? '%' . sanitize_text_field( $filters['billing_email'] ) . '%' : null;
-				$billing_phone    = array_key_exists( 'billing_phone', $filters ) && ! empty( $filters['billing_phone'] ) ? '%' . sanitize_text_field( $filters['billing_phone'] ) . '%' : null;
-				$order_by         = array_key_exists( 'order_by', $filters ) && ! empty( $filters['order_by'] ) ? sanitize_sql_orderby( $filters['order_by'] ) : 'order_id';
-				$order_dir        = array_key_exists( 'order_dir', $filters ) && in_array( strtoupper( $filters['order_dir'] ), [ 'ASC', 'DESC' ] ) ? strtoupper( $filters['order_dir'] ) : 'DESC';
+				$billing_name  = array_key_exists( 'billing_name', $filters ) && ! empty( $filters['billing_name'] ) ? '%' . sanitize_text_field( $filters['billing_name'] ) . '%' : null;
+				$billing_email = array_key_exists( 'billing_email', $filters ) && ! empty( $filters['billing_email'] ) ? '%' . sanitize_text_field( $filters['billing_email'] ) . '%' : null;
+				$billing_phone = array_key_exists( 'billing_phone', $filters ) && ! empty( $filters['billing_phone'] ) ? '%' . sanitize_text_field( $filters['billing_phone'] ) . '%' : null;
+				$order_by      = array_key_exists( 'order_by', $filters ) && ! empty( $filters['order_by'] ) ? sanitize_sql_orderby( $filters['order_by'] ) : 'order_id';
+				$order_dir     = array_key_exists( 'order_dir', $filters ) && in_array( strtoupper( $filters['order_dir'] ), [ 'ASC', 'DESC' ] ) ? strtoupper( $filters['order_dir'] ) : 'DESC';
 				if ( ! empty( $query_status ) ) {
 					$conditions[] = "order_status IN ($query_status)";
 					$params       = array_merge( $params, $booked_status );
@@ -455,7 +441,6 @@
 					$conditions[] = "dp = %s";
 					$params[]     = $dp;
 				}
-
 				if ( ! empty( $order_time ) ) {
 					$conditions[] = "DATE(created_at) = %s ";
 					$params[]     = $order_time;
@@ -499,7 +484,7 @@
 				} else {
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()
-					$results = $wpdb->get_results( $query,ARRAY_A );
+					$results = $wpdb->get_results( $query, ARRAY_A );
 				}
 
 				return $results;

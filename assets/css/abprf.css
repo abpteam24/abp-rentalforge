@@ -39,12 +39,12 @@
 }
 /******************************************************************** Registration section************************************************/
 @media only screen and (min-width: 10px) {
-	div.abprf_registration_item div.bg_img {max-width: 50px;margin: 0 auto;}
-	div.abprf_registration_item .client_info_area,
-	div.abprf_registration_item .total_continue_area,
-	div.abprf_registration_item .additional_service_area {width: 100%;margin-top: var(--rf_gap);display: none; }
+	div.abprf_booking div.bg_img {max-width: 50px;margin: 0 auto;}
+	div.abprf_booking .client_info_area,
+	div.abprf_booking .total_continue_area,
+	div.abprf_booking .additional_service_area {width: 100%;margin-top: var(--rf_gap);display: none; }
 	div.additional_service_area .additional_service { padding: var(--rf_gap);}
-	div.abprf_registration_item .total_continue {background-color: var(--rf_color_light);display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between;-webkit-align-items: center;align-items: center;padding: var(--rf_gap);;}
+	div.abprf_booking .total_continue {background-color: var(--rf_color_light);display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between;-webkit-align-items: center;align-items: center;padding: var(--rf_gap);;}
 	div.client_info_area div.attendee_item {position: relative;display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap; flex-wrap: wrap;-webkit-justify-content: space-between; justify-content: space-between; padding: var(--rf_gap);}
 	div.attendee_item [class*="_input_item"] {display: inline-block;margin: var(--rf_gap_xs) 0 0 0;width: 50%;}
 	div.attendee_item [class*="_input_item"] [class*="_form_control"] {width: 100%;border-radius: 0;}
@@ -58,7 +58,7 @@
 /******************************************************************** ************************************************/
 @media only screen and (min-width: 10px) {
 
-	div.abprf_rental_result div.abprf_registration_item {padding: 0;margin: 0;}
+	div.abprf_rental_result div.abprf_booking {padding: 0;margin: 0;}
 	div.transport_route_details_info {padding: var(--rf_gap);}
 	.seat_details_area {border-left: 1px solid var(--rf_color_border);}
 	div.abptm_ticket_area {padding: var(--rf_gap);}
@@ -88,7 +88,7 @@
 	div.transport_details .details_left {padding: var(--rf_gap_xs);width: 100%;}
 	div.transport_details .details_right {display: -webkit-flex;display: flex; -webkit-justify-content: center;justify-content: center;-webkit-flex-direction: column;flex-direction: column;padding: var(--rf_gap_xs);background-color: var(--rf_color_light);width: 100%;max-width: 150px;}
 	div.abprf_area div.transport_details a h3 {font-size: var(--rf_fs_h6);}
-	div.abprf_rental_details .abprf_registration_item {border: none;border-top: 1px solid var(--rf_color_border);border-radius: 0;}
+	div.abprf_rental_details .abprf_booking {border: none;border-top: 1px solid var(--rf_color_border);border-radius: 0;}
 	div.details_item {display: -webkit-flex;display: flex;}
 	div.details_item .item_left {width: 40%;}
 	div.details_item .details_item_info {width: 60%;display: -webkit-flex;display: flex;}

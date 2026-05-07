@@ -12,7 +12,7 @@
             <h1 class="_abprf_color_theme">
 				<?php ABPRF_Layout::image_icon( $brand_icon,'_mar_r_xs' ); ?>
 				<?php echo esc_html( get_the_title( $post_id ) ); ?>
-				<?php if ( $post_sku && $display_sku == 'on' ) { ?>
+				<?php if ( !empty($post_sku) && $display_sku == 'on' ) { ?>
                     <small class="_abprf_color_gray">&nbsp;(<?php echo esc_html( $post_sku ); ?>)</small>
 				<?php } ?>
             </h1>

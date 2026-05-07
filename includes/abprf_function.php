@@ -33,18 +33,12 @@
 				return get_terms( array( 'taxonomy' => $name, 'hide_empty' => false ) );
 			}
 
-			public static function get_term_meta( $meta_id, $meta_key, $default = '' ) {
-				$data = get_term_meta( $meta_id, $meta_key, true ) ?: $default;
-
-				return self::data_sanitize( $data );
-			}
-
-			public static function get_all_term_data( $term_name, $value = 'name' ): array {
+			public static function get_all_term_data( $term_name ): array {
 				$all_data   = [];
 				$taxonomies = self::get_taxonomy( $term_name );
-				if ( $taxonomies && is_array( $taxonomies ) && sizeof( $taxonomies ) > 0 ) {
+				if ( ! empty( $taxonomies ) && is_array( $taxonomies ) && sizeof( $taxonomies ) > 0 ) {
 					foreach ( $taxonomies as $taxonomy ) {
-						$all_data[$taxonomy->term_id] = $taxonomy->name;
+						$all_data[ $taxonomy->term_id ] = $taxonomy->name;
 					}
 				}
 
@@ -743,53 +737,8 @@
 			}
 
 			//============== Post Function===============//
-			public static function get_routes( $post_id = 0, $bp = true, $bp_point = '' ): array {
-				$route_lists = [];
-				if ( $post_id > 0 ) {
-					$route_lists = self::get_route( $post_id, $bp, $bp_point );
-				} else {
-					$equipment_ids = ABPRF_Query::get_equipment_id( $bp_point );
-					if ( sizeof( $equipment_ids ) > 0 ) {
-						foreach ( $equipment_ids as $equipment_id ) {
-							$routes      = self::get_route( $equipment_id, $bp, $bp_point );
-							$route_lists = array_merge( $route_lists, $routes );
-						}
-					}
-				}
 
-				return array_unique( $route_lists );
-			}
 
-			public static function get_route( $post_id = 0, $bp = true, $bp_point = '' ) {
-				$route_lists = [];
-				if ( $post_id > 0 ) {
-					if ( $bp ) {
-						$route_lists = self::get_post_info( $post_id, 'abptm_bp', [] );
-					} else {
-						if ( $bp_point ) {
-							$routes = self::get_post_info( $post_id, 'routing_infos', [] );
-							if ( sizeof( $routes ) > 0 ) {
-								$exit_bp = 0;
-								foreach ( $routes as $route ) {
-									if ( $exit_bp > 0 ) {
-										if ( $route['type'] == 'dp' || $route['type'] == 'both' ) {
-											$route_lists[] = $route['stop'];
-										}
-									} else {
-										if ( $route['stop'] == $bp_point && ( $route['type'] == 'bp' || $route['type'] == 'both' ) ) {
-											$exit_bp ++;
-										}
-									}
-								}
-							}
-						} else {
-							$route_lists = self::get_post_info( $post_id, 'abptm_dp', [] );
-						}
-					}
-				}
-
-				return $route_lists;
-			}
 
 			public static function get_route_info( $post_id, $date, $route_infos = [] ): array {
 				$all_infos   = [];
@@ -871,7 +820,7 @@
 					$rent_rule         = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : '';
 					$date_length_infos = array_key_exists( 'date_length_infos', $abprf_infos ) ? $abprf_infos['date_length_infos'] : [];
 					$post_id           = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : 0;
-					$qty            = array_key_exists( 'qty', $abprf_infos ) ? $abprf_infos['qty'] : 0;
+					$qty               = array_key_exists( 'qty', $abprf_infos ) ? $abprf_infos['qty'] : 0;
 					$property_id       = array_key_exists( 'property_id', $abprf_infos ) ? $abprf_infos['property_id'] : 0;
 					$property          = array_key_exists( 'property_info', $abprf_infos ) ? $abprf_infos['property_info'] : [];
 					$property          = is_array( $property ) && sizeof( $property ) > 0 ? $property : current( ABPRF_Query::get_property( [ 'property_id' => $property_id ] ) );
@@ -890,7 +839,7 @@
 							$dif                          = max( 1, $dif );
 							$abprf_infos['duration']      = $dif;
 							$abprf_infos['property_info'] = $property;
-							$price                        = $price_hourly * $dif*$qty;
+							$price                        = $price_hourly * $dif * $qty;
 							$price                        = apply_filters( 'abprf_filter_property_price', $price, $abprf_infos );
 							$price                        = ABPRF_Function::tax_with_price( $post_id, $price );
 						}
@@ -949,6 +898,7 @@
 				return $price > 0 ? self::tax_with_price( $post_id, $price ) : 0;
 			}
 
+			//============== ===============//
 			public static function get_transport_list_details( $bp, $dp, $bp_date ): array {
 				$list_infos    = [];
 				$equipment_ids = ABPRF_Query::get_equipment_id( $bp, $dp );

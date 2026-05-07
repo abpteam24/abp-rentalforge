@@ -23,6 +23,14 @@
 		}
 		//echo '<pre>';print_r($all_date_time_info);echo '</pre>';
 		do_action( 'abprf_generate_script_data', $js_all_info );
+		if ( isset( $_SESSION['abprf_cart_success'] ) ) {
+			?>
+            <div class="abprf_add_to_cart_notice _d_none">
+				<?php echo esc_html( sanitize_text_field( wp_unslash( $_SESSION['abprf_cart_success'] ) ) ); ?>
+            </div>
+			<?php
+			unset( $_SESSION['abprf_cart_success'] );
+		}
 		?>
         <div id="abprf_search_area">
             <h2 class="_abprf_mar_b_xs"><span class="_mar_r_xxs">📅</span><?php esc_html_e( 'Select Rental Period', 'abprf-rental-forge' ); ?></h2>
