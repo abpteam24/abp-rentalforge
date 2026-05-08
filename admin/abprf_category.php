@@ -48,6 +48,7 @@
 								)
 							);
 						}
+						$this->update_category();
 						ob_start();
 						if ( $page_type == 'post' ) {
 							ABPRF_Layout::category_selection();
@@ -71,6 +72,7 @@
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					$cat_id = isset( $_POST['cat_id'] ) ? sanitize_text_field( wp_unslash( $_POST['cat_id'] ) ) : '';
 					$result = wp_delete_term( $cat_id, 'abprf_category' );
+					$this->update_category();
 					ob_start();
 					$this->load_cat_list();
 					$html = ob_get_clean();
@@ -83,10 +85,23 @@
 				wp_die();
 			}
 
-			public function load_cat_list(): void {
+			public function update_category(): void {
 				$taxonomies = ABPRF_Function::get_taxonomy( 'abprf_category' );
+				$category   = [];
+				if ( ! empty( $taxonomies ) && is_array( $taxonomies ) && sizeof( $taxonomies ) > 0 ) {
+					foreach ( $taxonomies as $taxonomy ) {
+						$category[ $taxonomy->term_id ]['name']        = $taxonomy->name;
+						$category[ $taxonomy->term_id ]['description'] = $taxonomy->description;
+					}
+				}
+				ksort( $category );
+				update_option( 'abprf_category', $category );
+			}
+
+			public function load_cat_list(): void {
+				$all_categories = ABPRF_Function::get_option( 'abprf_category' );
 				$count      = 1;
-				if ( ! empty( $taxonomies ) && is_array( $taxonomies ) && sizeof( $taxonomies ) > 0 ) { ?>
+				if ( ! empty( $all_categories ) && is_array( $all_categories ) && sizeof( $all_categories ) > 0 ) { ?>
                     <table class="_abprf">
                         <thead>
                         <tr>
@@ -100,15 +115,15 @@
                         </tr>
                         </thead>
                         <tbody>
-						<?php foreach ( $taxonomies as $taxonomy ) {
-							$term_id = $taxonomy->term_id;
-							$name    = $taxonomy->name;
+						<?php foreach ( $all_categories as $term_id => $category ) {
+							$name        = is_array( $category ) && array_key_exists( 'name', $category ) ? $category['name'] : '';
+							$description = is_array( $category ) && array_key_exists( 'description', $category ) ? $category['description'] : '';
 							?>
                             <tr>
                                 <th><?php echo esc_html( $count ); ?>.</th>
                                 <th class="_text_left"><a href="<?php echo esc_url( get_term_link( $term_id ) ); ?>" target="_blank" class="_abprf_fs_h5 _color_theme"><?php echo esc_html( $name ); ?></a></th>
                                 <th><?php echo esc_html( $term_id ); ?></th>
-                                <td><?php echo esc_html( $taxonomy->description ); ?></td>
+                                <td><?php echo esc_html( $description ); ?></td>
                                 <th><code> [abprf_cat_post id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th><code> [abprf_cat_property id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <td>
@@ -129,14 +144,14 @@
 
 			public function cat_add_edit() {
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$cat_id = isset( $_POST['cat_id'] ) ? sanitize_text_field( wp_unslash( $_POST['cat_id'] ) ) : '';
+					$cat_id    = isset( $_POST['cat_id'] ) ? sanitize_text_field( wp_unslash( $_POST['cat_id'] ) ) : '';
 					$page_type = isset( $_POST['page_type'] ) ? sanitize_text_field( wp_unslash( $_POST['page_type'] ) ) : '';
-					$this->cat_form( $cat_id,$page_type );
+					$this->cat_form( $cat_id, $page_type );
 				}
 				wp_die();
 			}
 
-			public function cat_form( $term_id = '',$page_type='' ) {
+			public function cat_form( $term_id = '', $page_type = '' ) {
 				$name           = $slug = $des = '';
 				$category_label = ABPRF_Function::get_options( 'abprf_configuration', 'category_label', __( 'Category', 'abprf-rental-forge' ) );
 				if ( ! empty( $term_id ) ) {

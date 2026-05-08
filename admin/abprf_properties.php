@@ -96,7 +96,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="<?php echo esc_attr( $rent_type == 'hourly_daily' ? 'rf_active' : '' ); ?>" data-close="#hourly_daily">
+                    <div class="<?php echo esc_attr( $rent_type == 'multi_day' ? 'rf_active' : '' ); ?>" data-close="#multi_day">
                         <div class="group_setting">
                             <div class="_setting_item">
                                 <label class="_f_equal_f_wrap">
@@ -120,7 +120,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="<?php echo esc_attr( $rent_type == 'monthly_daily' ? 'rf_active' : '' ); ?>" data-close="#monthly_daily">
+                    <div class="<?php echo esc_attr( $rent_type == 'multi_month' ? 'rf_active' : '' ); ?>" data-close="#multi_month">
                         <div class="group_setting">
                             <div class="_setting_item">
                                 <label class="_f_equal_f_wrap">
@@ -378,7 +378,7 @@
 
 			public function add_property( $property_id = '', $property_copy = 0 ): void {
 				$cpt      = ABPRF_Function::get_cpt();
-				$post_ids = ABPRF_Query::get_all_post_id( $cpt, - 1, 1, [ 'publish', 'draft', 'private', 'trash' ] );
+				$post_ids = ABPRF_Query::get_post_id( ['status'=>[ 'publish', 'draft', 'private', 'trash' ]] );
 				if ( ! empty( $post_ids ) && sizeof( $post_ids ) > 0 ) {
 					$save_text = __( 'Save Property Configuration', 'abprf-rental-forge' );
 					$property  = [];
@@ -387,7 +387,6 @@
 						if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
 							$property  = current( $properties );
 							$save_text = __( 'Update Property Configuration', 'abprf-rental-forge' );
-							// echo '<pre>';print_r( $properties );echo '</pre>';
 						}
 						if ( $property_copy > 0 ) {
 							$property_id = '';

@@ -573,7 +573,11 @@ function abprf_popup_close() {
         let count = 0;
         let end_item = page_item * pagination_page + page_item;
         $(this).attr('data-load-more', pagination_page).promise().done(function () {
+            console.log(pagination_page);
+            console.log(page_item);
+            console.log(end_item);
             parent.find('.pagination_item').each(function () {
+                console.log(count);
                 if (count < end_item) {
                     $(this).slideDown(250);
                 }

@@ -121,7 +121,7 @@
 				$js_slots = [];
 				if ( ! empty( $post_id ) ) {
 					$all_date = ABPRF_Function::get_post_dates( $post_id );
-					if ( ( $rent_rule == 'hourly' || $rent_rule == 'hourly_daily' ) && sizeof( $all_date ) > 0 ) {
+					if ( ( $rent_rule == 'hourly' || $rent_rule == 'multi_day' ) && sizeof( $all_date ) > 0 ) {
 						$slots = ABPRF_Function::get_post_time_slot( $post_id );
 						if ( is_array( $slots ) && sizeof( $slots ) > 0 ) {
 							foreach ( $slots as $key => $slot ) {
@@ -264,7 +264,7 @@
 				$all_times = [];
 				if ( $post_id > 0 && ! empty( $date ) ) {
 					$rent_type = is_array( $abprf_infos ) && array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : self::get_post_info( $post_id, 'rent_rule' );
-					if ( $rent_type == 'hourly' || $rent_type == 'hourly_daily' ) {
+					if ( $rent_type == 'hourly' || $rent_type == 'multi_day' ) {
 						$active_global_dates = is_array( $abprf_infos ) && array_key_exists( 'active_global_dates', $abprf_infos ) ? $abprf_infos['active_global_dates'] : self::get_post_info( $post_id, 'active_global_dates', 'on' );
 						if ( $active_global_dates == 'on' ) {
 							$date_infos = ABPRF_Dates;
@@ -390,7 +390,7 @@
 				$all_slots = [];
 				if ( $post_id > 0 ) {
 					$rent_type = self::get_post_info( $post_id, 'rent_rule', 'hourly' );
-					if ( $rent_type == 'hourly' || $rent_type == 'hourly_daily' ) {
+					if ( $rent_type == 'hourly' || $rent_type == 'multi_day' ) {
 						$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
 						if ( $active_global_dates == 'on' ) {
 							$date_infos = ABPRF_Dates;
@@ -901,7 +901,8 @@
 			//============== ===============//
 			public static function get_transport_list_details( $bp, $dp, $bp_date ): array {
 				$list_infos    = [];
-				$equipment_ids = ABPRF_Query::get_equipment_id( $bp, $dp );
+				//$equipment_ids = ABPRF_Query::get_equipment_id( $bp, $dp );
+				$equipment_ids = [];
 				if ( sizeof( $equipment_ids ) > 0 ) {
 					foreach ( $equipment_ids as $equipment_id ) {
 						$full_infos = self::get_route_full_info( $equipment_id, $bp, $bp_date );

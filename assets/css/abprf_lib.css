@@ -225,10 +225,10 @@
 }
 /******************************************************************** Image/slider Section ************************************************/
 @media only screen and (min-width: 10px) {
-	div.abprf_area [class*="_img_control"] {width: 100%;height: auto;max-width: 100%;-webkit-border-radius: var(--rf_br); border-radius: var(--rf_br);}
+	div.abprf_area [class*="_img_control"] {width: 100%;height: auto;max-width: 100%;-webkit-border-radius: var(--rf_br); border-radius: var(--rf_br);line-height: 1;}
 	/***********Bg Image****************/
-	div.abprf_area div.bg_img { width: 100%; overflow: hidden; position: relative; height: max-content; }
-	[data-image-href] {min-height: 80px;}
+	div.abprf_area div.bg_img { width: 100%; overflow: hidden; position: relative; height: max-content;line-height: 1; }
+	[data-image-href] {min-height: 80px;line-height: 1;}
 	[data-bg-image] {
 		background-size: 100% 100%; background-position: center center; position: relative; height: 100%; width: 100%; min-height: inherit;-webkit-transition: var(--rf_transition); transition: var(--rf_transition);
 		display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;
@@ -559,7 +559,7 @@
 /******************************************************************** Panel section ************************************************/
 @media only screen and (min-width: 10px) {
 	div.abprf_area [class*="_abp_panel"] { position: relative; border: 1px solid var(--rf_color_info); border-radius: var(--rf_br); }
-	div.abprf_area [class*="_panel_head"] { padding: var(--rf_gap_xs) var(--rf_gap); background-color: var(--rf_color_info); color: var(--rf_color_white);border-radius: var(--rf_br) var(--rf_br) 0 0;}
+	div.abprf_area [class*="_panel_head"] { padding: var(--rf_gap_xs) var(--rf_gap); background-color: var(--rf_color_light_2); border-radius: var(--rf_br) var(--rf_br) 0 0;}
 	div.abprf_area [class*="_panel_head"] span { color: #FFF; }
 	div.abprf_area [class*="_panel_body"] { padding: var(--rf_gap); background-color: var(--rf_color_white); overflow-x: auto;border-radius: 0 0 var(--rf_br) var(--rf_br); }
 	div.abprf_area [class*="_panel_footer"] { padding: var(--rf_gap_xs) var(--rf_gap); background-color: #161B37; color: #FFF;border-radius: 0 0 var(--rf_br) var(--rf_br); }

@@ -240,8 +240,8 @@
                                             <span><?php echo ( ! empty( $total_price ) && $total_price > 0 ) ? wp_kses_post( wc_price( $total_price ) ) : esc_html__( 'FREE', 'abprf-rental-forge' ); ?></span>
                                         </th>
                                         <th class="_text_capitalize">
-                                            <span class="<?php echo esc_attr( array_key_exists( $status, $status_array ) ? $status_array[ $status ] : '' ); ?>"> <?php echo esc_html( array_key_exists( $status, $status_array ) ? $status_array[ $status ] : '' ); ?></span>/
-                                            <span class="<?php echo esc_attr( array_key_exists( 'book_status', $booking_list ) ? $booking_list['book_status'] : '' ); ?>"><?php echo esc_html( array_key_exists( 'book_status', $booking_list ) ? $booking_list['book_status'] : '' ); ?></span>
+                                            <p class="_abprf <?php echo esc_attr( array_key_exists( $status, $status_array ) ? $status_array[ $status ] : '' ); ?>"> <?php echo esc_html( array_key_exists( $status, $status_array ) ? $status_array[ $status ] : '' ); ?></p>
+                                            <p class="_abprf <?php echo esc_attr( array_key_exists( 'book_status', $booking_list ) ? $booking_list['book_status'] : '' ); ?>"><?php echo esc_html( array_key_exists( 'book_status', $booking_list ) ? $booking_list['book_status'] : '' ); ?></p>
                                         </th>
                                         <th class="_text_capitalize"><?php echo esc_html( array_key_exists( 'payment_method', $booking_list ) ? $booking_list['payment_method'] : '' ); ?></th>
                                         <td>

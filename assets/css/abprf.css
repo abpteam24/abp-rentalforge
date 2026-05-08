@@ -1,7 +1,6 @@
 @charset "utf-8";
 /******************************************************************** Details page ************************************************/
 @media only screen and (min-width: 10px) {
-
 	div.default_details_page div.abprf_slider {background-color: transparent;}
 }
 /******************************************************************** Search Form ************************************************/
@@ -39,6 +38,7 @@
 }
 /******************************************************************** Registration section************************************************/
 @media only screen and (min-width: 10px) {
+	div.abprf_booking {border: none;border-top: 1px solid var(--rf_color_border);border-radius: 0;}
 	div.abprf_booking div.bg_img {max-width: 50px;margin: 0 auto;}
 	div.abprf_booking .client_info_area,
 	div.abprf_booking .total_continue_area,
@@ -52,80 +52,76 @@
 	div.attendee_item [class*="_input_item"].custom_checkbox,
 	div.attendee_item [class*="_input_item"].custom_radio {width: 100%;}
 }
-/******************************************************************** Passenger form ************************************************/
+/******************************************************************** shortcode ************************************************/
 @media only screen and (min-width: 10px) {
-}
-/******************************************************************** ************************************************/
-@media only screen and (min-width: 10px) {
-
-	div.abprf_rental_result div.abprf_booking {padding: 0;margin: 0;}
-	div.transport_route_details_info {padding: var(--rf_gap);}
-	.seat_details_area {border-left: 1px solid var(--rf_color_border);}
-	div.abptm_ticket_area {padding: var(--rf_gap);}
-	#abprf_area {}
-	div.abptm_seat_plan_area {overflow: auto;display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;padding: var(--rf_gap_xs);}
-	div.abptm_seat_plan_area table[class*="_abprf"] {table-layout: fixed;border: 1px dashed var(--rf_color_border);margin: 0 auto;width: auto;border-collapse: inherit;padding: var(--rf_gap_xs);}
-	div.abptm_seat_plan_area table[class*="_abprf"] th {border: none;width: 60px;height: 60px;padding: 5px;position: relative;vertical-align: middle;text-align: center;}
-	div.abptm_seat_plan_area div.seat_item {
-		border: 1px solid var(--rf_color_border);width: 100%;height: 100%;border-radius: var(--rf_br);background-color: transparent;
-		-webkit-transition: var(--rf_transition); transition: var(--rf_transition);
-		display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;
-	}
-	div.abptm_seat_plan_area div.seat_item.seat_sold {background-color: var(--rf_color_light_4);border-color: var(--rf_color_theme_88);color: var(--rf_color_theme_88);cursor: not-allowed;}
-	div.abptm_seat_plan_area div.seat_item.seat_cart {background-color: var(--rf_color_light);border-color: var(--rf_color_light);color: var(--rf_color_light);cursor: not-allowed;}
-	div.abptm_seat_plan_area div.seat_item.selected { background-color: var(--rf_color_theme);border-color: var(--rf_color_theme);color: var(--rf_color_theme_alter); -webkit-box-shadow: var(--rf_shadow_5); box-shadow: var(--rf_shadow_5); }
-	div.abptm_seat_plan_area div.seat_item.seat_sale {cursor: pointer;}
-	div.abptm_seat_plan_area div.seat_item.seat_sale:hover {border-color: var(--rf_color_theme);color: var(--rf_color_theme);}
-	/*=============================*/
-	div.ticket_type_list {position: absolute;z-index: 11111;display: none;left: 5px;min-width: 120px;border: 1px solid var(--rf_color_border);border-radius: var(--rf_br);background-color: var(--rf_color_white);}
-	div.abptm_seat_plan_area th:hover div.ticket_type_list {display: block;}
-	div.ticket_type_list ul li:hover {background-color: var(--rf_color_theme);color: var(--rf_color_theme_alter);cursor: pointer;}
-	div.transportation_item_content {display: -webkit-flex;display: flex;position: relative;}
-	div.transportation_item div.transportation_item_content > div.bg_img {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);height: auto;}
-	div.transportation_item div.transport_slider {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);}
-	div.transport_slider div.icon_direction {font-size: var(--rf_fs);}
-	div.transport_details {display: -webkit-flex;display: flex; -webkit-justify-content: space-between;justify-content: space-between;width: 100%;max-width: 100%;}
-	div.transport_details .details_left {padding: var(--rf_gap_xs);width: 100%;}
-	div.transport_details .details_right {display: -webkit-flex;display: flex; -webkit-justify-content: center;justify-content: center;-webkit-flex-direction: column;flex-direction: column;padding: var(--rf_gap_xs);background-color: var(--rf_color_light);width: 100%;max-width: 150px;}
-	div.abprf_area div.transport_details a h3 {font-size: var(--rf_fs_h6);}
-	div.abprf_rental_details .abprf_booking {border: none;border-top: 1px solid var(--rf_color_border);border-radius: 0;}
-	div.details_item {display: -webkit-flex;display: flex;}
-	div.details_item .item_left {width: 40%;}
-	div.details_item .details_item_info {width: 60%;display: -webkit-flex;display: flex;}
-	div.details_item .details_item_info > div {-webkit-flex: 1;flex: 1;border-left: 1px dashed var(--rf_color_border);display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;-webkit-flex-direction: column;flex-direction: column;}
-	div.route_details {border-top: 1px solid var(--rf_color_border); padding: var(--rf_gap_xs);display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
-	div.transportation_item .seat_details_area {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;-webkit-justify-content: space-between;justify-content: space-between;}
 	div.abprf_rental_result {width: 100%; max-width: 100%;}
-	div.abptm_grid .list_item {position: relative;}
-	div.abptm_grid a.list_title {position: absolute;left: 0;right: 0;bottom: 0;padding: var(--rf_gap_xs);color: var(--rf_color_theme);z-index: 111;text-align: center;font-size: var(--rf_fs_h6);}
-	div.abptm_grid a.list_title:hover {background-color: var(--rf_color_theme_alter);}
-}
-/******************************************************************** Responsive ************************************************/
-@media only screen and (max-width: 1050px) {
-	div.abptm_seat_plan_area {-webkit-flex-direction: column;flex-direction: column;}
-	div.details_item .item_left {width: 60%;}
-	div.details_item .details_item_info {width: 40%;-webkit-flex-wrap: wrap;flex-wrap: wrap;-webkit-flex-direction: column;flex-direction: column;}
-	div.details_item .details_item_info > div {-webkit-flex: initial;flex: initial;-webkit-flex-direction: initial;flex-direction: initial;display: -webkit-flex;display: flex; -webkit-justify-content: flex-start;justify-content: flex-start;padding: 0 0 0 var(--rf_gap_xs);-webkit-flex-wrap: wrap;flex-wrap: wrap;}
-	div.details_item .details_item_info > div h6 {margin: 0 var(--rf_gap_xs) 0 0;}
-	div.default_details_page .title_details {-webkit-flex-direction: column;flex-direction: column;}
-}
-@media only screen and (max-width: 800px) {
-	div.transportation_item_content {-webkit-flex-direction: column;flex-direction: column;}
-	div.transport_details,
-	div.transport_route_details_info {border-top: 1px solid var(--rf_color_border);}
-	div.transportation_item div.transport_slider {max-width: 300px;border: none;margin: 0 auto;padding: var(--rf_gap_xs);}
-	div.abptm_grid .list_item {width: calc(50% - var(--rf_gap)); }
+	div.abprf_rental_result div.abprf_booking {padding: 0;margin: 0;}
+	/*=============================*/
+	div.abprf_grid .list_item {position: relative;}
+	div.abprf_grid a.list_title {position: absolute;left: 0;right: 0;bottom: 0;padding: var(--rf_gap_xs);color: var(--rf_color_theme);z-index: 111;text-align: center;font-size: var(--rf_fs_h6);}
+	div.abprf_grid a.list_title:hover {background-color: var(--rf_color_theme_alter);}
+	div.abprf_lists .list_item {position: relative;width: 100%;}
+	div.abprf_lists .item_content {display: -webkit-flex;display: flex;}
+	div.abprf_lists .item_details {display: -webkit-flex;display: flex; -webkit-flex-direction: column;flex-direction: column;padding: var(--rf_gap_xs);width: 100%;}
+	div.abprf_lists [data-image-href]{width: 200px;min-width: 200px;}
+	@media only screen and (max-width: 800px) {
+		div.abprf_grid .list_item {width: calc(50% - var(--rf_gap));
+		}
+		@media only screen and (max-width: 600px) {
+			div.abprf_grid .list_item {width: 100%; }
+		}
+	}
+	span[aria-hidden="true"] {
+		display: none !important;
+	}
+	/******************************************************************** ************************************************/
+	@media only screen and (min-width: 10px) {
+		div.transport_route_details_info {padding: var(--rf_gap);}
+		.seat_details_area {border-left: 1px solid var(--rf_color_border);}
+		div.abptm_ticket_area {padding: var(--rf_gap);}
+		#abprf_area {}
+		div.abptm_seat_plan_area {overflow: auto;display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;padding: var(--rf_gap_xs);}
+		div.abptm_seat_plan_area table[class*="_abprf"] {table-layout: fixed;border: 1px dashed var(--rf_color_border);margin: 0 auto;width: auto;border-collapse: inherit;padding: var(--rf_gap_xs);}
+		div.abptm_seat_plan_area table[class*="_abprf"] th {border: none;width: 60px;height: 60px;padding: 5px;position: relative;vertical-align: middle;text-align: center;}
+		div.abptm_seat_plan_area div.seat_item {
+			border: 1px solid var(--rf_color_border);width: 100%;height: 100%;border-radius: var(--rf_br);background-color: transparent;
+			-webkit-transition: var(--rf_transition); transition: var(--rf_transition);
+			display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;
+		}
+		div.abptm_seat_plan_area div.seat_item.seat_sold {background-color: var(--rf_color_light_4);border-color: var(--rf_color_theme_88);color: var(--rf_color_theme_88);cursor: not-allowed;}
+		div.abptm_seat_plan_area div.seat_item.seat_cart {background-color: var(--rf_color_light);border-color: var(--rf_color_light);color: var(--rf_color_light);cursor: not-allowed;}
+		div.abptm_seat_plan_area div.seat_item.selected { background-color: var(--rf_color_theme);border-color: var(--rf_color_theme);color: var(--rf_color_theme_alter); -webkit-box-shadow: var(--rf_shadow_5); box-shadow: var(--rf_shadow_5); }
+		div.abptm_seat_plan_area div.seat_item.seat_sale {cursor: pointer;}
+		div.abptm_seat_plan_area div.seat_item.seat_sale:hover {border-color: var(--rf_color_theme);color: var(--rf_color_theme);}
+		/*=============================*/
+		div.ticket_type_list {position: absolute;z-index: 11111;display: none;left: 5px;min-width: 120px;border: 1px solid var(--rf_color_border);border-radius: var(--rf_br);background-color: var(--rf_color_white);}
+		div.abptm_seat_plan_area th:hover div.ticket_type_list {display: block;}
+		div.ticket_type_list ul li:hover {background-color: var(--rf_color_theme);color: var(--rf_color_theme_alter);cursor: pointer;}
+
+		div.transportation_item div.transport_slider {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);}
+		div.transport_slider div.icon_direction {font-size: var(--rf_fs);}
+		div.transport_details {display: -webkit-flex;display: flex; -webkit-justify-content: space-between;justify-content: space-between;width: 100%;max-width: 100%;}
+		div.transport_details .details_left {padding: var(--rf_gap_xs);width: 100%;}
+		div.transport_details .details_right {display: -webkit-flex;display: flex; -webkit-justify-content: center;justify-content: center;-webkit-flex-direction: column;flex-direction: column;padding: var(--rf_gap_xs);background-color: var(--rf_color_light);width: 100%;max-width: 150px;}
+		div.abprf_area div.transport_details a h3 {font-size: var(--rf_fs_h6);}
+
+		div.route_details {border-top: 1px solid var(--rf_color_border); padding: var(--rf_gap_xs);display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
+		div.transportation_item .seat_details_area {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;-webkit-justify-content: space-between;justify-content: space-between;}
+	}
+	/******************************************************************** Responsive ************************************************/
+	@media only screen and (max-width: 1050px) {
+		div.abptm_seat_plan_area {-webkit-flex-direction: column;flex-direction: column;}
+
+		div.default_details_page .title_details {-webkit-flex-direction: column;flex-direction: column;}
+	}
+	@media only screen and (max-width: 800px) {
+		div.transport_details,
+		div.transport_route_details_info {border-top: 1px solid var(--rf_color_border);}
+		div.transportation_item div.transport_slider {max-width: 300px;border: none;margin: 0 auto;padding: var(--rf_gap_xs);}
+	}
 }
 @media only screen and (max-width: 600px) {
 	div.transport_details {-webkit-flex-direction: column;flex-direction: column;}
 	div.transport_details .details_right {-webkit-flex-direction: initial;flex-direction: initial;-webkit-justify-content: space-between;justify-content: space-between;max-width: 100%;border-top: 1px solid var(--rf_color_border);}
-	div.details_item {-webkit-flex-direction: column;flex-direction: column;}
-	div.details_item .item_left {width: 100%;}
-	div.details_item .details_item_info {width: 100%;-webkit-flex-direction: initial;flex-direction: initial;border-top: 1px solid var(--rf_color_border);margin: var(--rf_gap_xs) 0 0 0;}
-	div.details_item .details_item_info > div {-webkit-flex: 1;flex: 1;border-left: 1px dashed var(--rf_color_border);display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;-webkit-flex-direction: column;flex-direction: column;}
 	div.transportation_item div.transport_slider {max-width: 100%;}
-	div.abptm_grid .list_item {width: 100%; }
-}
-span[aria-hidden="true"] {
-	display: none !important;
 }

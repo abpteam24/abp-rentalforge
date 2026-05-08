@@ -3,41 +3,30 @@
 		exit; // Exit if accessed directly
 	}
 	add_action( 'abprf_grid_template', function ( $params = [] ) {
-		echo '<pre>';print_r($params);echo '</pre>';
-		$from       = array_key_exists( 'from', $params ) ? $params['from'] : '';
-		$to         = array_key_exists( 'to', $params ) ? $params['to'] : '';
-		$cat        = array_key_exists( 'cat', $params ) ? $params['cat'] : '';
-		$show_post  = array_key_exists( 'post', $params ) && $params['post'] ? $params['post'] : 9;
-		$column     = array_key_exists( 'column', $params ) ? $params['column'] : 3;
-		$transports = ABPRF_Query::get_equipment_id( $from, $to, $cat );
-		if ( sizeof( $transports ) > 0 ) {
+		//echo '<pre>';print_r($params);echo '</pre>';
+		$post_ids = ABPRF_Query::get_post_id( $params );
+		if ( ! empty( $post_ids ) && sizeof( $post_ids ) > 0 ) {
+			$column            = array_key_exists( 'column', $params ) ? $params['column'] : 3;
+			$show_post         = array_key_exists( 'show', $params ) && $params['show'] ? $params['post'] : $column * 3;
 			$post_count        = 0;
-			$args['total']     = sizeof( $transports );
+			$args['total']     = sizeof( $post_ids );
 			$args['page_item'] = $show_post;
-			$all_equipment_ids = [];
-			foreach ( $transports as $equipment_id ) {
-				$all_equipment_ids[ $equipment_id ] = get_the_title( $equipment_id );
-			}
-			asort( $all_equipment_ids );
+			asort( $post_ids );
+			$all_categories = ABPRF_Function::get_option( 'abprf_category' );
 			?>
-            <div class=" abptm_grid pagination_content_area">
+            <div class=" abprf_grid pagination_content_area">
                 <div class="_f_gap_f_wrap_mar_tb">
-					<?php foreach ( $all_equipment_ids as $equipment_id => $title ) {
+					<?php foreach ( $post_ids as $post_id ) {
 						$post_count ++;
-						$abprf_infos      = ABPRF_Function::get_all_meta( $equipment_id );
-						$display_category = array_key_exists( 'display_category', $abprf_infos ) ? $abprf_infos['display_category'] : 'on';
-						$category         = array_key_exists( 'category', $abprf_infos ) ? $abprf_infos['category'] : '';
-						$image_url        = ABPRF_Function::get_image_url( $equipment_id );
+						$image_url = ABPRF_Function::get_image_url( $post_id );
+						$title     = get_the_title( $post_id );
 						?>
-                        <div class="pagination_item list_item _reflex <?php echo esc_attr( 'grid_' . $column . ' ' . ( $show_post >= $post_count ? '' : '_d_none' ) ); ?>">
-                            <div data-image-href="<?php echo esc_url( $image_url ); ?>"><img class="_img_control" src="#" alt="<?php echo esc_attr( $category ); ?>"></div>
-                            <div class="ribbon_full">
-                                <a class="_abprf_text_center_fs_h6_w_full_color_white" href="<?php echo esc_url( get_the_permalink( $equipment_id ) . '?_bp= ' . $from . '&_dp=' . $to ); ?>" target="_blank">
-									<?php echo esc_html( $title . ( $category && $display_category == 'on' ? ' - ' . $category : '' ) ); ?>
-                                </a>
-                            </div>
+                        <div class="pagination_item list_item _reflex <?php echo esc_attr( 'grid_' . $column ); ?> <?php echo esc_attr( $show_post >= $post_count ? '' : '_d_none' ); ?>">
+							<?php do_action( 'abprf_category', $post_id, $all_categories, 'ribbon' ); ?>
+                            <div data-image-href="<?php echo esc_url( $image_url ); ?>"><img class="_img_control" src="#" alt="<?php echo esc_attr( $title ); ?>"></div>
+                            <a class="_abprf list_title" href="<?php echo esc_url( get_the_permalink( $post_id ) ); ?>" target="_blank"><?php echo esc_html( $title ); ?></a>
                         </div>
-					<?php } ?>
+						<?php 					} ?>
                 </div>
 				<?php do_action( 'abprf_pagination', $args ); ?>
             </div>

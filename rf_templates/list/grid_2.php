@@ -1,42 +1,43 @@
 <?php
-	if (!defined('ABSPATH')) {
+	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Exit if accessed directly
 	}
-	$params = $params ?? [];
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$from = array_key_exists('from', $params) ? $params['from'] : '';
-	$to = array_key_exists('to', $params) ? $params['to'] : '';
-	$cat = array_key_exists('cat', $params) ? $params['cat'] : '';
-	$show_post = array_key_exists('post', $params) && $params['post'] ? $params['post'] : 9;
-	$column = array_key_exists('column', $params) ? $params['column'] : 3;
-	$transports = ABPTM_Query::get_transport_id($from, $to, $cat);
-	if (sizeof($transports) > 0) {
-		$post_count = 0;
-		$args['total'] = sizeof($transports);
-		$args['page_item'] = $show_post;
-		$all_transport_ids = [];
-		foreach ($transports as $transport_id) {
-			$all_transport_ids[$transport_id] = get_the_title($transport_id);
-		}
-		asort($all_transport_ids);
-		?>
-        <div class=" abptm_grid abptm_pagination_area">
-            <div class="_f_gap_f_wrap_mar_tb">
-				<?php foreach ($all_transport_ids as $transport_id => $title) {
-					$post_count++;
-					$abptm_infos = ABPTM_LIB_Function::get_all_meta($transport_id);
-					$image_url = ABPTM_LIB_Function::get_image_url($transport_id); ?>
-                    <div class="pagination_item list_item _reflex <?php echo esc_attr('grid_' . $column); ?> <?php echo esc_attr($show_post >= $post_count ? '' : '_d_none'); ?>">
-						<?php do_action('abptm_category', $abptm_infos, true); ?>
-						<?php do_action('abptm_capacity', $abptm_infos, true); ?>
-                        <div data-image-href="<?php echo esc_url($image_url); ?>"><img class="_img_control" src="#" alt="<?php echo esc_attr($title); ?>"></div>
-                        <a class="_abptm list_title" href="<?php echo esc_url(get_the_permalink($transport_id) . '?_bp= ' . $from . '&_dp=' . $to); ?>" target="_blank"><?php echo esc_html($title); ?></a>
-                    </div>
-				<?php } ?>
+	add_action( 'abprf_grid_2_template', function ( $params = [] ) {
+		//echo '<pre>';print_r($params);echo '</pre>';
+		$post_ids = ABPRF_Query::get_post_id( $params );
+		if ( ! empty( $post_ids ) && sizeof( $post_ids ) > 0 ) {
+			$show_post         = array_key_exists( 'show', $params ) && $params['show'] ? $params['show'] : 9;
+			$column            = array_key_exists( 'column', $params ) ? $params['column'] : 3;
+			$post_count        = 0;
+			$args['total']     = sizeof( $post_ids );
+			$args['page_item'] = $show_post;
+			asort( $post_ids );
+			$all_categories = ABPRF_Function::get_option( 'abprf_category' );
+			?>
+            <div class=" abprf_grid pagination_content_area">
+                <div class="_f_gap_f_wrap_mar_tb">
+					<?php foreach ( $post_ids as $post_id ) {
+						$post_count ++;
+						$display_category = ABPRF_Function::get_post_info( $post_id, 'display_category', 'on' );
+						$cat_id           = ABPRF_Function::get_post_info( $post_id, 'category' );
+						$category         = is_array( $all_categories ) && array_key_exists( $cat_id, $all_categories ) ? $all_categories[ $cat_id ]['name'] : '';
+						$image_url        = ABPRF_Function::get_image_url( $post_id );
+						$title            = get_the_title( $post_id );
+						?>
+                        <div class="pagination_item list_item _reflex <?php echo esc_attr( 'grid_' . $column . ' ' . ( $show_post >= $post_count ? '' : '_d_none' ) ); ?>">
+                            <div data-image-href="<?php echo esc_url( $image_url ); ?>"><img class="_img_control" src="#" alt="<?php echo esc_attr( $title ); ?>"></div>
+                            <div class="ribbon_full">
+                                <a class="_abprf_text_center_fs_h6_w_full_color_white" href="<?php echo esc_url( get_the_permalink( $post_id ) ); ?>" target="_blank">
+									<?php echo esc_html( $title . ( $category && $display_category == 'on' ? ' - ' . $category : '' ) ); ?>
+                                </a>
+                            </div>
+                        </div>
+					<?php } ?>
+                </div>
+				<?php do_action( 'abprf_pagination', $args ); ?>
             </div>
-			<?php do_action('abptm_pagination', $args); ?>
-        </div>
-		<?php
-	} else {
-		ABPTM_LIB_Layout::layout_warning_info('not_found');
-	}
+			<?php
+		} else {
+			ABPRF_Layout::layout_warning_info( 'not_found' );
+		}
+	}, 10, 2 );

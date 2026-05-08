@@ -243,7 +243,7 @@
 
 			//=============================//
 			public function dummy_import($abprf_info): void {
-				$total = sizeof( isset( $abprf_info['post_ids'] ) && $abprf_info['post_ids'] ? $abprf_info['post_ids'] :ABPRF_Query::get_all_post_id() );
+				$total = sizeof( isset( $abprf_info['post_ids'] ) && $abprf_info['post_ids'] ? $abprf_info['post_ids'] :ABPRF_Query::get_post_id() );
 				?>
                 <form class="_section_xs" method="post" action="">
                     <div class="_fa_center_fj_between">

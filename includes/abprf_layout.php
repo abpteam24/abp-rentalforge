@@ -189,14 +189,15 @@
 			}
 
 			//=============================//
-			public static function category_selection( $category = '' ): void {
-				$all_categories = ABPRF_Function::get_all_term_data( 'abprf_category' );
-				if ( sizeof( $all_categories ) > 0 ) { ?>
+			public static function category_selection( $_category = '' ): void {
+				$all_categories = ABPRF_Function::get_option( 'abprf_category' );
+				if ( ! empty( $all_categories ) && is_array( $all_categories ) && sizeof( $all_categories ) > 0 ) { ?>
                     <label>
                         <select class="_form_control" name="category">
                             <option disabled selected><?php esc_html_e( 'Please Select', 'abprf-rental-forge' ); ?></option>
-							<?php foreach ( $all_categories as $key => $_category ) { ?>
-                                <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $key == $category ? 'selected' : '' ); ?>><?php echo esc_html( $_category ); ?></option>
+							<?php foreach ( $all_categories as $key => $category ) {
+								$name = is_array( $category ) && array_key_exists( 'name', $category ) ? $category['name'] : ''; ?>
+                                <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $key == $_category ? 'selected' : '' ); ?>><?php echo esc_html( $name ); ?></option>
 							<?php } ?>
                         </select>
                     </label>
@@ -818,7 +819,7 @@
 						'label' => __( 'Multiple Day', 'abprf-rental-forge' ),
 						'des' => __( 'Apply Daily Rate Only', 'abprf-rental-forge' )
 					],
-					'hourly_daily' => [
+					'multi_day' => [
 						'label' => __( 'Multiple Day and  Hourly', 'abprf-rental-forge' ),
 						'des' => __( 'Apply Hourly and Daily Rate', 'abprf-rental-forge' )
 					],
@@ -826,7 +827,7 @@
 						'label' => __( 'Monthly', 'abprf-rental-forge' ),
 						'des' => __( 'Apply Monthly Rate Only', 'abprf-rental-forge' )
 					],
-					'monthly_daily' => [
+					'multi_month' => [
 						'label' => __( 'Monthly and Daily', 'abprf-rental-forge' ),
 						'des' => __( 'Apply Monthly and Daily Rate', 'abprf-rental-forge' )
 					]
@@ -1078,11 +1079,11 @@
 			}
 
 			//=============================//
-			public static function filter_post_list( $abprf_info=[],$post_id = 0 ): void {
-				$label         = isset( $abprf_info['label'] ) && $abprf_info['label'] ? $abprf_info['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$all_post_ids  = isset( $abprf_info['post_ids'] ) && $abprf_info['post_ids'] ? $abprf_info['post_ids'] :ABPRF_Query::get_all_post_id();
-				$value         = $post_id > 0 ? $post_id : '';
-				$brand_icon    = isset( $abprf_info['brand_icon'] ) && $abprf_info['brand_icon'] ? $abprf_info['brand_icon'] : 'fas fa-hammer';
+			public static function filter_post_list( $abprf_info = [], $post_id = 0 ): void {
+				$label        = isset( $abprf_info['label'] ) && $abprf_info['label'] ? $abprf_info['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+				$all_post_ids = isset( $abprf_info['post_ids'] ) && $abprf_info['post_ids'] ? $abprf_info['post_ids'] : ABPRF_Query::get_post_id();
+				$value        = $post_id > 0 ? $post_id : '';
+				$brand_icon   = isset( $abprf_info['brand_icon'] ) && $abprf_info['brand_icon'] ? $abprf_info['brand_icon'] : 'fas fa-hammer';
 				// echo '<pre>';print_r($configuration);echo '</pre>';
 				?>
                 <div class="_input_item abp_dropdown">

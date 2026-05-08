@@ -11,6 +11,7 @@
             <div class="pagination_area _all_center">
 				<?php if ( $style == 'live' ) { ?>
                     <button type="button" class="_btn_theme_min_200 live_pagination" data-load-more="0"><?php esc_html_e( 'View More', 'abprf-rental-forge' ); ?></button>
+                    <input type="hidden" name="page_item" value="<?php echo esc_attr( $per_page ); ?>"/>
 				<?php } else {
 					$page_mod   = $total % $per_page;
 					$total_page = (int) ( $total / $per_page ) + ( $page_mod > 0 ? 1 : 0 );

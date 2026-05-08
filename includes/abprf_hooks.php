@@ -7,7 +7,7 @@
 			public function __construct() {
 				add_action( 'abprf_title', array( $this, 'title' ), 10, 2 );
 				add_action( 'abprf_sub_title', array( $this, 'sub_title' ), 10, 2 );
-				add_action( 'abprf_category', [ $this, 'category' ], 10, 2 );
+				add_action( 'abprf_category', [ $this, 'category' ], 10, 3 );
 				add_action( 'abprf_search_form', array( $this, 'search_form' ), 10, 2 );
 				add_action( 'abprf_property_item', array( $this, 'property_item' ), 10, 2 );
 				add_action( 'abprf_rental_duration', array( $this, 'rental_duration' ), 10, 2 );
@@ -30,9 +30,9 @@
 				do_action( 'abprf_sub_title_template', $post_id, $abprf_infos );
 			}
 
-			public function category( $abprf_infos = [], $ribbon = false ): void {
+			public function category( $post_id, $all_categories = [], $ribbon = '' ): void {
 				include_once ABPRF_Function::template_path( 'layout/category.php' );
-				do_action( 'abprf_category_template', $abprf_infos, $ribbon );
+				do_action( 'abprf_category_template', $post_id, $all_categories, $ribbon );
 			}
 
 			public function search_form( $abprf_infos = [] ) {
@@ -76,7 +76,7 @@
 			}
 
 			public function pagination( $args ): void {
-				include ABPRF_Function::template_path( 'layout/pagination.php' );
+				include_once ABPRF_Function::template_path( 'layout/pagination.php' );
 				do_action( 'abprf_pagination_template', $args );
 			}
 

@@ -228,14 +228,17 @@
 				if ( empty( $status ) || $status == 'all' ) {
 					$status = [ 'publish', 'draft', 'private', 'trash' ];
 				}
-				$page_number = array_key_exists( 'page_number', $filter_args ) && is_numeric( $filter_args['page_number'] ) ? (int) $filter_args['page_number'] : 1;
-				$limit       = array_key_exists( 'page_item', $filter_args ) && is_numeric( $filter_args['page_item'] ) ? (int) $filter_args['page_item'] : ABPRF_Function::get_option( 'abprf_per_page_item', 20 );
-				$count       = ( $page_number - 1 ) * $limit + 1;
-				$offset      = $count - 1;
-				$cpt         = ABPRF_Function::get_cpt();
-				$post_ids    = ABPRF_Query::get_all_post_id( $cpt, $limit, $offset, $status );
+				$page_number               = array_key_exists( 'page_number', $filter_args ) && is_numeric( $filter_args['page_number'] ) ? (int) $filter_args['page_number'] : 1;
+				$limit                     = array_key_exists( 'page_item', $filter_args ) && is_numeric( $filter_args['page_item'] ) ? (int) $filter_args['page_item'] : ABPRF_Function::get_option( 'abprf_per_page_item', 20 );
+				$count                     = ( $page_number - 1 ) * $limit + 1;
+				$offset                    = $count - 1;
+				$cpt                       = ABPRF_Function::get_cpt();
+				$filters['status']         = $status;
+				$filters['posts_per_page'] = $limit;
+				$filters['paged']          = $offset;
+				$post_ids                  = ABPRF_Query::get_post_id( $filters );
 				if ( ! empty( $post_ids ) && is_array( $post_ids ) && sizeof( $post_ids ) > 0 ) {
-					$total_post   = sizeof( ABPRF_Query::get_all_post_id( $cpt, - 1, 1, $status ) );
+					$total_post   = sizeof( ABPRF_Query::get_post_id( [ 'status' => $status ] ) );
 					$new_post_url = admin_url( 'post-new.php?post_type=' . $cpt );
 					?>
                     <table class="_abprf">
