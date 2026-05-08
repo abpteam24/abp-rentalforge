@@ -3,7 +3,7 @@
 	 * Plugin Name: RentalForge
 	 * Description: RentalForge is a WooCommerce-based WordPress rental plugin that helps you manage Property and tool bookings, availability and rentals from a single dashboard.
 	 * Version: 1.0.0
-	 * Author: ABPTEAM
+	 * Author: abpteam
 	 * Author URI: https://abp-wp.com
 	 * Text Domain: abprf-rental-forge
 	 * Domain Path: /languages

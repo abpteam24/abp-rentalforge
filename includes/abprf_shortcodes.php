@@ -5,11 +5,33 @@
 	if ( ! class_exists( 'ABPRF_Shortcodes' ) ) {
 		class ABPRF_Shortcodes {
 			public function __construct() {
+				add_shortcode( 'abprf-list', array( $this, 'list' ) );
+
 				add_shortcode( 'abprf-equipment', array( $this, 'abptm_search' ) );
-				add_shortcode( 'abprf-list', array( $this, 'abptm_list' ) );
+
 
 			}
-
+			public function list( $attribute ): bool|string {
+				$defaults = $this->default_attribute();
+				$params   = shortcode_atts( $defaults, $attribute );
+				$style    = array_key_exists( 'style', $params ) ? $params['style'] : 'grid';
+				$file     = ABPRF_Function::template_path( 'list/' . $style . '.php' );
+				ob_start();
+				?>
+                <div class="abprf_area">
+                    <div class="abprf_container">
+						<?php if ( is_file( $file ) ) {
+							include_once $file;
+							do_action( 'abprf_'.$style.'_template', $params );
+						} else {
+							include_once ABPRF_Function::template_path( 'list/grid.php' );
+							do_action( 'abprf_grid_template', $params );
+						} ?>
+                    </div>
+                </div>
+				<?php
+				return ob_get_clean();
+			}
 			public function abptm_search( $attribute ): bool|string {
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
@@ -29,25 +51,7 @@
 				return ob_get_clean();
 			}
 
-			public function abptm_list( $attribute ): bool|string {
-				$defaults = $this->default_attribute();
-				$params   = shortcode_atts( $defaults, $attribute );
-				$style    = array_key_exists( 'style', $params ) ? $params['style'] : 'grid';
-				$file     = ABPRF_Function::template_path( 'list/' . $style . '.php' );
-				ob_start();
-				?>
-                <div class="abprf_area">
-                    <div class="abprf_container">
-						<?php if ( is_file( $file ) ) {
-							require $file;
-						} else {
-							require ABPRF_Function::template_path( 'list/grid.php' );
-						} ?>
-                    </div>
-                </div>
-				<?php
-				return ob_get_clean();
-			}
+
 
 			public function default_attribute(): array {
 				return array(

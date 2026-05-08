@@ -3,13 +3,13 @@
 		exit; // Exit if accessed directly
 	}
 	add_action( 'abprf_grid_template', function ( $params = [] ) {
+		echo '<pre>';print_r($params);echo '</pre>';
 		$from       = array_key_exists( 'from', $params ) ? $params['from'] : '';
 		$to         = array_key_exists( 'to', $params ) ? $params['to'] : '';
 		$cat        = array_key_exists( 'cat', $params ) ? $params['cat'] : '';
-		$org        = array_key_exists( 'org', $params ) ? $params['org'] : '';
 		$show_post  = array_key_exists( 'post', $params ) && $params['post'] ? $params['post'] : 9;
 		$column     = array_key_exists( 'column', $params ) ? $params['column'] : 3;
-		$transports = ABPRF_Query::get_equipment_id( $from, $to, $cat, $org );
+		$transports = ABPRF_Query::get_equipment_id( $from, $to, $cat );
 		if ( sizeof( $transports ) > 0 ) {
 			$post_count        = 0;
 			$args['total']     = sizeof( $transports );

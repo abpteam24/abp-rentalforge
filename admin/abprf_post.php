@@ -272,7 +272,7 @@
                                             <span class="_mar_r_xxs <?php echo esc_attr( $post_status ); ?>"><?php echo esc_html( $post_status ); ?></span>
                                         </div>
                                     </td>
-                                    <th><code> [abprf_post id="<?php echo esc_attr( $post_id ); ?>"]</code></th>
+                                    <th><code> [abprf-post id="<?php echo esc_attr( $post_id ); ?>"]</code></th>
                                     <th><?php echo esc_html( ABPRF_Query::get_property( [ 'post_id' => $post_id ], - 1, 0, true ) ); ?></th>
                                     <th>
                                         <div class="_f_wrap">

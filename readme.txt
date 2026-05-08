@@ -76,7 +76,7 @@ You can easily configure booking rules, set minimum and maximum rental durations
 
 = FAQ & Terms Support =
 - Global FAQ system
-- Custom FAQ per property
+- Custom FAQ per post
 - Editable Terms & Conditions
 
 ###  Support and Suggestions:

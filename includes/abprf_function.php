@@ -721,7 +721,7 @@
 				$post_id       = $post_id ?? get_the_id();
 				$template_name = self::get_post_info( $post_id, 'abprf_template', 'default' );
 				$file_name     = 'details_theme/' . $template_name . '.php';
-				$dir           = ABPRF_DIR . '/abprf_templates/' . $file_name;
+				$dir           = ABPRF_DIR . '/rf_templates/' . $file_name;
 				if ( ! file_exists( $dir ) ) {
 					$file_name = 'themes/default.php';
 				}
@@ -730,8 +730,8 @@
 			}
 
 			public static function template_path( $file_name ): string {
-				$file_path   = wp_normalize_path( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '/abprf_templates/' . $file_name );
-				$default_dir = wp_normalize_path( ABPRF_DIR . '/abprf_templates/' . $file_name );
+				$file_path   = wp_normalize_path( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '/rf_templates/' . $file_name );
+				$default_dir = wp_normalize_path( ABPRF_DIR . '/rf_templates/' . $file_name );
 
 				return file_exists( $file_path ) ? $file_path : $default_dir;
 			}

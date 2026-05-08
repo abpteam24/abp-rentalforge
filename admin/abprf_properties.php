@@ -338,7 +338,7 @@
                                         </div>
                                     </td>
 								<?php } ?>
-                                <th><code> [abprf_property id="<?php echo esc_attr( $property_id ); ?>"]</code></th>
+                                <th><code> [abprf-property id="<?php echo esc_attr( $property_id ); ?>"]</code></th>
 								<?php foreach ( $price_rules as $key => $rule ) { ?>
                                     <th><?php
 											$prices = in_array( $key, $price_rule ) && array_key_exists( $key, $price_info ) ? $price_info[ $key ] : [];
