@@ -1,7 +1,6 @@
 @charset "utf-8";
 /******************************************************************** Details page ************************************************/
 @media only screen and (min-width: 10px) {
-	div.default_details_page div.abprf_slider {background-color: transparent;}
 }
 /******************************************************************** Search Form ************************************************/
 @media only screen and (min-width: 10px) {
@@ -38,7 +37,7 @@
 }
 /******************************************************************** Registration section************************************************/
 @media only screen and (min-width: 10px) {
-	div.abprf_booking {border: none;border-top: 1px solid var(--rf_color_border);border-radius: 0;}
+	/*div.abprf_booking {border: none;border-top: 1px solid var(--rf_color_border);border-radius: 0;}*/
 	div.abprf_booking div.bg_img {max-width: 50px;margin: 0 auto;}
 	div.abprf_booking .client_info_area,
 	div.abprf_booking .total_continue_area,
@@ -63,7 +62,7 @@
 	div.abprf_lists .list_item {position: relative;width: 100%;}
 	div.abprf_lists .item_content {display: -webkit-flex;display: flex;}
 	div.abprf_lists .item_details {display: -webkit-flex;display: flex; -webkit-flex-direction: column;flex-direction: column;padding: var(--rf_gap_xs);width: 100%;}
-	div.abprf_lists [data-image-href]{width: 200px;min-width: 200px;}
+	div.abprf_lists [data-image-href] {width: 200px;min-width: 200px;}
 	@media only screen and (max-width: 800px) {
 		div.abprf_grid .list_item {width: calc(50% - var(--rf_gap));
 		}
@@ -97,21 +96,18 @@
 		div.ticket_type_list {position: absolute;z-index: 11111;display: none;left: 5px;min-width: 120px;border: 1px solid var(--rf_color_border);border-radius: var(--rf_br);background-color: var(--rf_color_white);}
 		div.abptm_seat_plan_area th:hover div.ticket_type_list {display: block;}
 		div.ticket_type_list ul li:hover {background-color: var(--rf_color_theme);color: var(--rf_color_theme_alter);cursor: pointer;}
-
 		div.transportation_item div.transport_slider {max-width: 150px;width: 100%;border-right: 1px solid var(--rf_color_border);}
 		div.transport_slider div.icon_direction {font-size: var(--rf_fs);}
 		div.transport_details {display: -webkit-flex;display: flex; -webkit-justify-content: space-between;justify-content: space-between;width: 100%;max-width: 100%;}
 		div.transport_details .details_left {padding: var(--rf_gap_xs);width: 100%;}
 		div.transport_details .details_right {display: -webkit-flex;display: flex; -webkit-justify-content: center;justify-content: center;-webkit-flex-direction: column;flex-direction: column;padding: var(--rf_gap_xs);background-color: var(--rf_color_light);width: 100%;max-width: 150px;}
 		div.abprf_area div.transport_details a h3 {font-size: var(--rf_fs_h6);}
-
 		div.route_details {border-top: 1px solid var(--rf_color_border); padding: var(--rf_gap_xs);display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 		div.transportation_item .seat_details_area {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;-webkit-justify-content: space-between;justify-content: space-between;}
 	}
 	/******************************************************************** Responsive ************************************************/
 	@media only screen and (max-width: 1050px) {
 		div.abptm_seat_plan_area {-webkit-flex-direction: column;flex-direction: column;}
-
 		div.default_details_page .title_details {-webkit-flex-direction: column;flex-direction: column;}
 	}
 	@media only screen and (max-width: 800px) {

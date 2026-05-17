@@ -4,6 +4,7 @@
 	}
 	add_action( 'abprf_search_form_template', function ( $abprf_infos ) {
 		$post_id            = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : '';
+		$location            = array_key_exists( 'location', $abprf_infos ) ? $abprf_infos['location'] : '';
 		$all_dates          = [];
 		$params_form        = array_key_exists( 'form', $abprf_infos ) ? $abprf_infos['form'] : 'inline';
 		$rent_rule          = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : 'hourly';
@@ -37,6 +38,7 @@
             <form class="abprf_property_form <?php echo esc_attr( $params_form == 'column' ? '_form_column' : '_form_inline' ); ?>" method="post" action="">
                 <input type="hidden" name="post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
                 <input type="hidden" name="rent_rule" value="<?php echo esc_attr( $rent_rule ); ?>"/>
+                <?php ABPRF_Layout::location_select($post_id,$location); ?>
                 <div class="start_date _input_item"><?php ABPRF_Layout::rent_start_date( $all_dates ); ?></div>
 				<?php if ( $rent_rule == 'hourly' ) { ?>
                     <div class="start_time _input_item">

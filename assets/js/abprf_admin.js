@@ -1,7 +1,82 @@
-//==========Dashboard=================//
-(function ($) {
-    "use strict";
-}(jQuery));
+function abprf_save_data(parent, target_list, target_post, action) {
+    let target = '';
+    let target_type = '';
+    if (target_post.length > 0) {
+        target = target_post;
+        target_type = 'post';
+    } else {
+        if (target_list.length > 0) {
+            target = target_list;
+            target_type = 'list';
+        }
+    }
+    let formData = new FormData();
+    parent.find('input, select, textarea').each(function () {
+        let name = jQuery(this).attr('name');
+        let value = jQuery(this).val();
+        if (name) {
+            if (jQuery(this).attr('type') === 'checkbox' || jQuery(this).attr('type') === 'radio') {
+                if (jQuery(this).is(':checked')) {
+                    formData.append(name, value);
+                }
+            } else {
+                formData.append(name, value);
+            }
+        }
+    });
+    formData.append('target_type', target_type);
+    if (action === 'abprf_save_property') {
+        formData.append('filter_args', JSON.stringify(abprf_property_filter_arg(parent)));
+    }
+    if (parent.closest('.data_property').length > 0 && (action === 'abprf_save_feature' || action === 'abprf_save_brand')) {
+        let property_id = parent.closest('.data_property').find('input[name="property_id"]').val();
+        formData.append('property_id', property_id);
+    }
+    formData.append('action', action);
+    formData.append('nonce', abprf_admin_data.nonce);
+    jQuery.ajax({
+        type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
+        beforeSend: function () {
+            abprf_spinner(parent);
+            abprf_toast_msg(abprf_admin_data.msg.saving);
+        },
+        success: function (response) {
+            abprf_spinner_remove(parent);
+            abprf_toast_msg(response.data.msg, 'success');
+            if (target.length > 0) {
+                target.html(response.data.html);
+            }
+            if (action === 'abprf_save_feature' || action === 'abprf_save_brand') {
+                parent.find('.insertable_area').html('');
+                parent.find('.hide_on_load').slideUp('fast');
+            } else {
+                abprf_popup_close('#abprf_global_popup');
+            }
+        }
+    });
+}
+function abprf_property_filter_arg($this) {
+    let parent = $this.closest('.abprf_admin');
+    let filter_args = {};
+    if (parent.find("[name='abprf_post_id']").length > 0) {
+        filter_args['post_id'] = parent.find("[name='abprf_post_id']").val();
+    } else {
+        if (parent.find("[name='select_property_hidden']").length > 0) {
+            filter_args['post_id'] = parent.find("[name='select_property_hidden']").val();
+        } else {
+            filter_args['post_id'] = parent.find(".data_property [name='post_id']").val();
+        }
+    }
+    if (parent.find(".properties_list [data-page].rf_active").length > 0) {
+        filter_args['page_number'] = parent.find(".properties_list [data-page].rf_active").attr('data-page');
+    } else {
+        filter_args['page_number'] = 1;
+    }
+    if (parent.find("[name='page_item']").length > 0) {
+        filter_args['page_item'] = parseInt(parent.find("[name='page_item']").val());
+    }
+    return filter_args;
+}
 //==========Post=================//
 (function ($) {
     "use strict";
@@ -87,113 +162,39 @@
 //==========Properties=================//
 (function ($) {
     "use strict";
+    $(document).on('click', 'div.abprf_admin button.save_property', function (e) {
+        e.preventDefault();
+        let $this = $(this);
+        let target_list = $('div.abprf_admin .properties_list');
+        let parent = $this.closest('.popup_body');
+        abprf_save_data(parent, target_list, target_list, 'abprf_save_property');
+    });
     $(document).on("rf_trigger", "div.abprf_admin input[name='select_property_hidden']", function () {
         let parent = $(this).closest('.abprf_admin');
-        let filter_args = get_property_filter_arg(parent);
+        let filter_args = abprf_property_filter_arg($(this));
         filter_args['post_id'] = $(this).val();
         filter_args['page_number'] = 1;
         abprf_load_property_list(parent, filter_args);
     });
-    $(document).on('click', 'div.abprf_admin button.save_property', function (e) {
-        e.preventDefault();
-        let parent = $(this).closest('.abprf_admin');
-        let target = $(this).closest('.popup_area');
-        let formData = new FormData();
-        target.find('input, select, textarea').each(function () {
-            let name = $(this).attr('name');
-            let value = $(this).val();
-            if (name) {
-                if ($(this).attr('type') === 'checkbox' || $(this).attr('type') === 'radio') {
-                    if ($(this).is(':checked')) {
-                        formData.append(name, value);
-                    }
-                } else {
-                    formData.append(name, value);
-                }
-            }
-        });
-        formData.append('action', 'abprf_save_property');
-        formData.append('nonce', abprf_admin_data.nonce);
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
-            beforeSend: function () {
-                abprf_spinner(target);
-                abprf_toast_msg(abprf_admin_data.msg.saving);
-            },
-            success: function (response) {
-                //alert(response.data);
-                abprf_spinner_remove(target);
-                abprf_toast_msg(response.data, 'success');
-                parent.find('.popup_close').trigger('click');
-                let filter_args = get_property_filter_arg(parent);
-                abprf_load_property_list(parent, filter_args);
-            }
-        });
-    });
-    $(document).on("rf_trigger", "div.abprf_admin [data-target-popup='#abprf_property_popup']", function () {
-        let property_id = $(this).attr('data-property_id');
-        property_id = (typeof property_id !== 'undefined' && property_id !== false) ? parseInt(property_id) : '';
-        let property_copy = +$(this).hasClass('property_copy');
-        let target_id = $(this).attr('data-active-popup', '').data('target-popup');
-        let parent = $('body').find('[data-popup="' + target_id + '"]').find('.popup_area');
-        let target = parent.find('.popup_body');
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_property_add_edit", 'property_id': property_id, 'property_copy': property_copy, 'nonce': abprf_admin_data.nonce
-            }, beforeSend: function () {
-                abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.loading);
-            }, success: function (data) {
-                target.html(data).promise().done(function () {
-                    target.find('.sortable_area').sortable({
-                        handle: jQuery(this).find('.sortable_handle')
-                    });
-                    abprf_spinner_remove(parent);
-                    abprf_toast_msg(abprf_admin_data.msg.loaded, 'success');
-                });
-            }
-        })
-    });
     $(document).on('click', 'div.abprf_admin .properties_list .pagination_area button[data-page]', function () {
         let $this = $(this);
         if (!$this.hasClass('rf_active')) {
-            let parent = $(this).closest('.abprf_admin');
-            let filter_args = get_property_filter_arg(parent);
+            let parent = $this.closest('.abprf_admin');
+            let filter_args = abprf_property_filter_arg($this);
             filter_args['page_number'] = parseInt($this.attr('data-page'));
             abprf_load_property_list(parent, filter_args);
         }
     });
-    function get_property_filter_arg(parent) {
-        let filter_args = {};
-        if (parent.find("[name='abprf_post_id']").length > 0) {
-            filter_args['post_id'] = parent.find("[name='abprf_post_id']").val();
-        } else {
-            if (parent.find("[name='select_property_hidden']").length > 0) {
-                filter_args['post_id'] = parent.find("[name='select_property_hidden']").val();
-            } else {
-                filter_args['post_id'] = parent.find(".data_property [name='post_id']").val();
-            }
-        }
-        if (parent.find(".properties_list [data-page].rf_active").length > 0) {
-            filter_args['page_number'] = parent.find(".properties_list [data-page].rf_active").attr('data-page');
-        } else {
-            filter_args['page_number'] = 1;
-        }
-        if (parent.find("[name='page_item']").length > 0) {
-            filter_args['page_item'] = parseInt(parent.find("[name='page_item']").val());
-        }
-        return filter_args;
-    }
-    $(document).on('click', 'div.abprf_admin button.abprf_property_delete', function () {
+    $(document).on('click', 'div.abprf_admin button.delete_property', function () {
         if (confirm(abprf_admin_data.msg.confirm_delete + ' \n\n' + abprf_admin_data.msg.confirm_ok + ' \n ' + abprf_admin_data.msg.confirm_cancel)) {
             let parent = $(this).closest('.abprf_admin');
             let target = parent.find('.properties_list');
             let property_id = $(this).attr('data-property_id');
             property_id = (typeof property_id !== 'undefined' && property_id !== false) ? parseInt(property_id) : '';
-            let filter_args = get_property_filter_arg(parent);
+            let filter_args = abprf_property_filter_arg($(this));
             $.ajax({
                 type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                    "action": "abprf_property_delete", 'property_id': property_id,'filter_args':filter_args, 'nonce': abprf_admin_data.nonce
+                    "action": "abprf_property_delete", 'property_id': property_id, 'filter_args': filter_args, 'nonce': abprf_admin_data.nonce
                 }, beforeSend: function () {
                     abprf_spinner(target);
                     abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
@@ -232,7 +233,7 @@
         let target = parent.find('.order_list');
         let target_form = parent.find('.load_order_list');
         let formData = new FormData(this);
-        if(parent.find('[data-page].rf_active').length > 0) {
+        if (parent.find('[data-page].rf_active').length > 0) {
             formData.append('page_number', parseInt(parent.find('[data-page].rf_active').attr('data-page')));
         }
         formData.append('page_item', parseInt(parent.find("[name='page_item']").val()));
@@ -296,6 +297,42 @@
 //==========Date/Additional/Client Form/Faq/Status configuration=================//
 (function ($) {
     "use strict";
+    $(document).on("rf_trigger", "div.abprf_admin [data-popup='#abprf_global_popup'] .popup_close", function () {
+        $(this).closest('.abprf_popup').find('.popup_body').html('');
+    });
+    $(document).on("rf_trigger", "div.abprf_admin [data-target-popup='#abprf_global_popup']", function () {
+        let tax_id = $(this).attr('data-id');
+        let type = $(this).attr('data-type');
+        let action = '';
+        if (type === 'category') {
+            action = 'abprf_add_category';
+        } else if (type === 'location') {
+            action = 'abprf_add_location';
+        } else if (type === 'property') {
+            action = 'abprf_add_property';
+        }
+        if (action) {
+            tax_id = (typeof tax_id !== 'undefined' && tax_id !== false) ? parseInt(tax_id) : '';
+            let target_id = $(this).attr('data-active-popup', '').data('target-popup');
+            let parent = $('body').find('[data-popup="' + target_id + '"]').find('.popup_area');
+            let target = parent.find('.popup_body');
+            let property_copy = +$(this).hasClass('property_copy');
+            let post_id=$('body').find("[name='abprf_post_id']").val();
+            $.ajax({
+                type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                    "action": action, 'tax_id': tax_id, 'property_copy': property_copy,'post_id':post_id, 'nonce': abprf_admin_data.nonce
+                }, beforeSend: function () {
+                    abprf_spinner(parent);
+                    abprf_toast_msg(abprf_admin_data.msg.loading);
+                }, success: function (data) {
+                    abprf_spinner_remove(parent);
+                    target.html(data).promise().done(function () {
+                        abprf_toast_msg(abprf_admin_data.msg.loaded, 'success');
+                    });
+                }
+            })
+        }
+    });
     //==========Date configuration=================//
     $(document).on('submit', 'div.abprf_admin form.save_dates', function (e) {
         e.preventDefault();
@@ -312,7 +349,7 @@
             },
             success: function (response) {
                 abprf_spinner_remove(target);
-                abprf_toast_msg(response.data, 'success');
+                abprf_toast_msg(response.data.msg, 'success');
             }
         });
     });
@@ -332,7 +369,7 @@
             },
             success: function (response) {
                 abprf_spinner_remove(target);
-                abprf_toast_msg(response.data, 'success');
+                abprf_toast_msg(response.data.msg, 'success');
             }
         });
     });
@@ -371,7 +408,7 @@
             },
             success: function (response) {
                 abprf_spinner_remove(target);
-                abprf_toast_msg(response.data, 'success');
+                abprf_toast_msg(response.data.msg, 'success');
             }
         });
     });
@@ -394,39 +431,22 @@
             }
         });
     });
-    //==========Category configuration=================//
-    $(document).on('submit', 'div.abprf_admin form.save_category', function (e) {
+    //==========Taxonomy configuration=================//
+    $(document).on('click', 'div.abprf_admin button.save_category', function (e) {
         e.preventDefault();
-        let target = $(this);
-        let formData = new FormData(this);
-        formData.append('action', 'abprf_save_category');
-        formData.append('nonce', abprf_admin_data.nonce);
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
-            beforeSend: function () {
-                abprf_spinner(target);
-                abprf_toast_msg(abprf_admin_data.msg.saving);
-            },
-            success: function (response) {
-                abprf_spinner_remove(target);
-                abprf_toast_msg(response.data.msg, 'success');
-                if ($('body').find('div.abprf_admin .category_list').length > 0) {
-                    $('body').find('div.abprf_admin .category_list').html(response.data.html);
-                }
-                if ($('body').find('div.abprf_admin .category_selection').length > 0) {
-                    $('body').find('div.abprf_admin .category_selection').html(response.data.html);
-                }
-                abprf_popup_close();
-            }
-        });
+        let $this = $(this);
+        let target_list = $('div.abprf_admin .category_list');
+        let target_post = $('div.abprf_admin .category_selection');
+        let parent = $this.closest('.popup_body');
+        abprf_save_data(parent, target_list, target_post, 'abprf_save_category');
     });
-    $(document).on('click', 'div.abprf_admin button.abprf_cat_delete', function (e) {
+    $(document).on('click', 'div.abprf_admin button.delete_category', function (e) {
         e.preventDefault();
         let parent = $(this).closest('.category_list');
         let cat_id = parseInt($(this).attr('data-cat_id'));
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_cat_delete", "cat_id": cat_id, 'nonce': abprf_admin_data.nonce
+                "action": "abprf_delete_category", "cat_id": cat_id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
                 abprf_spinner(parent);
@@ -439,61 +459,21 @@
             }
         });
     });
-    $(document).on("rf_trigger", "div.abprf_admin [data-target-popup='#abprf_category_popup']", function () {
-        let cat_id = $(this).attr('data-cat_id');
-        cat_id = (typeof cat_id !== 'undefined' && cat_id !== false) ? parseInt(cat_id) : '';
-        let target_id = $(this).attr('data-active-popup', '').data('target-popup');
-        let parent = $('body').find('[data-popup="' + target_id + '"]').find('.popup_area');
-        let target = parent.find('.popup_body');
-        let page_type = $('body').find('.category_selection').length > 0 ? 'post' : 0;
-        page_type = $('body').find('.category_list').length > 0 ? 'list' : page_type;
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_cat_add_edit", 'cat_id': cat_id, "page_type": page_type, 'nonce': abprf_admin_data.nonce
-            }, beforeSend: function () {
-                abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.loading);
-            }, success: function (data) {
-                target.html(data).promise().done(function () {
-                    abprf_spinner_remove(parent);
-                    abprf_toast_msg(abprf_admin_data.msg.loaded, 'success');
-                });
-            }
-        })
-    });
-    //==========Location configuration=================//
-    $(document).on('submit', 'div.abprf_admin form.save_location', function (e) {
+    $(document).on('click', 'div.abprf_admin button.save_location', function (e) {
         e.preventDefault();
-        let target = $(this);
-        let formData = new FormData(this);
-        formData.append('action', 'abprf_save_location');
-        formData.append('nonce', abprf_admin_data.nonce);
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
-            beforeSend: function () {
-                abprf_spinner(target);
-                abprf_toast_msg(abprf_admin_data.msg.saving);
-            },
-            success: function (response) {
-                abprf_spinner_remove(target);
-                abprf_toast_msg(response.data.msg, 'success');
-                if ($('body').find('div.abprf_admin .location_list').length > 0) {
-                    $('body').find('div.abprf_admin .location_list').html(response.data.html);
-                }
-                if ($('body').find('div.abprf_admin .loc_selection').length > 0) {
-                    $('body').find('div.abprf_admin .loc_selection').html(response.data.html);
-                }
-                abprf_popup_close();
-            }
-        });
+        let $this = $(this);
+        let target_list = $('div.abprf_admin .location_list');
+        let target_post = $('div.abprf_admin .location_selection');
+        let parent = $this.closest('.popup_body');
+        abprf_save_data(parent, target_list, target_post, 'abprf_save_location');
     });
-    $(document).on('click', 'div.abprf_admin button.abprf_loc_delete', function (e) {
+    $(document).on('click', 'div.abprf_admin button.delete_location', function (e) {
         e.preventDefault();
         let parent = $(this).closest('.location_list');
         let loc_id = parseInt($(this).attr('data-loc_id'));
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_loc_delete", "loc_id": loc_id, 'nonce': abprf_admin_data.nonce
+                "action": "abprf_delete_location", "loc_id": loc_id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
                 abprf_spinner(parent);
@@ -506,61 +486,21 @@
             }
         });
     });
-    $(document).on("rf_trigger", "div.abprf_admin [data-target-popup='#abprf_location_popup']", function () {
-        let loc_id = $(this).attr('data-loc_id');
-        loc_id = (typeof loc_id !== 'undefined' && loc_id !== false) ? parseInt(loc_id) : '';
-        let target_id = $(this).attr('data-active-popup', '').data('target-popup');
-        let parent = $('body').find('[data-popup="' + target_id + '"]').find('.popup_area');
-        let target = parent.find('.popup_body');
-        let page_type = $('body').find('.loc_selection').length > 0 ? 'post' : 0;
-        page_type = $('body').find('.location_list').length > 0 ? 'list' : page_type;
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_loc_add_edit", 'loc_id': loc_id, "page_type": page_type, 'nonce': abprf_admin_data.nonce
-            }, beforeSend: function () {
-                abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.loading);
-            }, success: function (data) {
-                target.html(data).promise().done(function () {
-                    abprf_spinner_remove(parent);
-                    abprf_toast_msg(abprf_admin_data.msg.loaded, 'success');
-                });
-            }
-        })
-    });
-    //==========Brand configuration=================//
-    $(document).on('submit', 'div.abprf_admin form.save_brand', function (e) {
+    $(document).on('click', 'div.abprf_admin button.save_brand', function (e) {
         e.preventDefault();
-        let target = $(this);
-        let formData = new FormData(this);
-        formData.append('action', 'abprf_save_brand');
-        formData.append('nonce', abprf_admin_data.nonce);
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
-            beforeSend: function () {
-                abprf_spinner(target);
-                abprf_toast_msg(abprf_admin_data.msg.saving);
-            },
-            success: function (response) {
-                abprf_spinner_remove(target);
-                abprf_toast_msg(response.data.msg, 'success');
-                if ($('body').find('div.abprf_admin .brand_list').length > 0) {
-                    $('body').find('div.abprf_admin .brand_list').html(response.data.html);
-                }
-                if ($('body').find('div.abprf_admin .brand_selection').length > 0) {
-                    $('body').find('div.abprf_admin .brand_selection').html(response.data.html);
-                }
-                abprf_popup_close();
-            }
-        });
+        let $this = $(this);
+        let target_list = $('div.abprf_admin .brand_list');
+        let target_post = $('div.abprf_admin .brand_selection');
+        let parent = $this.closest('.form_area');
+        abprf_save_data(parent, target_list, target_post, 'abprf_save_brand');
     });
-    $(document).on('click', 'div.abprf_admin button.abprf_brand_delete', function (e) {
+    $(document).on('click', 'div.abprf_admin button.delete_brand', function (e) {
         e.preventDefault();
         let parent = $(this).closest('.brand_list');
-        let brand_id = parseInt($(this).attr('data-brand_id'));
+        let brand_id = parseInt($(this).attr('data-id'));
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_brand_delete", "brand_id": brand_id, 'nonce': abprf_admin_data.nonce
+                "action": "abprf_delete_brand", "brand_id": brand_id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
                 abprf_spinner(parent);
@@ -573,84 +513,18 @@
             }
         });
     });
-    $(document).on("rf_trigger", "div.abprf_admin [data-target-popup='#abprf_brand_popup']", function () {
-        let brand_id = $(this).attr('data-brand_id');
-        brand_id = (typeof brand_id !== 'undefined' && brand_id !== false) ? parseInt(brand_id) : '';
-        let target_id = $(this).attr('data-active-popup', '').data('target-popup');
-        let parent = $('body').find('[data-popup="' + target_id + '"]').find('.popup_area');
-        let target = parent.find('.popup_body');
-        let page_type = $('body').find('.brand_selection').length > 0 ? 'post' : 0;
-        page_type = $('body').find('.brand_list').length > 0 ? 'list' : page_type;
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_brand_add_edit", 'brand_id': brand_id, "page_type": page_type, 'nonce': abprf_admin_data.nonce
-            }, beforeSend: function () {
-                abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.loading);
-            }, success: function (data) {
-                target.html(data).promise().done(function () {
-                    abprf_spinner_remove(parent);
-                    abprf_toast_msg(abprf_admin_data.msg.loaded, 'success');
-                });
-            }
-        })
-    });
-    //==========Feature configuration=================//
-    $(document).on('submit', 'div.abprf_admin form.save_feature', function (e) {
+    $(document).on('click', 'div.abprf_admin button.edit_brand', function (e) {
         e.preventDefault();
         let target = $(this);
-        let parent =target.closest('.feature_area');
-        let formData = new FormData(this);
-        formData.append('action', 'abprf_save_feature');
-        formData.append('nonce', abprf_admin_data.nonce);
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
-            beforeSend: function () {
-                abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.saving);
-            },
-            success: function (response) {
-                abprf_spinner_remove(parent);
-                abprf_toast_msg(response.data.msg, 'success');
-                parent.find('.feature_list').html(response.data.html);
-                parent.find('.insertable_area').html('');
-                parent.find('.hide_on_load').slideUp('fast');
-            }
-        });
-    });
-    $(document).on('click', 'div.abprf_admin button.abprf_feature_delete', function (e) {
-        e.preventDefault();
-        let target = $(this);
-        let parent =target.closest('.feature_area');
-        let fec_id = $(this).attr('data-fec_id');
+        let parent = target.closest('.brand_area');
+        let id = $(this).attr('data-id');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_feature_delete", "fec_id": fec_id, 'nonce': abprf_admin_data.nonce
+                "action": "abprf_edit_brand", "id": id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
                 abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
-            },
-            success: function (response) {
-                abprf_spinner_remove(parent);
-                abprf_toast_msg(response.data.msg);
-                parent.find('.feature_list').html(response.data.html);
-                parent.find('.hide_on_load').slideUp('fast');
-            }
-        });
-    });
-    $(document).on('click', 'div.abprf_admin button.abprf_feature_edit', function (e) {
-        e.preventDefault();
-        let target = $(this);
-        let parent =target.closest('.feature_area');
-        let fec_id = $(this).attr('data-fec_id');
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_feature_edit", "fec_id": fec_id, 'nonce': abprf_admin_data.nonce
-            },
-            beforeSend: function () {
-                abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
+                abprf_toast_msg(abprf_admin_data.msg.loading, 'error');
             },
             success: function (response) {
                 abprf_spinner_remove(parent);
@@ -660,8 +534,55 @@
             }
         });
     });
-    $(document).on('rf_trigger', 'div.abprf_admin form.save_feature .add_new_hook', function () {
-        $(this).closest('.feature_area').find('.hide_on_load').slideDown(300);
+    $(document).on('click', 'div.abprf_admin button.save_feature', function (e) {
+        e.preventDefault();
+        let $this = $(this);
+        let target_list = $('div.abprf_admin .feature_list');
+        let target_post = $('div.abprf_admin .feature_selection');
+        let parent = $this.closest('.form_area');
+        abprf_save_data(parent, target_list, target_post, 'abprf_save_feature');
+    });
+    $(document).on('click', 'div.abprf_admin button.delete_feature', function (e) {
+        e.preventDefault();
+        let target = $(this);
+        let parent = target.closest('.feature_area');
+        let fec_id = $(this).attr('data-fec_id');
+        $.ajax({
+            type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                "action": "abprf_delete_feature", "fec_id": fec_id, 'nonce': abprf_admin_data.nonce
+            },
+            beforeSend: function () {
+                abprf_spinner(parent);
+                abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
+            },
+            success: function (response) {
+                abprf_spinner_remove(parent);
+                abprf_toast_msg(response.data.msg);
+                parent.find('.feature_list').html(response.data.html);
+                parent.find('.hide_on_load').slideUp('fast');
+            }
+        });
+    });
+    $(document).on('click', 'div.abprf_admin button.edit_feature', function (e) {
+        e.preventDefault();
+        let target = $(this);
+        let parent = target.closest('.feature_area');
+        let fec_id = $(this).attr('data-id');
+        $.ajax({
+            type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                "action": "abprf_edit_feature", "fec_id": fec_id, 'nonce': abprf_admin_data.nonce
+            },
+            beforeSend: function () {
+                abprf_spinner(parent);
+                abprf_toast_msg(abprf_admin_data.msg.loading, 'error');
+            },
+            success: function (response) {
+                abprf_spinner_remove(parent);
+                abprf_toast_msg(response.data.msg);
+                parent.find('.insertable_area').html(response.data.html);
+                parent.find('.hide_on_load').slideDown();
+            }
+        });
     });
     //==========Faq configuration=================//
     $(document).on('submit', 'div.abprf_admin form.save_faq', function (e) {
@@ -679,7 +600,7 @@
             },
             success: function (response) {
                 abprf_spinner_remove(target);
-                abprf_toast_msg(response.data, 'success');
+                abprf_toast_msg(response.data.msg, 'success');
                 window.location.reload();
             }
         });
@@ -721,7 +642,7 @@
             },
             success: function (response) {
                 abprf_spinner_remove(target);
-                abprf_toast_msg(response.data, 'success');
+                abprf_toast_msg(response.data.msg, 'success');
                 window.location.reload();
             }
         });
@@ -755,7 +676,7 @@
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.wc_install);
             }, success: function (response) {
-                abprf_toast_msg(response.data,'success');
+                abprf_toast_msg(response.data.msg, 'success');
                 window.location.reload();
             }
         });
@@ -769,7 +690,7 @@
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.wc_installing);
             }, success: function (response) {
-                abprf_toast_msg(response.data,'success');
+                abprf_toast_msg(response.data.msg, 'success');
                 window.location.reload();
             }
         });
@@ -784,7 +705,7 @@
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.create_post_page);
             }, success: function (response) {
-                abprf_toast_msg(response,'success');
+                abprf_toast_msg(response, 'success');
                 window.location.reload();
             }
         });
@@ -798,7 +719,7 @@
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.create_property_page);
             }, success: function (response) {
-                abprf_toast_msg(response,'success');
+                abprf_toast_msg(response, 'success');
                 window.location.reload();
             }
         });
@@ -987,6 +908,7 @@ function abprf_wp_editor_init(target) {
             abprf_wp_editor_init(target);
             target.find('.edit_area').slideDown('fast');
         }
+        parent.find('.hide_on_load').slideDown(300);
         $(this).trigger('rf_trigger');
     });
     $(document).on('click', 'div.abprf_admin .edit_hook', function () {
@@ -1006,7 +928,6 @@ function abprf_wp_editor_init(target) {
     let abprf_target_popup = $(document).find('div.abprf_admin .popup_icon');
     let abprf_category_list = abprf_target_popup.find('.dropdown_list');
     let abprf_search_field = abprf_target_popup.find('.abp_dropdown .abp_icon_search');
-    let abprf_search_field_hidden = abprf_target_popup.find('.abp_dropdown .abp_icon_search_hidden');
     let abprf_icon_title = abprf_target_popup.find('.item_icon_title');
     let abprf_icon_area = abprf_target_popup.find('.item_icon_area');
     let abprf_item_loader = abprf_target_popup.find('.item_loader');

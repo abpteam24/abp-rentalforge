@@ -74,9 +74,9 @@
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					$additional_services = $this->get_additional_array();
 					update_option( 'abprf_additional', $additional_services );
-					wp_send_json_success( esc_html__( 'Additional services Configuration Saved Successfully ! ', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'Additional services Configuration Saved Successfully ..... !! ', 'abprf-rental-forge' ) ] );
 				} else {
-					wp_send_json_success( esc_html__( 'Additional services Configuration not Saved !', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'Additional services Configuration not Saved  ..... !! ', 'abprf-rental-forge' ) ] );
 				}
 				wp_die();
 			}

@@ -74,9 +74,9 @@
 					$date_infos['date_format'] = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
 					$date_infos['time_format'] = isset( $_POST['time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['time_format'] ) ) : '';
 					update_option( 'abprf_dates', $date_infos );
-					wp_send_json_success( esc_html__( 'Date Configuration Saved Successfully ! ', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'Date Configuration Saved Successfully ! ! ', 'abprf-rental-forge' ) ] );
 				} else {
-					wp_send_json_success( esc_html__( 'Date Configuration not Saved !', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'Date Configuration not Saved !! ', 'abprf-rental-forge' ) ] );
 				}
 				wp_die();
 			}

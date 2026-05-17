@@ -7,19 +7,19 @@
 			public function __construct() {
 				add_action( 'abprf_global_feature', array( $this, 'global_feature' ) );
 				add_action( 'wp_ajax_abprf_save_feature', array( $this, 'save_feature' ) );
-				add_action( 'wp_ajax_abprf_feature_delete', array( $this, 'feature_delete' ) );
-				add_action( 'wp_ajax_abprf_feature_edit', array( $this, 'feature_edit' ) );
+				add_action( 'wp_ajax_abprf_delete_feature', array( $this, 'delete_feature' ) );
+				add_action( 'wp_ajax_abprf_edit_feature', array( $this, 'edit_feature' ) );
 			}
 
 			public function global_feature(): void {
 				?>
                 <div class="tab_item feature_area" data-tabs="#abprf_global_feature">
                     <div class="feature_list _group_list">
-						<?php $this->load_feature_list(); ?>
+						<?php $this->feature_list(); ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="configuration_content">
-                        <form class="save_feature" method="post" action="">
+                        <div class="form_area">
                             <div class="hide_on_load">
                                 <table class="_abprf ">
                                     <thead>
@@ -37,13 +37,13 @@
                             </div>
                             <div class="_fj_between">
 								<?php ABPRF_Layout::button_add( __( 'Add New Feature', 'abprf-rental-forge' ) ); ?>
-                                <button type="submit" class="_btn_theme hide_on_load "><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abprf-rental-forge' ); ?></button>
+                                <button type="button" class="_btn_theme hide_on_load save_feature"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abprf-rental-forge' ); ?></button>
                             </div>
-                        </form>
+                        </div>
                         <div class="abprf_d_none">
                             <table class="_abprf">
                                 <tbody class="hidden_content">
-								<?php $this->feature_item(); ?>
+								<?php self::form_feature(); ?>
                                 </tbody>
                             </table>
                         </div>
@@ -52,30 +52,8 @@
 				<?php
 			}
 
-			public function feature_item( $feature = [], $id = '' ): void {
-				$label = is_array( $feature ) && array_key_exists( 'label', $feature ) ? $feature['label'] : '';
-				$value = is_array( $feature ) && array_key_exists( 'value', $feature ) ? $feature['value'] : '';
-				$icon  = array_key_exists( 'icon', $feature ) ? $feature['icon'] : '';
-				?>
-                <tr class="delete_area">
-                    <th><?php do_action( 'abprf_add_icon', 'feature_icon[]', $icon ); ?></th>
-                    <th>
-                        <label>
-                            <input type="hidden" name="feature_id[]" value="<?php echo esc_attr( $id ); ?>"/>
-                            <input type="text" class="_form_control validation_name" name="feature_name[]" placeholder="<?php esc_attr_e( 'EX: Model', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $label ); ?>" required/>
-                        </label>
-                    </th>
-                    <th>
-                        <label>
-                            <input type="text" class="_form_control validation_name" name="feature_value[]" placeholder="<?php esc_attr_e( 'EX: 2005', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $value ); ?>" required/>
-                        </label>
-                    </th>
-                    <td><?php ABPRF_Layout::button_delete_sort(); ?></td>
-                </tr>
-				<?php
-			}
-
 			public function save_feature() {
+				$html = '';
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					$old_features   = ABPRF_Function::get_option( 'abprf_feature' );
 					$id             = ! empty( $old_features ) && sizeof( $old_features ) > 0 ? array_key_last( $old_features ) : 'fec_id_1';
@@ -83,6 +61,7 @@
 					$feature_names  = isset( $_POST['feature_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_name'] ) ) : [];
 					$feature_values = isset( $_POST['feature_value'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_value'] ) ) : [];
 					$feature_icon   = isset( $_POST['feature_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_icon'] ) ) : [];
+					$target_type    = isset( $_POST['target_type'] ) ? sanitize_text_field( wp_unslash( $_POST['target_type'] ) ) : 0;
 					if ( sizeof( $feature_names ) > 0 && sizeof( $feature_values ) > 0 ) {
 						foreach ( $feature_names as $key => $feature_name ) {
 							if ( $feature_name && $feature_values[ $key ] ) {
@@ -107,134 +86,155 @@
 							}
 						}
 					}
-					update_option( 'abprf_feature', $old_features );
-					ob_start();
-					$this->load_feature_list();
+					update_option( 'abprf_feature', $old_features );;
+					if ( $target_type == 'post' ) {
+						$features    = '';
+						$property_id = isset( $_POST['property_id'] ) ? sanitize_text_field( wp_unslash( $_POST['property_id'] ) ) : '';
+						if ( ! empty( $property_id ) ) {
+							$properties = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+							if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
+								$property = current( $properties );
+								$features = array_key_exists( 'features', $property ) ? $property['features'] : '';
+							}
+						}
+						self::feature_selection( $features );
+					} elseif ( $target_type == 'list' ) {
+						$this->feature_list();
+					}
 					$html = ob_get_clean();
-					wp_send_json_success( [ 'html' => $html, 'msg' => esc_html__( 'Feature Saved Successfully !', 'abprf-rental-forge' ) ] );
+					$msg  = esc_html__( 'Feature Saved Successfully..........!!', 'abprf-rental-forge' );
 				} else {
-					wp_send_json_success( esc_html__( 'Feature not Saved !', 'abprf-rental-forge' ) );
+					$msg = esc_html__( 'Feature not Saved ! Authentication Failed ...............!!', 'abprf-rental-forge' );
 				}
+				wp_send_json_success( [ 'html' => $html, 'msg' => $msg ] );
 				wp_die();
 			}
 
-			public function feature_delete() {
+			public function delete_feature() {
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					$fec_id   = isset( $_POST['fec_id'] ) ? sanitize_text_field( wp_unslash( $_POST['fec_id'] ) ) : '';
 					$features = ABPRF_Function::get_option( 'abprf_feature' );
 					unset( $features[ $fec_id ] );
 					update_option( 'abprf_feature', $features );
 					ob_start();
-					$this->load_feature_list();
+					$this->feature_list();
 					$html = ob_get_clean();
 					wp_send_json_success( [ 'html' => $html, 'msg' => esc_html__( 'Feature Delete Successfully !', 'abprf-rental-forge' ) ] );
 				} else {
 					ob_start();
-					$this->load_feature_list();
+					$this->feature_list();
 					$html = ob_get_clean();
 					wp_send_json_success( [ 'html' => $html, 'msg' => esc_html__( 'Feature not Delete. Something Error Found !', 'abprf-rental-forge' ) ] );
 				}
 				wp_die();
 			}
 
-			public function feature_edit() {
+			public function edit_feature() {
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					$fec_id   = isset( $_POST['fec_id'] ) ? sanitize_text_field( wp_unslash( $_POST['fec_id'] ) ) : '';
 					$features = ABPRF_Function::get_option( 'abprf_feature' );
 					$feature  = array_key_exists( $fec_id, $features ) ? $features[ $fec_id ] : [];
 					ob_start();
-					$this->feature_item( $feature, $fec_id );
+					self::form_feature( $feature, $fec_id );
 					$html = ob_get_clean();
-					wp_send_json_success( [ 'html' => $html, 'msg' => esc_html__( 'Feature Delete Successfully !', 'abprf-rental-forge' ) ] );
+					wp_send_json_success( [ 'html' => $html, 'msg' => esc_html__( 'Feature Ready to Editing...... !', 'abprf-rental-forge' ) ] );
 				}
 				wp_die();
 			}
 
-			public function load_feature_list(): void {
+			public function feature_list(): void {
 				$features = ABPRF_Function::get_option( 'abprf_feature' );
 				//echo '<pre>';				print_r( $features );				echo '</pre>';
 				if ( ! empty( $features ) && is_array( $features ) && sizeof( $features ) > 0 ) {
 					foreach ( $features as $key => $feature ) {
 						$label = is_array( $feature ) && array_key_exists( 'label', $feature ) ? $feature['label'] : '';
 						$value = is_array( $feature ) && array_key_exists( 'value', $feature ) ? $feature['value'] : '';
-						$icon  = array_key_exists( 'icon', $feature ) ? $feature['icon'] : '';
+						$icon  = is_array( $feature ) && array_key_exists( 'icon', $feature ) ? $feature['icon'] : '';
 						?>
                         <div class="_list_item">
                             <h6 class="_abprf_color_theme"> <?php ABPRF_Layout::image_icon( $icon ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $value ); ?></h6>
                             <div class="_f_wrap">
-                                <button type="button" class="_btn_light_yellow_mar_r_xxs abprf_feature_edit" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abprf-rental-forge' ) . ' ' . esc_attr( $label ); ?>">✍️</button>
-                                <button type="button" class="_btn_light_danger_xxs abprf_feature_delete" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abprf-rental-forge' ) . ' ' . esc_attr( $label ); ?>">❌</button>
+                                <button type="button" class="_btn_light_yellow_mar_r_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abprf-rental-forge' ) . ' ' . esc_attr( $label ); ?>">✍️</button>
+                                <button type="button" class="_btn_light_danger_xxs delete_feature" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abprf-rental-forge' ) . ' ' . esc_attr( $label ); ?>">❌</button>
                             </div>
                         </div>
 						<?php
 					}
+				} else {
+					ABPRF_Layout::layout_warning_info( 'no_feature' );
 				}
 			}
 
-			public function form( $term_id = '', $page_type = '' ): void {
-				$name = $slug = $des = '';
-				if ( ! empty( $term_id ) ) {
-					$term = get_term( $term_id );
-					if ( ! empty( $term ) ) {
-						$name = $term->name;
-						$slug = $term->slug;
-						$des  = $term->description;
-					}
-				}
-				?>
-                <form class="save_location" method="post" action="">
-                    <input type="hidden" name="term_id" value="<?php echo esc_attr( $term_id ); ?>"/>
-                    <input type="hidden" name="page_type" value="<?php echo esc_attr( $page_type ); ?>"/>
-                    <div class="_setting_item">
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Feature Label', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
-                            <input class="_form_control" name="name" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abprf-rental-forge' ); ?>" required/>
-                        </label>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'feature_name' ); ?>
-                    </div>
-                    <div class="_setting_item">
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Feature Slug (Optional)', 'abprf-rental-forge' ); ?></span>
-                            <input class="_form_control" name="slug" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abprf-rental-forge' ); ?>"/>
-                        </label>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'feature_slug' ); ?>
-                    </div>
-                    <div class="_setting_item">
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Feature Value', 'abprf-rental-forge' ); ?></span>
-                            <input class="_form_control" name="description" value="<?php echo esc_attr( $des ); ?>" placeholder="<?php esc_attr_e( '25 Sqt', 'abprf-rental-forge' ); ?>" required/>
-                        </label>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'feature_des' ); ?>
-                    </div>
-                    <div class="_divider_xs"></div>
-                    <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php echo( ! empty( $term_id ) ? esc_html__( 'Update Feature', 'abprf-rental-forge' ) : esc_html__( 'Save Feature', 'abprf-rental-forge' ) ); ?></button>
-                </form>
-				<?php
-			}
-
-			public static function feature_selection( $_location = '' ): void {
-				$all_location   = ABPRF_Function::get_option( 'abprf_location' );
-				$location_array = ! empty( $_location ) ? explode( ',', $_location ) : [];
-				if ( ! empty( $all_location ) && is_array( $all_location ) && sizeof( $all_location ) > 0 ) { ?>
+			public static function feature_selection( $_feature = '' ): void {
+				$features      = ABPRF_Function::get_option( 'abprf_feature' );
+				$feature_array = ! empty( $_feature ) ? explode( ',', $_feature ) : [];
+				if ( ! empty( $features ) && is_array( $features ) && sizeof( $features ) > 0 ) { ?>
                     <div class="custom_checkbox">
-                        <input type="hidden" name="location" value="<?php echo esc_attr( $_location ); ?>"/>
-						<?php foreach ( $all_location as $key => $location ) {
-							$name = is_array( $location ) && array_key_exists( 'name', $location ) ? $location['name'] : ''; ?>
+                        <input type="hidden" name="feature" value="<?php echo esc_attr( $_feature ); ?>"/>
+						<?php foreach ( $features as $key => $feature ) {
+							$label = is_array( $feature ) && array_key_exists( 'label', $feature ) ? $feature['label'] : '';
+							$value = is_array( $feature ) && array_key_exists( 'value', $feature ) ? $feature['value'] : '';
+							$icon  = array_key_exists( 'icon', $feature ) ? $feature['icon'] : ''; ?>
                             <div class="checkbox_item _min_100">
-                                <button type="button" class="_btn_white_xs <?php echo esc_attr( in_array( $key, $location_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
-                                    <span data-icon class="_mar_r_xs far <?php echo esc_attr( in_array( $key, $location_array ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span><?php echo esc_html( $name ); ?>
+                                <button type="button" class="_btn_white_xs <?php echo esc_attr( in_array( $key, $feature_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
+                                    <span data-icon class="_mar_r_xs far <?php echo esc_attr( in_array( $key, $feature_array ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span>
+									<?php ABPRF_Layout::image_icon( $icon, '_mar_r_xxs' ); ?>
+									<?php echo esc_html( $label . ' - ' . $value ); ?>
                                 </button>
                             </div>
 						<?php } ?>
                     </div>
 				<?php } else { ?>
-                    <p><?php echo esc_html( ABPRF_Layout::array_info( 'no_location' ) ); ?></p>
-                    <button type="button" class="_btn_default" data-target-popup="#abprf_location_popup"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abprf-rental-forge' ); ?></button>
+                    <p class="_abprf"><?php echo esc_html( ABPRF_Layout::array_info( 'no_feature' ) ); ?></p>
 					<?php
 				}
+				?>
+                <div class="configuration_content">
+                    <div class="form_area">
+                        <div class="hide_on_load">
+                            <table class="_abprf ">
+                                <tbody class="insertable_area sortable_area">
+                                </tbody>
+                            </table>
+                            <div class="_divider_xs"></div>
+                        </div>
+                        <div class="_fj_between">
+							<?php ABPRF_Layout::button_add_xs( __( 'Add New Feature', 'abprf-rental-forge' ) ); ?>
+                            <button type="button" class="_btn_theme_xs hide_on_load save_feature"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abprf-rental-forge' ); ?></button>
+                        </div>
+                    </div>
+                    <div class="abprf_d_none">
+                        <table class="_abprf">
+                            <tbody class="hidden_content">
+							<?php self::form_feature(); ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+				<?php
+			}
+
+			public static function form_feature( $feature = [], $id = '' ): void {
+				$label = is_array( $feature ) && array_key_exists( 'label', $feature ) ? $feature['label'] : '';
+				$value = is_array( $feature ) && array_key_exists( 'value', $feature ) ? $feature['value'] : '';
+				$icon  = is_array( $feature ) && array_key_exists( 'icon', $feature ) ? $feature['icon'] : '';
+				?>
+                <tr class="delete_area">
+                    <th><?php do_action( 'abprf_add_icon', 'feature_icon[]', $icon ); ?></th>
+                    <th>
+                        <label>
+                            <input type="hidden" name="feature_id[]" value="<?php echo esc_attr( $id ); ?>"/>
+                            <input type="text" class="_form_control validation_name" name="feature_name[]" placeholder="<?php esc_attr_e( 'EX: Feature Title', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $label ); ?>" required/>
+                        </label>
+                    </th>
+                    <th>
+                        <label>
+                            <input type="text" class="_form_control validation_name" name="feature_value[]" placeholder="<?php esc_attr_e( 'EX: Feature Value', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $value ); ?>" required/>
+                        </label>
+                    </th>
+                    <td><?php ABPRF_Layout::button_delete_sort(); ?></td>
+                </tr>
+				<?php
 			}
 		}
 		new ABPRF_Feature();

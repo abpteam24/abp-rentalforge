@@ -60,8 +60,10 @@
 				$status    = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? $filters['status'] : 'publish';
 				//=====================//
 				$cat_id    = array_key_exists( 'cat_id', $filters ) && ! empty( $filters['cat_id'] ) ? $filters['cat_id'] : null;
+				$loc_id    = array_key_exists( 'loc_id', $filters ) && ! empty( $filters['loc_id'] ) ? $filters['loc_id'] : null;
 				$rent_rule = array_key_exists( 'rent_rule', $filters ) && ! empty( $filters['rent_rule'] ) ? $filters['rent_rule'] : null;
-				$cat_query = ! empty( $cat_id ) ? array( 'key' => 'category', 'value' => $cat_id, 'compare' => '=' ) : '';
+				$cat_query = ! empty( $cat_id ) ? array( 'key' => 'category', 'value' => $cat_id, 'compare' => 'LIKE' ) : '';
+				$loc_query = ! empty( $loc_id ) ? array( 'key' => 'location', 'value' => $loc_id, 'compare' => 'LIKE' ) : '';
 				$rent_rule = ! empty( $rent_rule ) ? array( 'key' => 'rent_rule', 'value' => $rent_rule, 'compare' => '=', 'type' => 'CHAR' ) : '';
 				$all_data  = get_posts( array(
 					'fields' => 'ids',
@@ -69,7 +71,7 @@
 					'posts_per_page' => $show,
 					'paged' => $page,
 					'post_status' => $status,
-					'meta_query' => array( 'relation' => 'AND', $cat_query, $rent_rule )
+					'meta_query' => array( 'relation' => 'AND', $cat_query,$loc_query, $rent_rule )
 				) );
 
 				return array_unique( $all_data );
@@ -110,6 +112,12 @@
 				if ( ! empty( $rent_rule ) ) {
 					$conditions[] = "rent_rule = %s";
 					$params[]     = trim( $rent_rule );
+				}
+				/***************/
+				$location = array_key_exists( 'location', $filters ) && ! empty( $filters['location'] ) ? $filters['location'] : null;
+				if ( ! empty( $location ) ) {
+					$conditions[] = "FIND_IN_SET(%s, location)";
+					$params[]     = trim( $location );
 				}
 				/***************/
 				$status = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? $filters['status'] : null;
@@ -169,107 +177,6 @@
 
 				return null;
 			}
-
-			/********************************************/
-			public static function get_sold_ticket( $post_id, $bp, $dp, $origin_date ) {
-				$ticket_list = [];
-				$results     = self::get_sold_query( $post_id, $bp, $dp, $origin_date, 'ticket' );
-				if ( ! empty( $results ) ) {
-					foreach ( $results as $value ) {
-						foreach ( $value as $seats ) {
-							$seats = json_decode( $seats );
-							if ( is_array( $seats ) ) {
-								foreach ( $seats as $seat ) {
-									$ticket_list[] = $seat;
-								}
-							}
-						}
-					}
-				}
-
-				return array_unique( $ticket_list );
-			}
-
-			public static function get_sold_query( $post_id, $bp, $dp, $origin_date, $key = '*' ) {
-				$routes = ABPRF_Function::get_post_info( $post_id, 'route_direction', [] );
-				if ( sizeof( $routes ) > 0 ) {
-					global $wpdb;
-					$table_name      = $wpdb->prefix . 'abprf_orders';
-					$allowed_columns = array( 'id', 'price', 'qty', 'total', 'ticket', '*' );
-					if ( ! in_array( $key, $allowed_columns, true ) ) {
-						return array(); // or wp_die()
-					}
-					$date                = gmdate( 'Y-m-d', strtotime( $origin_date ) );
-					$time                = gmdate( 'H:i', strtotime( $origin_date ) );
-					$booked_status       = ABPRF_Function::get_options( 'abprf_configuration', 'booked_status', 'wc-processing,wc-completed' );
-					$booked_status       = $booked_status ? explode( ',', $booked_status ) : [];
-					$status_placeholders = implode( ',', array_fill( 0, count( $booked_status ), '%s' ) );
-					$sp                  = array_search( $bp, $routes );
-					$ep                  = array_search( $dp, $routes );
-					$bp_array            = array_slice( $routes, 0, $ep );
-					$dp_array            = array_slice( $routes, $sp + 1 );
-					$bp_placeholders     = implode( ',', array_fill( 0, count( $bp_array ), '%s' ) );
-					$dp_placeholders     = implode( ',', array_fill( 0, count( $dp_array ), '%s' ) );
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
-					$query = $wpdb->prepare( "SELECT {$key} FROM {$table_name}  WHERE post_id = %d AND bp IN ($bp_placeholders)  AND dp IN ($dp_placeholders) AND order_status IN ($status_placeholders) AND DATE(origin_time) = %s AND TIME(origin_time) = %s", array_merge( [ $post_id ], $bp_array, $dp_array, $booked_status, [ $date ], [ $time ] ) );
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()
-					return $wpdb->get_results( $query, ARRAY_A );
-				}
-
-				return null;
-			}
-
-			public static function get_sold_info( $post_id, $bp, $dp, $origin_date, $seat_type ) {
-				$all_info = [];
-				$results  = self::get_sold_query( $post_id, $bp, $dp, $origin_date );
-				if ( ! empty( $results ) ) {
-					$ticket_list     = [];
-					$seat_list       = [];
-					$additional_list = [];
-					foreach ( $results as $value ) {
-						$tickets = array_key_exists( 'ticket', $value ) ? $value['ticket'] : '';
-						if ( ! empty( $tickets ) ) {
-							$seats = json_decode( $tickets );
-							if ( is_array( $seats ) ) {
-								foreach ( $seats as $seat ) {
-									$seat_list[] = $seat;
-								}
-							}
-						}
-						if ( $seat_type == 'ticket_type' ) {
-							$ticket_infos = array_key_exists( 'ticket_info', $value ) ? $value['ticket_info'] : '';
-							if ( ! empty( $ticket_infos ) ) {
-								$ticket_infos = json_decode( $ticket_infos );
-								foreach ( $ticket_infos as $ticket_info ) {
-									$ticket_list[ $ticket_info->type ] = array_key_exists( $ticket_info->type, $ticket_list ) ? $ticket_list[ $ticket_info->type ] + $ticket_info->qty : $ticket_info->qty;
-								}
-							}
-						}
-						$additional_infos = array_key_exists( 'additional_info', $value ) ? $value['additional_info'] : '';
-						if ( ! empty( $additional_infos ) ) {
-							$additional_infos = json_decode( $additional_infos );
-							foreach ( $additional_infos as $additional_info ) {
-								if ( is_object( $additional_info ) ) {
-									$additional_info = get_object_vars( $additional_info );
-								}
-								if ( is_array( $additional_info ) && sizeof( $additional_info ) > 0 ) {
-									foreach ( $additional_info as $key => $additional ) {
-										$additional_list[ $key ] = array_key_exists( $key, $additional_list ) ? $additional_list[ $key ] + $additional->qty : $additional->qty;
-									}
-								}
-							}
-						}
-					}
-					$all_info['seat']       = $seat_list;
-					$all_info['ticket']     = $ticket_list;
-					$all_info['additional'] = $additional_list;
-				}
-
-				return $all_info;
-			}
-
 			public static function get_booking_query( $filters = array(), $limit = 0, $offset = 0, $count = false ) {
 				global $wpdb;
 				$table_name        = $wpdb->prefix . 'abprf_orders';
@@ -376,6 +283,108 @@
 
 				return $results;
 			}
+
+			/********************************************/
+			public static function get_sold_ticket( $post_id, $bp, $dp, $origin_date ) {
+				$ticket_list = [];
+				$results     = self::get_sold_query( $post_id, $bp, $dp, $origin_date, 'ticket' );
+				if ( ! empty( $results ) ) {
+					foreach ( $results as $value ) {
+						foreach ( $value as $seats ) {
+							$seats = json_decode( $seats );
+							if ( is_array( $seats ) ) {
+								foreach ( $seats as $seat ) {
+									$ticket_list[] = $seat;
+								}
+							}
+						}
+					}
+				}
+
+				return array_unique( $ticket_list );
+			}
+
+			public static function get_sold_query( $post_id, $bp, $dp, $origin_date, $key = '*' ) {
+				$routes = ABPRF_Function::get_post_info( $post_id, 'route_direction', [] );
+				if ( sizeof( $routes ) > 0 ) {
+					global $wpdb;
+					$table_name      = $wpdb->prefix . 'abprf_orders';
+					$allowed_columns = array( 'id', 'price', 'qty', 'total', 'ticket', '*' );
+					if ( ! in_array( $key, $allowed_columns, true ) ) {
+						return array(); // or wp_die()
+					}
+					$date                = gmdate( 'Y-m-d', strtotime( $origin_date ) );
+					$time                = gmdate( 'H:i', strtotime( $origin_date ) );
+					$booked_status       = ABPRF_Function::get_options( 'abprf_configuration', 'booked_status', 'wc-processing,wc-completed' );
+					$booked_status       = $booked_status ? explode( ',', $booked_status ) : [];
+					$status_placeholders = implode( ',', array_fill( 0, count( $booked_status ), '%s' ) );
+					$sp                  = array_search( $bp, $routes );
+					$ep                  = array_search( $dp, $routes );
+					$bp_array            = array_slice( $routes, 0, $ep );
+					$dp_array            = array_slice( $routes, $sp + 1 );
+					$bp_placeholders     = implode( ',', array_fill( 0, count( $bp_array ), '%s' ) );
+					$dp_placeholders     = implode( ',', array_fill( 0, count( $dp_array ), '%s' ) );
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_var()
+					$query = $wpdb->prepare( "SELECT {$key} FROM {$table_name}  WHERE post_id = %d AND bp IN ($bp_placeholders)  AND dp IN ($dp_placeholders) AND order_status IN ($status_placeholders) AND DATE(origin_time) = %s AND TIME(origin_time) = %s", array_merge( [ $post_id ], $bp_array, $dp_array, $booked_status, [ $date ], [ $time ] ) );
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared later using wpdb->get_results()
+					return $wpdb->get_results( $query, ARRAY_A );
+				}
+
+				return null;
+			}
+
+			public static function get_sold_info( $post_id, $bp, $dp, $origin_date, $seat_type ) {
+				$all_info = [];
+				$results  = self::get_sold_query( $post_id, $bp, $dp, $origin_date );
+				if ( ! empty( $results ) ) {
+					$ticket_list     = [];
+					$seat_list       = [];
+					$additional_list = [];
+					foreach ( $results as $value ) {
+						$tickets = array_key_exists( 'ticket', $value ) ? $value['ticket'] : '';
+						if ( ! empty( $tickets ) ) {
+							$seats = json_decode( $tickets );
+							if ( is_array( $seats ) ) {
+								foreach ( $seats as $seat ) {
+									$seat_list[] = $seat;
+								}
+							}
+						}
+						if ( $seat_type == 'ticket_type' ) {
+							$ticket_infos = array_key_exists( 'ticket_info', $value ) ? $value['ticket_info'] : '';
+							if ( ! empty( $ticket_infos ) ) {
+								$ticket_infos = json_decode( $ticket_infos );
+								foreach ( $ticket_infos as $ticket_info ) {
+									$ticket_list[ $ticket_info->type ] = array_key_exists( $ticket_info->type, $ticket_list ) ? $ticket_list[ $ticket_info->type ] + $ticket_info->qty : $ticket_info->qty;
+								}
+							}
+						}
+						$additional_infos = array_key_exists( 'additional_info', $value ) ? $value['additional_info'] : '';
+						if ( ! empty( $additional_infos ) ) {
+							$additional_infos = json_decode( $additional_infos );
+							foreach ( $additional_infos as $additional_info ) {
+								if ( is_object( $additional_info ) ) {
+									$additional_info = get_object_vars( $additional_info );
+								}
+								if ( is_array( $additional_info ) && sizeof( $additional_info ) > 0 ) {
+									foreach ( $additional_info as $key => $additional ) {
+										$additional_list[ $key ] = array_key_exists( $key, $additional_list ) ? $additional_list[ $key ] + $additional->qty : $additional->qty;
+									}
+								}
+							}
+						}
+					}
+					$all_info['seat']       = $seat_list;
+					$all_info['ticket']     = $ticket_list;
+					$all_info['additional'] = $additional_list;
+				}
+
+				return $all_info;
+			}
+
+
 
 			public static function get_booking_query_ex( $filters = array(), $limit = 0, $offset = 0, $count = false ) {
 				global $wpdb;

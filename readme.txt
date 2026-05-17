@@ -80,14 +80,14 @@ You can easily configure booking rules, set minimum and maximum rental durations
 - Editable Terms & Conditions
 
 ###  Support and Suggestions:
-If you need any further assistance or support, do contact us at this [🎫 support form](https://abp-wp.com/submit-ticket/). We are very open to your suggestions. So do feel free to tell us if there is anything we can do to improve the plugin.
+If you need any further assistance or support, do contact us at this [🎫 support form](https://abp-team.com/submit-ticket/). We are very open to your suggestions. So do feel free to tell us if there is anything we can do to improve the plugin.
 Need help or have suggestions?
 
-🌐 [Live Demo](https://abp-wp.com/)
-📖 [Documentation](https://www.abp-wp.com/docs/)
+🌐 [Live Demo](https://abp-team.com/)
+📖 [Documentation](https://www.abp-team.com/docs/)
 💬 [Support Forum](https://wordpress.org/support/plugin/rentalforge/)
 🐛 [Bug Reports](https://github.com/abpteam24/abprf-rental-forge/issues)
-📧 Email: support@rentalforge.com
+📧 Email: support@abp-team.com
 
 If you find RentalForge useful, please leave a ⭐⭐⭐⭐⭐ review on WordPress.org — it really helps!
 
@@ -110,12 +110,8 @@ If you find RentalForge useful, please leave a ⭐⭐⭐⭐⭐ review on WordPre
 
 Use these shortcodes anywhere on your site:
 
-`[rentalforge_listings]` — Display all property listings
-`[rentalforge_listings category="beachfront" limit="6"]` — Filter by category
-`[rentalforge_booking id="42"]` — Booking form for a specific property
-`[rentalforge_calendar property_id="42"]` — Availability calendar
-`[rentalforge_search]` — Property search form
-`[rentalforge_my_bookings]` — Logged-in guest's booking history
+`[abprf-post]` — Display all Post listings
+`[abprf-property]` — Display all Property listings
 
 = PAYMENT GATEWAYS =
 RentalForge does not include a separate payment system—payments are fully managed by WooCommerce and its supported gateways.
@@ -155,7 +151,7 @@ It will be compatible with any standards-compliant wordpress theme.
 7. Use shortcode below to display properties
 1. Go to **RentalForge → Settings** and complete the initial setup.
 2. Add your first property under **RentalForge → Properties → Add New**.
-3. Place `[rentalforge_listings]` on any page to display your listings.
+3. Place `[abprf-post]` on any page to display your listings.
 
 == Frequently Asked Questions ==
 
@@ -211,10 +207,8 @@ Yes, RentalForge is fully compatible with local environments like XAMPP for deve
 4. Availability settings
 1. **Property Listings** — Clean, filterable grid layout of all rental properties.
 2. **Single Property Page** — Full details, photo gallery, amenities and booking form.
-3. **Availability Calendar** — Colour-coded calendar showing booked and available dates.
-4. **Bookings Dashboard** — Manage all reservations from one central screen.
-5. **Revenue Reports** — Visual charts for income, occupancy and booking trends.
-6. **Settings Panel** — Easy-to-use settings for payments, emails and general options.
+3. **Bookings Dashboard** — Manage all reservations from one central screen.
+4. **Settings Panel** — Easy-to-use settings for payments, emails and general options.
 
 == Privacy Policy ==
 

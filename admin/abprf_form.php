@@ -74,9 +74,9 @@
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					$client_forms = $this->get_form_array();
 					update_option( 'abprf_forms', $client_forms );
-					wp_send_json_success( esc_html__( 'Client Form Configuration Saved Successfully ! ', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'Client Form Configuration Saved Successfully..... !! ', 'abprf-rental-forge' ) ] );
 				} else {
-					wp_send_json_success( esc_html__( 'Client Form Configuration not Saved !', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'Client Form Configuration not Saved ..... !! ', 'abprf-rental-forge' ) ] );
 				}
 				wp_die();
 			}

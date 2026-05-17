@@ -40,7 +40,10 @@
                             </div>
                         </div>
                         <div class="_abprf_row">
-                            <div class="_col_12_bg_border_all_center"> <?php do_action( 'abprf_slider', $abprf_infos ); ?></div>
+                            <div class="_col_12_mar_t"> <?php do_action( 'abprf_slider', $post_id ); ?></div>
+                        </div>
+                        <div class="_abprf_row">
+                            <div class="_col_12_mar_t"> <?php do_action( 'abprf_faq', $abprf_infos ); ?></div>
                         </div>
                     </div>
                 </div>

@@ -57,12 +57,14 @@
                 <div class="abprf_area" id="abprf_configuration">
                     <div class="_reflex_6_abp_panel_max_1200_mar_auto">
                         <div class="abprf_tabs tab_top">
-                            <ul class="_abprf tab_lists">
-								<?php foreach ( $this->configuration_section( $abprf_configuration ) as $tab ) { ?>
-                                    <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><span class="<?php echo esc_attr( array_key_exists( 'icon', $tab ) ? $tab['icon'] : '' ); ?>"></span><?php echo esc_html( $tab['menu'] ); ?></li>
-								<?php } ?>
-                            </ul>
-                            <div class="tab_content _bg_white">
+                            <div class="_panel_head">
+                                <ul class="_abprf tab_lists">
+									<?php foreach ( $this->configuration_section( $abprf_configuration ) as $tab ) { ?>
+                                        <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><span class="<?php echo esc_attr( array_key_exists( 'icon', $tab ) ? $tab['icon'] : '' ); ?>"></span><?php echo esc_html( $tab['menu'] ); ?></li>
+									<?php } ?>
+                                </ul>
+                            </div>
+                            <div class="_panel_body tab_content">
 								<?php
 									do_action( 'abprf_configuration_content', $abprf_configuration );
 									$this->show_tab_content( $abprf_configuration );
@@ -193,15 +195,15 @@
 						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'category_label',
-							'label' => __('Category Label', 'abprf-rental-forge'),
-							'desc' => __('If you wish to modify the category label you can do so here. ', 'abprf-rental-forge'),
+							'label' => __( 'Category Label', 'abprf-rental-forge' ),
+							'desc' => __( 'If you wish to modify the category label you can do so here. ', 'abprf-rental-forge' ),
 							'type' => 'text',
-							'default' => __('Category', 'abprf-rental-forge')
+							'default' => __( 'Category', 'abprf-rental-forge' )
 						),
 						array(
 							'name' => 'cat_slug',
-							'label' => __('Category Slug', 'abprf-rental-forge'),
-							'desc' => __('Please input the desired slug name for the category. Do not forget, after updating this slug, you must refresh permalinks. Simply navigate to  ', 'abprf-rental-forge') . '<strong class="_abprf_color_theme">' . __('configuration-> Permalinks', 'abprf-rental-forge') . '</strong> ' . __('and click on the Save Configuration button. ', 'abprf-rental-forge'),
+							'label' => __( 'Category Slug', 'abprf-rental-forge' ),
+							'desc' => __( 'Please input the desired slug name for the category. Do not forget, after updating this slug, you must refresh permalinks. Simply navigate to  ', 'abprf-rental-forge' ) . '<strong class="_abprf_color_theme">' . __( 'configuration-> Permalinks', 'abprf-rental-forge' ) . '</strong> ' . __( 'and click on the Save Configuration button. ', 'abprf-rental-forge' ),
 							'type' => 'text',
 							'default' => 'cat_rent'
 						),
@@ -241,61 +243,36 @@
 						),
 					) ),
 					'abprf_slider' => array(
-						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'slider_style',
 							'label' => __( 'Slider Theme', 'abprf-rental-forge' ),
 							'desc' => __( 'Please choose the theme style for the slider. ', 'abprf-rental-forge' ),
 							'type' => 'radio',
-							'default' => 'style_1',
+							'default' => 'slider',
 							'options' => array(
-								'style_1' => __( 'Default', 'abprf-rental-forge' ),
-								'style_2' => __( 'Flix', 'abprf-rental-forge' ),
+								'slider' => __( 'Slider', 'abprf-rental-forge' ),
+								'gallery' => __( 'Gallery/Masonry', 'abprf-rental-forge' ),
 							),
 						),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'indicator_visible',
-							'label' => __( 'Visible Indicator ?', 'abprf-rental-forge' ),
+							'label' => __( 'Image Indicator ?', 'abprf-rental-forge' ),
 							'desc' => __( 'If you hide Indicator , please Switch ', 'abprf-rental-forge' ) . ' ' . ABPRF_Layout::off() . ' ' . __( 'or to Show Indicator Switch', 'abprf-rental-forge' ) . ' ' . ABPRF_Layout::on() . ' ' . __( '. Default is', 'abprf-rental-forge' ) . ' ' . ABPRF_Layout::on(),
 							'type' => 'button_switch',
 							'default' => 'on',
 						),
-						array( 'name' => 'group_end', ),
 						array(
 							'name' => 'collapse_start',
 							'collapse' => 'on',
 							'collapse_data' => array( 'option' => 'abprf_slider', 'key' => 'indicator_visible' ),
 						),
 						array(
-							'name' => 'indicator_type',
-							'label' => __( 'Indicator Type', 'abprf-rental-forge' ),
-							'desc' => __( 'Please Select Slider Indicator Type Default Icon', 'abprf-rental-forge' ),
+							'name' => 'indication_position',
+							'label' => __( 'Indicator  Position', 'abprf-rental-forge' ),
+							'desc' => __( 'Please Select Slider Image Showcase Position Default Right', 'abprf-rental-forge' ),
 							'type' => 'radio',
-							'default' => 'icon',
-							'options' => array(
-								'icon' => __( 'Icon', 'abprf-rental-forge' ),
-								'image' => __( 'Image', 'abprf-rental-forge' )
-							)
-						),
-						array( 'name' => 'collapse_end' ),
-						array(
-							'name' => 'showcase_visible',
-							'label' => __( 'Visible Showcase ?', 'abprf-rental-forge' ),
-							'desc' => __( 'If you hide Showcase , please Switch ', 'abprf-rental-forge' ) . '<strong class="_abprf_color_theme"> ' . __( 'OFF', 'abprf-rental-forge' ) . '</strong>&nbsp;' . __( 'or to Show Showcase Switch', 'abprf-rental-forge' ) . '&nbsp;<strong class="_abprf_color_theme"> ' . __( 'ON', 'abprf-rental-forge' ) . '</strong>' . __( '. Default is', 'abprf-rental-forge' ) . '&nbsp;<strong class="_abprf_color_theme">' . __( 'ON', 'abprf-rental-forge' ) . '</strong>',
-							'type' => 'button_switch',
-							'default' => 'on'
-						),
-						array(
-							'name' => 'collapse_start',
-							'collapse' => 'on',
-							'collapse_data' => array( 'option' => 'abprf_slider', 'key' => 'showcase_visible' ),
-						),
-						array(
-							'name' => 'showcase_position',
-							'label' => __( 'Showcase Position', 'abprf-rental-forge' ),
-							'desc' => __( 'Please Select Slider Showcase Position Default Right', 'abprf-rental-forge' ),
-							'type' => 'radio',
-							'default' => 'right',
+							'default' => 'bottom',
 							'options' => array(
 								'top' => __( 'Top', 'abprf-rental-forge' ),
 								'right' => __( 'Right', 'abprf-rental-forge' ),
@@ -303,6 +280,9 @@
 								'left' => __( 'Left', 'abprf-rental-forge' )
 							)
 						),
+						array( 'name' => 'collapse_end' ),
+						array( 'name' => 'group_end', ),
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'visible_popup',
 							'label' => __( 'Visible Popup ?', 'abprf-rental-forge' ),
@@ -315,7 +295,6 @@
 							'collapse' => 'on',
 							'collapse_data' => array( 'option' => 'abprf_slider', 'key' => 'visible_popup' ),
 						),
-						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'popup_image_indicator',
 							'label' => __( 'Popup Image Indicator', 'abprf-rental-forge' ),
@@ -323,16 +302,8 @@
 							'type' => 'button_switch',
 							'default' => 'on'
 						),
-						array(
-							'name' => 'popup_icon_indicator',
-							'label' => __( 'Popup Icon Indicator', 'abprf-rental-forge' ),
-							'desc' => __( 'If you hide Popup Icon Indicator , please Switch ', 'abprf-rental-forge' ) . '<strong class="_abprf_color_theme"> ' . __( 'OFF', 'abprf-rental-forge' ) . '</strong>&nbsp;' . __( 'or to Show Popup Icon Indicator Switch', 'abprf-rental-forge' ) . '&nbsp;<strong class="_abprf_color_theme"> ' . __( 'ON', 'abprf-rental-forge' ) . '</strong>' . __( '. Default is', 'abprf-rental-forge' ) . '&nbsp;<strong class="_abprf_color_theme">' . __( 'ON', 'abprf-rental-forge' ) . '</strong>',
-							'type' => 'button_switch',
-							'default' => 'on'
-						),
+						array( 'name' => 'collapse_end' ),
 						array( 'name' => 'group_end', ),
-						array( 'name' => 'collapse_end' ),
-						array( 'name' => 'collapse_end' ),
 					),
 					'abprf_css_var' => apply_filters( 'abprf_css_var_filter', array(
 						array( 'name' => 'group_start', ),
@@ -491,10 +462,10 @@
 				$desc = empty( $args['desc'] ) ? '' : $args['desc'];
 				if ( $desc ) { ?>
                     <div class="_divider_xs"></div>
-                    <span class="info_text">
-                        <i class="fas fa-info-circle"></i>
-						<i><?php echo wp_kses_post( $desc ); ?></i>
-                    </span>
+                    <div class="info_text">
+                        <span class="_mar_r_xxs">ℹ️</span>
+                        <span><?php echo wp_kses_post( $desc ); ?></span>
+                    </div>
 					<?php
 				}
 			}

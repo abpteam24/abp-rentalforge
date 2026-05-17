@@ -24,6 +24,8 @@
 						}
 					}
 					$all_data['abprf_configuration'] = self::get_option( 'abprf_configuration' );
+					$all_data['abprf_feature'] = self::get_option( 'abprf_feature' );
+					$all_data['abprf_brand'] = self::get_option( 'abprf_brand' );
 				}
 
 				return $all_data;
@@ -734,7 +736,7 @@
 					$property_id       = array_key_exists( 'property_id', $abprf_infos ) ? $abprf_infos['property_id'] : 0;
 					$property          = array_key_exists( 'property_info', $abprf_infos ) ? $abprf_infos['property_info'] : [];
 					$property          = is_array( $property ) && sizeof( $property ) > 0 ? $property : current( ABPRF_Query::get_property( [ 'property_id' => $property_id ] ) );
-					$price_info = array_key_exists( 'price_info', $property ) ? $property['price_info'] : '';
+					$price_info = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
 					$price_info = ! empty( $price_info ) ? json_decode( $price_info, true ) : [];
 					if ( ! empty( $start_time ) && ! empty( $end_time )  && ! empty( $rent_rule ) && ! empty( $property ) ) {
 						if ( $rent_rule == 'hourly' ) {
@@ -774,7 +776,7 @@
 					$qty            = array_key_exists( 'qty', $abprf_infos ) ? $abprf_infos['qty'] : 0;
 					$property       = array_key_exists( 'property_info', $abprf_infos ) ? $abprf_infos['property_info'] : [];
 					$property       = is_array( $property ) && sizeof( $property ) > 0 ? $property : current( ABPRF_Query::get_property( [ 'property_id' => $property_id ] ) );
-					$price_info     = array_key_exists( 'price_info', $property ) ? $property['price_info'] : '';
+					$price_info     = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
 					$price_info     = ! empty( $price_info ) ? json_decode( $price_info, true ) : [];
 					$deposit_info   = array_key_exists( 'deposit', $price_info ) ? $price_info['deposit'] : [];
 					$deposit_type   = is_array( $deposit_info ) && array_key_exists( 'type', $deposit_info ) ? $deposit_info['type'] : '';
@@ -816,6 +818,36 @@
 				return $price > 0 ? self::tax_with_price( $post_id, $price ) : 0;
 			}
 
+			//=============================//
+			public static function get_slider_info( $post_id = '' ): array {
+				$img_info             = [];
+				$arg['rent_continue'] = 'on';
+				$arg['status']        = 'publish';
+				if ( ! empty( $post_id ) ) {
+					$arg['post_id'] = $post_id;
+				}
+				$count      = 0;
+				$properties = ABPRF_Query::get_property( $arg );
+				if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
+					foreach ( $properties as $property ) {
+						$slider    = array_key_exists( 'gallery', $property ) ? $property['gallery'] : '';
+						$name      = array_key_exists( 'name', $property ) ? $property['name'] : '';
+						$post_id   = array_key_exists( 'post_id', $property ) ? $property['post_id'] : '';
+						$title     = get_the_title( $post_id );
+						$image_ids = explode( ',', $slider );
+						if ( ! empty( $image_ids ) ) {
+							foreach ( $image_ids as $id ) {
+								$img_info[ $count ]['url']   = ABPRF_Function::get_image_url( '', $id );
+								$img_info[ $count ]['post']  = $title;
+								$img_info[ $count ]['label'] = $name;
+								$count ++;
+							}
+						}
+					}
+				}
+
+				return $img_info;
+			}
 			//=============================//
 			//============== Post Function===============//
 			public static function get_route_info( $post_id, $date, $route_infos = [] ): array {

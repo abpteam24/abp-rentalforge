@@ -123,14 +123,12 @@
 									'post_id' => intval( $post_id ),
 									'rent_continue' => array_key_exists( 'rent_continue', $property ) ? $property['rent_continue'] : '',
 									'name' => array_key_exists( 'name', $property ) ? $property['name'] : '',
-									'category' => array_key_exists( 'category', $property ) ? $property['category'] : '',
-									'icon' => array_key_exists( 'icon', $property ) ? $property['icon'] : '',
-									'qty_info' => array_key_exists( 'qty_info', $property ) ? $property['qty_info'] : '',
 									'brand' => array_key_exists( 'brand', $property ) ? $property['brand'] : '',
-									'description' => array_key_exists( 'description', $property ) ? $property['description'] : '',
-									'rent_rule' => array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : '',
-									'price_info' => array_key_exists( 'price_info', $property ) ? $property['price_info'] : '',
+									'category' => array_key_exists( 'category', $property ) ? $property['category'] : '',
+									'location' => array_key_exists( 'location', $property ) ? $property['location'] : '',
 									'features' => array_key_exists( 'features', $property ) ? $property['features'] : '',
+									'rent_rule' => array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : '',
+									'price_qty_info' => array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '',
 									'gallery' => array_key_exists( 'gallery', $property ) ? $property['gallery'] : '',
 									'status' => get_post_status( $post_id ),
 									'others' => array_key_exists( 'others', $property ) ? $property['others'] : '',
@@ -144,13 +142,15 @@
 						if ( $old_rent_continue == $meta_info['rent_continue'] ) {
 							$data = [
 								'status' => get_post_status( $post_id ),
-								'category' => $meta_info['category']
+								'category' => $meta_info['category'],
+								'location' => $meta_info['location']
 							];
 						} else {
 							$data = [
 								'status' => get_post_status( $post_id ),
 								'rent_continue' => $meta_info['rent_continue'],
-								'category' => $meta_info['category']
+								'category' => $meta_info['category'],
+								'location' => $meta_info['location']
 							];
 						}
 						$where = [ 'post_id' => $post_id ];
@@ -319,18 +319,20 @@
                 <div class="abprf_area abprf_admin">
                     <div class="_abp_panel">
                         <div class="abprf_tabs tab_top">
-                            <ul class="_abprf tab_lists">
-                                <li data-tabs-target="#abprf_general"><span class="fas fa-rainbow"></span><?php esc_html_e( 'General', 'abprf-rental-forge' ); ?></li>
-                                <li data-tabs-target="#abprf_equipment_price"><span>🏠</span><?php esc_html_e( 'Properties and Price', 'abprf-rental-forge' ); ?></li>
-                                <li data-tabs-target="#abprf_dates"><span>🗓️</span><?php esc_html_e( 'Date', 'abprf-rental-forge' ); ?></li>
-                                <li data-tabs-target="#abprf_additional_service"><span>💰</span><?php esc_html_e( 'Additional services', 'abprf-rental-forge' ); ?></li>
-                                <li data-tabs-target="#abprf_client_form"><span>📋</span><?php esc_html_e( 'Client Form', 'abprf-rental-forge' ); ?></li>
-                                <li data-tabs-target="#abprf_tc"><span>🤝</span><?php esc_html_e( 'Term & Conditions', 'abprf-rental-forge' ); ?></li>
-                                <li data-tabs-target="#abprf_faqs"><span>❓</span><?php esc_html_e( 'FAQs', 'abprf-rental-forge' ); ?></li>
-								<?php do_action( 'abprf_post_tab_menu', $abprf_infos ); ?>
-                                <li data-tabs-target="#abprf_tax"><span>🧾</span><?php esc_html_e( 'Tax', 'abprf-rental-forge' ); ?></li>
-                            </ul>
-                            <div class="tab_content">
+                            <div class="_panel_head">
+                                <ul class="_abprf tab_lists">
+                                    <li data-tabs-target="#abprf_general"><span class="fas fa-rainbow"></span><?php esc_html_e( 'General', 'abprf-rental-forge' ); ?></li>
+                                    <li data-tabs-target="#abprf_equipment_price"><span>🏠</span><?php esc_html_e( 'Properties and Price', 'abprf-rental-forge' ); ?></li>
+                                    <li data-tabs-target="#abprf_dates"><span>🗓️</span><?php esc_html_e( 'Date', 'abprf-rental-forge' ); ?></li>
+                                    <li data-tabs-target="#abprf_additional_service"><span>💰</span><?php esc_html_e( 'Additional services', 'abprf-rental-forge' ); ?></li>
+                                    <li data-tabs-target="#abprf_client_form"><span>📋</span><?php esc_html_e( 'Client Form', 'abprf-rental-forge' ); ?></li>
+                                    <li data-tabs-target="#abprf_tc"><span>🤝</span><?php esc_html_e( 'Term & Conditions', 'abprf-rental-forge' ); ?></li>
+                                    <li data-tabs-target="#abprf_faqs"><span>❓</span><?php esc_html_e( 'FAQs', 'abprf-rental-forge' ); ?></li>
+									<?php do_action( 'abprf_post_tab_menu', $abprf_infos ); ?>
+                                    <li data-tabs-target="#abprf_tax"><span>🧾</span><?php esc_html_e( 'Tax', 'abprf-rental-forge' ); ?></li>
+                                </ul>
+                            </div>
+                            <div class="tab_content _panel_body">
 								<?php
 									$this->general_configuration( $abprf_infos );
 									$this->tax_configuration( $abprf_infos );
@@ -388,7 +390,7 @@
                             <div class="_fj_between">
                                 <div class="_fa_center">
 									<?php ABPRF_Layout::switch_checkbox( 'display_sku', $display_sku ); ?>
-                                    <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Post SKU', 'abprf-rental-forge' ); ?></span>
+                                    <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'SKU', 'abprf-rental-forge' ); ?></span>
                                 </div>
                                 <label>
                                     <input class="_form_control" name="post_sku" value="<?php echo esc_attr( $post_sku ); ?>" placeholder="<?php esc_attr_e( 'Post SKU', 'abprf-rental-forge' ); ?>"/>
@@ -414,7 +416,7 @@
                         </div>
                     </div>
                     <div class="_setting_item">
-                        <div class="_fj_between">
+                        <div class="_fj_between_fa_start">
                             <div class="_fa_center">
 								<?php ABPRF_Layout::switch_checkbox( 'display_category', $display_category ); ?>
                                 <span class="_fs_label_mar_lr_xs"><?php echo esc_html( $category_label ); ?></span>
@@ -432,7 +434,7 @@
 								<?php ABPRF_Layout::switch_checkbox( 'display_location', $display_location ); ?>
                                 <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Location', 'abprf-rental-forge' ); ?></span>
                             </div>
-                            <div class="loc_selection">
+                            <div class="location_selection">
 								<?php ABPRF_Location::location_selection( $location ); ?>
                             </div>
                         </div>

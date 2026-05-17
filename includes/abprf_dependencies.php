@@ -12,7 +12,7 @@
 				add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_gutenberg' ], 10, 2 );
 				add_filter( 'plugin_action_links', array( $this, 'plugin_settings_link' ), 10, 2 );
 				add_action( 'upgrader_process_complete', [ $this, 'flush_rewrite' ] );
-				add_action( 'activated_plugin', array( $this, 'activation_redirect' ) );
+				add_action( 'admin_init', array( $this, 'activation_redirect' ) );
 			}
 
 			public function admin_enqueue(): void {
@@ -300,12 +300,12 @@
 					'meta_box_cb' => false,
 				];
 				register_taxonomy( 'abprf_location', $cpt, $args );
-				$full_text      = $label . ' ' . __( 'Features', 'abprf-rental-forge' );
+				$full_text   = $label . ' ' . __( 'Features', 'abprf-rental-forge' );
 				$label_brand = array(
 					'name' => $full_text,
 					'singular_name' => $full_text,
 				);
-				$args           = [
+				$args        = [
 					'hierarchical' => true,
 					"public" => true,
 					'labels' => $label_brand,
@@ -322,119 +322,46 @@
 				flush_rewrite_rules();
 			}
 
-			public static function activation() {
+			public static function activation(): void {
 				self::create_table();
 				flush_rewrite_rules();
 			}
 
-			public static function deactivate() {
+			public static function deactivate(): void {
 				flush_rewrite_rules();
 			}
 
-			public static function create_table() {
+			public static function create_table(): void {
 				global $wpdb;
 				$order_table      = $wpdb->prefix . 'abprf_orders';
-				$order_table_old  = $wpdb->prefix . 'abprf_orders_old';
 				$property_table   = $wpdb->prefix . 'abprf_property';
 				$collate          = $wpdb->has_cap( 'collation' ) ? $wpdb->get_charset_collate() : '';
 				$abprf_orders     = "CREATE TABLE IF NOT EXISTS $order_table (
 																	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-																	order_id BIGINT UNSIGNED NOT NULL ,
-																	item_id BIGINT UNSIGNED NOT NULL,
-									                                 post_id BIGINT UNSIGNED NOT NULL,
-									                                 user_id BIGINT UNSIGNED NOT NULL,  
-									                                 property_id JSON NOT NULL,
-									                                 ex_id JSON NOT NULL,
-																    pick_up varchar(100)  NULL,
-									                                start_time TIMESTAMP NULL,
-																    drop_off varchar(100)  NULL,
-									                                end_time TIMESTAMP NULL,
-     																book_from TIMESTAMP  NULL,							    
-																    book_to TIMESTAMP NULL,
-    																category varchar(20)  NULL,
-    																location varchar(20)  NULL,
-    																brand varchar(20)  NULL,
-    																price_info JSON NOT NULL,
-																    property_info JSON NOT NULL,
-																    ex_info JSON NOT NULL,
-																    pass_info JSON NOT NULL,
-																    delivery_option varchar(20) NULL,
-																    book_status varchar(20) NOT NULL,
-																    order_status varchar(20) NOT NULL,
-																    payment_method varchar(100)  NULL,
-    									                        	billing_name varchar(100)  NULL,
-																    billing_email varchar(100)  NULL,																    
-																    billing_phone varchar(20)  NULL,
-																    billing_address varchar(255)  NULL,
+																	order_id BIGINT UNSIGNED NOT NULL , item_id BIGINT UNSIGNED NOT NULL,  post_id BIGINT UNSIGNED NOT NULL, user_id BIGINT UNSIGNED NOT NULL,  property_id JSON NOT NULL, ex_id JSON NOT NULL,
+																    pick_up varchar(100)  NULL, start_time TIMESTAMP NULL, drop_off varchar(100)  NULL, end_time TIMESTAMP NULL,
+     																book_from TIMESTAMP  NULL, book_to TIMESTAMP NULL,
+    																category varchar(20)  NULL, location varchar(20)  NULL, brand varchar(20)  NULL,
+    																price_info JSON NOT NULL,  property_info JSON NOT NULL, ex_info JSON NOT NULL, pass_info JSON NOT NULL,
+																    delivery_option varchar(20) NULL, book_status varchar(20) NOT NULL, order_status varchar(20) NOT NULL, payment_method varchar(100)  NULL,
+    									                        	billing_name varchar(100)  NULL,  billing_email varchar(100)  NULL,	 billing_phone varchar(20)  NULL,  billing_address varchar(255)  NULL,
 																    others JSON NULL,
-																     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-																    updated_at TIMESTAMP  NULL,
-																     PRIMARY KEY  (id),
-																    KEY order_id (order_id),
-																    KEY user_id (user_id),
-									                                KEY item_id (item_id)
-							    )$collate;";
-				$abprf_orders_old = "CREATE TABLE IF NOT EXISTS $order_table_old (
-																	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-																	order_id BIGINT UNSIGNED NOT NULL ,
-																	item_id BIGINT UNSIGNED NOT NULL,
-									                                 post_id BIGINT UNSIGNED NOT NULL,
-									                                 user_id BIGINT UNSIGNED NOT NULL,  
-									                                 property_id JSON NOT NULL,
-									                                 ex_id JSON NOT NULL,
-																    pick_up varchar(100)  NULL,
-									                                start_time TIMESTAMP NULL,
-																    drop_off varchar(100)  NULL,
-									                                end_time TIMESTAMP NULL,
-     																book_from TIMESTAMP  NULL,							    
-																    book_to TIMESTAMP NULL,
-    																category varchar(20)  NULL,
-    																location varchar(20)  NULL,
-    																brand varchar(20)  NULL,
-    																price_info JSON NOT NULL,
-																    property_info JSON NOT NULL,
-																    ex_info JSON NOT NULL,
-																    pass_info JSON NOT NULL,
-																    delivery_option varchar(20) NULL,
-																    book_status varchar(20) NOT NULL,
-																    order_status varchar(20) NOT NULL,
-																    payment_method varchar(100)  NULL,
-    									                        	billing_name varchar(100)  NULL,
-																    billing_email varchar(100)  NULL,																    
-																    billing_phone varchar(20)  NULL,
-																    billing_address varchar(255)  NULL,
-																    others JSON NULL,
-																     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-																    updated_at TIMESTAMP  NULL,
-																     PRIMARY KEY  (id),
-																    KEY order_id (order_id),
-																    KEY user_id (user_id),
-									                                KEY item_id (item_id)
+																     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP  NULL,
+																     PRIMARY KEY  (id), KEY order_id (order_id), KEY user_id (user_id), KEY item_id (item_id)
 							    )$collate;";
 				$abprf_property   = "CREATE TABLE IF NOT EXISTS $property_table (
-												             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-												             post_id BIGINT UNSIGNED NOT NULL,
-												             rent_continue varchar(20) NOT NULL DEFAULT 'on',
-    														name varchar(100) NOT NULL,    														
-												             brand varchar(20) NULL,
- 															category varchar(200) NULL,
- 															location varchar(200) NULL,
- 															features varchar(200) NULL,
-												             rent_rule varchar(20) NULL,  
-    														price_qty_info JSON NOT NULL,		
-												             gallery varchar(100) NULL,
-												             status varchar(20) NULL,												                                     
-												             others JSON NULL,
-												             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-												             updated_at TIMESTAMP NULL,
-												             PRIMARY KEY (id),
-												             KEY post_id (post_id)
+													             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, post_id BIGINT UNSIGNED  NULL,
+													             rent_continue varchar(20) NOT NULL DEFAULT 'on', name varchar(100) NOT NULL,    														
+													             brand varchar(20) NULL, category varchar(200) NULL, location varchar(200) NULL, features varchar(200) NULL,
+													             rent_rule varchar(20) NULL, price_qty_info JSON NOT NULL,		
+													             gallery varchar(200) NULL, status varchar(20) NULL, others JSON NULL,
+													             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP NULL,
+													             PRIMARY KEY (id), KEY post_id (post_id)
 												) $collate AUTO_INCREMENT = 100;";
 				if ( ! function_exists( 'dbDelta' ) ) {
 					require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 				}
 				dbDelta( $abprf_orders );
-				dbDelta( $abprf_orders_old );
 				dbDelta( $abprf_property );
 			}
 
@@ -458,12 +385,12 @@
 				return $current_status;
 			}
 
-			public function activation_redirect( $plugin ): void {
-				if ( $plugin == plugin_basename( __FILE__ ) ) {
-					if ( ABPRF_Function::check_wc() < 2 ) {
-						wp_safe_redirect( esc_url( admin_url() ) . 'admin.php?page=rental-forge&rf_tab=configuration' );
-						exit;
-					}
+			public function activation_redirect(): void {
+				$active_tab = filter_input( INPUT_GET, 'rf_tab', FILTER_SANITIZE_SPECIAL_CHARS );
+				$page       = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_SPECIAL_CHARS );
+				if ( $page === 'rental-forge' && ABPRF_Function::check_wc() < 2 && $active_tab != 'status' ) {
+					wp_safe_redirect( admin_url( 'admin.php?page=rental-forge&rf_tab=status' ) );
+					exit;
 				}
 			}
 		}

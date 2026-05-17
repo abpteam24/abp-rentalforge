@@ -139,9 +139,9 @@
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					$abprf_tc = isset( $_POST['tc_content'] ) ? wp_kses_post( wp_unslash( $_POST['tc_content'] ) ) : '';
 					update_option( 'abprf_tc', $abprf_tc );
-					wp_send_json_success( esc_html__( 'Term & Conditions  Saved Successfully ! ', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'Term & Conditions  Saved Successfully..... !! ', 'abprf-rental-forge' ) ] );
 				} else {
-					wp_send_json_success( esc_html__( 'Term & Conditions  not Saved !', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'Term & Conditions  not Saved.... !! ', 'abprf-rental-forge' ) ] );
 				}
 				wp_die();
 			}
@@ -150,9 +150,9 @@
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					$abprf_faqs = $this->get_faq_array();
 					update_option( 'abprf_faqs', $abprf_faqs );
-					wp_send_json_success( esc_html__( 'FAQs Configuration Saved Successfully ! ', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'FAQs Configuration Saved Successfully..... !! ', 'abprf-rental-forge' ) ] );
 				} else {
-					wp_send_json_success( esc_html__( 'FAQs Configuration not Saved !', 'abprf-rental-forge' ) );
+					wp_send_json_success( [ 'msg' => esc_html__( 'FAQs Configuration not Saved..... !! ', 'abprf-rental-forge' ) ] );
 				}
 				wp_die();
 			}
