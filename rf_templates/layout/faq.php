@@ -19,22 +19,24 @@
                 <div class="_panel_head">
                     <h4 class="_abprf"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'Frequently Asked Questions', 'abprf-rental-forge' ); ?></h4>
                 </div>
-                <div class="_panel_body_xs">
+                <div class="_panel_body_xs faq_list">
 					<?php
 						foreach ( $faq_infos as $faq ) {
-							$title                = array_key_exists( 'title', $faq ) ? $faq['title'] : '';
-							$description          = array_key_exists( 'des', $faq ) ? $faq['des'] : '';
-							$description          = $description ? html_entity_decode( $description ) : '';
+							$title       = array_key_exists( 'title', $faq ) ? $faq['title'] : '';
+							$description = array_key_exists( 'des', $faq ) ? $faq['des'] : '';
+							$description = $description ? html_entity_decode( $description ) : '';
 							if ( ! empty( $title ) ) {
 								?>
                                 <div class="faq_item">
-                                    <div class="faq_question _fj_between_fa_center">
+                                    <div class="faq_question faq_target">
                                         <h5 class="_abprf"><?php echo esc_html( $title ); ?></h5>
                                         <span class="faq_icon"></span>
                                     </div>
                                     <div class="faq_answer">
                                         <div class="faq_answer_content">
-											<?php echo wp_kses_post( apply_filters( 'the_content', $description )); ?>
+											<?php
+												// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+												echo wp_kses_post( apply_filters( 'the_content', $description ) ); ?>
                                         </div>
                                     </div>
                                 </div>

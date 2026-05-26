@@ -145,7 +145,7 @@
 									$location = array_diff( $location, [ $loc_id ] );
 									$location = ! empty( $location ) ? implode( ',', $location ) : '';
 									update_post_meta( $id, 'location', $location );
-									$data = [ 'location' => $location ];
+									$data  = [ 'location' => $location ];
 									$where = [ 'post_id' => $id ];
 									// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 									$wpdb->update( $table_name, $data, $where, [ '%s', '%s', '%s' ], [ '%d' ] );
@@ -187,7 +187,7 @@
 			}
 
 			public function location_list(): void {
-				$all_locations = ABPRF_Function::get_option( 'abprf_location' );
+				$all_locations = ABPRF_Locations;
 				//echo '<pre>'; print_r( $all_locations ); echo '</pre>';
 				$count = 1;
 				if ( ! empty( $all_locations ) && is_array( $all_locations ) && sizeof( $all_locations ) > 0 ) { ?>
@@ -379,7 +379,7 @@
 				$location_array = ! empty( $_location ) ? explode( ',', $_location ) : [];
 				if ( ! empty( $all_location ) && is_array( $all_location ) && sizeof( $all_location ) > 0 ) { ?>
                     <div class="custom_checkbox">
-                        <input type="hidden" name="location" value="<?php echo esc_attr( $_location ); ?>"/>
+                        <input type="hidden" name="abprf_location" value="<?php echo esc_attr( $_location ); ?>"/>
 						<?php foreach ( $all_location as $key => $location ) {
 							$name = is_array( $location ) && array_key_exists( 'name', $location ) ? $location['name'] : ''; ?>
                             <div class="checkbox_item _min_100">

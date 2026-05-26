@@ -246,34 +246,36 @@
 				$description = $description ? html_entity_decode( $description ) : '';
 				$editor_id   = 'abprf_editor_faq' . wp_rand( 0, 999 );
 				?>
-                <div class="delete_area _abp_panel _mar_b_xs">
-                    <div class="_panel_head _fj_between">
+                <div class="delete_area faq_item _mar_b_xs">
+                    <div class="faq_question">
                         <h5 class="_abprf edit_hook" data-paste="#faq_title"><?php echo esc_html( $title ); ?></h5>
 						<?php ABPRF_Layout::button_delete_sort_edit(); ?>
                     </div>
-                    <div class="edit_area _panel_body">
-						<?php ABPRF_Layout::info_text( 'faq_item' ); ?>
-                        <div class="_divider_xs"></div>
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'FAQ Title', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
-                            <input type="text" class="_form_control" name="faq_title[]" data-pass="#faq_title" placeholder="<?php esc_attr_e( 'EX: What is the check-in time?', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $title ); ?>"/>
-                        </label>
-                        <divl class="_fd_column_mar_t_xs">
-                            <span class="_fs_label_mar_b_xs"><?php esc_html_e( 'Description', 'abprf-rental-forge' ); ?></span>
-							<?php
-								wp_editor(
-									$description,
-									$editor_id,
-									array(
-										'textarea_name' => 'fag_description[]',
-										'textarea_rows' => 6,
-										'media_buttons' => true,
-										'teeny' => false,
-										'quicktags' => true
-									)
-								);
-							?>
-                        </divl>
+                    <div class="edit_area">
+                        <div class="faq_answer_content">
+							<?php ABPRF_Layout::info_text( 'faq_item' ); ?>
+                            <div class="_divider_xs"></div>
+                            <label class="_f_equal_f_wrap">
+                                <span class="_mar_r_xs"><?php esc_html_e( 'FAQ Title', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
+                                <input type="text" class="_form_control" name="faq_title[]" data-pass="#faq_title" placeholder="<?php esc_attr_e( 'EX: What is the check-in time?', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $title ); ?>"/>
+                            </label>
+                            <divl class="_fd_column_mar_t_xs">
+                                <span class="_fs_label_mar_b_xs"><?php esc_html_e( 'Description', 'abprf-rental-forge' ); ?></span>
+								<?php
+									wp_editor(
+										$description,
+										$editor_id,
+										array(
+											'textarea_name' => 'fag_description[]',
+											'textarea_rows' => 6,
+											'media_buttons' => true,
+											'teeny' => false,
+											'quicktags' => true
+										)
+									);
+								?>
+                            </divl>
+                        </div>
                     </div>
                 </div>
 				<?php

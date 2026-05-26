@@ -17,7 +17,7 @@
                 <div class="tab_item" data-tabs="#abprf_global_dates">
                     <form class="save_dates" method="post" action="">
                         <h4 class="_abprf"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abprf-rental-forge' ); ?></h4>
-	                    <?php ABPRF_Layout::info_text( 'abprf_dates' ); ?>
+						<?php ABPRF_Layout::info_text( 'abprf_dates' ); ?>
                         <div class="_divider_xs"></div>
 						<?php $this->date_time_format( $date_infos );
 							$this->date_content( $date_infos ); ?>
@@ -74,6 +74,8 @@
 					$date_infos['date_format'] = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
 					$date_infos['time_format'] = isset( $_POST['time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['time_format'] ) ) : '';
 					update_option( 'abprf_dates', $date_infos );
+					ABPRF_Function::update_dates( 'global' );
+					ABPRF_Function::update_time_slot();
 					wp_send_json_success( [ 'msg' => esc_html__( 'Date Configuration Saved Successfully ! ! ', 'abprf-rental-forge' ) ] );
 				} else {
 					wp_send_json_success( [ 'msg' => esc_html__( 'Date Configuration not Saved !! ', 'abprf-rental-forge' ) ] );
@@ -252,10 +254,10 @@
 				?>
                 <div class="group_setting">
                     <div class="_setting_item">
-                        <div class="custom_radio _fj_between">
+                        <div class=" _fj_between">
                             <h5 class="_abprf_color_theme"><?php esc_html_e( 'Operational Date Type', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></h5>
-                            <input type="hidden" class="_form_control" name="date_type" value="<?php echo esc_attr( $date_type ); ?>"/>
-                            <div class="_f_wrap">
+                            <div class="custom_radio">
+                                <input type="hidden" class="_form_control" name="date_type" value="<?php echo esc_attr( $date_type ); ?>"/>
                                 <div class="radio_item">
                                     <button type="button" class="_btn_white_xs <?php echo esc_attr( $date_type == 'specific_date' ? 'rf_active' : '' ); ?>" data-close-target="#specific_date" data-radio="specific_date" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
                                         <span data-icon class="_mar_r_xs <?php echo esc_attr( $date_type == 'specific_date' ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php esc_html_e( 'Specific Dates', 'abprf-rental-forge' ); ?>
@@ -319,7 +321,7 @@
 				$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
 				$date_rules      = ABPRF_Layout::date_option_rules();
 				?>
-                <div class="_fj_between">
+                <div class="_fj_between _mar_t_xs">
                     <h5 class="_abprf_color_theme"><?php esc_html_e( 'Special On/Off Date Time(optional)', 'abprf-rental-forge' ); ?></h5>
                     <div class="custom_checkbox">
                         <input type="hidden" name="date_rule" value="<?php echo esc_attr( $date_rule ); ?>"/>

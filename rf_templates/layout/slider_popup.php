@@ -14,16 +14,21 @@
                             <div class="slider_show">
                                 <div class="_circle_icon slide_counter"><span class="slide_current_num">1</span> / <span><?php echo esc_html( sizeof( $img_infos ) ); ?></span></div>
                                 <img src="#" class="slide_resize" alt="" aria-hidden="true"/>
-								<?php foreach ( $img_infos as $img_info ) { ?>
-                                    <div class="slider_item" data-img="<?php echo esc_url( array_key_exists( 'url', $img_info ) ? $img_info['url'] : '' ); ?>">
-                                        <div class="slider_loading"></div>
-                                        <img src="#" alt="<?php echo esc_html( array_key_exists( 'post', $img_info ) ? $img_info['post'] : '' ); ?>"/>
-                                        <div class="item_caption">
-                                            <div class="caption_label"><?php echo esc_html( array_key_exists( 'post', $img_info ) ? $img_info['post'] : '' ); ?></div>
-                                            <div class="caption_title"><?php echo esc_html( array_key_exists( 'label', $img_info ) ? $img_info['label'] : '' ); ?></div>
+								<?php foreach ( $img_infos as $img_info ) {
+									$id = is_array($img_info) && array_key_exists( 'id', $img_info ) ? $img_info['id'] : '';
+									if ( ! empty( $id ) ) {
+										$url = ABPRF_Function::get_image_url( '', $id );
+										?>
+                                        <div class="slider_item" data-img="<?php echo esc_url( $url ); ?>">
+                                            <div class="slider_loading"></div>
+                                            <img src="#" alt="<?php echo esc_html( array_key_exists( 'post', $img_info ) ? $img_info['post'] : '' ); ?>"/>
+                                            <div class="item_caption">
+                                                <div class="caption_label"><?php echo esc_html( array_key_exists( 'post', $img_info ) ? $img_info['post'] : '' ); ?></div>
+                                                <div class="caption_title"><?php echo esc_html( array_key_exists( 'label', $img_info ) ? $img_info['label'] : '' ); ?></div>
+                                            </div>
                                         </div>
-                                    </div>
-								<?php } ?>
+									<?php }
+								} ?>
                             </div>
                             <div class="progress_bar">
                                 <div class="progress_fill"></div>

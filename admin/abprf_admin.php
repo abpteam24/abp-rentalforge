@@ -10,7 +10,7 @@
 			}
 
 			public function admin_menu(): void {
-				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
+				$abprf_configuration = ABPRF_Configuration;
 				$label               = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
 				$slug                = isset( $abprf_configuration['slug'] ) && $abprf_configuration['slug'] ? $abprf_configuration['slug'] : 'rental-forge';
 				add_menu_page( $label, $label, 'manage_options', $slug, array( $this, 'load_main_page' ), 'dashicons-hammer', 6 );
@@ -19,7 +19,6 @@
 			public function load_main_page(): void {
 				$abprf_info     = ABPRF_Query::get_info();
 				$brand_label    = isset( $abprf_info['label'] ) && $abprf_info['label'] ? $abprf_info['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$category_label = isset( $abprf_info['category_label'] ) && $abprf_info['category_label'] ? $abprf_info['category_label'] : __( 'Category', 'abprf-rental-forge' );
 				$brand_icon     = isset( $abprf_info['brand_icon'] ) && $abprf_info['brand_icon'] ? $abprf_info['brand_icon'] : 'fas fa-hammer';
 				$total_post     = isset( $abprf_info['total_post'] ) && $abprf_info['total_post'] ? $abprf_info['total_post'] : 0;
 				$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
@@ -40,10 +39,10 @@
                         </div>
 						<?php if ( $wc_status == 2 ) { ?>
                             <div class="_group_content">
-                                <a class="_btn_default_mar_r" href="<?php echo esc_url( $new_post_url ); ?>"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Post', 'abprf-rental-forge' ); ?></a>
-                                <button type="button" class="_btn_default_mar_r" data-target-popup="#abprf_global_popup" data-type="property"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Property', 'abprf-rental-forge' ); ?></button>
-                                <button type="button" class="_btn_default_mar_r" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abprf-rental-forge' ) . ' ' . esc_html( $category_label ); ?></button>
-                                <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="location"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Location', 'abprf-rental-forge' ); ?></button>
+                                <button type="button" class="_btn_white" data-href="<?php echo esc_url( $new_post_url ); ?>" data-blank="_blank"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Post', 'abprf-rental-forge' ); ?></button>
+                                <button type="button" class="_btn_white" data-target-popup="#abprf_global_popup" data-type="property"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Property', 'abprf-rental-forge' ); ?></button>
+                                <button type="button" class="_btn_white" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abprf-rental-forge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?></button>
+                                <button type="button" class="_btn_white" data-target-popup="#abprf_global_popup" data-type="location"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Location', 'abprf-rental-forge' ); ?></button>
                             </div>
 						<?php } ?>
                     </div>
@@ -68,9 +67,8 @@
 			}
 
 			public function load_global( $abprf_info ): void {
-				$category_label = isset( $abprf_info['category_label'] ) && $abprf_info['category_label'] ? $abprf_info['category_label'] : __( 'Category', 'abprf-rental-forge' );
 				?>
-                <div class="_reflex_6_abp_panel_max_1200_mar_auto">
+                <div class="_abp_panel_max_1200_mar_auto">
                     <div class="abprf_tabs tab_top">
                         <div class="_panel_head">
                             <ul class="_abprf tab_lists">
@@ -79,7 +77,7 @@
                                 <li data-tabs-target="#abprf_global_client_form"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Form', 'abprf-rental-forge' ); ?></li>
                                 <li data-tabs-target="#abprf_global_tc"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e( 'T & C', 'abprf-rental-forge' ); ?></li>
                                 <li data-tabs-target="#abprf_global_faq"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'FAQ', 'abprf-rental-forge' ); ?></li>
-                                <li data-tabs-target="#abprf_global_category"><span class="_mar_r_xxs">🏘️</span><?php echo esc_html( $category_label ); ?></li>
+                                <li data-tabs-target="#abprf_global_category"><span class="_mar_r_xxs">🏘️</span><?php echo esc_html( ABPRF_Function::category_label() ); ?></li>
                                 <li data-tabs-target="#abprf_global_location"><span class="_mar_r_xxs">📍</span><?php esc_html_e( 'Location', 'abprf-rental-forge' ); ?></li>
                                 <li data-tabs-target="#abprf_global_feature"><span class="_mar_r_xxs">🔗</span><?php esc_html_e( 'Feature', 'abprf-rental-forge' ); ?></li>
                                 <li data-tabs-target="#abprf_global_brand"><span class="_mar_r_xxs">🏷️</span><?php esc_html_e( 'Brand', 'abprf-rental-forge' ); ?></li>

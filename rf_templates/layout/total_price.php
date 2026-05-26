@@ -9,7 +9,7 @@
 			$display_additional = array_key_exists( 'display_additional_services', $abprf_infos ) ? $abprf_infos['display_additional_services'] : ABPRF_Function::get_post_info( $post_id, 'display_additional_services', 'on' );
 			?>
             <div class="total_continue_area">
-                <div class="total_continue _box_1">
+                <div class="total_continue item_box_1">
                     <div class="_fd_column_max_500">
                         <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Property Rent : ', 'abprf-rental-forge' ); ?>&nbsp;</span><span class="item_total _color_theme_text_right"></span></h5>
 						<?php if ( $display_additional == 'on' ) { ?>

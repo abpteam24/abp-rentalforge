@@ -4,26 +4,14 @@
 	}
 	add_action( 'abprf_search_form_template', function ( $abprf_infos ) {
 		$post_id            = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : '';
-		$location            = array_key_exists( 'location', $abprf_infos ) ? $abprf_infos['location'] : '';
-		$all_dates          = [];
+		$location            = array_key_exists( 'abprf_location', $abprf_infos ) ? $abprf_infos['abprf_location'] : '';
+
 		$params_form        = array_key_exists( 'form', $abprf_infos ) ? $abprf_infos['form'] : 'inline';
 		$rent_rule          = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : 'hourly';
-		$brand_icon         = ABPRF_Function::get_brand_icon();
-		$all_date_time_info = ABPRF_Function::get_all_date_time_info( $rent_rule, $post_id );
-		$php_all_info       = is_array( $all_date_time_info ) && array_key_exists( 'php_info', $all_date_time_info ) ? $all_date_time_info['php_info'] : [];
-		$js_all_info        = is_array( $all_date_time_info ) && array_key_exists( 'js_info', $all_date_time_info ) ? $all_date_time_info['js_info'] : [];
-		if ( ! empty( $post_id ) && $post_id > 0 ) {
-			if ( json_decode( get_transient( 'abprf_date_infos_' . $post_id ), true ) !== $php_all_info ) {
-				set_transient( 'abprf_date_infos_' . $post_id, json_encode( $php_all_info ), HOUR_IN_SECONDS );
-			}
-			if ( is_array( $php_all_info ) && array_key_exists( $post_id, $php_all_info ) ) {
-				if ( is_array( $php_all_info[ $post_id ] ) && array_key_exists( 'date', $php_all_info[ $post_id ] ) ) {
-					$all_dates = explode( ',', $php_all_info[ $post_id ]['date'] );
-				}
-			}
-		}
-		//echo '<pre>';print_r($all_date_time_info);echo '</pre>';
-		do_action( 'abprf_generate_script_data', $js_all_info );
+		$brand_icon         = ABPRF_Function::brand_icon();
+		//echo '<pre>';print_r( ABPRF_Function::get_time($post_id));					echo '</pre>';
+		//echo '<pre>';print_r( ABPRF_Function::get_time($post_id,'js'));					echo '</pre>';
+		do_action( 'abprf_generate_script_data', $post_id );
 		if ( isset( $_SESSION['abprf_cart_success'] ) ) {
 			?>
             <div class="abprf_add_to_cart_notice _d_none">
@@ -39,7 +27,7 @@
                 <input type="hidden" name="post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
                 <input type="hidden" name="rent_rule" value="<?php echo esc_attr( $rent_rule ); ?>"/>
                 <?php ABPRF_Layout::location_select($post_id,$location); ?>
-                <div class="start_date _input_item"><?php ABPRF_Layout::rent_start_date( $all_dates ); ?></div>
+                <div class="start_date _input_item"><?php ABPRF_Layout::rent_start_date( $post_id ); ?></div>
 				<?php if ( $rent_rule == 'hourly' ) { ?>
                     <div class="start_time _input_item">
                         <label>

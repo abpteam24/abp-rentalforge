@@ -26,8 +26,7 @@
 		the_post();
 	}
 	//do_action( 'woocommerce_before_single_product' );
-	require ABPRF_Function::details_template_path( get_the_id() );
-	function_exists( 'abprf_template_default' ) && abprf_template_default( get_the_id() );
+    do_action( 'abprf_load_details_template' ,get_the_id() );
 	if ( wp_is_block_theme() ) {
 		?>
         <footer class="wp-block-template-part">

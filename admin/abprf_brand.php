@@ -184,7 +184,7 @@
 			}
 
 			public function brand_list(): void {
-				$abprf_brands = ABPRF_Function::get_option( 'abprf_brand' );
+				$abprf_brands = ABPRF_Brands;
 				$count        = 1;
 				if ( ! empty( $abprf_brands ) && is_array( $abprf_brands ) && sizeof( $abprf_brands ) > 0 ) { ?>
                     <table class="_abprf">

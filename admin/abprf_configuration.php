@@ -55,7 +55,7 @@
 				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
 				?>
                 <div class="abprf_area" id="abprf_configuration">
-                    <div class="_reflex_6_abp_panel_max_1200_mar_auto">
+                    <div class="_abp_panel_max_1200_mar_auto">
                         <div class="abprf_tabs tab_top">
                             <div class="_panel_head">
                                 <ul class="_abprf tab_lists">
@@ -97,9 +97,15 @@
 											$collapse      = $option['collapse'] ?? '';
 											$collapse_data = $option['collapse_data'] ?? '';
 											$target_value  = ABPRF_Function::get_options( $collapse_data['option'], $collapse_data['key'], $collapse );
+											$radio_id = array_key_exists( 'id', $collapse_data ) ? $collapse_data['id'] : '';
+                                            if(!empty($radio_id)){
 											?>
-                                            <div class="<?php echo esc_attr( $target_value == 'on' ? 'rf_active' : '' ); ?>" data-collapse="<?php echo esc_attr( '#' . $collapse_data['option'] . '[' . $collapse_data['key'] . ']' ); ?>">
-										<?php } elseif ( $name == 'collapse_end' ) { ?>
+                                            <div class="<?php echo esc_attr( $target_value == $radio_id ? 'rf_active' : '' ); ?>" data-close="<?php echo esc_attr( '#' . $collapse_data['option'] . '[' . $collapse_data['key'] . ']'.$radio_id ); ?>">
+										<?php }else{										?>
+                                                <div class="<?php echo esc_attr( $target_value == 'on' ? 'rf_active' : '' ); ?>" data-collapse="<?php echo esc_attr( '#' . $collapse_data['option'] . '[' . $collapse_data['key'] . ']' ); ?>">
+		                                            <?php
+                                            }
+                                            } elseif ( $name == 'collapse_end' ) { ?>
                                             </div>
 										<?php } elseif ( $name == 'group_start' ) {
 											?><div class="group_setting"><?php
@@ -205,7 +211,7 @@
 							'label' => __( 'Category Slug', 'abprf-rental-forge' ),
 							'desc' => __( 'Please input the desired slug name for the category. Do not forget, after updating this slug, you must refresh permalinks. Simply navigate to  ', 'abprf-rental-forge' ) . '<strong class="_abprf_color_theme">' . __( 'configuration-> Permalinks', 'abprf-rental-forge' ) . '</strong> ' . __( 'and click on the Save Configuration button. ', 'abprf-rental-forge' ),
 							'type' => 'text',
-							'default' => 'cat_rent'
+							'default' => 'category'
 						),
 						array( 'name' => 'group_end', ),
 					) ),
@@ -243,6 +249,7 @@
 						),
 					) ),
 					'abprf_slider' => array(
+						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'slider_style',
 							'label' => __( 'Slider Theme', 'abprf-rental-forge' ),
@@ -253,6 +260,29 @@
 								'slider' => __( 'Slider', 'abprf-rental-forge' ),
 								'gallery' => __( 'Gallery/Masonry', 'abprf-rental-forge' ),
 							),
+						),
+						array(
+							'name' => 'collapse_start',
+							'collapse' => 'on',
+							'collapse_data' => array( 'option' => 'abprf_slider', 'key' => 'slider_style' ,'id'=>'gallery'),
+						),
+						array(
+							'name' => 'image_column',
+							'label' => __( 'Image Num in line', 'abprf-rental-forge' ),
+							'desc' => __( 'Please choose the Image Number in a row/line. ', 'abprf-rental-forge' ),
+							'type' => 'number',
+							'default' => '3',
+							'min' => '1',
+							'max' => '10',
+							'validation' => 'validation_number',
+
+						),
+						array( 'name' => 'collapse_end' ),
+						array( 'name' => 'group_end', ),
+						array(
+							'name' => 'collapse_start',
+							'collapse' => 'on',
+							'collapse_data' => array( 'option' => 'abprf_slider', 'key' => 'slider_style' ,'id'=>'slider'),
 						),
 						array( 'name' => 'group_start', ),
 						array(
@@ -282,6 +312,7 @@
 						),
 						array( 'name' => 'collapse_end' ),
 						array( 'name' => 'group_end', ),
+						array( 'name' => 'collapse_end' ),
 						array( 'name' => 'group_start', ),
 						array(
 							'name' => 'visible_popup',
@@ -600,11 +631,11 @@
                 <div class="_setting_item ">
                     <div class="_f_wrap_fj_between_fa_center">
                         <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
-                        <div class="custom_radio _input_item _f_wrap">
+                        <div class="custom_radio">
                             <input type="hidden" class="_form_control" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $args['options'] as $key => $option ) { ?>
                                 <div class="radio_item">
-                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( $key == $value ? 'rf_active' : '' ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
+                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( $key == $value ? 'rf_active' : '' ); ?>" data-close-target="#<?php echo esc_attr( $name.$key ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
                                         <span data-icon class="_mar_r_xs <?php echo esc_attr( $key == $value ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php echo esc_html( $option ); ?>
                                     </button>
                                 </div>
@@ -670,7 +701,7 @@
                     <div class="_f_wrap_fj_between_fa_center">
                         <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label ); ?></span>
                         <label>
-                            <input type="text" name="<?php echo esc_attr( $name ); ?>" class="_form_control abprf_color_picker" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $args['std'] ); ?>"/>
+                            <input type="text" name="<?php echo esc_attr( $name ); ?>" disabled class="_form_control abprf_color_picker" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $args['std'] ); ?>"/>
                         </label>
                     </div>
 					<?php self::description( $args ); ?>

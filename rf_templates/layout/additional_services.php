@@ -16,7 +16,7 @@
 				$ex_count = 0;
 				?>
                 <div class="additional_service_area">
-                    <div class="_box_1 additional_service">
+                    <div class="item_box_1 additional_service">
                         <h5 class="_abprf_title"> <?php esc_html_e( 'Additional services ( Optional ) : ', 'abprf-rental-forge' ); ?></h5>
 						<?php foreach ( $additional_services as $id => $service ) {
 							$icon_image = array_key_exists( 'icon', $service ) ? $service['icon'] : '';
@@ -27,11 +27,9 @@
 							$max_qty    = array_key_exists( 'max_qty', $service ) ? $service['max_qty'] : '';
 							$returnable = array_key_exists( 'returnable', $service ) ? $service['returnable'] : 'no';
 							if ( empty( $qty ) ) {
-								$qty      = 99999;
-								$sold_qty = 0;
-							} else {
-								$sold_qty = 0;
+								$qty      = !empty($max_qty)?$max_qty:9999;
 							}
+							$sold_qty = 0;
 							$available   = $qty - $sold_qty;
 							$max_qty     = ! empty( $max_qty ) ? min( $max_qty, $available ) : $available;
 							$description = array_key_exists( 'description', $service ) ? $service['description'] : '';

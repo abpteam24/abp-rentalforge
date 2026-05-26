@@ -189,7 +189,7 @@
 					<?php
 				}
 				?>
-                <div class="configuration_content">
+                <div class="configuration_content _mar_t_xs">
                     <div class="form_area">
                         <div class="hide_on_load">
                             <table class="_abprf ">

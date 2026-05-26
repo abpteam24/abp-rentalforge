@@ -4,7 +4,7 @@
 	}
 	add_action( 'abprf_rental_duration_template', function ( $date_infos = [] ) {
 		if ( is_array( $date_infos ) && sizeof( $date_infos ) > 0 ) {
-			$dif_text   = array_key_exists( 'dif_text', $date_infos ) ? $date_infos['dif_text'] : '';
+			$dif_text   = array_key_exists( 'text', $date_infos ) ? $date_infos['text'] : '';
 			$start_time = array_key_exists( 'start_time', $date_infos ) ? $date_infos['start_time'] : '';
 			$end_time   = array_key_exists( 'end_time', $date_infos ) ? $date_infos['end_time'] : '';
 			//echo '<pre>';print_r( $date_infos );					echo '</pre>';

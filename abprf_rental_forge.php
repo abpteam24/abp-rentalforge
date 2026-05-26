@@ -41,8 +41,26 @@
 					define( 'ABPRF_PLUGIN_FILE', __FILE__ );
 				}
 				require_once ABPRF_DIR . '/includes/abprf_dependencies.php';
+				if ( ! defined( 'ABPRF_Configuration' ) ) {
+					define( 'ABPRF_Configuration',  ABPRF_Function::get_option( 'abprf_configuration' ));
+				}
 				if ( ! defined( 'ABPRF_Dates' ) ) {
 					define( 'ABPRF_Dates',  ABPRF_Function::get_option( 'abprf_dates' ));
+				}
+				if ( ! defined( 'ABPRF_Category' ) ) {
+					define( 'ABPRF_Category',  ABPRF_Function::get_option( 'abprf_category' ));
+				}
+				if ( ! defined( 'ABPRF_Features' ) ) {
+					define( 'ABPRF_Features',  ABPRF_Function::get_option( 'abprf_feature' ));
+				}
+				if ( ! defined( 'ABPRF_Locations' ) ) {
+					define( 'ABPRF_Locations',  ABPRF_Function::get_option( 'abprf_location' ));
+				}
+				if ( ! defined( 'ABPRF_Brands' ) ) {
+					define( 'ABPRF_Brands',  ABPRF_Function::get_option( 'abprf_brand' ));
+				}
+				if ( ! defined( 'ABPRF_Min_Price' ) ) {
+					define( 'ABPRF_Min_Price',  ABPRF_Function::get_option( 'abprf_min_price' ));
 				}
 				if ( ! defined( 'ABPRF_Date_Format' ) ) {
 					define( 'ABPRF_Date_Format', is_array(ABPRF_Dates) && array_key_exists('date_format',ABPRF_Dates)?ABPRF_Dates['date_format']: 'D d M , yy' );

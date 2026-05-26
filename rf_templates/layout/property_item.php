@@ -3,13 +3,16 @@
 		exit; // Exit if accessed directly
 	}
 	add_action( 'abprf_property_item_template', function ( $abprf_infos, $property = [] ) {
+		//echo '<pre>';print_r($property);echo '</pre>';
 		if ( is_array( $property ) && sizeof( $property ) > 0 ) {
-			$location       = array_key_exists( 'location', $abprf_infos ) ? $abprf_infos['location'] : [];
-			$date_time_info = array_key_exists( 'date_info', $abprf_infos ) ? $abprf_infos['date_info'] : [];
-			$abprf_brand    = array_key_exists( 'abprf_brand', $abprf_infos ) ? $abprf_infos['abprf_brand'] : ABPRF_Function::get_option( 'abprf_brand' );
-			$dif            = array_key_exists( 'dif', $date_time_info ) ? $date_time_info['dif'] : 0;
-			$dif_text       = array_key_exists( 'dif_text', $date_time_info ) ? $date_time_info['dif_text'] : '';
-			$post_id        = array_key_exists( 'post_id', $property ) ? $property['post_id'] : '';
+			$location    = array_key_exists( 'location', $abprf_infos ) ? $abprf_infos['location'] : '';
+			$start_time  = array_key_exists( 'start_time', $abprf_infos ) ? $abprf_infos['start_time'] : '';
+			$end_time    = array_key_exists( 'end_time', $abprf_infos ) ? $abprf_infos['end_time'] : '';
+			$add_class   = array_key_exists( 'add_class', $abprf_infos ) ? $abprf_infos['add_class'] : '';
+			$abprf_brand = ABPRF_Brands;
+			$post_id     = array_key_exists( 'post_id', $property ) ? $property['post_id'] : '';
+			$cat_id = ABPRF_Function::get_post_info( $post_id, 'abprf_category' );
+			$loc_id = ABPRF_Function::get_post_info( $post_id, 'abprf_location' );
 			$rent_rule      = array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : '';
 			$price_qty_info = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
 			$price_qty_info = ! empty( $price_qty_info ) ? json_decode( $price_qty_info, true ) : [];
@@ -18,49 +21,52 @@
 			$others         = array_key_exists( 'others', $property ) ? $property['others'] : '';
 			$others         = ! empty( $others ) ? json_decode( $others, true ) : [];
 			if ( ! empty( $rent_rule ) && ! empty( $price_info ) ) {
-				$brand = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
-				$min   = array_key_exists( 'min', $price_info ) ? $price_info['min'] : '';
-				$max   = array_key_exists( 'max', $price_info ) ? $price_info['max'] : '';
-				if ( ! empty( $max ) ) {
-					$dif_exit = $min <= $dif && $max >= $dif ? 1 : 0;
-				} else {
-					$dif_exit = $min <= $dif ? 1 : 0;
-				}
-				$price       = array_key_exists( 'price', $price_info ) ? $price_info['price'] : '';
-				$price       = apply_filters( 'abprf_filter_price', $price, $rent_rule, $price_info );
-				$price       = ABPRF_Function::tax_with_price( $post_id, $price );
-				$total_price = $price * $dif;
+				$brand         = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
+				$time_duration = ABPRF_Function::time_duration( $abprf_infos, $price_info );
+				$total_price   = ABPRF_Function::get_price( $abprf_infos, $property, $time_duration );
+				$features      = array_key_exists( 'features', $property ) ? $property['features'] : '';
+                $property_name=array_key_exists( 'name', $property ) ? $property['name'] : '';
+				$abprf_infos['property_name']    = $property_name;
+                $abprf_infos['property_id']      = array_key_exists( 'id', $property ) ? $property['id'] : '';
+				//echo '<pre>';print_r($features);echo '</pre>';
 				?>
-                <div class="property_item _box_1">
+                <div class="property_item item_box_1 <?php echo esc_attr( $add_class ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>">
                     <div class="item_head">
                         <div class="item_img _all_center">
 							<?php ABPRF_Layout::image_icon( array_key_exists( 'icon', $others ) ? $others['icon'] : '' ); ?>
                         </div>
-                        <h4 class="_abprf"><?php echo esc_html( array_key_exists( 'name', $property ) ? $property['name'] : '' ); ?></h4>
+                        <h4 class="_abprf"><?php echo esc_html($property_name); ?></h4>
 						<?php if ( ! empty( $brand ) ) { ?>
                             <p class="_abprf"><?php echo esc_html( array_key_exists( $brand, $abprf_brand ) && array_key_exists( 'name', $abprf_brand[ $brand ] ) ? $abprf_brand[ $brand ]['name'] : '' ); ?></p>
 						<?php } ?>
                     </div>
                     <div class="item_body">
-						<?php ABPRF_Layout::item_feature( $abprf_infos, $property ); ?>
+						<?php ABPRF_Layout::item_feature( $features ); ?>
                         <div class="pricing_box">
                             <div class="price_row">
-                                <span class="price_label"><?php echo esc_html( ABPRF_Layout::rent_rules( $rent_rule ) ); ?></span>
-                                <span class="price_value">
-                                    <?php echo wp_kses_post( wc_price( $price ) ); ?>
-                                    <?php echo esc_html( ABPRF_Layout::per_rent_rules( $rent_rule ) ); ?>
-                                </span>
+								<?php ABPRF_Layout::item_price( $post_id, $rent_rule, $price_info ); ?>
                             </div>
                             <div class="item_condition">
-								<?php $property_condition = ABPRF_Layout::item_condition( $rent_rule, $min, $max );
-									echo esc_html( $property_condition ); ?>
+								<?php echo esc_html( ABPRF_Layout::item_condition( $rent_rule, $price_info ) ); ?>
                             </div>
-							<?php ABPRF_Layout::item_deposit( $price_qty_info ); ?>
-							<?php ABPRF_Layout::item_cost( $date_time_info, $dif_exit, $dif_text, $total_price, $property_condition ); ?>
+							<?php ABPRF_Layout::item_deposit( $price_info );
+								if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime( $start_time ) < strtotime( $end_time ) ) {
+									ABPRF_Layout::item_cost( $abprf_infos, $price_info, $total_price, $time_duration );
+								}
+							?>
                         </div>
 						<?php
-							if ( is_array( $date_time_info ) && sizeof( $date_time_info ) > 0 && $dif_exit > 0 ) {
-								ABPRF_Layout::item_select_property( $property, $price_info, $total_price );
+							if ( ! empty( $time_duration ) && ! empty( $start_time ) && ! empty( $end_time ) && strtotime( $start_time ) < strtotime( $end_time ) ) {
+								ABPRF_Layout::item_select_property( $abprf_infos, $price_info, $total_price );
+							}
+							if ( ! empty( $add_class ) ) {
+								?>
+                                <div>
+                                    <button type="button" class="_btn_theme_xs" data-href="<?php echo esc_url( get_the_permalink( $post_id ) ); ?>" data-blank="_blank">
+										<?php esc_html_e( 'Book Now', 'abprf-rental-forge' ); ?>
+                                    </button>
+                                </div>
+								<?php
 							}
 						?>
                     </div>

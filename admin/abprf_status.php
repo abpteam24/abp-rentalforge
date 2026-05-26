@@ -18,9 +18,9 @@
 
 			public function load_status( $abprf_info ): void {
 				?>
-                <div class="_reflex_6_abp_panel_max_1200_mar_auto abprf_status">
+                <div class="_abp_panel_max_1200_mar_auto abprf_status">
                     <div class="_panel_head">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">🛡️</span> <?php esc_html_e( 'Status  & Information', 'abprf-rental-forge' ); ?></h4>
+                        <h3 class="_abprf"><span class="_mar_r_xxs">🛡️</span> <?php esc_html_e( 'Status  & Information', 'abprf-rental-forge' ); ?></h3>
                     </div>
                     <div class="_panel_body">
 						<?php
@@ -247,7 +247,7 @@
 			public function create_post_list_page() {
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					if ( ! ABPRF_Function::get_page_by_slug( 'rf_post_list' ) ) {
-						$configuration = ABPRF_Function::get_option( 'abprf_configuration' );
+						$configuration = ABPRF_Configuration;
 						$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
 						$page          = array(
 							'post_type' => 'page',

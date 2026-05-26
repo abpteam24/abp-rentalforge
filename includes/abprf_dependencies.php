@@ -16,7 +16,7 @@
 			}
 
 			public function admin_enqueue(): void {
-				$configuration = ABPRF_Function::get_option( 'abprf_configuration' );
+				$configuration = ABPRF_Configuration;
 				$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
 				$this->lib_enqueue();
 				wp_enqueue_editor();
@@ -75,8 +75,9 @@
 					wp_enqueue_style( 'select2' );
 					wp_enqueue_script( 'select2' );
 				}
-				$this->lib_enqueue();
 				$this->global_enqueue();
+				$this->lib_enqueue();
+
 				do_action( 'abprf_frontend_enqueue' );
 			}
 
@@ -97,7 +98,7 @@
 						'decimal_num' => ABPRF_Function::get_option( 'woocommerce_price_num_decimals', 2 ),
 						'currency_suffix' => ABPRF_Function::get_option( 'woocommerce_price_display_suffix', '' ),
 						'blank_image' => ABPRF_BLANK_IMG_URL,
-						'date_format' => ABPRF_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ),
+						'date_format' => ABPRF_Function::get_date_format(),
 					] );
 				} else {
 					wp_localize_script( 'abprf_lib', 'abprf_var', [
@@ -108,7 +109,7 @@
 						'decimal_num' => '',
 						'wc_suffix' => '',
 						'blank_image' => ABPRF_BLANK_IMG_URL,
-						'date_format' => ABPRF_Function::get_options( 'abprf_configuration', 'date_format', 'D d M , yy' ),
+						'date_format' => ABPRF_Function::get_date_format(),
 					] );
 				}
 			}
@@ -127,7 +128,7 @@
 				$alternate_color = isset( $abprf_css_var['color_theme_alternate'] ) && $abprf_css_var['color_theme_alternate'] ? $abprf_css_var['color_theme_alternate'] : '#fff';
 				$color_warning   = isset( $abprf_css_var['color_warning'] ) && $abprf_css_var['color_warning'] ? $abprf_css_var['color_warning'] : '#E67C30';
 				$bg_section      = isset( $abprf_css_var['bg_section'] ) && $abprf_css_var['bg_section'] ? $abprf_css_var['bg_section'] : '#FAFCFE';
-				$default_br      = isset( $abprf_css_var['br_default'] ) && $abprf_css_var['br_default'] ? $abprf_css_var['br_default'] . 'px' : '0px';
+				$default_br      = isset( $abprf_css_var['br_default'] ) && $abprf_css_var['br_default'] ? $abprf_css_var['br_default'] . 'px' : '0';
 				$fs_h1           = isset( $abprf_css_var['fs_h1'] ) && $abprf_css_var['fs_h1'] ? $abprf_css_var['fs_h1'] . 'px' : '35px';
 				$fs_h2           = isset( $abprf_css_var['fs_h2'] ) && $abprf_css_var['fs_h2'] ? $abprf_css_var['fs_h2'] . 'px' : '30px';
 				$fs_h3           = isset( $abprf_css_var['fs_h3'] ) && $abprf_css_var['fs_h3'] ? $abprf_css_var['fs_h3'] . 'px' : '25px';
@@ -137,7 +138,7 @@
 				$fs_label        = isset( $abprf_css_var['fs_label'] ) && $abprf_css_var['fs_label'] ? $abprf_css_var['fs_label'] . 'px' : '14px';
 				$default_fs      = isset( $abprf_css_var['fs_default'] ) && $abprf_css_var['fs_default'] ? $abprf_css_var['fs_default'] . 'px' : '12px';
 				$button_fs       = isset( $abprf_css_var['fs_button'] ) && $abprf_css_var['fs_button'] ? $abprf_css_var['fs_button'] . 'px' : '14px';
-				$bg_button       = isset( $abprf_css_var['bg_button'] ) && $abprf_css_var['bg_button'] ? $abprf_css_var['bg_button'] : '#007CBA';
+				$bg_button       = isset( $abprf_css_var['bg_button'] ) && $abprf_css_var['bg_button'] ? $abprf_css_var['bg_button'] : '#222';
 				$color_button    = isset( $abprf_css_var['color_button'] ) && $abprf_css_var['color_button'] ? $abprf_css_var['color_button'] : $alternate_color;
 				$off             = __( 'OFF', 'abprf-rental-forge' );
 				$on              = __( 'ON', 'abprf-rental-forge' );
@@ -209,7 +210,7 @@
 			}
 
 			public function register_cpt(): void {
-				$configuration = ABPRF_Function::get_option( 'abprf_configuration' );
+				$configuration = ABPRF_Configuration;
 				$cpt           = ABPRF_Function::get_cpt();
 				$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
 				$slug          = isset( $configuration['slug'] ) && $configuration['slug'] ? $configuration['slug'] : 'rental-forge';
@@ -260,8 +261,8 @@
 					'has_archive' => true,  // it should have archive page
 				];
 				register_post_type( $cpt, $args );
-				$category_label = isset( $configuration['category_label'] ) && $configuration['category_label'] ? $configuration['category_label'] : __( 'Category', 'abprf-rental-forge' );
-				$category_slug  = isset( $configuration['cat_slug'] ) && $configuration['cat_slug'] ? $configuration['cat_slug'] : 'cat_rent';
+				$category_label = ABPRF_Function::category_label();
+				$category_slug  = isset( $configuration['cat_slug'] ) && $configuration['cat_slug'] ? $configuration['cat_slug'] : 'category';
 				$full_text      = $label . ' ' . $category_label;
 				$label_category = array(
 					'name' => $full_text,
@@ -294,13 +295,13 @@
 					'show_admin_column' => false,
 					'show_in_menu' => false,
 					'query_var' => true,
-					'rewrite' => [ 'slug' => 'loc_rent' ],
+					'rewrite' => [ 'slug' => 'location' ],
 					'show_in_rest' => true,
 					'rest_base' => 'abprf_location',
 					'meta_box_cb' => false,
 				];
 				register_taxonomy( 'abprf_location', $cpt, $args );
-				$full_text   = $label . ' ' . __( 'Features', 'abprf-rental-forge' );
+				$full_text   = $label . ' ' . __( 'Brand', 'abprf-rental-forge' );
 				$label_brand = array(
 					'name' => $full_text,
 					'singular_name' => $full_text,
@@ -313,7 +314,7 @@
 					'show_admin_column' => false,
 					'show_in_menu' => false,
 					'query_var' => true,
-					'rewrite' => [ 'slug' => 'fec_rent' ],
+					'rewrite' => [ 'slug' => 'brand' ],
 					'show_in_rest' => true,
 					'rest_base' => 'abprf_feature',
 					'meta_box_cb' => false,
@@ -339,9 +340,9 @@
 				$abprf_orders     = "CREATE TABLE IF NOT EXISTS $order_table (
 																	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 																	order_id BIGINT UNSIGNED NOT NULL , item_id BIGINT UNSIGNED NOT NULL,  post_id BIGINT UNSIGNED NOT NULL, user_id BIGINT UNSIGNED NOT NULL,  property_id JSON NOT NULL, ex_id JSON NOT NULL,
-																    pick_up varchar(100)  NULL, start_time TIMESTAMP NULL, drop_off varchar(100)  NULL, end_time TIMESTAMP NULL,
-     																book_from TIMESTAMP  NULL, book_to TIMESTAMP NULL,
-    																category varchar(20)  NULL, location varchar(20)  NULL, brand varchar(20)  NULL,
+																    pick_up varchar(100)  NULL,  drop_off varchar(100)  NULL,category varchar(20)  NULL, location varchar(20)  NULL, brand varchar(20)  NULL,
+     																start_time DATETIME NULL DEFAULT NULL,end_time   DATETIME NULL DEFAULT NULL,
+     																book_from DATETIME NULL DEFAULT NULL,book_to   DATETIME NULL DEFAULT NULL,    																
     																price_info JSON NOT NULL,  property_info JSON NOT NULL, ex_info JSON NOT NULL, pass_info JSON NOT NULL,
 																    delivery_option varchar(20) NULL, book_status varchar(20) NOT NULL, order_status varchar(20) NOT NULL, payment_method varchar(100)  NULL,
     									                        	billing_name varchar(100)  NULL,  billing_email varchar(100)  NULL,	 billing_phone varchar(20)  NULL,  billing_address varchar(255)  NULL,

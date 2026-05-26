@@ -1,6 +1,6 @@
 (function ($) {
     "use strict";
-    let abprf_date_infos = JSON.parse(abprf_infos.date_info);
+    let abprf_time_slot_infos = JSON.parse(abprf_infos.date_info);
     $(document).ready(function () {
         $('body').find('#abprf_search_area').each(function () {
             load_start_time($(this));
@@ -48,7 +48,7 @@
                 return;
             }
         }
-        let target = parent.find('.property_registration');
+        let target = parent.find('.abprf_booking');
         let formData = new FormData(this);
         formData.append('action', 'abprf_load_property');
         formData.append('nonce', abprf_infos.nonce);
@@ -62,7 +62,8 @@
             success: function (response) {
                 abprf_spinner_remove(target);
                 abprf_spinner_remove(form_area);
-                target.html(response.data.property_info);
+                target.find('.property_item_area').html(response.data.property_info);
+                target.find('.property_others').html(response.data.property_others);
                 form_area.find('.date_details').html(response.data.date_details).promise().done(function () {
                     abprf_load_datepicker(target);
                 });
@@ -71,20 +72,18 @@
         });
     });
     function load_start_time(parent) {
-        let post_id = parent.find('[name="post_id"]').val();
         let date = parent.find('[name="rent_start_date"]').val();
         let dateObj = new Date(date);
         let now = new Date(abprf_infos.now);
         let day_name = dateObj.toLocaleDateString('en-US', {weekday: 'long'}).toLowerCase();
         let selectedSlotString = "";
-        if (abprf_date_infos[post_id]) {
-            let date_info = abprf_date_infos[post_id];
-            if (date_info[date]) {
-                selectedSlotString = date_info[date];
-            } else if (date_info[day_name]) {
-                selectedSlotString = date_info[day_name];
+        if (abprf_time_slot_infos) {
+            if (abprf_time_slot_infos[date]) {
+                selectedSlotString = abprf_time_slot_infos[date];
+            } else if (abprf_time_slot_infos[day_name]) {
+                selectedSlotString = abprf_time_slot_infos[day_name];
             } else {
-                selectedSlotString = date_info['slot'];
+                selectedSlotString = abprf_time_slot_infos['slot'];
             }
         }
         if (selectedSlotString) {
@@ -103,19 +102,17 @@
         }
     }
     function load_end_time(parent, date, start_time) {
-        let post_id = parent.find('[name="post_id"]').val();
         let current_date = parent.find('[name="rent_start_date"]').val();
         let dateObj = new Date(date);
         let day_name = dateObj.toLocaleDateString('en-US', {weekday: 'long'}).toLowerCase();
         let selectedSlotString = "";
-        if (abprf_date_infos[post_id]) {
-            let date_info = abprf_date_infos[post_id];
-            if (date_info[date]) {
-                selectedSlotString = date_info[date];
-            } else if (date_info[day_name]) {
-                selectedSlotString = date_info[day_name];
+        if (abprf_time_slot_infos) {
+            if (abprf_time_slot_infos[date]) {
+                selectedSlotString = abprf_time_slot_infos[date];
+            } else if (abprf_time_slot_infos[day_name]) {
+                selectedSlotString = abprf_time_slot_infos[day_name];
             } else {
-                selectedSlotString = date_info['slot'];
+                selectedSlotString = abprf_time_slot_infos['slot'];
             }
         }
         if (selectedSlotString) {

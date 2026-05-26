@@ -3,7 +3,7 @@
 @media only screen and (min-width: 10px) {
 	div.abprf_admin table thead {background: #F5F5F5;border-bottom: 3px solid var(--rf_color_theme);}
 	/*=============================*/
-	div.abprf_admin [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-bottom: var(--rf_gap_xs); background-color: var(--rf_color_light_2); width: 100%; }
+	div.abprf_admin [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-top: var(--rf_gap_xs); background-color: var(--rf_color_light_5); width: 100%; }
 	div.abprf_admin .group_setting {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	div.abprf_admin .group_setting [class*="_setting_item"] {min-width: 400px;-webkit-flex: 1;flex: 1;}
 	div.abprf_admin label .info_text {width: 100%;margin: var(--rf_gap_xxs) 0 0 0;font-size: 11px;}
@@ -22,9 +22,10 @@
 	div.abprf_admin .wp-picker-holder {position: absolute;z-index: 1111;}
 	div.abprf_admin .wp-picker-input-wrap {display: -webkit-inline-flex;display: inline-flex;}
 	div.abprf_admin .wp-color-result-text {display: none;}
-	div.abprf_admin button.wp-color-result {width: 40px;height: 40px;margin: 0; border-right: none; border-radius: var(--rf_br) 0 0 var(--rf_br);border-color: var(--rf_color_border);}
-	div.abprf_admin .wp-picker-default {margin: 0; border-left: none; border-radius: 0 var(--rf_br) var(--rf_br) 0;border-color: var(--rf_color_border);}
+	div.abprf_admin button.wp-color-result {width: 40px;height: 40px;margin: 0 !important; border-right: none; border-radius: var(--rf_br) 0 0 var(--rf_br);border-color: var(--rf_color_border);}
+	div.abprf_admin .wp-picker-default {margin: 0 !important; border-left: none; border-radius: 0 var(--rf_br) var(--rf_br) 0;border-color: var(--rf_color_border);}
 	/*=============================*/
+	#abprf_configuration{border: none;background-color: transparent;}
 	#abprf_configuration div.abprf_admin {max-width: 100%;width: 100%;border-radius: var(--rf_br_xl); margin: 0}
 	/*=============================*/
 	#abprf_configuration .inside,
@@ -82,7 +83,7 @@
 	div.admin_menu .menu_list button {border: none;}
 	/***********************/
 	div.abprf_admin .dashboard_content {margin: var(--rf_gap);}
-	div.abprf_admin .properties_list {overflow-x: auto;}
+	div.abprf_admin .properties_list {overflow-x: auto;margin-top: var(--rf_gap_xs);}
 	div.abprf_admin .category_list table {text-align: left;}
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
@@ -92,7 +93,7 @@
 @media only screen and (min-width: 10px) {
 	div.abprf_admin .abprf_orders table[class*="_abprf"] tbody th,
 	div.abprf_admin .abprf_orders table[class*="_abprf"] tbody td {padding: 5px;vertical-align: top;text-wrap: nowrap;}
-	div.abprf_admin div.abprf_orders [class*="_input_item"] {max-width: 250px;margin: 5px;-webkit-flex: 1;flex: 1;}
-	div.abprf_admin div.abprf_orders [class*="_input_item"][class*="_g_input"] {max-width: 500px;}
-	div.abprf_admin div.abprf_orders [class*="_input_item"][class*="_g_input"] [class*="_form_control"] {border-radius: 0;}
+	div.abprf_admin div.abprf_orders [class*="_input_item"] {max-width: 210px;-webkit-flex: 1;flex: 1;min-width: 210px;}
+	div.abprf_admin div.abprf_orders [class*="_input_item"][class*="_g_input"] {max-width: 420px;min-width: 420px;}
+	div.abprf_admin div.abprf_orders [class*="_input_item"] [class*="_form_control"] {min-width: 100%;}
 }

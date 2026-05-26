@@ -10,8 +10,8 @@
 		$additional_info = array_key_exists( 'additional_info', $cart_item ) ? $cart_item['additional_info'] : [];
 		$attendee_infos  = array_key_exists( 'pass_info', $cart_item ) ? $cart_item['pass_info'] : [];
 		$location        = array_key_exists( 'location', $cart_item ) ? $cart_item['location'] : '';
-		$abprf_location  = ABPRF_Function::get_option( 'abprf_location' );
-		$abprf_brand     = ABPRF_Function::get_option( 'abprf_brand' );
+		$abprf_location  = ABPRF_Locations;
+		$abprf_brand     = ABPRF_Brands;
 		$ticket_count    = 0;
 		?>
         <div class="abprf_area">

@@ -82,7 +82,7 @@ function abprf_property_filter_arg($this) {
     "use strict";
     $(document).on("click", "div.abprf_admin button.post_permanent_remove", function () {
         let post_id = $(this).attr('data-post_id');
-        let parent = $('div.abprf_admin .post_list');
+        let parent = $(this).closest('.abprf_posts');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_post_permanent_remove", 'post_id': post_id, 'nonce': abprf_admin_data.nonce
@@ -90,6 +90,7 @@ function abprf_property_filter_arg($this) {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_deleting, 'error');
             }, success: function () {
+                abprf_spinner_remove(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_delete_success, 'warn');
                 window.location.reload();
             }
@@ -97,7 +98,7 @@ function abprf_property_filter_arg($this) {
     });
     $(document).on("click", "div.abprf_admin button.post_move_trash", function () {
         let post_id = $(this).attr('data-post_id');
-        let parent = $('div.abprf_admin .post_list');
+        let parent = $(this).closest('.abprf_posts');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_post_move_trash", 'post_id': post_id, 'nonce': abprf_admin_data.nonce
@@ -105,6 +106,7 @@ function abprf_property_filter_arg($this) {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_trashing, 'error');
             }, success: function () {
+                abprf_spinner_remove(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_trash_success, 'warn');
                 window.location.reload();
             }
@@ -112,7 +114,7 @@ function abprf_property_filter_arg($this) {
     });
     $(document).on("click", "div.abprf_admin button.post_restore", function () {
         let post_id = $(this).attr('data-post_id');
-        let parent = $('div.abprf_admin .post_list');
+        let parent = $(this).closest('.abprf_posts');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_post_restore", 'post_id': post_id, 'nonce': abprf_admin_data.nonce
@@ -120,6 +122,7 @@ function abprf_property_filter_arg($this) {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_restoring, 'info');
             }, success: function () {
+                abprf_spinner_remove(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_restored, 'success');
                 window.location.reload();
             }
@@ -128,7 +131,7 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin .post_list .pagination_area button[data-page]', function () {
         let $this = $(this);
         if (!$this.hasClass('rf_active')) {
-            let parent = $(this).closest('.abprf_admin');
+            let parent = $(this).closest('.abprf_posts');
             let filter_args = {};
             if (parent.find("[name='select_hidden_post_status']").length > 0) {
                 filter_args['status'] = parent.find("[name='select_hidden_post_status']").val();
@@ -147,10 +150,11 @@ function abprf_property_filter_arg($this) {
                 type: 'POST', url: abprf_admin_data.ajax_url, data: {
                     "action": "abprf_reload_post_list", "filter_args": filter_args, 'nonce': abprf_admin_data.nonce
                 }, beforeSend: function () {
-                    abprf_spinner(target);
+                    abprf_spinner(parent);
                     abprf_toast_msg(abprf_admin_data.msg.post_loading);
                 }, success: function (data) {
                     target.html(data);
+                    abprf_spinner_remove(parent);
                     abprf_toast_msg(abprf_admin_data.msg.post_loading_success, 'success');
                 }
             });
@@ -166,7 +170,7 @@ function abprf_property_filter_arg($this) {
         e.preventDefault();
         let $this = $(this);
         let target_list = $('div.abprf_admin .properties_list');
-        let parent = $this.closest('.popup_body');
+        let parent = $this.closest('.abprf_admin');
         abprf_save_data(parent, target_list, target_list, 'abprf_save_property');
     });
     $(document).on("rf_trigger", "div.abprf_admin input[name='select_property_hidden']", function () {
@@ -231,7 +235,6 @@ function abprf_property_filter_arg($this) {
         e.preventDefault();
         let parent = $(this).closest('.abprf_orders');
         let target = parent.find('.order_list');
-        let target_form = parent.find('.load_order_list');
         let formData = new FormData(this);
         if (parent.find('[data-page].rf_active').length > 0) {
             formData.append('page_number', parseInt(parent.find('[data-page].rf_active').attr('data-page')));
@@ -243,12 +246,11 @@ function abprf_property_filter_arg($this) {
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(target_form);
-                abprf_spinner(target);
+                abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.order_loading);
             },
             success: function (response) {
-                abprf_spinner_remove(target_form);
+                abprf_spinner_remove(parent);
                 target.html(response.data.html);
                 abprf_toast_msg(response.data.msg, 'success');
             }
@@ -266,7 +268,7 @@ function abprf_property_filter_arg($this) {
     });
     $(document).on('click', 'div.abprf_admin button.abprf_item_cancel', function () {
         let $this = $(this);
-        let parent = $(this).closest('.order_list');
+        let parent = $(this).closest('.abprf_orders');
         let item_id = $this.attr('data-item_id');
         if (confirm(abprf_admin_data.msg.confirm_delete + ' \n\n' + abprf_admin_data.msg.confirm_ok + ' \n ' + abprf_admin_data.msg.confirm_cancel)) {
             $.ajax({
@@ -276,6 +278,7 @@ function abprf_property_filter_arg($this) {
                     abprf_spinner(parent);
                     abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
                 }, success: function (response) {
+                    abprf_spinner_remove(parent);
                     abprf_toast_msg(response.data.msg);
                     $this.closest('.abprf_orders').find('form.load_order_list').submit();
                 }
@@ -317,10 +320,10 @@ function abprf_property_filter_arg($this) {
             let parent = $('body').find('[data-popup="' + target_id + '"]').find('.popup_area');
             let target = parent.find('.popup_body');
             let property_copy = +$(this).hasClass('property_copy');
-            let post_id=$('body').find("[name='abprf_post_id']").val();
+            let post_id = $('body').find("[name='abprf_post_id']").val();
             $.ajax({
                 type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                    "action": action, 'tax_id': tax_id, 'property_copy': property_copy,'post_id':post_id, 'nonce': abprf_admin_data.nonce
+                    "action": action, 'tax_id': tax_id, 'property_copy': property_copy, 'post_id': post_id, 'nonce': abprf_admin_data.nonce
                 }, beforeSend: function () {
                     abprf_spinner(parent);
                     abprf_toast_msg(abprf_admin_data.msg.loading);
@@ -1065,3 +1068,13 @@ function abprf_wp_editor_init(target) {
         abprf_icon_title.text(search_value + ' : ' + search_result_icon.length + ' / ' + total_icon + ' icons');
     }
 })(jQuery);
+jQuery(document).ready(function ($) {
+    $('#publish, .editor-post-publish-button').on('click', function (e) {
+        let title = $('#title').val() || $('.editor-post-title__input').val();
+        if (!title || title.trim().length === 0) {
+            alert('Title empty! Please enter a title before updating.');
+            e.preventDefault();
+            return false;
+        }
+    });
+});
