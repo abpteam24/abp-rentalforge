@@ -66,9 +66,11 @@
 					'date_info' => json_encode( $all_time ),
 					'now' => current_time( 'Y-m-d H:i' ),
 					'msg' => [
+						'end_date_loading' => __( 'End Date  Loading.............', 'abprf-rental-forge' ),
 						'property_loading' => __( 'Property List Loading.............', 'abprf-rental-forge' ),
 						'property_loading_success' => __( 'Property List already Loaded !', 'abprf-rental-forge' ),
 						'select_rent_start_date' => __( 'Please Select rent Start Date', 'abprf-rental-forge' ),
+						'select_rent_end_date' => __( 'Please Select rent End Date', 'abprf-rental-forge' ),
 						'select_rent_start_time' => __( 'Please Select rent Start Time', 'abprf-rental-forge' ),
 						'select_rent_end_time' => __( 'Please Select rent End Time', 'abprf-rental-forge' ),
 						'free' => __( 'FREE', 'abprf-rental-forge' ),
@@ -232,16 +234,34 @@
 				}
 			}
 
-			public static function bg_image( $post_id = '', $image_id = '', $url = '', $class = '' ): void {
+			public static function image( $post_id = '', $image_id = '', $url = '', $class = '' ): void {
 				$image_url = ( $post_id > 0 || $image_id ) ? ABPRF_Function::get_image_url( $post_id, $image_id ) : $url;
 				$post_url  = $post_id > 0 ? get_the_permalink( $post_id ) : '';
 				$image_url = $image_url ?: ABPRF_BLANK_IMG_URL;
 				if ( $image_url ) {
 					?>
-                    <div class="bg_img  <?php echo esc_attr( $class ); ?>" data-href="<?php echo esc_url( $post_url ); ?>" data-placeholder>
-                        <div data-bg-image="<?php echo esc_url( $image_url ); ?>"></div>
+                    <div class="rf_image <?php echo esc_attr( $class ); ?>" data-image-href="<?php echo esc_url( $image_url ); ?>" <?php if ( ! empty( $post_url ) ) { ?> data-href="<?php echo esc_url( $post_url ); ?>" <?php } ?> >
+                        <img class="_img_control" src="#" alt="<?php echo esc_attr( max( $post_id, $image_id ) ); ?>">
                     </div>
 					<?php
+				}
+			}
+
+			public static function image_icon( $icon_image, $class = '' ): void {
+				if ( ! empty( $icon_image ) ) {
+					$icon = $image = $emoji = '';
+					if ( is_numeric( $icon_image ) ) {
+						$image = $icon_image;
+					} elseif ( preg_match( '/\s/', $icon_image ) ) {
+						$icon = $icon_image;
+					} else {
+						$emoji = $icon_image;
+					}
+					if ( $image ) {
+						ABPRF_Layout::image( '', $image );
+					} else { ?>
+                        <i class="<?php echo esc_attr( $icon . ' ' . $class ); ?>"><?php echo esc_html( $emoji ); ?></i>
+					<?php }
 				}
 			}
 
@@ -467,7 +487,7 @@
                             <img class="_img_control" src="<?php echo esc_url( wp_get_attachment_image_url( $image_id, 'medium' ) ); ?>" alt="<?php echo esc_attr( $image_id ); ?>"/>
                         </div>
 					<?php } ?>
-                    <button type="button" class="_btn_default_xs_bg_color_light_1_w_full <?php echo esc_attr( $image_id ? '_d_none' : '' ); ?>">
+                    <button type="button" class="_btn_default_xs_bg_color_5_w_full <?php echo esc_attr( $image_id ? '_d_none' : '' ); ?>">
                         <span class="fas fa-image _mar_r_xs"></span><?php esc_html_e( 'Image', 'abprf-rental-forge' ); ?>
                     </button>
                 </div>
@@ -495,8 +515,7 @@
 							}
 						?>
                     </div>
-                    <div class="_divider_xs"></div>
-					<?php ABPRF_Layout::button_add_xs( __( 'Add  Image', 'abprf-rental-forge' ), 'add_image_multi' ); ?>
+					<?php ABPRF_Layout::button_add_xs( __( 'Add  Image', 'abprf-rental-forge' ), 'add_image_multi _mar_t_xs' ); ?>
                 </div>
 				<?php
 			}
@@ -532,24 +551,6 @@
                     </div>
                 </div>
 				<?php
-			}
-
-			public static function image_icon( $icon_image, $class = '' ): void {
-				if ( ! empty( $icon_image ) ) {
-					$icon = $image = $emoji = '';
-					if ( is_numeric( $icon_image ) ) {
-						$image = $icon_image;
-					} elseif ( preg_match( '/\s/', $icon_image ) ) {
-						$icon = $icon_image;
-					} else {
-						$emoji = $icon_image;
-					}
-					if ( $image ) {
-						ABPRF_Layout::bg_image( '', $image );
-					} else { ?>
-                        <i class="<?php echo esc_attr( $icon . ' ' . $class ); ?>"><?php echo esc_html( $emoji ); ?></i>
-					<?php }
-				}
 			}
 
 			//=============static array================//
@@ -594,9 +595,9 @@
 				$rules = [
 					'hourly' => __( '/hr', 'abprf-rental-forge' ),
 					'daily' => __( '/day', 'abprf-rental-forge' ),
-					'multi_day' => __( '/day-hr', 'abprf-rental-forge' ),
+					'multi_day' => __( '/day', 'abprf-rental-forge' ),
 					'monthly' => __( '/month', 'abprf-rental-forge' ),
-					'multi_month' => __( '/month-day', 'abprf-rental-forge' )
+					'multi_month' => __( '/month', 'abprf-rental-forge' )
 				];
 				$rules = apply_filters( 'abprf_filter_per_rent_rule', $rules );
 
@@ -678,8 +679,8 @@
 					'name' => __( 'Note: You must enter the property name in the field above. This field is required — the data will not be saved if the property name is not provided.', 'abprf-rental-forge' ),
 					'icon' => __( 'Note: Here You can set an image, icon, or emoji for each property directly', 'abprf-rental-forge' ),
 					'qty_reserve_min_max' => __( 'Note: Set the total stock quantity available for rent. This field is required to save the property. You can also set reserve, minimum, and maximum quantity limits for customer bookings. Reserve quantity keeps specific items unavailable, minimum quantity defaults to 1, and maximum quantity will follow the available stock if left empty.', 'abprf-rental-forge' ),
-					'hourly_min_max' => __( 'Note: Enter the hourly rental rate to enable hourly booking for this property. You can also set minimum and maximum rental hours for customers. The default minimum is 1 hour, while the maximum will follow available time slots if left empty. These limits apply when the rent rule is set to Hourly or Multi-Date Hourly.', 'abprf-rental-forge' ),
-					'daily_min_max' => __( 'Note: Enter the daily rental rate to enable daily booking for this property. This rate applies to Daily, Multi-Day, and Multi-Month rent rules. You can also set minimum and maximum rental days for customers. The minimum defaults to 1 day if left empty, while the maximum depends on available booking dates. If no daily rate is provided, daily rental will remain disabled.', 'abprf-rental-forge' ),
+					'hourly_min_max' => __( 'Note: Enter the hourly rental rate to enable hourly booking for this property. You can also set minimum and maximum rental hours for customers. The default minimum is 1 hour, while the maximum will follow available time slots if left empty.', 'abprf-rental-forge' ),
+					'daily_min_max' => __( 'Note: Enter the daily rental rate to enable daily booking for this property.  You can also set minimum and maximum rental days for customers. The minimum defaults to 1 day if left empty, while the maximum depends on available booking dates. If no daily rate is provided, daily rental will remain disabled.', 'abprf-rental-forge' ),
 					'monthly_min_max' => __( 'Note: Enter the monthly rental rate to enable monthly booking for this property. This rate will apply only for the Monthly rent rule. You can also set minimum and maximum rental months. The default minimum is 1 month, while the maximum depends on available booking months.', 'abprf-rental-forge' ),
 					'deposit_type' => __( 'Note: There are three(3) types of deposit options: Fixed Amount (a set deposit regardless of quantity), Percentage of Total Price (calculated based on the total rental cost), and Fixed Amount per Quantity (applied for each item rented).', 'abprf-rental-forge' ),
 					'brand' => __( 'Note: Add a brand name to enable the property sub-tile. Leave this blank if you dont want to show any brand information for this item.', 'abprf-rental-forge' ),
@@ -718,6 +719,7 @@
 					//=============================//
 					'search_get_wrong_data_info' => __( 'Somethings went Wrong ! Please Try again', 'abprf-rental-forge' ),
 					'sale_close_msg' => __( 'This Property rent close shortly. please try another Property.', 'abprf-rental-forge' ),
+					'not_date' => __( 'No Dates Found !', 'abprf-rental-forge' ),
 					'not_match' => __( 'No Results Found !', 'abprf-rental-forge' ),
 					'not_found' => __( 'No Post Found !', 'abprf-rental-forge' ),
 					'not_post_found' => __( 'No Post Found !', 'abprf-rental-forge' ),
@@ -767,28 +769,6 @@
 			}
 
 			//=============================//
-			public static function rent_start_date( $post_id = '', $date = '' ): void {
-				$all_dates = ABPRF_Function::get_dates( $post_id );
-				if ( sizeof( $all_dates ) > 0 ) {
-					$date_format = ABPRF_Function::date_picker_format();
-					$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
-					$date        = $date ?: current( $all_dates );
-					if ( sizeof( $all_dates ) > 10 ) {
-						$hidden_date  = ! empty( $date ) ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
-						$visible_date = ! empty( $date ) ? date_i18n( $date_format, strtotime( $date ) ) : '';
-						?>
-                        <label>
-                            <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Pickup Date', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
-                            <input type="hidden" name="rent_start_date" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
-                            <input id="start_date" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="_form_control" placeholder="<?php echo esc_attr( $now ); ?>" data-alert="<?php esc_attr_e( 'Please Select Start Date', 'abprf-rental-forge' ); ?>" readonly required/>
-                            <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abprf-rental-forge' ); ?>"></span>
-                        </label>
-						<?php
-						do_action( 'abprf_load_date_picker', '#start_date', $all_dates );
-					}
-				}
-			}
-
 			public static function location_select( $post_id = '', $location = '' ): void {
 				$all_locations = ABPRF_Locations;
 				if ( ! empty( $all_locations ) ) {
@@ -816,6 +796,93 @@
 							}
 						}
 					}
+				}
+			}
+
+			public static function rent_start_month($all_dates ): void {
+				if ( sizeof( $all_dates ) > 0 ) {
+					?>
+                    <label>
+                        <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Pickup Month', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
+                        <select name="rent_start_date" class="_form_control">
+                            <option value=""><?php esc_html_e( 'Select Pickup Month', 'abprf-rental-forge' ); ?></option>
+							<?php foreach ( $all_dates as $option ) { ?>
+                                <option value="<?php echo esc_attr( $option['value'] ); ?>">
+									<?php echo esc_html( $option['label'] ); ?>
+                                </option>
+							<?php } ?>
+                        </select>
+                    </label>
+					<?php
+				} else {
+					esc_html_e( 'Month Configuration not complete', 'abprf-rental-forge' );
+				}
+			}
+
+			public static function rent_end_month( $post_id, $start_date ): void {
+				$all_dates  = ABPRF_Function::get_end_month( $post_id, $start_date );
+				//echo '<pre>';print_r($all_dates);echo '</pre>';
+				if ( sizeof( $all_dates ) > 0 ) {
+					?>
+                    <label>
+                        <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Drop-Off Month', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
+                        <select name="rent_end_date" class="_form_control">
+                            <option value=""><?php esc_html_e( 'Select Drop-Off Month', 'abprf-rental-forge' ); ?></option>
+							<?php foreach ( $all_dates as $option ) { ?>
+                                <option value="<?php echo esc_attr( $option['value'] ); ?>">
+									<?php echo esc_html( $option['label'] ); ?>
+                                </option>
+							<?php } ?>
+                        </select>
+                    </label>
+					<?php
+				} else {
+					esc_html_e( 'Month Configuration not complete', 'abprf-rental-forge' );
+				}
+			}
+
+			public static function rent_start_date( $all_dates, $date = '' ): void {
+				if ( sizeof( $all_dates ) > 0 ) {
+					$date_format = ABPRF_Function::date_picker_format();
+					$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+					$date        = $date ?: current( $all_dates );
+					if ( sizeof( $all_dates ) > 10 ) {
+						$hidden_date  = ! empty( $date ) ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
+						$visible_date = ! empty( $date ) ? date_i18n( $date_format, strtotime( $date ) ) : '';
+						?>
+                        <label>
+                            <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Pickup Date', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
+                            <input type="hidden" name="rent_start_date" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
+                            <input id="start_date" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="_form_control" placeholder="<?php echo esc_attr( $now ); ?>" data-alert="<?php esc_attr_e( 'Please Select Pickup Date', 'abprf-rental-forge' ); ?>" readonly required/>
+                            <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abprf-rental-forge' ); ?>"></span>
+                        </label>
+						<?php
+						do_action( 'abprf_load_date_picker', '#start_date', $all_dates );
+					}
+				}
+			}
+
+			public static function rent_end_date( $all_dates, $end_date = '' ): void {
+				//echo '<pre>';print_r(self::get_end_dates( $post_id , $start_date , $all_dates , $filters));					echo '</pre>';
+				$date_format = ABPRF_Function::date_picker_format();
+				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+				if ( sizeof( $all_dates ) > 0 ) {
+					$date = $end_date ?: current( $all_dates );
+					if ( sizeof( $all_dates ) > 10 ) {
+						$hidden_date  = ! empty( $date ) ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
+						$visible_date = ! empty( $date ) ? date_i18n( $date_format, strtotime( $date ) ) : '';
+						?>
+                        <label>
+                            <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Drop-Off Date', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></span>
+                            <input type="hidden" name="rent_end_date" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
+                            <input id="end_date" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="_form_control" placeholder="<?php echo esc_attr( $now ); ?>" data-alert="<?php esc_attr_e( 'Please Select Drop-Off  Date', 'abprf-rental-forge' ); ?>" readonly required/>
+                            <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abprf-rental-forge' ); ?>"></span>
+                        </label>
+						<?php
+						do_action( 'abprf_load_date_picker', '#end_date', $all_dates );
+					}
+				} else {
+					ABPRF_Layout::layout_warning_info_xs( 'not_date' );
 				}
 			}
 
@@ -929,13 +996,16 @@
 	                        $price = apply_filters( 'abprf_filter_price', $price, $rent_rule, $price_info );
 	                        $price = ! empty( $price ) && $price > 0 ? ABPRF_Function::tax_with_price( $post_id, $price ) : 0;
 	                        echo $price > 0 ? wp_kses_post( wc_price( $price ) ) : esc_html__( 'Free', 'abprf-rental-forge' );
+	                        echo esc_html( ABPRF_Layout::per_rent_rules( $rent_rule ) );
 	                        if ( $rent_rule == 'multi_day' || $rent_rule == 'multi_month' ) {
 		                        $price_multi = array_key_exists( 'price_multi', $price_info ) ? $price_info['price_multi'] : '';
 		                        $price_multi = apply_filters( 'abprf_filter_price_multi', $price_multi, $rent_rule, $price_info );
 		                        $price_multi = ! empty( $price_multi ) && $price_multi > 0 ? ABPRF_Function::tax_with_price( $post_id, $price_multi ) : 0;
+		                        esc_html_e( ' & ', 'abprf-rental-forge' );
 		                        echo $price_multi > 0 ? wp_kses_post( wc_price( $price_multi ) ) : esc_html__( 'Free', 'abprf-rental-forge' );
+		                        echo $rent_rule == 'multi_day' ? esc_html( ABPRF_Layout::per_rent_rules( 'hourly' ) ) : esc_html( ABPRF_Layout::per_rent_rules( 'daily' ) );
 	                        }
-	                        echo esc_html( ABPRF_Layout::per_rent_rules( $rent_rule ) ); ?>
+                        ?>
                     </span>
 				<?php
 			}
@@ -946,8 +1016,8 @@
 				$dif_text  = ! empty( $date_info ) && array_key_exists( 'text', $date_info ) ? $date_info['text'] : '';
 				?>
                 <div class="calculated_cost">
-                    <div class="cost_label"><?php echo esc_html__( 'Total for ', 'abprf-rental-forge' ) . ' ' . esc_html( $dif_text ); ?></div>
 					<?php if ( ! empty( $time_duration ) ) { ?>
+                        <div class="cost_label"><?php echo esc_html__( 'Total for ', 'abprf-rental-forge' ) . ' ' . esc_html( $dif_text ); ?></div>
                         <div class="cost_value">
 							<?php echo $total_price > 0 ? wp_kses_post( wc_price( $total_price ) ) : esc_html__( 'Free ', 'abprf-rental-forge' ); ?>
                         </div>
@@ -972,6 +1042,7 @@
 				$min_qty       = array_key_exists( 'min_qty', $price_info ) ? $price_info['min_qty'] : 1;
 				$max_qty       = array_key_exists( 'max_qty', $price_info ) ? $price_info['max_qty'] : '';
 				$sold_qty      = ABPRF_Query::get_sold_qty( $abprf_infos );
+				//echo '<pre>';print_r( $sold_qty);					echo '</pre>';
 				$available_qty = $total_qty - $reserve_qty - $sold_qty;
 				$max_qty       = ! empty( $max_qty ) && $max_qty <= $available_qty ? $max_qty : $available_qty;
 				$min_qty       = max( $min_qty, 1 );

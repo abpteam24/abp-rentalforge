@@ -61,7 +61,7 @@
 					$feature_names  = isset( $_POST['feature_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_name'] ) ) : [];
 					$feature_values = isset( $_POST['feature_value'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_value'] ) ) : [];
 					$feature_icon   = isset( $_POST['feature_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_icon'] ) ) : [];
-					$target_type    = isset( $_POST['target_type'] ) ? sanitize_text_field( wp_unslash( $_POST['target_type'] ) ) : 0;
+					$property_add  = isset( $_POST['property_add'] ) ? sanitize_text_field( wp_unslash( $_POST['property_add'] ) ) : 0;
 					if ( sizeof( $feature_names ) > 0 && sizeof( $feature_values ) > 0 ) {
 						foreach ( $feature_names as $key => $feature_name ) {
 							if ( $feature_name && $feature_values[ $key ] ) {
@@ -86,8 +86,8 @@
 							}
 						}
 					}
-					update_option( 'abprf_feature', $old_features );;
-					if ( $target_type == 'post' ) {
+					update_option( 'abprf_feature', $old_features );
+					if (!empty($property_add) && $property_add>0 ) {
 						$features    = '';
 						$property_id = isset( $_POST['property_id'] ) ? sanitize_text_field( wp_unslash( $_POST['property_id'] ) ) : '';
 						if ( ! empty( $property_id ) ) {
@@ -98,7 +98,7 @@
 							}
 						}
 						self::feature_selection( $features );
-					} elseif ( $target_type == 'list' ) {
+					} else{
 						$this->feature_list();
 					}
 					$html = ob_get_clean();
@@ -176,7 +176,7 @@
 							$value = is_array( $feature ) && array_key_exists( 'value', $feature ) ? $feature['value'] : '';
 							$icon  = array_key_exists( 'icon', $feature ) ? $feature['icon'] : ''; ?>
                             <div class="checkbox_item _min_100">
-                                <button type="button" class="_btn_white_xs <?php echo esc_attr( in_array( $key, $feature_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
+                                <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $feature_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
                                     <span data-icon class="_mar_r_xs far <?php echo esc_attr( in_array( $key, $feature_array ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span>
 									<?php ABPRF_Layout::image_icon( $icon, '_mar_r_xxs' ); ?>
 									<?php echo esc_html( $label . ' - ' . $value ); ?>

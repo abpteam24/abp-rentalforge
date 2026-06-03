@@ -18,7 +18,6 @@
             <div class="<?php echo esc_attr( $class ); ?>">
 				<?php foreach ( $post_ids as $post_id ) {
 					$post_count ++;
-					$image_url  = ABPRF_Function::get_image_url( $post_id );
 					$title      = get_the_title( $post_id );
 					$features   = ABPRF_Function::get_post_info( $post_id, 'abprf_feature' );
 					$rent_rule  = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
@@ -29,7 +28,7 @@
 					?>
                     <div class="pagination_item item_box_1 <?php echo esc_attr( $show_class ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>">
                         <div class="item_head">
-                            <div data-image-href="<?php echo esc_url( $image_url ); ?>"><img class="_img_control" src="#" alt="<?php echo esc_attr( $title ); ?>"></div>
+                            <?php ABPRF_Layout::image($post_id); ?>
                         </div>
                         <div class="item_body">
                             <div>
@@ -47,7 +46,7 @@
                                         ?>
                                         <span class="price_value">
                                                 <?php
-	                                                esc_html_e( 'Min Price :', 'abprf-rental-forge' );
+	                                                esc_html_e( 'Min Rent :', 'abprf-rental-forge' );
 	                                                echo $min_rate > 0 ? wp_kses_post( wc_price( $min_rate ) ) : esc_html__( 'Free', 'abprf-rental-forge' );
 	                                                echo esc_html( ABPRF_Layout::per_rent_rules( $rent_rule ) );
                                                 ?>

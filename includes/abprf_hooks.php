@@ -75,9 +75,9 @@
 				do_action( 'abprf_registration_template', $abprf_infos );
 			}
 
-			public function rental_duration( $date_infos = [] ): void {
+			public function rental_duration( $abprf_infos = [] ): void {
 				include_once ABPRF_Function::template_path( 'layout/rental_duration.php' );
-				do_action( 'abprf_rental_duration_template', $date_infos );
+				do_action( 'abprf_rental_duration_template', $abprf_infos );
 			}
 
 			public function additional( $post_id, $abprf_infos = [] ): void {

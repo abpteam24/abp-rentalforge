@@ -35,7 +35,7 @@
 					$display_drop   = isset( $_POST['display_drop'] ) ? sanitize_text_field( wp_unslash( $_POST['display_drop'] ) ) : 'off';
 					$drop_ids       = isset( $_POST['drop_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['drop_id'] ) ) : [];
 					$drop_names     = isset( $_POST['drop_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['drop_name'] ) ) : [];
-					$target_type    = isset( $_POST['target_type'] ) ? sanitize_text_field( wp_unslash( $_POST['target_type'] ) ) : 0;
+					$abprf_post_id  = isset( $_POST['abprf_post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_post_id'] ) ) : '';
 					$options        = [];
 					if ( ! empty( $name ) ) {
 						if ( ! empty( $cat_term_id ) ) {
@@ -109,9 +109,10 @@
 						$msg = esc_html__( 'Location Name can not blank....!', 'abprf-rental-forge' );
 					}
 					ob_start();
-					if ( $target_type == 'post' ) {
-						self::location_selection();
-					} elseif ( $target_type == 'list' ) {
+					if (!empty($abprf_post_id) && $abprf_post_id >0 ) {
+						$_location=ABPRF_Function::get_post_info($abprf_post_id,'abprf_location','');
+						self::location_selection($_location);
+					} else {
 						$this->location_list();
 					}
 					$html = ob_get_clean();
@@ -187,7 +188,7 @@
 			}
 
 			public function location_list(): void {
-				$all_locations = ABPRF_Locations;
+				$all_locations = ABPRF_Function::get_option( 'abprf_location' );
 				//echo '<pre>'; print_r( $all_locations ); echo '</pre>';
 				$count = 1;
 				if ( ! empty( $all_locations ) && is_array( $all_locations ) && sizeof( $all_locations ) > 0 ) { ?>
@@ -378,21 +379,21 @@
 				$all_location   = ABPRF_Function::get_option( 'abprf_location' );
 				$location_array = ! empty( $_location ) ? explode( ',', $_location ) : [];
 				if ( ! empty( $all_location ) && is_array( $all_location ) && sizeof( $all_location ) > 0 ) { ?>
-                    <div class="custom_checkbox">
+                    <div class="custom_checkbox _fj_end">
                         <input type="hidden" name="abprf_location" value="<?php echo esc_attr( $_location ); ?>"/>
 						<?php foreach ( $all_location as $key => $location ) {
 							$name = is_array( $location ) && array_key_exists( 'name', $location ) ? $location['name'] : ''; ?>
                             <div class="checkbox_item _min_100">
-                                <button type="button" class="_btn_white_xs <?php echo esc_attr( in_array( $key, $location_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
+                                <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $location_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
                                     <span data-icon class="_mar_r_xs far <?php echo esc_attr( in_array( $key, $location_array ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span><?php echo esc_html( $name ); ?>
                                 </button>
                             </div>
 						<?php } ?>
-                        <button type="button" class="_btn_theme_xs" data-target-popup="#abprf_global_popup" data-type="location"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abprf-rental-forge' ); ?></button>
+                        <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="location"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abprf-rental-forge' ); ?></button>
                     </div>
 				<?php } else { ?>
                     <p><?php echo esc_html( ABPRF_Layout::array_info( 'no_location' ) ); ?></p>
-                    <button type="button" class="_btn_theme_xs" data-target-popup="#abprf_global_popup" data-type="location"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abprf-rental-forge' ); ?></button>
+                    <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="location"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abprf-rental-forge' ); ?></button>
 					<?php
 				}
 			}

@@ -3,7 +3,7 @@
 @media only screen and (min-width: 10px) {
 	div.abprf_admin table thead {background: #F5F5F5;border-bottom: 3px solid var(--rf_color_theme);}
 	/*=============================*/
-	div.abprf_admin [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-top: var(--rf_gap_xs); background-color: var(--rf_color_light_5); width: 100%; }
+	div.abprf_admin [class*="_setting_item"] { padding: var(--rf_gap_xs); margin-top: var(--rf_gap_xs); background: var(--rf_color_4); width: 100%;border: 2px solid var(--rf_color_green_pale); border-radius: var(--rf_br);}
 	div.abprf_admin .group_setting {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	div.abprf_admin .group_setting [class*="_setting_item"] {min-width: 400px;-webkit-flex: 1;flex: 1;}
 	div.abprf_admin label .info_text {width: 100%;margin: var(--rf_gap_xxs) 0 0 0;font-size: 11px;}
@@ -60,11 +60,11 @@
 	div.abprf_admin .popup_icon .icon_item.active,
 	div.abprf_admin .popup_icon .icon_item:hover {border-color: var(--rf_color_theme);color: var(--rf_color_theme);border-radius: var(--rf_gap_xxs);}
 	/******************************************************************** Image upload  ************************************************/
-	div.abprf_admin .multiple_image { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;margin: 0 0 var(--rf_gap_xs_neg) 0;}
+	div.abprf_admin .multiple_image { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;margin: 0 0 var(--rf_gap_xs_neg) 0;overflow: hidden}
 	div.abprf_admin .multiple_image_item { position: relative; width: auto; height: 100px;margin: 0 var(--rf_gap_xs) var(--rf_gap_xs) 0;border: 2px solid var(--rf_color_theme);}
 	div.abprf_admin .multiple_image_item [class*="_img_control"] {height: 100%;width: auto;}
 	div.abprf_admin span.remove_image,
-	div.abprf_admin span.remove_image_multi { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--rf_color_danger);margin: 0; opacity: 0;color: var(--rf_color_white); }
+	div.abprf_admin span.remove_image_multi { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--rf_color_danger);margin: 0; opacity: 0;color: var(--rf_color_white);z-index: 111; }
 	div.abprf_admin .add_image_item:hover span.remove_image,
 	div.abprf_admin .add_image_item:hover span.remove_image:hover,
 	div.abprf_admin .multiple_image_item:hover span.remove_image_multi {opacity: 0.9;}
@@ -76,7 +76,7 @@
 	div.abprf_admin {margin: 0 0 0 -20px;max-width: calc(100% + 20px);width: calc(100% + 20px);}
 	div.abprf_admin .admin_head {background-color: var(--rf_color_dark);color: var(--rf_color_off_white);padding: var(--rf_gap_xs) var(--rf_gap); }
 	div.admin_head .brand_icon {color: var(--rf_color_off_white);font-size: var(--rf_fs_h3);}
-	div.admin_head .brand_version {color: var(--rf_color_light_1);}
+	div.admin_head .brand_version {color: var(--rf_color_5);}
 	/********************/
 	div.abprf_admin .admin_menu {position: sticky; top: 32px; z-index: 100;}
 	div.admin_menu .menu_list {padding: 0 var(--rf_gap);-webkit-flex-wrap: wrap;flex-wrap: wrap;}
@@ -89,11 +89,9 @@
 	/**************************************************************************************************************************/
 	/**************************************************************************************************************************/
 }
-/********************************************************************Traveller list  ************************************************/
+/********************************************************************Order list ************************************************/
 @media only screen and (min-width: 10px) {
 	div.abprf_admin .abprf_orders table[class*="_abprf"] tbody th,
 	div.abprf_admin .abprf_orders table[class*="_abprf"] tbody td {padding: 5px;vertical-align: top;text-wrap: nowrap;}
-	div.abprf_admin div.abprf_orders [class*="_input_item"] {max-width: 210px;-webkit-flex: 1;flex: 1;min-width: 210px;}
-	div.abprf_admin div.abprf_orders [class*="_input_item"][class*="_g_input"] {max-width: 420px;min-width: 420px;}
-	div.abprf_admin div.abprf_orders [class*="_input_item"] [class*="_form_control"] {min-width: 100%;}
+
 }

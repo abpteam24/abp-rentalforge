@@ -15,6 +15,7 @@
 						$location = ! empty( $location ) ? $location . ' - ' . $all_locations[ $loc_id ]['name'] : $all_locations[ $loc_id ]['name'];
 					}
 				}
+				$location_label=__( 'Available Location : ', 'abprf-rental-forge' );
 			} else {
 				foreach ( $location_array as $loc_id ) {
 					if ( array_key_exists( $loc_id, $all_locations ) && array_key_exists( 'name', $all_locations[ $loc_id ] ) ) {
@@ -24,12 +25,13 @@
 						}
 					}
 				}
+				$location_label=__( 'Location : ', 'abprf-rental-forge' );
 			}
 			if ( $ribbon == 'ribbon' ) { ?>
                 <div class="ribbon publish"><span class="_mar_r_xxs">📍</span><?php echo esc_html( $location ); ?></div>
 			<?php } else { ?>
                 <div class="item_location">
-                    <i class="_mar_r_xxs">📍</i><span><?php echo esc_html__( 'Location : ', 'abprf-rental-forge' ) . ' ' . esc_html( $location ); ?></span>
+                    <i class="_mar_r_xxs">📍</i><span><?php echo esc_html( $location_label.' '.$location ); ?></span>
                 </div>
 				<?php
 			}

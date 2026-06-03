@@ -12,7 +12,6 @@
 					$start_time     = array_key_exists( 'start_time', $abprf_infos ) ? $abprf_infos['start_time'] : '';
 					$end_time       = array_key_exists( 'end_time', $abprf_infos ) ? $abprf_infos['end_time'] : '';
 					$add_class      = array_key_exists( 'add_class', $abprf_infos ) ? $abprf_infos['add_class'] : '';
-					$abprf_brand    = ABPRF_Brands;
 					$post_id        = array_key_exists( 'post_id', $property ) ? $property['post_id'] : '';
 					$rent_rule      = array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : '';
 					$price_qty_info = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
@@ -29,21 +28,21 @@
 						$property_name=array_key_exists( 'name', $property ) ? $property['name'] : '';
 						$abprf_infos['property_name']    = $property_name;
 						$abprf_infos['property_id']      = array_key_exists( 'id', $property ) ? $property['id'] : '';
-						//echo '<pre>';print_r($features);echo '</pre>';
+						//echo '<pre>';print_r($abprf_infos);echo '</pre>';
 						if ( $ex_count > 0 ) { ?>
                             <div class="_divider_xs"></div>
 						<?php }
 						$ex_count ++;
 						?>
-                        <div class="property_item _d_flex">
-                            <div class="_w_100 _fs_h3_all_center"><?php ABPRF_Layout::image_icon( array_key_exists( 'icon', $others ) ? $others['icon'] : '' ); ?></div>
+                        <div class="property_item">
+                            <div class="item_head"><?php ABPRF_Layout::image_icon( array_key_exists( 'icon', $others ) ? $others['icon'] : '' ); ?></div>
                             <div class="property_details">
-                                <div class="_fj_between_w_full">
+                                <div class="property_title_price">
                                     <div class="_fd_column">
                                         <h4 class="_abprf">
 											<?php echo esc_html( $property_name); ?>
 											<?php if ( ! empty( $brand ) ) { ?>
-                                                <small class="_abprf _color_theme"><?php echo esc_html( array_key_exists( $brand, $abprf_brand ) && array_key_exists( 'name', $abprf_brand[ $brand ] ) ? $abprf_brand[ $brand ]['name'] : '' ); ?></small>
+                                                <small class="_abprf _color_theme"><?php echo esc_html( ABPRF_Function::brand_value($brand) ); ?></small>
 											<?php } ?>
                                         </h4>
                                         <div class="pricing_box">
@@ -59,8 +58,11 @@
                                 </div>
                                 <div class="property_item_bottom">
 									<?php ABPRF_Layout::item_feature( $features );
-										if ( ! empty( $time_duration ) && ! empty( $start_time ) && ! empty( $end_time ) && strtotime( $start_time ) < strtotime( $end_time ) ) {
-											ABPRF_Layout::item_select_property( $abprf_infos, $price_info, $total_price );
+										if (  ! empty( $start_time ) && ! empty( $end_time )) {
+											ABPRF_Layout::item_cost( $abprf_infos, $price_info, $total_price, $time_duration );
+                                            if(!empty($time_duration)) {
+	                                            ABPRF_Layout::item_select_property( $abprf_infos, $price_info, $total_price );
+                                            }
 										}
 									?>
                                 </div>

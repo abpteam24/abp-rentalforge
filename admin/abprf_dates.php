@@ -58,11 +58,11 @@
 				$this->specific_date_settings( $date_infos ); ?>
                 <div class="<?php echo esc_attr( $date_type == 'periodic_date' ? 'rf_active' : '' ); ?>" data-close="#periodic_date">
 					<?php $this->rent_start_end_date( $date_infos );
-						$this->date_rule( $date_infos );
+						$this->special_on_off_dates( $date_infos );
 						$this->off_dates( $date_infos );
 						$this->off_date_range( $date_infos );
-						$this->select_weekend( $date_infos );
-						$this->on_dates( $date_infos );
+						$this->weekend( $date_infos );
+						$this->special_on( $date_infos );
 						$this->day_wise_time( $date_infos ); ?>
                 </div>
 				<?php
@@ -255,16 +255,16 @@
                 <div class="group_setting">
                     <div class="_setting_item">
                         <div class=" _fj_between">
-                            <h5 class="_abprf_color_theme"><?php esc_html_e( 'Operational Date Type', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></h5>
+                            <h5 class="_abprf"><?php esc_html_e( 'Operational Date Type', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></h5>
                             <div class="custom_radio">
                                 <input type="hidden" class="_form_control" name="date_type" value="<?php echo esc_attr( $date_type ); ?>"/>
                                 <div class="radio_item">
-                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( $date_type == 'specific_date' ? 'rf_active' : '' ); ?>" data-close-target="#specific_date" data-radio="specific_date" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
+                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $date_type == 'specific_date' ? 'rf_active' : '' ); ?>" data-close-target="#specific_date" data-radio="specific_date" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
                                         <span data-icon class="_mar_r_xs <?php echo esc_attr( $date_type == 'specific_date' ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php esc_html_e( 'Specific Dates', 'abprf-rental-forge' ); ?>
                                     </button>
                                 </div>
                                 <div class="radio_item">
-                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( $date_type == 'periodic_date' ? 'rf_active' : '' ); ?>" data-close-target="#periodic_date" data-radio="periodic_date" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
+                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $date_type == 'periodic_date' ? 'rf_active' : '' ); ?>" data-close-target="#periodic_date" data-radio="periodic_date" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
                                         <span data-icon class="_mar_r_xs <?php echo esc_attr( $date_type == 'periodic_date' ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php esc_html_e( 'Periodic Dates', 'abprf-rental-forge' ); ?>
                                     </button>
                                 </div>
@@ -316,7 +316,7 @@
 				<?php
 			}
 
-			public function date_rule( $date_infos ): void {
+			public function special_on_off_dates( $date_infos ): void {
 				$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
 				$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
 				$date_rules      = ABPRF_Layout::date_option_rules();
@@ -327,7 +327,7 @@
                         <input type="hidden" name="date_rule" value="<?php echo esc_attr( $date_rule ); ?>"/>
 						<?php foreach ( $date_rules as $key => $rule ) { ?>
                             <div class="checkbox_item _min_100">
-                                <button type="button" class="_btn_white_xs <?php echo esc_attr( in_array( $key, $date_rule_array ) ? 'rf_active' : '' ); ?>" data-collapse-target="#<?php echo esc_attr( $key ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
+                                <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $date_rule_array ) ? 'rf_active' : '' ); ?>" data-collapse-target="#<?php echo esc_attr( $key ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
                                     <span data-icon class="_mar_r_xs far <?php echo esc_attr( in_array( $key, $date_rule_array ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span><?php echo esc_html( $rule ); ?>
                                 </button>
                             </div>
@@ -407,7 +407,7 @@
 				<?php
 			}
 
-			public function select_weekend( $date_infos ): void {
+			public function weekend( $date_infos ): void {
 				$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
 				$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
 				$weekend         = array_key_exists( 'weekend', $date_infos ) ? $date_infos['weekend'] : '';
@@ -421,7 +421,7 @@
                                 <input type="hidden" name="weekend" value="<?php echo esc_attr( $weekend ); ?>"/>
 								<?php foreach ( $days as $key => $day ) { ?>
                                     <div class="checkbox_item _min_100">
-                                        <button type="button" class="_btn_white_xs <?php echo esc_attr( in_array( $key, $off_day_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
+                                        <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $off_day_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
                                             <span data-icon class="_mar_r_xs <?php echo esc_attr( in_array( $key, $off_day_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $day ); ?>
                                         </button>
                                     </div>
@@ -435,7 +435,7 @@
 				<?php
 			}
 
-			public function on_dates( $date_infos ): void {
+			public function special_on( $date_infos ): void {
 				$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
 				$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
 				$special_dates   = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];

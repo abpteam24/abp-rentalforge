@@ -123,7 +123,6 @@
 				$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
 				$brand_icon    = isset( $configuration['brand_icon'] ) && $configuration['brand_icon'] ? $configuration['brand_icon'] : 'fas fa-hammer';
 				$booked_status = isset( $configuration['booked_status'] ) && $configuration['booked_status'] ? $configuration['booked_status'] : 'wc-processing,wc-completed';
-				$status_array  = wc_get_order_statuses();
 				$booked_status = $booked_status ? explode( ',', $booked_status ) : [];
 				?>
                 <div class="_panel_head_xs_ov_auto">
@@ -158,7 +157,7 @@
 					<?php if ( sizeof( $booking_lists ) > 0 ) { ?>
                         <table class=" _abprf">
                             <thead>
-                            <tr class="_bg_light_1">
+                            <tr class="_bg_5">
                                 <th><?php esc_html_e( 'Action', 'abprf-rental-forge' ); ?></th>
                                 <th><?php esc_html_e( 'Order ID/ Date', 'abprf-rental-forge' ); ?></th>
 								<?php if ( $post_id == 0 ) { ?>
@@ -200,7 +199,7 @@
 								$end_time         = array_key_exists( 'end_time', $booking_list ) ? $booking_list['end_time'] : '';
 								$end_date         = ! empty( $end_time ) ? gmdate( 'Y-m-d', strtotime( $end_time ) ) : '';
 								$end_time_format  = strtotime( $start_date ) == strtotime( $end_date ) ? 'time' : 'full';
-								$row_class        = $si % 2 < 1 ? '_bg_light_1' : '_bg_light_2';
+								$row_class        = $si % 2 < 1 ? '_bg_5' : '_bg_6';
 								?>
                                 <tr class="<?php echo esc_attr( $row_class ); ?>">
                                     <th>
@@ -212,7 +211,7 @@
                                     </th>
                                     <th class="_text_left">
                                         <p class="_abprf"><?php echo esc_html( $si . '. #' . $order_id ); ?></p>
-                                        <p class="_abprf_fs_label_color_theme"><?php echo esc_html( ABPRF_Function::date_format( $order_time, 'full' ) ); ?></p>
+                                        <p class="_abprf_fs_label_color_theme"><?php echo esc_html( ABPRF_Function::date_format( $order_time ) ); ?></p>
                                     </th>
 									<?php if ( $post_id == 0 ) { ?>
                                         <th class="_text_left"><?php ABPRF_Layout::title( $_post_id ); ?></th>
@@ -242,7 +241,7 @@
                                         <span><?php echo ( ! empty( $total_price ) && $total_price > 0 ) ? wp_kses_post( wc_price( $total_price ) ) : esc_html__( 'FREE', 'abprf-rental-forge' ); ?></span>
                                     </th>
                                     <th class="_text_capitalize">
-                                        <p class="_abprf <?php echo esc_attr( array_key_exists( $status, $status_array ) ? $status_array[ $status ] : '' ); ?>"> <?php echo esc_html( array_key_exists( $status, $status_array ) ? $status_array[ $status ] : '' ); ?></p>
+                                        <p class="_abprf <?php echo esc_attr( ABPRF_Function::status_text($status) ); ?>"> <?php echo esc_html( ABPRF_Function::status_text($status)); ?></p>
                                         <p class="_abprf <?php echo esc_attr( array_key_exists( 'book_status', $booking_list ) ? $booking_list['book_status'] : '' ); ?>"><?php echo esc_html( array_key_exists( 'book_status', $booking_list ) ? $booking_list['book_status'] : '' ); ?></p>
                                     </th>
                                     <th class="_text_capitalize"><?php echo esc_html( array_key_exists( 'payment_method', $booking_list ) ? $booking_list['payment_method'] : '' ); ?></th>

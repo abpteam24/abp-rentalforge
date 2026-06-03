@@ -30,7 +30,7 @@
 					$name        = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 					$slug        = isset( $_POST['slug'] ) ? sanitize_text_field( wp_unslash( $_POST['slug'] ) ) : '';
 					$description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : '';
-					$target_type  = isset( $_POST['target_type'] ) ? sanitize_text_field( wp_unslash( $_POST['target_type'] ) ) : 0;
+					$abprf_post_id  = isset( $_POST['abprf_post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_post_id'] ) ) : '';
 					if ( ! empty( $name ) ) {
 						if ( ! empty( $cat_term_id ) ) {
 							$result = wp_update_term( $cat_term_id, 'abprf_category', array(
@@ -50,9 +50,10 @@
 						}
 						$this->update_category();
 						ob_start();
-						if ( $target_type == 'post' ) {
-							self::category_selection();
-						} elseif ( $target_type == 'list' ) {
+						if (!empty($abprf_post_id) && $abprf_post_id >0 ) {
+                            $_category=ABPRF_Function::get_post_info($abprf_post_id,'abprf_category','');
+							self::category_selection($_category);
+						} else {
 							$this->category_list();
 						}
 						$html = ob_get_clean();
@@ -213,23 +214,23 @@
 			public static function category_selection( $_category = '' ): void {
 				$all_categories = ABPRF_Function::get_option( 'abprf_category' );
 				if ( ! empty( $all_categories ) && is_array( $all_categories ) && sizeof( $all_categories ) > 0 ) { ?>
-                    <div class="custom_radio">
+                    <div class="custom_radio _fj_end">
                         <input type="hidden" name="abprf_category" value="<?php echo esc_attr( $_category ); ?>"/>
 
 	                        <?php foreach ( $all_categories as $key => $category ) {
 		                        $name = is_array( $category ) && array_key_exists( 'name', $category ) ? $category['name'] : ''; ?>
                                 <div class="radio_item">
-                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( $_category == $key ? 'rf_active' : '' ); ?>"  data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                        <i class="_abprf_fs_h5"><span data-icon class="_mar_r_xs <?php echo esc_attr( $_category == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html( $name ); ?></span>
+                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $_category == $key ? 'rf_active' : '' ); ?>"  data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
+                                        <span data-icon class="_mar_r_xs <?php echo esc_attr( $_category == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><span class="_text_left_fs_label"><?php echo esc_html( $name ); ?></span>
                                     </button>
                                 </div>
 							<?php } ?>
-                            <button type="button" class="_btn_theme_xs" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abprf-rental-forge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?></button>
+                            <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abprf-rental-forge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?></button>
 
                     </div>
 				<?php } else { ?>
                     <p><?php echo esc_html( ABPRF_Layout::array_info( 'no_category' ) ); ?></p>
-                    <button type="button" class="_btn_theme_xs" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abprf-rental-forge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?></button>
+                    <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abprf-rental-forge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?></button>
 					<?php
 				}
 			}

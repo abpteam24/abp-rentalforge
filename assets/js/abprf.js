@@ -3,15 +3,32 @@
     let abprf_time_slot_infos = JSON.parse(abprf_infos.date_info);
     $(document).ready(function () {
         $('body').find('#abprf_search_area').each(function () {
-            load_start_time($(this));
+            let parent = $(this);
+            let rent_rule = $.trim(parent.find('[name="rent_rule"]').val());
+            if (rent_rule === 'hourly' || rent_rule==='multi_day') {
+                load_start_time(parent);
+            }
         })
     });
     $(document).on("change", "#abprf_search_area [name='rent_start_date']", function (e) {
         e.preventDefault();
         let parent = $(this).closest("#abprf_search_area");
         let rent_rule = $.trim(parent.find('[name="rent_rule"]').val());
-        if (rent_rule === 'hourly') {
+        if (rent_rule === 'hourly' || rent_rule==='multi_day') {
             load_start_time(parent);
+        }
+        if (rent_rule === 'daily' || rent_rule==='multi_day' || rent_rule==='monthly' || rent_rule==='multi_month') {
+            load_end_date(parent)
+        }
+    });
+    $(document).on("change", "#abprf_search_area [name='rent_end_date']", function (e) {
+        e.preventDefault();
+        let parent = $(this).closest("#abprf_search_area");
+        let rent_rule = $.trim(parent.find('[name="rent_rule"]').val());
+        if (rent_rule==='multi_day') {
+            let date = parent.find('[name="rent_end_date"]').val();
+            let start_time = parent.find('[name="start_time"]').val();
+            load_end_time(parent, date, start_time);
         }
     });
     $(document).on("change", "#abprf_search_area [name='start_time']", function (e) {
@@ -20,6 +37,11 @@
         let rent_rule = $.trim(parent.find('[name="rent_rule"]').val());
         if (rent_rule === 'hourly') {
             let date = parent.find('[name="rent_start_date"]').val();
+            let start_time = parent.find('[name="start_time"]').val();
+            load_end_time(parent, date, start_time);
+        }
+        if (rent_rule==='multi_day') {
+            let date = parent.find('[name="rent_end_date"]').val();
             let start_time = parent.find('[name="start_time"]').val();
             load_end_time(parent, date, start_time);
         }
@@ -48,6 +70,24 @@
                 return;
             }
         }
+        if (rent_rule === 'daily') {
+            if ($.trim(form_area.find('[name="rent_end_date"]').val()).length === 0) {
+                setTimeout(function () {
+                    abprf_toast_msg(abprf_infos.msg.select_rent_end_date);
+                    form_area.find('#end_date').focus();
+                }, 100);
+                return;
+            }
+        }
+        if (rent_rule === 'monthly') {
+            if ($.trim(form_area.find('[name="rent_end_date"]').val()).length === 0) {
+                setTimeout(function () {
+                    abprf_toast_msg(abprf_infos.msg.select_rent_end_date);
+                    form_area.find('[name="rent_end_date"]').show().focus();
+                }, 100);
+                return;
+            }
+        }
         let target = parent.find('.abprf_booking');
         let formData = new FormData(this);
         formData.append('action', 'abprf_load_property');
@@ -66,6 +106,7 @@
                 target.find('.property_others').html(response.data.property_others);
                 form_area.find('.date_details').html(response.data.date_details).promise().done(function () {
                     abprf_load_datepicker(target);
+                    abprf_load_image(target);
                 });
                 abprf_toast_msg(abprf_infos.msg.property_loading_success, 'success');
             }
@@ -100,6 +141,32 @@
             });
             parent.find('[name="start_time"]').html(optionsHtml);
         }
+    }
+    function load_end_date(parent){
+        let target = parent.find('.end_date');
+        let date = parent.find('[name="rent_start_date"]').val();
+        let post_id = parent.find('[name="post_id"]').val();
+        let rent_rule = $.trim(parent.find('[name="rent_rule"]').val());
+        let formData = new FormData();
+        formData.append('post_id', post_id);
+        formData.append('rent_start_date', date);
+        formData.append('rent_rule', rent_rule);
+        formData.append('action', 'abprf_load_end_date');
+        formData.append('nonce', abprf_infos.nonce);
+        $.ajax({
+            type: 'POST', url: abprf_infos.ajax_url, contentType: false, processData: false, data: formData,
+            beforeSend: function () {
+                abprf_spinner(target);
+                abprf_toast_msg(abprf_infos.msg.end_date_loading);
+            },
+            success: function (response) {
+                abprf_spinner_remove(target);
+                target.html(response.data.html).promise().done(function () {
+                    abprf_load_datepicker(target);
+                });
+                abprf_toast_msg(response.data.msg, 'success');
+            }
+        });
     }
     function load_end_time(parent, date, start_time) {
         let current_date = parent.find('[name="rent_start_date"]').val();
@@ -154,6 +221,7 @@
         let target = parent.find('[data-collapse="' + data_id + '"]');
         if (target.length > 0) {
             target.slideToggle('fast');
+            $this.closest('.property_item').toggleClass('rf_active');
         }
         parent.find('[name="property_qty[]"]').trigger('change');
     });
@@ -205,7 +273,7 @@
         parent.find('.additional_total').html(ex_price);
         parent.find('.deposit_total').html(deposit_price);
         parent.find('.abprf_total').html(total);
-        // abprf_load_bg_image();
+        // abprf_load_image();
     }
     function get_quantity(parent) {
         let qty = 0;

@@ -4,15 +4,10 @@
     $(document).ready(function () {
         abprf_load_datepicker();
         abprf_load_tabs();
-        //=============//
-        $('body').find('.abprf_area[data-bg-image],.abprf_area [data-image-href]').each(function () {
+        $('body').find('div.abprf_area [data-image-href]').each(function () {
             abprf_spinner($(this));
         });
-        abprf_load_bg_image();
-        abprf_holder_remove($('.abprf_area.abprf_holder'));
-    });
-    $(window).on('resize', function () {
-        abprf_load_bg_image();
+        abprf_load_image();
     });
     //======================================================================Outer Close==========//
     $(document).click(function (e) {
@@ -24,7 +19,7 @@
 }(jQuery));
 //=============================================================================Change icon and text=================//
 function abprf_data_change($this) {
-    abprf_load_bg_image();
+    abprf_load_image();
     abprf_class_change($this);
     abprf_icon_change($this);
     abprf_text_change($this);
@@ -187,7 +182,7 @@ function abprf_popup_close(target_id = '') {
             tab_content.children('[data-tabs="' + tabsTarget + '"]').slideDown(350);
             tab_content.children('[data-tabs].rf_active').slideUp(350).removeClass('rf_active').promise().done(function () {
                 tab_content.children('[data-tabs="' + tabsTarget + '"]').addClass('rf_active').promise().done(function () {
-                    abprf_load_bg_image();
+                    abprf_load_image();
                     parent.height('auto');
                 });
             });
@@ -198,7 +193,7 @@ function abprf_popup_close(target_id = '') {
         let $this = $(this);
         let target = $this.attr('data-active-popup', '').data('target-popup');
         $('body').addClass('_stop_scroll').find('[data-popup="' + target + '"]').addClass('in').promise().done(function () {
-            abprf_load_bg_image();
+            abprf_load_image();
             $this.trigger('rf_trigger');
             return true;
         });
@@ -547,8 +542,8 @@ function abprf_live_pagination(parent) {
         }
     });
     abprf_pagination_item(parent);
-    if (typeof abprf_load_bg_image === "function") {
-        abprf_load_bg_image();
+    if (typeof abprf_load_image === "function") {
+        abprf_load_image();
     }
 }
 function abprf_pagination_item(parent) {
@@ -622,19 +617,8 @@ function abprf_pagination_item(parent) {
     });
 }(jQuery));
 //================================================================================Load Bg Image=================//
-function abprf_load_bg_image(body = jQuery('body')) {
-    body.find('.abprf_area [data-bg-image]:visible').each(function () {
-        let target = jQuery(this);
-        let bg_url = target.data('bg-image');
-        if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
-            bg_url = abprf_var.blank_image;
-        }
-        abprf_bg_img_resize(target, bg_url);
-        target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
-            abprf_spinner_remove(jQuery(this));
-        });
-    });
-    body.find('.abprf_area [data-image-href]:visible').each(function () {
+function abprf_load_image(body = jQuery('body .abprf_area')) {
+    body.find('[data-image-href]:visible').each(function () {
         let target = jQuery(this);
         let bg_url = target.data('image-href');
         target.attr('data-image-href', '');
@@ -648,17 +632,6 @@ function abprf_load_bg_image(body = jQuery('body')) {
         }
     });
     return true;
-}
-function abprf_bg_img_resize(target, bg_url) {
-    let tmpImg = new Image();
-    tmpImg.src = bg_url;
-    jQuery(tmpImg).one('load', function () {
-        let width = target.outerWidth();
-        let imgWidth = tmpImg.width;
-        let imgHeight = tmpImg.height;
-        let height = imgHeight * (width / imgWidth);
-        target.css({"min-height": height});
-    });
 }
 //=================================================================================Date picker & Sticky & Price Format & Page Scroll==============//
 function abprf_load_datepicker(parent = jQuery('.abprf_area')) {
@@ -712,14 +685,6 @@ function abprf_wc_price_format(price) {
     return price_text;
 }
 //======================================================================================Loader==============//
-function abprf_holder(target) {
-    target.addClass('abprf_holder');
-}
-function abprf_holder_remove(target) {
-    target.each(function () {
-        target.removeClass('abprf_holder');
-    })
-}
 function abprf_spinner(target) {
     if (target.find('.abprf_spinner').length < 1) {
         target.addClass('_p_relative').append('<div class="abprf_spinner"></div>');
@@ -734,7 +699,7 @@ function abprf_spinner_remove(target = jQuery('body')) {
     $(document).on('click', '.abprf_slider [data-target-popup]', function () {
         let target = $(this).data('target-popup');
         $('body').addClass('_stop_scroll').find('[data-popup="' + target + '"]').addClass('in').promise().done(function () {
-            abprf_load_bg_image();
+            abprf_load_image();
         });
     });
     $(document).on('click', '.abprf_slider .popup_close', function () {

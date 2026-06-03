@@ -18,7 +18,7 @@
 			public function admin_enqueue(): void {
 				$configuration = ABPRF_Configuration;
 				$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$this->lib_enqueue();
+				$this->global_enqueue();
 				wp_enqueue_editor();
 				wp_enqueue_media();
 				//admin script
@@ -65,7 +65,6 @@
 				] );
 				wp_enqueue_style( 'abprf_admin', ABPRF_URL . '/assets/css/abprf_admin.css', array(), time() );
 				//=============================//
-				$this->global_enqueue();
 				do_action( 'abprf_admin_enqueue' );
 			}
 
@@ -76,12 +75,10 @@
 					wp_enqueue_script( 'select2' );
 				}
 				$this->global_enqueue();
-				$this->lib_enqueue();
-
 				do_action( 'abprf_frontend_enqueue' );
 			}
 
-			public function lib_enqueue(): void {
+			public function global_enqueue(): void {
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'jquery-ui-core' );
 				wp_enqueue_script( 'jquery-ui-datepicker' );
@@ -112,11 +109,6 @@
 						'date_format' => ABPRF_Function::get_date_format(),
 					] );
 				}
-			}
-
-			public function global_enqueue(): void {
-				wp_enqueue_style( 'abprf', ABPRF_URL . '/assets/css/abprf.css', array(), time() );
-				do_action( 'abprf_global_script' );
 				$abprf_css_var   = ABPRF_Function::get_option( 'abprf_css_var' );
 				$default_color   = isset( $abprf_css_var['color_default'] ) && $abprf_css_var['color_default'] ? $abprf_css_var['color_default'] : '#303030';
 				$color_theme     = isset( $abprf_css_var['color_theme'] ) && $abprf_css_var['color_theme'] ? $abprf_css_var['color_theme'] : '#95951c';
@@ -147,8 +139,7 @@
 						--rf_br: {$default_br};						
 						--rf_text_off:'{$off}';
 						--rf_text_on: '{$on}';
-						--rf_fs: {$default_fs};						
-						--rf_fs_small: 11px;
+						--rf_fs: {$default_fs};				
 						--rf_fs_label: {$fs_label};
 						--rf_fs_h6: {$fs_h6};
 						--rf_fs_h5: {$fs_h5};
@@ -158,13 +149,8 @@
 						--rf_fs_h1: {$fs_h1};						
 						--rf_button_bg: {$bg_button};
 						--rf_button_color: {$color_button};
-						--rf_button_fs: {$button_fs};
-						--rf_button_height: 40px;
-						--rf_button_height_xs: 30px;
-						--rf_button_width: 120px;
-						--rf_color_default: {$default_color};
-						--rf_color_border: #DDD;
-						--rf_color_active: #0E6BB7;
+						--rf_button_fs: {$button_fs};						
+						--rf_color_default: {$default_color};						
 						--rf_color_section: {$bg_section};
 						--rf_color_theme: {$color_theme};
 						--rf_color_theme_ee: {$color_theme_ee};
@@ -175,7 +161,9 @@
 						--rf_color_theme_alter: {$alternate_color};
 						--rf_color_warning:{$color_warning};						
 					}";
-				wp_add_inline_style( 'abprf', $abprf_var );
+				wp_add_inline_style( 'abprf_lib', $abprf_var );
+				wp_enqueue_style( 'abprf', ABPRF_URL . '/assets/css/abprf.css', array(), time() );
+				do_action( 'abprf_global_script' );
 			}
 
 			private function load_file(): void {
@@ -334,36 +322,85 @@
 
 			public static function create_table(): void {
 				global $wpdb;
-				$order_table      = $wpdb->prefix . 'abprf_orders';
-				$property_table   = $wpdb->prefix . 'abprf_property';
-				$collate          = $wpdb->has_cap( 'collation' ) ? $wpdb->get_charset_collate() : '';
-				$abprf_orders     = "CREATE TABLE IF NOT EXISTS $order_table (
-																	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-																	order_id BIGINT UNSIGNED NOT NULL , item_id BIGINT UNSIGNED NOT NULL,  post_id BIGINT UNSIGNED NOT NULL, user_id BIGINT UNSIGNED NOT NULL,  property_id JSON NOT NULL, ex_id JSON NOT NULL,
-																    pick_up varchar(100)  NULL,  drop_off varchar(100)  NULL,category varchar(20)  NULL, location varchar(20)  NULL, brand varchar(20)  NULL,
-     																start_time DATETIME NULL DEFAULT NULL,end_time   DATETIME NULL DEFAULT NULL,
-     																book_from DATETIME NULL DEFAULT NULL,book_to   DATETIME NULL DEFAULT NULL,    																
-    																price_info JSON NOT NULL,  property_info JSON NOT NULL, ex_info JSON NOT NULL, pass_info JSON NOT NULL,
-																    delivery_option varchar(20) NULL, book_status varchar(20) NOT NULL, order_status varchar(20) NOT NULL, payment_method varchar(100)  NULL,
-    									                        	billing_name varchar(100)  NULL,  billing_email varchar(100)  NULL,	 billing_phone varchar(20)  NULL,  billing_address varchar(255)  NULL,
-																    others JSON NULL,
-																     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP  NULL,
-																     PRIMARY KEY  (id), KEY order_id (order_id), KEY user_id (user_id), KEY item_id (item_id)
-							    )$collate;";
-				$abprf_property   = "CREATE TABLE IF NOT EXISTS $property_table (
-													             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, post_id BIGINT UNSIGNED  NULL,
-													             rent_continue varchar(20) NOT NULL DEFAULT 'on', name varchar(100) NOT NULL,    														
-													             brand varchar(20) NULL, category varchar(200) NULL, location varchar(200) NULL, features varchar(200) NULL,
-													             rent_rule varchar(20) NULL, price_qty_info JSON NOT NULL,		
-													             gallery varchar(200) NULL, status varchar(20) NULL, others JSON NULL,
-													             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP NULL,
-													             PRIMARY KEY (id), KEY post_id (post_id)
-												) $collate AUTO_INCREMENT = 100;";
-				if ( ! function_exists( 'dbDelta' ) ) {
-					require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-				}
+				$order_table    = $wpdb->prefix . 'abprf_orders';
+				$property_table = $wpdb->prefix . 'abprf_property';
+				$collate        = $wpdb->get_charset_collate();
+				// Orders Table
+				$abprf_orders = "CREATE TABLE $order_table (
+        id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+        order_id bigint(20) unsigned NOT NULL,
+        item_id bigint(20) unsigned NOT NULL,
+        post_id bigint(20) unsigned NOT NULL,
+        user_id bigint(20) unsigned NOT NULL,
+        property_id longtext NOT NULL,
+        ex_id longtext NOT NULL,
+        pick_up varchar(100) DEFAULT NULL,
+        drop_off varchar(100) DEFAULT NULL,
+        category varchar(50) DEFAULT NULL,
+        location varchar(50) DEFAULT NULL,
+        brand varchar(50) DEFAULT NULL,
+        start_time datetime DEFAULT NULL,
+        end_time datetime DEFAULT NULL,
+        book_from datetime DEFAULT NULL,
+        book_to datetime DEFAULT NULL,
+        price_info longtext NOT NULL,
+        property_info longtext NOT NULL,
+        ex_info longtext NOT NULL,
+        pass_info longtext NOT NULL,
+        delivery_option varchar(50) DEFAULT NULL,
+        book_status varchar(20) NOT NULL,
+        order_status varchar(20) NOT NULL,
+        payment_method varchar(100) DEFAULT NULL,
+        billing_name varchar(100) DEFAULT NULL,
+        billing_email varchar(100) DEFAULT NULL,
+        billing_phone varchar(20) DEFAULT NULL,
+        billing_address varchar(255) DEFAULT NULL,
+        others longtext DEFAULT NULL,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        updated_at datetime DEFAULT NULL,
+        PRIMARY KEY  (id),
+        KEY order_id (order_id),
+        KEY user_id (user_id),
+        KEY item_id (item_id)
+    ) $collate;";
+				// Property Table
+				$abprf_property = "CREATE TABLE $property_table (
+        id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+        post_id bigint(20) unsigned DEFAULT NULL,
+        rent_continue varchar(20) NOT NULL DEFAULT 'on',
+        name varchar(100) NOT NULL,
+        brand varchar(50) DEFAULT NULL,
+        category varchar(255) DEFAULT NULL,
+        location varchar(255) DEFAULT NULL,
+        features longtext DEFAULT NULL,
+        rent_rule varchar(20) DEFAULT NULL,
+        price_qty_info longtext NOT NULL,
+        gallery longtext DEFAULT NULL,
+        status varchar(20) DEFAULT NULL,
+        others longtext DEFAULT NULL,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        updated_at datetime DEFAULT NULL,
+        PRIMARY KEY  (id),
+        KEY post_id (post_id)
+    ) $collate;";
+				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 				dbDelta( $abprf_orders );
 				dbDelta( $abprf_property );
+				$row_count = ABPRF_Query::get_property([],true);
+				if ( 0 == $row_count ) {
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->insert(
+						$property_table,
+						array(
+							'id' => 99,
+							'name' => 'Dummy Init',
+							'price_qty_info' => '[]',
+						),
+						array( '%d', '%s', '%s' )
+					);
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->delete( $property_table, array( 'id' => 99 ), array( '%d' ) );
+				}
 			}
 
 			public function plugin_settings_link( $links_array, $plugin_file_name ) {

@@ -60,7 +60,7 @@
 					$icons        = isset( $_POST['brand_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_icon'] ) ) : [];
 					$slugs        = isset( $_POST['brand_slug'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_slug'] ) ) : [];
 					$descriptions = isset( $_POST['brand_description'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_description'] ) ) : [];
-					$target_type  = isset( $_POST['target_type'] ) ? sanitize_text_field( wp_unslash( $_POST['target_type'] ) ) : 0;
+					$property_add  = isset( $_POST['property_add'] ) ? sanitize_text_field( wp_unslash( $_POST['property_add'] ) ) : 0;
 					$options      = [];
 					if ( ! empty( $names ) && sizeof( $names ) > 0 ) {
 						foreach ( $names as $key => $name ) {
@@ -104,7 +104,7 @@
 						$msg = esc_html__( 'Brand not Saved ! Brand Name can not Blank !...!', 'abprf-rental-forge' );
 					}
 					ob_start();
-					if ( $target_type == 'post' ) {
+					if (!empty($property_add) && $property_add>0 ) {
 						$brands    = '';
 						$property_id = isset( $_POST['property_id'] ) ? sanitize_text_field( wp_unslash( $_POST['property_id'] ) ) : '';
 						if ( ! empty( $property_id ) ) {
@@ -115,7 +115,7 @@
 							}
 						}
 						self::brand_selection($brands);
-					} elseif ( $target_type == 'list' ) {
+					} else{
 						$this->brand_list();
 					}
 					$html = ob_get_clean();
@@ -184,7 +184,7 @@
 			}
 
 			public function brand_list(): void {
-				$abprf_brands = ABPRF_Brands;
+				$abprf_brands = ABPRF_Function::get_option( 'abprf_brand' );
 				$count        = 1;
 				if ( ! empty( $abprf_brands ) && is_array( $abprf_brands ) && sizeof( $abprf_brands ) > 0 ) { ?>
                     <table class="_abprf">

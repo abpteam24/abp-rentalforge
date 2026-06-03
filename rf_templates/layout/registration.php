@@ -28,8 +28,8 @@
                             <div class="post_top_filter">
                                 <h3 class="_abprf"><?php esc_html_e( 'Available Property', 'abprf-rental-forge' ); ?></h3>
                                 <div class="_group_content">
-                                    <button type="button" class="_btn_info_xs_fs_h6 grid_view rf_active"><span class="fas fa-table-cells"></span></button>
-                                    <button type="button" class="_btn_info_xs_fs_h6 list_view"><span class="fas fa-list"></span></button>
+                                    <button type="button" class="_btn_light_info_xs_fs_h6 grid_view rf_active"><span class="fas fa-table-cells"></span></button>
+                                    <button type="button" class="_btn_light_info_xs_fs_h6 list_view"><span class="fas fa-list"></span></button>
                                 </div>
                             </div>
 							<?php if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) { ?>
@@ -42,7 +42,7 @@
 								ABPRF_Layout::layout_warning_info( 'no_property_found' );
 							} ?>
 						<?php } else { ?>
-                            <div class="property_item_group_area item_box_1">
+                            <div class="group_property item_box_1">
                                 <h5 class="_abprf_title"><?php esc_html_e( 'Available Property', 'abprf-rental-forge' ); ?></h5>
                                 <div class="property_item_area">
 									<?php if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {

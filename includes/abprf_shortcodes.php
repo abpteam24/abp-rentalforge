@@ -14,7 +14,7 @@
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
 				$post_id  = array_key_exists( 'post_id', $params ) && $params['post_id'] ? $params['post_id'] : '';
-                //echo '<pre>';print_r($params);echo '</pre>';
+				//echo '<pre>';print_r($params);echo '</pre>';
 				ob_start();
 				if ( ! empty( $post_id ) ) {
 					do_action( 'abprf_load_details_template', $post_id );
@@ -24,7 +24,7 @@
 					$file               = ABPRF_Function::template_path( 'list/' . $style . '.php' );
 					?>
                     <div class="abprf_area">
-                        <div class="abprf_container rf_pagination rf_short_code">
+                        <div class="abprf_container rf_pagination">
 							<?php
 								do_action( 'abprf_post_filter', $params );
 								if ( is_file( $file ) ) {
@@ -35,7 +35,7 @@
 									do_action( 'abprf_default_template', $params );
 								} ?>
                             <div class="rf_no_results _d_none">
-                                <?php ABPRF_Layout::layout_warning_info('not_match'); ?>
+								<?php ABPRF_Layout::layout_warning_info( 'not_match' ); ?>
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
 					$file                   = ABPRF_Function::template_path( 'list/property_' . $style . '.php' );
 					?>
                     <div class="abprf_area">
-                        <div class="abprf_container rf_pagination rf_short_code">
+                        <div class="abprf_container rf_pagination ">
 							<?php
 								do_action( 'abprf_post_filter', $params );
 								if ( is_file( $file ) ) {
@@ -70,7 +70,7 @@
 									do_action( 'abprf_property_default_template', $params );
 								} ?>
                             <div class="rf_no_results _d_none">
-		                        <?php ABPRF_Layout::layout_warning_info('not_match'); ?>
+								<?php ABPRF_Layout::layout_warning_info( 'not_match' ); ?>
                             </div>
                         </div>
                     </div>

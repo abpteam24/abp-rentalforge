@@ -1,17 +1,7 @@
-function abprf_save_data(parent, target_list, target_post, action) {
-    let target = '';
-    let target_type = '';
-    if (target_post.length > 0) {
-        target = target_post;
-        target_type = 'post';
-    } else {
-        if (target_list.length > 0) {
-            target = target_list;
-            target_type = 'list';
-        }
-    }
+function abprf_save_data(form_area, target, action) {
+    let body = jQuery('body .rf_post_config');
     let formData = new FormData();
-    parent.find('input, select, textarea').each(function () {
+    form_area.find('input, select, textarea').each(function () {
         let name = jQuery(this).attr('name');
         let value = jQuery(this).val();
         if (name) {
@@ -24,34 +14,43 @@ function abprf_save_data(parent, target_list, target_post, action) {
             }
         }
     });
-    formData.append('target_type', target_type);
     if (action === 'abprf_save_property') {
-        formData.append('filter_args', JSON.stringify(abprf_property_filter_arg(parent)));
+        formData.append('filter_args', JSON.stringify(abprf_property_filter_arg(form_area)));
     }
-    if (parent.closest('.data_property').length > 0 && (action === 'abprf_save_feature' || action === 'abprf_save_brand')) {
-        let property_id = parent.closest('.data_property').find('input[name="property_id"]').val();
+    if (action === 'abprf_save_feature' || action === 'abprf_save_brand') {
+        let property_id = form_area.find('input[name="property_id"]').val();
         formData.append('property_id', property_id);
+        if (form_area.closest(".data_property").length > 0) {
+            formData.append('property_add', 1);
+        } else {
+            formData.append('property_add', 0);
+        }
+    }
+    if (body.find("[name='abprf_post_id']").length > 0) {
+        formData.append('abprf_post_id', body.find("[name='abprf_post_id']").val());
     }
     formData.append('action', action);
     formData.append('nonce', abprf_admin_data.nonce);
     jQuery.ajax({
         type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
         beforeSend: function () {
-            abprf_spinner(parent);
+            abprf_spinner(form_area);
             abprf_toast_msg(abprf_admin_data.msg.saving);
         },
         success: function (response) {
-            abprf_spinner_remove(parent);
+            abprf_spinner_remove(form_area);
             abprf_toast_msg(response.data.msg, 'success');
-            if (target.length > 0) {
+            if (target && target.length > 0) {
                 target.html(response.data.html);
+                abprf_load_image(target);
             }
             if (action === 'abprf_save_feature' || action === 'abprf_save_brand') {
-                parent.find('.insertable_area').html('');
-                parent.find('.hide_on_load').slideUp('fast');
+                form_area.find('.insertable_area').html('');
+                form_area.find('.hide_on_load').slideUp('fast');
             } else {
                 abprf_popup_close('#abprf_global_popup');
             }
+
         }
     });
 }
@@ -169,9 +168,9 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin button.save_property', function (e) {
         e.preventDefault();
         let $this = $(this);
-        let target_list = $('div.abprf_admin .properties_list');
-        let parent = $this.closest('.abprf_admin');
-        abprf_save_data(parent, target_list, target_list, 'abprf_save_property');
+        let target = $('div.abprf_admin .properties_list');
+        let form_area = $this.closest('.data_property');
+        abprf_save_data(form_area, target, 'abprf_save_property');
     });
     $(document).on("rf_trigger", "div.abprf_admin input[name='select_property_hidden']", function () {
         let parent = $(this).closest('.abprf_admin');
@@ -438,10 +437,15 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin button.save_category', function (e) {
         e.preventDefault();
         let $this = $(this);
-        let target_list = $('div.abprf_admin .category_list');
-        let target_post = $('div.abprf_admin .category_selection');
-        let parent = $this.closest('.popup_body');
-        abprf_save_data(parent, target_list, target_post, 'abprf_save_category');
+        let body = jQuery('body .rf_post_config');
+        let target = '';
+        if (body.find("[name='abprf_post_id']").length > 0) {
+            target = body.find('.category_selection');
+        } else {
+            target = $('div.abprf_admin .category_list');
+        }
+        let form_area = $this.closest('.popup_body');
+        abprf_save_data(form_area, target, 'abprf_save_category');
     });
     $(document).on('click', 'div.abprf_admin button.delete_category', function (e) {
         e.preventDefault();
@@ -465,10 +469,15 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin button.save_location', function (e) {
         e.preventDefault();
         let $this = $(this);
-        let target_list = $('div.abprf_admin .location_list');
-        let target_post = $('div.abprf_admin .location_selection');
-        let parent = $this.closest('.popup_body');
-        abprf_save_data(parent, target_list, target_post, 'abprf_save_location');
+        let body = jQuery('body .rf_post_config');
+        let target = '';
+        if (body.find("[name='abprf_post_id']").length > 0) {
+            target = body.find('.location_selection');
+        } else {
+            target = $('div.abprf_admin .location_list');
+        }
+        let form_area = $this.closest('.popup_body');
+        abprf_save_data(form_area, target, 'abprf_save_location');
     });
     $(document).on('click', 'div.abprf_admin button.delete_location', function (e) {
         e.preventDefault();
@@ -492,10 +501,14 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin button.save_brand', function (e) {
         e.preventDefault();
         let $this = $(this);
-        let target_list = $('div.abprf_admin .brand_list');
-        let target_post = $('div.abprf_admin .brand_selection');
-        let parent = $this.closest('.form_area');
-        abprf_save_data(parent, target_list, target_post, 'abprf_save_brand');
+        let target = '';
+        let form_area = $this.closest('.form_area');
+        if (form_area.closest(".data_property").length > 0) {
+            target = form_area.closest(".data_property").find('.brand_selection');
+        } else {
+            target = $('div.abprf_admin .brand_list');
+        }
+        abprf_save_data(form_area, target, 'abprf_save_brand');
     });
     $(document).on('click', 'div.abprf_admin button.delete_brand', function (e) {
         e.preventDefault();
@@ -540,10 +553,14 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin button.save_feature', function (e) {
         e.preventDefault();
         let $this = $(this);
-        let target_list = $('div.abprf_admin .feature_list');
-        let target_post = $('div.abprf_admin .feature_selection');
-        let parent = $this.closest('.form_area');
-        abprf_save_data(parent, target_list, target_post, 'abprf_save_feature');
+        let target = '';
+        let form_area = $this.closest('.form_area');
+        if (form_area.closest(".data_property").length > 0) {
+            target = form_area.closest(".data_property").find('.feature_selection');
+        } else {
+            target = $('div.abprf_admin .feature_list');
+        }
+        abprf_save_data(form_area, target, 'abprf_save_feature');
     });
     $(document).on('click', 'div.abprf_admin button.delete_feature', function (e) {
         e.preventDefault();

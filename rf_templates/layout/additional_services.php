@@ -12,7 +12,6 @@
 				$additional_services = array_key_exists( 'abprf_additional', $abprf_infos ) ? $abprf_infos['abprf_additional'] : ABPRF_Function::get_post_info( $post_id, 'abprf_additional', [] );
 			}
 			if ( $display == 'on' && sizeof( $additional_services ) > 0 ) {
-				//$additional_sold = array_key_exists( 'booking_info', $abprf_infos ) && array_key_exists( 'additional', $abprf_infos['booking_info'] ) ? $abprf_infos['booking_info']['additional'] : [];
 				$ex_count = 0;
 				?>
                 <div class="additional_service_area">
@@ -30,6 +29,10 @@
 								$qty      = !empty($max_qty)?$max_qty:9999;
 							}
 							$sold_qty = 0;
+                            if($qty<9999){
+                                $abprf_infos['ex_id']=$id;
+	                            $sold_qty      = ABPRF_Query::get_sold_qty_ex( $abprf_infos );
+                            }
 							$available   = $qty - $sold_qty;
 							$max_qty     = ! empty( $max_qty ) ? min( $max_qty, $available ) : $available;
 							$description = array_key_exists( 'description', $service ) ? $service['description'] : '';

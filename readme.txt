@@ -1,9 +1,9 @@
-=== RentalForge ===
+=== ABP-RentalForge ===
 Contributors: abpteam
 Tags: Rental, equipment rental,Property Rental, Booking,Tools rental
 Requires at least: 6.2
 Stable tag: 1.0.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -85,7 +85,7 @@ Need help or have suggestions?
 
 🌐 [Live Demo](https://abp-team.com/)
 📖 [Documentation](https://www.abp-team.com/docs/)
-💬 [Support Forum](https://wordpress.org/support/plugin/rentalforge/)
+💬 [Support Forum](https://wordpress.org/support/plugin/abp-rentalforge/)
 🐛 [Bug Reports](https://github.com/abpteam24/abprf-rental-forge/issues)
 📧 Email: support@abp-team.com
 

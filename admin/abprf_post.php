@@ -75,7 +75,7 @@
 					$meta_info['day_time_start'] = isset( $_POST['day_time_start'] ) ? sanitize_text_field( wp_unslash( $_POST['day_time_start'] ) ) : '';
 					$meta_info['day_time_end']   = isset( $_POST['day_time_end'] ) ? sanitize_text_field( wp_unslash( $_POST['day_time_end'] ) ) : '';
 					$meta_info['hour_threshold'] = isset( $_POST['hour_threshold'] ) ? sanitize_text_field( wp_unslash( $_POST['hour_threshold'] ) ) : '24';
-					$meta_info['cut_off_date']   = isset( $_POST['cut_off_date'] ) ? sanitize_text_field( wp_unslash( $_POST['cut_off_date'] ) ) : '1';
+					$meta_info['cut_off_date']   = isset( $_POST['cut_off_date'] ) ? sanitize_text_field( wp_unslash( $_POST['cut_off_date'] ) ) : '10';
 					$meta_info['day_threshold']  = isset( $_POST['day_threshold'] ) ? sanitize_text_field( wp_unslash( $_POST['day_threshold'] ) ) : '30';
 					//=============date================//
 					$meta_info['abprf_dates']         = apply_filters( 'abprf_get_date_array', [] );
@@ -247,8 +247,9 @@
                             <th class="_w_50"><?php esc_html_e( 'SI', 'abprf-rental-forge' ); ?></th>
                             <th class="_w_100"><?php esc_html_e( 'Image', 'abprf-rental-forge' ); ?></th>
                             <th><?php esc_html_e( 'Post', 'abprf-rental-forge' ); ?></th>
-                            <th><?php esc_html_e( 'Shortcode', 'abprf-rental-forge' ); ?></th>
+                            <th><?php esc_html_e( 'Rent Rule', 'abprf-rental-forge' ); ?></th>
                             <th class="_w_100"><?php esc_html_e( 'Property', 'abprf-rental-forge' ); ?></th>
+                            <th><?php esc_html_e( 'Shortcode', 'abprf-rental-forge' ); ?></th>
                             <th class="_w_175"><?php esc_html_e( 'Actions', 'abprf-rental-forge' ); ?></th>
                         </tr>
                         </thead>
@@ -258,11 +259,12 @@
 								$title              = get_the_title( $post_id );
 								$edit_link          = get_edit_post_link( $post_id );
 								$post_rent_continue = ABPRF_Function::get_post_info( $post_id, 'rent_continue', 'on' );
+								$rent_rule          = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
 								$post_status        = get_post_status( $post_id );
 								?>
                                 <tr>
                                     <th><?php echo esc_html( $count ); ?>.</th>
-                                    <td><?php ABPRF_Layout::bg_image( $post_id ); ?></td>
+                                    <td><?php ABPRF_Layout::image( $post_id ); ?></td>
                                     <td>
 										<?php if ( $post_status == 'trash' ) { ?>
                                             <h5 class="_abprf_color_theme"><?php echo esc_html( $title ); ?></h5>
@@ -275,11 +277,12 @@
                                             <span class="_mar_r_xxs <?php echo esc_attr( $post_status ); ?>"><?php echo esc_html( $post_status ); ?></span>
                                         </div>
                                     </td>
+                                    <th><?php echo esc_html( ABPRF_Layout::rent_rules( $rent_rule ) ); ?></th>
+                                    <th><?php echo esc_html( ABPRF_Query::get_property( [ 'post_id' => $post_id ], true ) ); ?></th>
                                     <th>
                                         <p class="_abprf"><code> [abprf-post post_id="<?php echo esc_attr( $post_id ); ?>"]</code></p>
                                         <p class="_abprf"><code> [abprf-property post_id="<?php echo esc_attr( $post_id ); ?>"]</code></p>
                                     </th>
-                                    <th><?php echo esc_html( ABPRF_Query::get_property( [ 'post_id' => $post_id ], true ) ); ?></th>
                                     <th>
                                         <div class="_f_wrap">
                                             <button type="button" class="_btn_light_navy_blue _mar_r_xxs" data-href="<?php echo esc_url( $new_post_url . '&copy_post=' . $post_id ); ?>" title="<?php echo esc_html__( 'Copy/Clone : ', 'abprf-rental-forge' ) . ' ' . esc_html( $title ); ?>">🔁</button>
@@ -315,9 +318,9 @@
 				$abprf_infos['copy_post_id'] = $copy_post_id;
 				wp_nonce_field( 'abprf_post_nonce', 'abprf_post_nonce' );
 				?>
-                <input type="hidden" name="abprf_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
-                <input type="hidden" name="abprf_copy_post" value="<?php echo esc_attr( $copy_post_id ); ?>"/>
-                <div class="abprf_area abprf_admin">
+                <div class="abprf_area abprf_admin rf_post_config">
+                    <input type="hidden" name="abprf_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
+                    <input type="hidden" name="abprf_copy_post" value="<?php echo esc_attr( $copy_post_id ); ?>"/>
                     <div class="_abp_panel">
                         <div class="abprf_tabs tab_top">
                             <div class="_panel_head">

@@ -18,12 +18,13 @@
 					$cat_id = ABPRF_Function::get_post_info( $post_id, 'abprf_category' );
 					$loc_id = ABPRF_Function::get_post_info( $post_id, 'abprf_location' );
 					$post_count ++;
-					$image_url = ABPRF_Function::get_image_url( $post_id );
-					$title     = get_the_title( $post_id ); ?>
+					$title = get_the_title( $post_id ); ?>
                     <div class="pagination_item item_box_1  <?php echo esc_attr( $show_post >= $post_count ? '' : 'rf_close' ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>">
-						<?php do_action( 'abprf_category', $post_id, 'ribbon' ); ?>
-                        <div data-image-href="<?php echo esc_url( $image_url ); ?>"><img class="_img_control" src="#" alt="<?php echo esc_attr( $title ); ?>"></div>
-                        <a class="_abprf list_title" href="<?php echo esc_url( get_the_permalink( $post_id ) ); ?>" target="_blank"><?php echo esc_html( $title ); ?></a>
+                        <div class="item_head">
+							<?php do_action( 'abprf_category', $post_id, 'ribbon' ); ?>
+							<?php ABPRF_Layout::image( $post_id ); ?>
+                            <a class="_abprf list_title" href="<?php echo esc_url( get_the_permalink( $post_id ) ); ?>" target="_blank"><?php echo esc_html( $title ); ?></a>
+                        </div>
                     </div>
 				<?php } ?>
             </div>

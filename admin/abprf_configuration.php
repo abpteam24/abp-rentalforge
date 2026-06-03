@@ -635,7 +635,7 @@
                             <input type="hidden" class="_form_control" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $args['options'] as $key => $option ) { ?>
                                 <div class="radio_item">
-                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( $key == $value ? 'rf_active' : '' ); ?>" data-close-target="#<?php echo esc_attr( $name.$key ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
+                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $key == $value ? 'rf_active' : '' ); ?>" data-close-target="#<?php echo esc_attr( $name.$key ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
                                         <span data-icon class="_mar_r_xs <?php echo esc_attr( $key == $value ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php echo esc_html( $option ); ?>
                                     </button>
                                 </div>
@@ -683,7 +683,7 @@
                             <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $args['options'] as $key => $label ) { ?>
                                 <div class="checkbox_item">
-                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
+                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
                                         <span data-icon class="_mar_r_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $label ); ?>
                                     </button>
                                 </div>
@@ -720,7 +720,7 @@
                             <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $wp_roles->roles as $key => $label ) { ?>
                                 <div class="checkbox_item">
-                                    <button type="button" class="_btn_white_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
+                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
                                         <span data-icon class="_mar_r_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $label['name'] ); ?>
                                     </button>
                                 </div>
