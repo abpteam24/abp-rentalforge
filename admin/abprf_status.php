@@ -138,7 +138,7 @@
 			}
 
 			public function post_page( $abprf_info ): void {
-				$label = isset( $abprf_info['label'] ) && $abprf_info['label'] ? $abprf_info['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+				$label = ABPRF_Function::label();
 				$total = sizeof( isset( $abprf_info['post_ids'] ) && $abprf_info['post_ids'] ? $abprf_info['post_ids'] : ABPRF_Query::get_post_id() );
 				?>
                 <div class="_section_xs">
@@ -172,29 +172,23 @@
 				$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
 				?>
                 <div class="_section_xs">
-                    <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"><?php esc_html_e( 'Property List Page', 'abprf-rental-forge' ); ?></h6>
-						<?php if ( ABPRF_Function::get_page_by_slug( 'rf_property_list' ) ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
-						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 create_property_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Property List Page', 'abprf-rental-forge' ); ?></button>
-						<?php } ?>
-                    </div>
-                    <div class="_divider_xs"></div>
-                    <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"> <?php esc_html_e( 'Number of Prperty', 'abprf-rental-forge' ); ?> </h6>
-						<?php if ( $total_property > 0 ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $total_property ); ?></button>
-						<?php } else { ?>
-                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Any Property', 'abprf-rental-forge' ); ?></button>
-						<?php } ?>
-                    </div>
-<!--                    <div class="_divider_xs"></div>-->
-<!--                    <div class="_fa_center_fj_between">-->
-<!--                        <h6 class="_abprf"> --><?php //esc_html_e( 'Dummy Import', 'abprf-rental-forge' ); ?><!-- </h6>-->
-<!--                        <button class="--><?php //echo esc_attr( $total_property > 0 ? '_btn_light_success_xs' : '_btn_warning_xs' ); ?><!--_btn_theme_min_125 import_dummy_property" type="button"><span class="fas fa-plus _mar_r_xxs"></span>--><?php //esc_html_e( 'Add New Dummy Property', 'abprf-rental-forge' ); ?><!--</button>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="_fa_center_fj_between">
+                    <h6 class="_abprf"><?php esc_html_e( 'Property List Page', 'abprf-rental-forge' ); ?></h6>
+					<?php if ( ABPRF_Function::get_page_by_slug( 'rf_property_list' ) ) { ?>
+                        <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
+					<?php } else { ?>
+                        <button class="_btn_warning_xs_min_125 create_property_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Property List Page', 'abprf-rental-forge' ); ?></button>
+					<?php } ?>
+                </div>
+                <div class="_divider_xs"></div>
+                <div class="_fa_center_fj_between">
+                    <h6 class="_abprf"> <?php esc_html_e( 'Number of Property', 'abprf-rental-forge' ); ?> </h6>
+					<?php if ( $total_property > 0 ) { ?>
+                        <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $total_property ); ?></button>
+					<?php } else { ?>
+                        <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Any Property', 'abprf-rental-forge' ); ?></button>
+					<?php } ?>
+                </div>
 				<?php
 			}
 
@@ -247,9 +241,8 @@
 			public function create_post_list_page() {
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					if ( ! ABPRF_Function::get_page_by_slug( 'rf_post_list' ) ) {
-						$configuration = ABPRF_Configuration;
-						$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-						$page          = array(
+						$label = ABPRF_Function::label();
+						$page  = array(
 							'post_type' => 'page',
 							'post_name' => 'rf_post_list',
 							'post_title' => $label . ' ' . __( 'List', 'abprf-rental-forge' ),
@@ -267,9 +260,8 @@
 			public function create_property_list_page() {
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 					if ( ! ABPRF_Function::get_page_by_slug( 'rf_property_list' ) ) {
-						$configuration = ABPRF_Function::get_option( 'abprf_configuration' );
-						$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-						$page          = array(
+						$label = ABPRF_Function::label();
+						$page  = array(
 							'post_type' => 'page',
 							'post_name' => 'rf_property_list',
 							'post_title' => $label . ' ' . __( 'Property List', 'abprf-rental-forge' ),
@@ -286,21 +278,28 @@
 
 			public function import_dummy() {
 				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					//$this->add_data( $this->dummy_data() );
+					$category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
+					$this->add_data( $category );
 					flush_rewrite_rules();
 				}
 				wp_die();
 			}
 
-			public static function add_data( $dummy_infos ): void {
+			public static function add_data( $_category ): void {
+				global $wpdb;
+				$table_name  = $wpdb->prefix . 'abprf_property';
+				$dummy_infos = self::dummy_data();
 				if ( array_key_exists( 'taxonomy', $dummy_infos ) ) {
 					foreach ( $dummy_infos['taxonomy'] as $taxonomy => $taxonomy_option ) {
 						if ( taxonomy_exists( $taxonomy ) ) {
 							$check_terms = get_terms( array( 'taxonomy' => $taxonomy, 'hide_empty' => false ) );
 							if ( is_string( $check_terms ) || sizeof( $check_terms ) == 0 ) {
-								foreach ( $taxonomy_option as $taxonomy_data ) {
+								foreach ( $taxonomy_option as $key => $taxonomy_data ) {
 									unset( $term );
 									$term = wp_insert_term( $taxonomy_data['name'], $taxonomy );
+									if ( ! is_wp_error( $term ) ) {
+										$$taxonomy[ $key ] = $term['term_id'];
+									}
 								}
 							}
 						}
@@ -315,18 +314,68 @@
 					}
 				}
 				if ( array_key_exists( 'custom_post', $dummy_infos ) ) {
+					$_category = ! empty( $_category ) ? explode( ',', $_category ) : [ 'transport' ];
 					foreach ( $dummy_infos['custom_post'] as $custom_post => $dummy_post ) {
-						foreach ( $dummy_post as $dummy_data ) {
-							$args = array();
-							if ( isset( $dummy_data['name'] ) ) {
-								$args['post_title'] = $dummy_data['name'];
-							}
-							$args['post_status'] = 'publish';
-							$args['post_type']   = $custom_post;
-							$post_id             = wp_insert_post( $args );
-							if ( array_key_exists( 'post_data', $dummy_data ) ) {
-								foreach ( $dummy_data['post_data'] as $meta_key => $data ) {
-									update_post_meta( $post_id, $meta_key, $data );
+						foreach ( $dummy_post as $cat_key => $cat_data ) {
+							if ( in_array( $cat_key, $_category ) ) {
+								foreach ( $cat_data as $dummy_data ) {
+									$args = array();
+									if ( isset( $dummy_data['name'] ) ) {
+										$args['post_title'] = $dummy_data['name'];
+									}
+									$args['post_status'] = 'publish';
+									$args['post_type']   = $custom_post;
+									$post_id             = wp_insert_post( $args );
+                                    $post_data=$dummy_data['post_data'] ?? [];
+									if ( !empty( $post_data) ) {
+										$common_data = $post_data['common_data'] ?? [];
+										foreach ( $common_data as $meta_key => $data ) {
+											update_post_meta( $post_id, $meta_key, $data );
+										}
+										$template = $post_data['abprf_template'] ?? 'grid';
+										update_post_meta( $post_id, 'abprf_template', $template );
+										$rent_rule = $post_data['rent_rule'] ?? 'hourly';
+										update_post_meta( $post_id, 'rent_rule', $rent_rule );
+										$post_cat = isset( $abprf_category ) && is_array( $abprf_category ) && array_key_exists( $cat_key, $abprf_category ) ? $abprf_category[ $cat_key ] : '';
+										update_post_meta( $post_id, 'abprf_category', $post_cat );
+										$post_loc       = '';
+										$abprf_location = isset( $abprf_location ) && is_array( $abprf_location ) ? $abprf_location : [];
+										if ( sizeof( $abprf_location ) > 3 ) {
+											$post_loc_key = array_rand( $abprf_location, 3 );
+											$post_loc     = [
+												$abprf_location[ $post_loc_key[0] ],
+												$abprf_location[ $post_loc_key[1] ],
+												$abprf_location[ $post_loc_key[2] ]
+											];
+											$post_loc     = implode( ', ', $post_loc );
+										}
+										update_post_meta( $post_id, 'abprf_location', $post_loc );
+										$properties = $post_data['property'] ?? [];
+										if ( ! empty( $properties ) ) {
+											foreach ( $properties as $property ) {
+												$abprf_brand = isset( $abprf_brand ) && is_array( $abprf_brand ) ? $abprf_brand : [];
+												$post_brand = sizeof( $abprf_brand ) > 0?$abprf_brand[ array_rand( $abprf_brand ) ]:'';
+												$data        = [
+													'post_id' => intval( $post_id ),
+													'rent_continue' => 'on',
+													'name' => sanitize_text_field( $property['name'] ?? '' ),
+													'brand' => sanitize_text_field( $post_brand ),
+													'category' => sanitize_text_field( $post_cat ),
+													'location' => sanitize_text_field( $post_loc ),
+													'features' => sanitize_text_field( $property['features'] ?? '' ),
+													'rent_rule' => sanitize_text_field( $rent_rule ),
+													'price_qty_info' => json_encode( $property['price_qty_info'] ?? [] ),
+													'gallery' => sanitize_text_field( $property['gallery'] ?? '' ),
+													'status' => ! empty( $post_id ) ? get_post_status( $post_id ) : '',
+													'others' => json_encode( $property['others'] ?? [] ),
+													'updated_at' => current_time( 'Y-m-d H:i' )
+												];
+												// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+												$wpdb->insert( $table_name, $data );
+											}
+										}
+										ABPRF_Function::update_global_data( $post_id );
+									}
 								}
 							}
 						}
@@ -334,102 +383,294 @@
 				}
 			}
 
-			public function dummy_data(): array {
+			public static function dummy_data(): array {
 				return [
 					'taxonomy' => [
 						'abprf_category' => [
-							0 => [ 'name' => 'AC' ],
-							1 => [ 'name' => 'Non AC' ],
-							2 => [ 'name' => 'AC Sleeper' ],
+							'transport' => [ 'name' => 'Transport' ],
+							'camera' => [ 'name' => 'Camera' ],
+							'party' => [ 'name' => 'Party Equipment' ],
+							'drone' => [ 'name' => 'Drone' ],
+							'resort' => [ 'name' => 'Resort' ],
+							'travel' => [ 'name' => 'Travel Equipment' ],
+							'sport' => [ 'name' => 'Sport Equipment' ],
+						],
+						'abprf_location' => [
+							0 => [ 'name' => 'Washington, D.C' ],
+							1 => [ 'name' => 'New York City' ],
+							2 => [ 'name' => 'California' ],
+							3 => [ 'name' => 'Los Angeles' ],
+							4 => [ 'name' => 'Chicago' ],
+							5 => [ 'name' => 'San Francisco' ],
+						],
+						'abprf_brand' => [
+							0 => [ 'name' => 'Mercedes-Benz' ],
+							1 => [ 'name' => 'Toyota Motor' ],
+							2 => [ 'name' => 'Tesla' ],
+							3 => [ 'name' => 'BMW' ],
+							4 => [ 'name' => 'Canon' ],
+							5 => [ 'name' => 'Nikon' ],
+							6 => [ 'name' => 'Sony' ],
+							7 => [ 'name' => 'Fujifilm' ],
+							8 => [ 'name' => 'Pioneer DJ' ],
+							9 => [ 'name' => 'Yamaha' ],
+							10 => [ 'name' => 'DJI' ],
+							11 => [ 'name' => 'Autel Robotics' ],
+							12 => [ 'name' => 'Marriott International' ],
+							13 => [ 'name' => 'Hilton Worldwide' ],
+							14 => [ 'name' => 'American Tourister' ],
+							15 => [ 'name' => 'Samsonite International' ],
+							16 => [ 'name' => 'Nike' ],
+							17 => [ 'name' => 'Adidas' ],
+							18 => [ 'name' => 'Puma' ],
 						],
 					],
 					'options' => [
+						'abprf_feature' => ABPRF_Layout::static_feature(),
 						'abprf_additional' => ABPRF_Layout::static_additional(),
-						'abprf_traveller_pattern' => ABPRF_Layout::static_form(),
+						'abprf_forms' => ABPRF_Layout::static_form(),
 					],
 					'custom_post' => [
 						'abprf_post' => [
-							0 => [
-								'name' => 'Bucharest-Izmail',
-								'post_data' => [
-									//General
-									'display_equipment_id' => 'on',
-									'equipment_id' => wp_rand( 100, 999 ),
-									'display_category' => 'on',
-									'category' => 'AC',
-									'rent_continue' => 'on',
-									//Date_settings
-									'date_type' => 'periodic_date',
-									'specific_dates' => [],
-									'periodic_start_date' => gmdate( 'Y-m-d', strtotime( ' +1 day' ) ),
-									'periodic_end_date' => '',
-									'periodic_after' => 1,
-									'advance_date_number' => 15,
-									'weekend' => 'sunday',
-									'specific_off_dates' => [
-										gmdate( 'Y-m-d', strtotime( ' +15 day' ) ),
-									],
-									'off_date_range' => [
-										0 => [
-											'from' => gmmktime( 'Y-m-d', strtotime( ' +25 day' ) ),
-											'to' => gmdate( 'Y-m-d', strtotime( ' +28 day' ) ),
-										],
-									],
-									//seat_settings
-									'display_ticket_type' => '',
-									'ticket_type' => '',
-									'seat_type' => 'seat_plan',
-									'ld_rows' => '12',
-									'ld_columns' => '5',
-									'display_ud' => '',
-									'ud_infos' => [],
-									'ud_rows' => '',
-									'ud_columns' => '',
-									'total_seat' => '40',
-									//Route_settings
-									'routing_infos' => [
-										0 => [ 'stop' => 'A', 'type' => 'bp', 'time' => '08:00' ],
-										1 => [ 'stop' => 'B', 'type' => 'bp', 'time' => '09:00' ],
-										2 => [ 'stop' => 'C', 'type' => 'bp', 'time' => '11:00' ],
-										3 => [ 'stop' => 'D ', 'type' => 'both', 'time' => '12:00' ],
-										4 => [ 'stop' => 'E', 'type' => 'both', 'time' => '14:00' ],
-										5 => [ 'stop' => 'F', 'type' => 'dp', 'time' => '15:45' ],
-										6 => [ 'stop' => 'G', 'type' => 'dp', 'time' => '17:00' ],
-									],
-									'route_direction' => [ 'A', 'B', 'C', 'D', 'E', 'F', 'G' ],
-									//price_settings
-									'price_infos' => [
-										0 => [ 'bp' => 'A', 'dp' => 'D ', 'price' => '750', 'adult' => '', 'child' => '', 'infant' => '' ],
-										1 => [ 'bp' => 'A', 'dp' => 'E', 'price' => '850', 'adult' => '', 'child' => '', 'infant' => '' ],
-										2 => [ 'bp' => 'A', 'dp' => 'F', 'price' => '1000', 'adult' => '', 'child' => '', 'infant' => '' ],
-										3 => [ 'bp' => 'A', 'dp' => 'G', 'price' => '1200', 'adult' => '', 'child' => '', 'infant' => '' ],
-										4 => [ 'bp' => 'B', 'dp' => 'D ', 'price' => '1100', 'adult' => '', 'child' => '', 'infant' => '' ],
-										5 => [ 'bp' => 'B', 'dp' => 'E', 'price' => '900', 'adult' => '', 'child' => '', 'infant' => '' ],
-										6 => [ 'bp' => 'B', 'dp' => 'F', 'price' => '800', 'adult' => '', 'child' => '', 'infant' => '' ],
-										7 => [ 'bp' => 'B', 'dp' => 'G', 'price' => '700', 'adult' => '', 'child' => '', 'infant' => '' ],
-										8 => [ 'bp' => 'C', 'dp' => 'D ', 'price' => '1000', 'adult' => '', 'child' => '', 'infant' => '' ],
-										9 => [ 'bp' => 'C', 'dp' => 'E', 'price' => '900', 'adult' => '', 'child' => '', 'infant' => '' ],
-										10 => [ 'bp' => 'C', 'dp' => 'F', 'price' => '800', 'adult' => '', 'child' => '', 'infant' => '' ],
-										11 => [ 'bp' => 'C', 'dp' => 'G', 'price' => '700', 'adult' => '', 'child' => '', 'infant' => '' ],
-										12 => [ 'bp' => 'D ', 'dp' => 'E', 'price' => '800', 'adult' => '', 'child' => '', 'infant' => '' ],
-										13 => [ 'bp' => 'D ', 'dp' => 'F', 'price' => '600', 'adult' => '', 'child' => '', 'infant' => '' ],
-										14 => [ 'bp' => 'D ', 'dp' => 'G', 'price' => '300', 'adult' => '', 'child' => '', 'infant' => '' ],
-										15 => [ 'bp' => 'E ', 'dp' => 'F', 'price' => '400', 'adult' => '', 'child' => '', 'infant' => '' ],
-										16 => [ 'bp' => 'E ', 'dp' => 'G', 'price' => '300', 'adult' => '', 'child' => '', 'infant' => '' ],
-									],
-									//Reg form
-									'display_client_form' => 'on',
-									'display_single_form' => 'on',
-									'abprf_forms' => ABPRF_Layout::static_form(),
-									//additional service
-									'display_additional_services' => 'on',
-									'additional_services' => ABPRF_Layout::static_additional(),
-									//slider_settings
-									'abprf_sliders' => [ 200, 300, 400, 500, 600, 700, 800, 900, 1000 ],
-								]
+							'transport' => [
+								0 => [
+									'name' => 'Motor Bike',
+									'post_data' => [
+										'common_data' => self::post_data(),
+										'abprf_template' => 'grid',
+										'rent_rule' => 'hourly',
+										'property' => [
+											0 => [
+												'name' => 'Ducati Panigale V4',
+												'features' => 'fec_id_4,fec_id_7,fec_id_9,fec_id_11',
+												'rent_rule' => 'hourly',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🏍️' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 10, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 3, 'min' => 2, 'max' => 5 ],
+													'daily' => [ 'qty' => 10, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 10, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 10, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 10, 'price_multi' => 2, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											1 => [
+												'name' => 'Yamaha YZF-R1',
+												'features' => 'fec_id_3,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'hourly',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => 'fas fa-motorcycle' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 4, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'price_multi' => 2, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											2 => [
+												'name' => 'BMW S1000RR',
+												'features' => 'fec_id_3,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'hourly',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🏍️' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 5, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 5, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'price_multi' => 2, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											3 => [
+												'name' => 'Kawasaki Ninja H2',
+												'features' => 'fec_id_4,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'hourly',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => 'fas fa-motorcycle' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 5, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 6, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 20, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'price_multi' => 2, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											4 => [
+												'name' => 'Honda CBR1000RR-R Fireblade',
+												'features' => 'fec_id_3,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'hourly',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🏍️' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 8, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 7, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 25, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'price_multi' => 3, 'min' => 1, 'max' => 10 ],
+												]
+											]
+										]
+									]
+								],
+								1 => [
+									'name' => 'Bicycle',
+									'post_data' => [
+										'common_data' => self::post_data(),
+										'abprf_template' => 'group',
+										'rent_rule' => 'daily',
+										'property' => [
+											0 => [
+												'name' => 'BMC',
+												'features' => 'fec_id_4,fec_id_7,fec_id_9,fec_id_11',
+												'rent_rule' => 'daily',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🚴‍♂️' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 20, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 3, 'min' => 2, 'max' => 5 ],
+													'daily' => [ 'qty' => 20, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 10, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 20, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 10, 'price_multi' => 2, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											1 => [
+												'name' => 'Trek',
+												'features' => 'fec_id_3,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'daily',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🚲' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 25, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 4, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 25, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 25, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'price_multi' => 2, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											2 => [
+												'name' => 'Giant',
+												'features' => 'fec_id_3,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'daily',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🚴‍♂️' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 5, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'price_multi' => 2, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											3 => [
+												'name' => 'Cannondale',
+												'features' => 'fec_id_4,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'daily',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🚲' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 6, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 20, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'price_multi' => 2, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											4 => [
+												'name' => 'Specialized Bicycle',
+												'features' => 'fec_id_3,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'daily',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🚴‍♂️' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 18, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 7, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 25, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 30, 'price_multi' => 3, 'min' => 1, 'max' => 10 ],
+												]
+											]
+										]
+									]
+								],
+								2 => [
+									'name' => 'Car',
+									'post_data' => [
+										'common_data' => self::post_data(),
+										'abprf_template' => 'grid',
+										'rent_rule' => 'multi_day',
+										'property' => [
+											0 => [
+												'name' => 'Bugatti Chiron',
+												'features' => 'fec_id_4,fec_id_7,fec_id_9,fec_id_11',
+												'rent_rule' => 'multi_day',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🚗️' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 20, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 10, 'min' => 2, 'max' => 5 ],
+													'daily' => [ 'qty' => 20, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 100, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 20, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 100, 'price_multi' => 15, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											1 => [
+												'name' => 'Ferrari SF90 Stradale',
+												'features' => 'fec_id_3,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'multi_day',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => 'fas fa-car' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 25, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 15, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 25, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 120, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 25, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 130, 'price_multi' => 20, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											2 => [
+												'name' => 'Rolls-Royce Phantom',
+												'features' => 'fec_id_2,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'multi_day',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🚗️' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 5, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 50, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 200, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 200, 'price_multi' => 25, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											3 => [
+												'name' => 'Tesla Model S Plaid',
+												'features' => 'fec_id_1,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'multi_day',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => 'fas fa-car' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 12, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 16, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 200, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 12, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 200, 'price_multi' => 20, 'min' => 1, 'max' => 10 ],
+												]
+											],
+											4 => [
+												'name' => 'Lamborghini Revuelto',
+												'features' => 'fec_id_1,fec_id_7,fec_id_9,fec_id_11,fec_id_10',
+												'rent_rule' => 'multi_day',
+												'gallery' => '10,20,30,40,50',
+												'others' => [ 'icon' => '🚗️' ],
+												'price_qty_info' => [
+													'hourly' => [ 'qty' => 18, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 1, 'price' => 17, 'min' => 2, 'max' => 10 ],
+													'daily' => [ 'qty' => 15, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 250, 'min' => 1, 'max' => 10 ],
+													'multi_day' => [ 'qty' => 16, 'reserve' => 2, 'qty_min' => 1, 'qty_max' => 2, 'price' => 150, 'price_multi' => 30, 'min' => 1, 'max' => 10 ],
+												]
+											]
+										]
+									]
+								],
 							],
 						]
 					]
+				];
+			}
+
+			public static function post_data(): array {
+				return [
+					'rent_continue' => 'on',
+					'display_sku' => 'on',
+					'post_sku' => wp_rand( 100, 999 ),
+					'display_category' => 'on',
+					'display_location' => 'on',
+					'day_time_start' => '11:00',
+					'day_time_end' => '10:00',
+					'hour_threshold' => '20',
+					'cut_off_date' => '10',
+					'day_threshold' => '25',
+					'active_global_dates' => 'on',
+					'display_additional_services' => 'on',
+					'active_global_additional' => 'on',
+					'display_client_form' => 'on',
+					'active_global_form' => 'on',
+					'display_faq' => 'on',
+					'active_global_faq' => 'on',
+					'display_tc' => 'on',
+					'active_global_tc' => 'on',
+					'dummy' => 'on',
 				];
 			}
 		}

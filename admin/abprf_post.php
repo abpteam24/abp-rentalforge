@@ -15,7 +15,7 @@
 			}
 
 			public function load_posts( $abprf_info ): void {
-				$brand_icon            = isset( $abprf_info['brand_icon'] ) && $abprf_info['brand_icon'] ? $abprf_info['brand_icon'] : 'fas fa-hammer';
+				$brand_icon            =ABPRF_Function::icon();
 				$total_posts           = isset( $abprf_info['total_post'] ) && $abprf_info['total_post'] ? $abprf_info['total_post'] : 0;
 				$total_publish         = isset( $abprf_info['total_publish'] ) && $abprf_info['total_publish'] ? $abprf_info['total_publish'] : 0;
 				$total_draft           = isset( $abprf_info['total_draft'] ) && $abprf_info['total_draft'] ? $abprf_info['total_draft'] : 0;
@@ -47,9 +47,8 @@
 			}
 
 			public function settings_meta(): void {
-				$abprf_configuration = ABPRF_Function::get_option( 'abprf_configuration' );
-				$label               = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$brand_icon          = isset( $abprf_configuration['brand_icon'] ) && $abprf_configuration['brand_icon'] ? $abprf_configuration['brand_icon'] : 'fas fa-hammer';
+				$label               = ABPRF_Function::label();
+				$brand_icon          =ABPRF_Function::icon();
 				$label               = $label . ' ' . __( 'Configuration', 'abprf-rental-forge' ) . get_the_title( get_the_id() );
 				add_meta_box( 'abprf_configuration', '<span class="' . esc_attr( $brand_icon ?: '' ) . '"></span>' . esc_html( $label ), array( $this, 'settings' ), esc_attr( ABPRF_Function::get_cpt() ), 'normal', 'high' );
 			}
@@ -65,7 +64,7 @@
 					$meta_info['display_sub_title'] = isset( $_POST['display_sub_title'] ) ? sanitize_text_field( wp_unslash( $_POST['display_sub_title'] ) ) : 'off';
 					$meta_info['display_sku']       = isset( $_POST['display_sku'] ) ? sanitize_text_field( wp_unslash( $_POST['display_sku'] ) ) : 'off';
 					$meta_info['post_sku']          = isset( $_POST['post_sku'] ) ? sanitize_text_field( wp_unslash( $_POST['post_sku'] ) ) : '';
-					$meta_info['abprf_template']    = isset( $_POST['abprf_template'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_template'] ) ) : 'default';
+					$meta_info['abprf_template']    = isset( $_POST['abprf_template'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_template'] ) ) : 'grid';
 					$meta_info['display_category']  = isset( $_POST['display_category'] ) ? sanitize_text_field( wp_unslash( $_POST['display_category'] ) ) : 'off';
 					$meta_info['abprf_category']    = isset( $_POST['abprf_category'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_category'] ) ) : '';
 					$meta_info['display_location']  = isset( $_POST['display_location'] ) ? sanitize_text_field( wp_unslash( $_POST['display_location'] ) ) : 'off';
@@ -82,6 +81,7 @@
 					$meta_info['active_global_dates'] = isset( $_POST['active_global_dates'] ) ? sanitize_text_field( wp_unslash( $_POST['active_global_dates'] ) ) : 'on';
 					//=============additional================//
 					$meta_info['display_additional_services'] = isset( $_POST['display_additional_services'] ) ? sanitize_text_field( wp_unslash( $_POST['display_additional_services'] ) ) : 'off';
+					$meta_info['active_global_additional']  = isset( $_POST['active_global_additional'] ) ? sanitize_text_field( wp_unslash( $_POST['active_global_additional'] ) ) : 'on';
 					$meta_info['additional_services']         = apply_filters( 'abprf_get_additional_array', [] );
 					//=============form================//
 					$meta_info['display_client_form'] = isset( $_POST['display_client_form'] ) ? sanitize_text_field( wp_unslash( $_POST['display_client_form'] ) ) : 'off';
@@ -277,7 +277,7 @@
                                             <span class="_mar_r_xxs <?php echo esc_attr( $post_status ); ?>"><?php echo esc_html( $post_status ); ?></span>
                                         </div>
                                     </td>
-                                    <th><?php echo esc_html( ABPRF_Layout::rent_rules( $rent_rule ) ); ?></th>
+                                    <th><?php echo esc_html( !empty($rent_rule)?ABPRF_Layout::rent_rules( $rent_rule ):'' ); ?></th>
                                     <th><?php echo esc_html( ABPRF_Query::get_property( [ 'post_id' => $post_id ], true ) ); ?></th>
                                     <th>
                                         <p class="_abprf"><code> [abprf-post post_id="<?php echo esc_attr( $post_id ); ?>"]</code></p>

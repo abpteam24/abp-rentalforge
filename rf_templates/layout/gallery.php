@@ -18,6 +18,7 @@
 							$id = is_array($img_info) && array_key_exists( 'id', $img_info ) ? $img_info['id'] : '';
 							if ( ! empty( $id ) ) {
 								$url = ABPRF_Function::get_image_url( '', $id );
+								$url = $url ?: ABPRF_BLANK_IMG_URL;
 								?>
                                 <div class="gallery_item " data-img="<?php echo esc_url( $url ); ?>" <?php if ( $active_popup == 'on' ){ ?>data-target-popup="<?php echo esc_attr( $popup_id ); ?>"<?php } ?>>
                                     <img src="#" alt="<?php echo esc_html( array_key_exists( 'post', $img_info ) ? $img_info['post'] : '' ); ?>"/>

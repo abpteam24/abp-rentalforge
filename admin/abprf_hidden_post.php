@@ -76,29 +76,50 @@
 
 			//=============================//
 			public function create_wc_hidden_post( $post_id, $title ): void {
-				$new_post = array( 'post_title' => $title, 'post_content' => '', 'post_name' => uniqid(), 'post_category' => array(), 'tags_input' => array(), 'post_status' => 'publish', 'post_type' => 'product' );
-				$pid      = wp_insert_post( $new_post );
-				update_post_meta( $post_id, 'link_wc_id', $pid );
-				update_post_meta( $pid, 'link_abprf_id', $post_id );
-				update_post_meta( $pid, '_price', 0.01 );
-				update_post_meta( $pid, '_sold_individually', 'yes' );
-				update_post_meta( $pid, '_virtual', 'yes' );
-				$terms = array( 'exclude-from-catalog', 'exclude-from-search' );
-				wp_set_object_terms( $pid, $terms, 'product_visibility' );
-				update_post_meta( $post_id, 'exit_wc_hidden_post', true );
+				if ( ! class_exists( 'WC_Product_Simple' ) ) {
+					return;
+				}
+				$product = new WC_Product_Simple();
+				$product->set_name( $title );
+				$product->set_status( 'publish' );
+				$product->set_slug( uniqid() );
+				$product->set_regular_price( 0.01 );
+				$product->set_price( 0.01 );
+				$product->set_sold_individually( true );
+				$product->set_virtual( true );
+				$product->set_catalog_visibility( 'hidden' );
+				$product->update_meta_data( 'link_abprf_id', $post_id );
+				$pid = $product->save();
+				if ( $pid ) {
+					wp_set_object_terms( $pid, (int) $post_id, 'link_abprf_taxonomy' );
+					if ( get_post_meta( $post_id, 'link_wc_id', true ) !== (string) $pid ) {
+						update_post_meta( $post_id, 'link_wc_id', $pid );
+					}
+					update_post_meta( $post_id, 'exit_wc_hidden_post', true );
+					wp_cache_delete( 'count_hidden_post_' . $post_id, 'abprf_counts' );
+					delete_transient( 'count_hidden_post_' . $post_id );
+				}
 			}
 
 			public function count_hidden_post( $post_id ): int {
-				$args = array(
-					'post_type' => 'product',
-					'posts_per_page' => - 1,
-					'meta_query' => array(
-						array( 'key' => 'link_abprf_id', 'value' => $post_id, 'compare' => '=' )
-					)
-				);
-				$loop = new WP_Query( $args );
+				$cache_group = 'abprf_counts';
+				$cache_key   = 'count_hidden_post_' . $post_id;
+				$count       = wp_cache_get( $cache_key, $cache_group );
+				if ( false === $count ) {
+					$count = get_transient( $cache_key );
+					if ( false === $count ) {
+						global $wpdb;
+						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+						$count = (int) $wpdb->get_var( $wpdb->prepare(
+							"SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_key = 'link_abprf_id' AND meta_value = %s",
+							(string) $post_id
+						) );
+						set_transient( $cache_key, $count, HOUR_IN_SECONDS );
+					}
+					wp_cache_set( $cache_key, $count, $cache_group );
+				}
 
-				return $loop->post_count;
+				return (int) $count;
 			}
 
 			//**************Google search url hidden*********************//

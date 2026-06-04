@@ -18,6 +18,7 @@
 									$id = is_array($img_info) && array_key_exists( 'id', $img_info ) ? $img_info['id'] : '';
 									if ( ! empty( $id ) ) {
 										$url = ABPRF_Function::get_image_url( '', $id );
+										$url = $url ?: ABPRF_BLANK_IMG_URL;
 										?>
                                         <div class="slider_item" data-img="<?php echo esc_url( $url ); ?>">
                                             <div class="slider_loading"></div>

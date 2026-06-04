@@ -11,15 +11,15 @@
 
 			public function admin_menu(): void {
 				$abprf_configuration = ABPRF_Configuration;
-				$label               = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+				$label               = ABPRF_Function::label();
 				$slug                = isset( $abprf_configuration['slug'] ) && $abprf_configuration['slug'] ? $abprf_configuration['slug'] : 'rental-forge';
 				add_menu_page( $label, $label, 'manage_options', $slug, array( $this, 'load_main_page' ), 'dashicons-hammer', 6 );
 			}
 
 			public function load_main_page(): void {
 				$abprf_info     = ABPRF_Query::get_info();
-				$brand_label    = isset( $abprf_info['label'] ) && $abprf_info['label'] ? $abprf_info['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$brand_icon     = isset( $abprf_info['brand_icon'] ) && $abprf_info['brand_icon'] ? $abprf_info['brand_icon'] : 'fas fa-hammer';
+				$brand_label    = ABPRF_Function::label();
+				$brand_icon     = ABPRF_Function::icon();
 				$total_post     = isset( $abprf_info['total_post'] ) && $abprf_info['total_post'] ? $abprf_info['total_post'] : 0;
 				$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
 				$total_order    = isset( $abprf_info['total_order'] ) && $abprf_info['total_order'] ? $abprf_info['total_order'] : 0;

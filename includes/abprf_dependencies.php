@@ -16,8 +16,7 @@
 			}
 
 			public function admin_enqueue(): void {
-				$configuration = ABPRF_Configuration;
-				$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+				$label         = ABPRF_Function::label();
 				$this->global_enqueue();
 				wp_enqueue_editor();
 				wp_enqueue_media();
@@ -200,7 +199,7 @@
 			public function register_cpt(): void {
 				$configuration = ABPRF_Configuration;
 				$cpt           = ABPRF_Function::get_cpt();
-				$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+				$label         = ABPRF_Function::label();
 				$slug          = isset( $configuration['slug'] ) && $configuration['slug'] ? $configuration['slug'] : 'rental-forge';
 				$icon          = isset( $configuration['icon'] ) && $configuration['icon'] ? $configuration['icon'] : 'dashicons-hammer';
 				$labels        = [

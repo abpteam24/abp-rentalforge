@@ -1,6 +1,6 @@
-=== ABP-RentalForge ===
+=== ABP RentalForge ===
 Contributors: abpteam
-Tags: Rental, equipment rental,Property Rental, Booking,Tools rental
+Tags: Rental, equipment rental,WC Rental, Booking,Woocommerce Reservation Booking
 Requires at least: 6.2
 Stable tag: 1.0.0
 Tested up to: 7.0
@@ -83,8 +83,8 @@ You can easily configure booking rules, set minimum and maximum rental durations
 If you need any further assistance or support, do contact us at this [🎫 support form](https://abp-team.com/submit-ticket/). We are very open to your suggestions. So do feel free to tell us if there is anything we can do to improve the plugin.
 Need help or have suggestions?
 
-🌐 [Live Demo](https://abp-team.com/)
-📖 [Documentation](https://www.abp-team.com/docs/)
+🌐 [Live Demo](https://demo.rf.abp-team.com/)
+📖 [Documentation](https://www.demo.rf.abp-team.com/docs/)
 💬 [Support Forum](https://wordpress.org/support/plugin/abp-rentalforge/)
 🐛 [Bug Reports](https://github.com/abpteam24/abprf-rental-forge/issues)
 📧 Email: support@abp-team.com
@@ -156,7 +156,7 @@ It will be compatible with any standards-compliant wordpress theme.
 == Frequently Asked Questions ==
 
 = Can I use multiple pricing types? =
-Yes, you can enable one or multiple pricing options.
+Yes, you can enable one or multiple pricing options. but not in same post.
 
 = Is deposit required? =
 No, deposit is optional.
@@ -192,24 +192,24 @@ Yes. The plugin is fully translation-ready.
 
 = Where can I get help? =
 
-Post your question in the [support forum](https://wordpress.org/support/plugin/rentalforge/) and our team will respond within 24–48 hours.
+Post your question in the [support forum](https://wordpress.org/support/plugin/abp-rentalforge/) and our team will respond within 24–48 hours.
 
 = Does it work with XAMPP? =
 Yes, RentalForge is fully compatible with local environments like XAMPP for development and testing.
 
 == Screenshots ==
 
-1. The RentalForge Dashboard – Overview of current orders and inventory.
-2. Equipment Settings – Adding new rental items with custom properties.
-1. Property management dashboard
-2. Pricing configuration panel
-3. Booking interface
-4. Availability settings
-1. **Property Listings** — Clean, filterable grid layout of all rental properties.
-2. **Single Property Page** — Full details, photo gallery, amenities and booking form.
-3. **Bookings Dashboard** — Manage all reservations from one central screen.
-4. **Settings Panel** — Easy-to-use settings for payments, emails and general options.
-
+1. The RentalForge Post List Page – Overview of all Posts.
+2. The Property List Page – Overview of all Property.
+3. The Order List Page – Overview of all Order.
+4. Global Data Configuration – Clean and flexible data configuration .
+5. Configuration – Clean and flexible configuration .
+6. Pricing configuration panel .
+7.  **Property Listings** — Clean, filterable grid layout of all rental properties.
+8.  **Property Listings** — Clean, filterable List layout of all rental properties.
+9.  **Post Listings** — Clean, filterable grid layout of all rental Post.
+10.  **Post Listings** — Clean, filterable List layout of all rental Post.
+11. **Single Property Page** — Full details, photo gallery, amenities and booking form.
 == Privacy Policy ==
 
 This plugin uses Appsero SDK for optional telemetry data collection. No data is collected without user consent. Data collection starts only after user approval from the admin notice.
@@ -217,5 +217,8 @@ This plugin uses Appsero SDK for optional telemetry data collection. No data is 
 [Learn more]( https://appsero.com/privacy-policy/)
 
 == Upgrade Notice ==
+= 1.0.0 =
+*Initial Release*
+== Changelog ==
 = 1.0.0 =
 *Initial Release*

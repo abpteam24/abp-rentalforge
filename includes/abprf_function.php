@@ -89,7 +89,11 @@
 				return is_array( ABPRF_Configuration ) && array_key_exists( 'booked_status', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['booked_status'] ) ? ABPRF_Configuration['booked_status'] : 'wc-processing,wc-completed';
 			}
 
-			public static function brand_icon() {
+			public static function label() {
+				return is_array( ABPRF_Configuration ) && array_key_exists( 'label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['label'] ) ? ABPRF_Configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+			}
+
+			public static function icon() {
 				return is_array( ABPRF_Configuration ) && array_key_exists( 'brand_icon', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['brand_icon'] ) ? ABPRF_Configuration['brand_icon'] : 'fas fa-hammer';
 			}
 
@@ -398,10 +402,10 @@
 
 			public static function get_date_list( $date_infos ): array {
 				$all_dates = [];
-				$date_type = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
+				$date_type = $date_infos['date_type'] ?? 'periodic_date';
 				$now       = current_time( 'Y-m-d' );
 				if ( $date_type == 'specific_date' ) {
-					$specific_dates = array_key_exists( 'specific_dates', $date_infos ) ? $date_infos['specific_dates'] : [];
+					$specific_dates = $date_infos['specific_dates'] ?? [];
 					if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
 						foreach ( $specific_dates as $specific_date ) {
 							$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
@@ -414,11 +418,11 @@
 						}
 					}
 				} else {
-					$start_date    = array_key_exists( 'periodic_start_date', $date_infos ) ? $date_infos['periodic_start_date'] : '';
+					$start_date    = $date_infos['periodic_start_date'] ?? '';
 					$start_date    = $start_date ?: $now;
-					$sale_end_date = array_key_exists( 'periodic_end_date', $date_infos ) ? $date_infos['periodic_end_date'] : '';
+					$sale_end_date = $date_infos['periodic_end_date'] ?? '';
 					$sale_end_date = $sale_end_date ? gmdate( 'Y-m-d', strtotime( $sale_end_date ) ) : '';
-					$active_days   = array_key_exists( 'advance_date_number', $date_infos ) ? $date_infos['advance_date_number'] : 28;
+					$active_days   = $date_infos['advance_date_number'] ?? 28;
 					if ( strtotime( $now ) >= strtotime( $start_date ) ) {
 						$start_date = $now;
 					}
@@ -428,10 +432,10 @@
 					}
 					if ( strtotime( $start_date ) < strtotime( $end_date ) ) {
 						$off_dates       = [];
-						$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
+						$date_rule       = $date_infos['date_rule'] ?? '';
 						$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
 						if ( in_array( 'off_date_range', $date_rule_array ) ) {
-							$off_date_range = array_key_exists( 'off_date_range', $date_infos ) ? $date_infos['off_date_range'] : [];
+							$off_date_range = $date_infos['off_date_range'] ?? [];
 							if ( is_array( $off_date_range ) && sizeof( $off_date_range ) > 0 ) {
 								foreach ( $off_date_range as $off_date ) {
 									if ( is_array( $off_date ) && array_key_exists( 'from', $off_date ) && $off_date['from'] && array_key_exists( 'to', $off_date ) && $off_date['to'] ) {
@@ -446,7 +450,7 @@
 							}
 						}
 						if ( in_array( 'specific_of_date', $date_rule_array ) ) {
-							$particular_off_dates = array_key_exists( 'specific_off_dates', $date_infos ) ? $date_infos['specific_off_dates'] : [];
+							$particular_off_dates = $date_infos['specific_off_dates'] ?? [];
 							if ( is_array( $particular_off_dates ) && sizeof( $particular_off_dates ) > 0 ) {
 								foreach ( $particular_off_dates as $particular_off_date ) {
 									$particular_off_date = gmdate( 'Y-m-d', strtotime( $particular_off_date ) );
@@ -457,10 +461,10 @@
 						$off_dates     = array_unique( $off_dates );
 						$off_day_array = [];
 						if ( in_array( 'weekend', $date_rule_array ) ) {
-							$off_days      = array_key_exists( 'weekend', $date_infos ) ? $date_infos['weekend'] : '';
+							$off_days      = $date_infos['weekend'] ?? '';
 							$off_day_array = $off_days ? explode( ',', $off_days ) : [];
 						}
-						$repeat = array_key_exists( 'periodic_after', $date_infos ) ? $date_infos['periodic_after'] : 1;
+						$repeat = $date_infos['periodic_after'] ?? 1;
 						$dates  = self::date_separate_period( $start_date, $end_date, $repeat );
 						foreach ( $dates as $date ) {
 							$date = $date->format( 'Y-m-d' );
@@ -473,7 +477,7 @@
 						}
 						//==================//
 						if ( in_array( 'special_on_dates', $date_rule_array ) ) {
-							$special_on_dates = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];
+							$special_on_dates = $date_infos['special_on_dates'] ?? [];
 							if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
 								foreach ( $special_on_dates as $special_on_date ) {
 									$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
@@ -966,17 +970,17 @@
 					$minutes = $diff->i;
 					$seconds = $diff->s;
 					if ( $years > 0 ) {
-						$text         .= sprintf(
+						$text          .= sprintf(
 						/* translators: %s =Years */
 							_n( ' %s Year', ' %s Years', $years, 'abprf-rental-forge' ), $years );
-						$info['month'] = $years*12;
+						$info['month'] = $years * 12;
 					}
 					if ( $months > 0 ) {
 						$text          .= sprintf(
 						/* translators: %s = Months */
 							_n( ' %s Month', ' %s Months', $months, 'abprf-rental-forge' ), $months );
-						$exit_month=$info['month']??0;
-						$info['month'] = $exit_month+$months;
+						$exit_month    = $info['month'] ?? 0;
+						$info['month'] = $exit_month + $months;
 					}
 					if ( $days > 0 ) {
 						$text        .= sprintf(
@@ -1041,12 +1045,12 @@
 					$dif = array_key_exists( 'day', $date_info ) ? $date_info['day'] : 0;
 				} elseif ( $rent_rule == 'multi_day' ) {
 					$dif = $duration / 86400;
-				}elseif ( $rent_rule == 'monthly' ) {
+				} elseif ( $rent_rule == 'monthly' ) {
 					$dif = array_key_exists( 'month', $date_info ) ? $date_info['month'] : 0;
-				}elseif ( $rent_rule == 'multi_month' ) {
-					$day= array_key_exists( 'day', $date_info ) ? $date_info['day'] : 0;
+				} elseif ( $rent_rule == 'multi_month' ) {
+					$day   = array_key_exists( 'day', $date_info ) ? $date_info['day'] : 0;
 					$month = array_key_exists( 'month', $date_info ) ? $date_info['month'] : 0;
-					$dif=$month.'.'.$day;
+					$dif   = $month . '.' . $day;
 				}
 				if ( ! empty( $max ) ) {
 					$dif_exit = $min <= $dif && $max >= $dif ? 1 : 0;
@@ -1132,13 +1136,12 @@
 					if ( $rent_rule == 'multi_month' ) {
 						$price_multi = is_array( $price_info ) && array_key_exists( 'price_multi', $price_info ) && ! empty( $price_info['price_multi'] ) ? $price_info['price_multi'] : 0;
 						$threshold   = ABPRF_Function::get_post_info( $post_id, 'day_threshold', 30 );
-						$parts = explode('.', $time_duration);
-						$month_num = (int) $parts[0];
-						$day_num = isset($parts[1]) ? (int) $parts[1] : 0;
-
+						$parts       = explode( '.', $time_duration );
+						$month_num   = (int) $parts[0];
+						$day_num     = isset( $parts[1] ) ? (int) $parts[1] : 0;
 						if ( ! empty( $threshold ) && $threshold <= $day_num ) {
-							$month_num  = $month_num + 1;
-							$day_num = $day_num - $threshold;
+							$month_num = $month_num + 1;
+							$day_num   = $day_num - $threshold;
 						}
 						$price = $rate * $month_num * $qty + $price_multi * $day_num * $qty;
 					}
@@ -1240,18 +1243,18 @@
 							$price_qty_info = ! empty( $price_qty_info ) ? json_decode( $price_qty_info, true ) : [];
 							$price_info     = ! empty( $rent_rule ) && array_key_exists( $rent_rule, $price_qty_info ) ? $price_qty_info[ $rent_rule ] : [];
 							$rate[]         = is_array( $price_info ) && array_key_exists( 'price', $price_info ) ? $price_info['price'] : 0;
-							$_min_time=is_array( $price_info ) && array_key_exists( 'min', $price_info ) ? $price_info['min'] : '';
-							if($rent_rule=='multi_month'){
-								if(!empty($_min_time)){
-									$_min_time=$_min_time*30;
+							$_min_time      = is_array( $price_info ) && array_key_exists( 'min', $price_info ) ? $price_info['min'] : '';
+							if ( $rent_rule == 'multi_month' ) {
+								if ( ! empty( $_min_time ) ) {
+									$_min_time = $_min_time * 30;
 								}
-							}else{
-								if(empty($_min_time)){
-									$_min_time=1;
+							} else {
+								if ( empty( $_min_time ) ) {
+									$_min_time = 1;
 								}
 							}
-							$min_time[]     = $_min_time;
-							$_max_time      = is_array( $price_info ) && array_key_exists( 'max', $price_info ) ? $price_info['max'] : '';
+							$min_time[] = $_min_time;
+							$_max_time  = is_array( $price_info ) && array_key_exists( 'max', $price_info ) ? $price_info['max'] : '';
 							if ( empty( $_max_time ) || $_max_time < 1 ) {
 								$_max_time = $rent_rule == 'hourly' ? 24 : $_max_time;
 								$_max_time = $rent_rule == 'daily' ? 100 : $_max_time;

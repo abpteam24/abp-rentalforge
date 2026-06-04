@@ -10,7 +10,7 @@
 				add_action( 'wp_ajax_abprf_item_cancel', [ $this, 'item_cancel' ] );
 			}
 
-			public function load_orders( $abprf_info ): void {
+			public function load_orders(): void {
 				?>
                 <div class="abprf_orders _abp_panel">
                     <div class="_panel_head_ov_auto">
@@ -20,7 +20,7 @@
                         <form class="load_order_list" method="post" action="">
                             <div class="_form_inline">
 								<?php
-									ABPRF_Layout::filter_post_list( $abprf_info );
+									ABPRF_Layout::filter_post_list();
 									ABPRF_Layout::filter_booking_date_between();
 									ABPRF_Layout::filter_booking_date();
 									ABPRF_Layout::filter_order_date();
@@ -120,8 +120,8 @@
 				$total_order           = ABPRF_Query::get_booking_query( $filter_args, 0, 0, true );
 				//=============================//
 				$configuration = ABPRF_Function::get_option( 'abprf_configuration' );
-				$label         = isset( $configuration['label'] ) && $configuration['label'] ? $configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$brand_icon    = isset( $configuration['brand_icon'] ) && $configuration['brand_icon'] ? $configuration['brand_icon'] : 'fas fa-hammer';
+				$label         = ABPRF_Function::label();
+				$brand_icon    = ABPRF_Function::icon();
 				$booked_status = isset( $configuration['booked_status'] ) && $configuration['booked_status'] ? $configuration['booked_status'] : 'wc-processing,wc-completed';
 				$booked_status = $booked_status ? explode( ',', $booked_status ) : [];
 				?>

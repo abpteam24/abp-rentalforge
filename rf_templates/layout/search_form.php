@@ -7,7 +7,7 @@
 		$location    = array_key_exists( 'abprf_location', $abprf_infos ) ? $abprf_infos['abprf_location'] : '';
 		$params_form = array_key_exists( 'form', $abprf_infos ) ? $abprf_infos['form'] : 'inline';
 		$rent_rule   = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : 'hourly';
-		$brand_icon  = ABPRF_Function::brand_icon();
+		$brand_icon  = ABPRF_Function::icon();
 		//echo '<pre>';print_r( ABPRF_Function::get_option( 'abprf_mm_time' ));					echo '</pre>';
 		do_action( 'abprf_generate_script_data', $post_id );
 		if ( isset( $_SESSION['abprf_cart_success'] ) ) {

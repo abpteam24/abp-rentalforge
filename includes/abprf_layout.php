@@ -768,6 +768,25 @@
 				];
 			}
 
+			public static function static_feature(): array {
+				return [
+					'fec_id_1' => [ 'icon' => '⛽', 'label' => 'Fuel Type', 'value' => 'Electric' ],
+					'fec_id_2' => [ 'icon' => '⛽', 'label' => 'Fuel Type', 'value' => ' Hybrid' ],
+					'fec_id_3' => [ 'icon' => '⛽', 'label' => 'Fuel Type', 'value' => 'Diesel' ],
+					'fec_id_4' => [ 'icon' => '⛽', 'label' => 'Fuel Type', 'value' => 'Petrol' ],
+					'fec_id_5' => [ 'icon' => 'fas fa-cog', 'label' => 'Transmission', 'value' => 'Automatic' ],
+					'fec_id_6' => [ 'icon' => 'fas fa-tachometer-alt', 'label' => 'Mileage', 'value' => '15 km/L' ],
+					'fec_id_7' => [ 'icon' => 'fas fa-tachometer-alt', 'label' => 'Mileage', 'value' => '40 km/L' ],
+					'fec_id_8' => [ 'icon' => 'fas fa-tachometer-alt', 'label' => 'Mileage', 'value' => '10 km/L' ],
+					'fec_id_9' => [ 'icon' => '⚡', 'label' => 'Performance', 'value' => 'High efficiency & smooth driving systems' ],
+					'fec_id_10' => [ 'icon' => '🛡️', 'label' => 'Safety', 'value' => 'ABS, Airbags, ADAS systems' ],
+					'fec_id_11' => [ 'icon' => '🧭', 'label' => 'Navigation', 'value' => 'Smart GPS & route optimization' ],
+					'fec_id_12' => [ 'icon' => 'fas fa-users', 'label' => 'Capacity', 'value' => '4 Persons' ],
+					'fec_id_13' => [ 'icon' => 'fas fa-users', 'label' => 'Capacity', 'value' => '5 Seater' ],
+					'fec_id_14' => [ 'icon' => 'fas fa-suitcase', 'label' => 'Boot Space', 'value' => '400L' ],
+				];
+			}
+
 			//=============================//
 			public static function location_select( $post_id = '', $location = '' ): void {
 				$all_locations = ABPRF_Locations;
@@ -799,7 +818,7 @@
 				}
 			}
 
-			public static function rent_start_month($all_dates ): void {
+			public static function rent_start_month( $all_dates ): void {
 				if ( sizeof( $all_dates ) > 0 ) {
 					?>
                     <label>
@@ -820,7 +839,7 @@
 			}
 
 			public static function rent_end_month( $post_id, $start_date ): void {
-				$all_dates  = ABPRF_Function::get_end_month( $post_id, $start_date );
+				$all_dates = ABPRF_Function::get_end_month( $post_id, $start_date );
 				//echo '<pre>';print_r($all_dates);echo '</pre>';
 				if ( sizeof( $all_dates ) > 0 ) {
 					?>
@@ -846,7 +865,7 @@
 					$date_format = ABPRF_Function::date_picker_format();
 					$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 					$date        = $date ?: current( $all_dates );
-					if ( sizeof( $all_dates ) > 10 ) {
+					//if ( sizeof( $all_dates ) > 10 ) {
 						$hidden_date  = ! empty( $date ) ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
 						$visible_date = ! empty( $date ) ? date_i18n( $date_format, strtotime( $date ) ) : '';
 						?>
@@ -858,7 +877,7 @@
                         </label>
 						<?php
 						do_action( 'abprf_load_date_picker', '#start_date', $all_dates );
-					}
+					//}
 				}
 			}
 
@@ -868,7 +887,7 @@
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				if ( sizeof( $all_dates ) > 0 ) {
 					$date = $end_date ?: current( $all_dates );
-					if ( sizeof( $all_dates ) > 10 ) {
+					//if ( sizeof( $all_dates ) > 10 ) {
 						$hidden_date  = ! empty( $date ) ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
 						$visible_date = ! empty( $date ) ? date_i18n( $date_format, strtotime( $date ) ) : '';
 						?>
@@ -880,7 +899,7 @@
                         </label>
 						<?php
 						do_action( 'abprf_load_date_picker', '#end_date', $all_dates );
-					}
+					//}
 				} else {
 					ABPRF_Layout::layout_warning_info_xs( 'not_date' );
 				}
@@ -1117,11 +1136,11 @@
 			}
 
 			//=============================//
-			public static function filter_post_list( $abprf_info = [], $post_id = 0 ): void {
-				$label        = isset( $abprf_info['label'] ) && $abprf_info['label'] ? $abprf_info['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$all_post_ids = isset( $abprf_info['post_ids'] ) && $abprf_info['post_ids'] ? $abprf_info['post_ids'] : ABPRF_Query::get_post_id();
+			public static function filter_post_list( $post_id = 0 ): void {
+				$label        = ABPRF_Function::label();
+				$all_post_ids = ABPRF_Query::get_post_id();
 				$value        = $post_id > 0 ? $post_id : '';
-				$brand_icon   = isset( $abprf_info['brand_icon'] ) && $abprf_info['brand_icon'] ? $abprf_info['brand_icon'] : 'fas fa-hammer';
+				$brand_icon   = ABPRF_Function::icon();
 				// echo '<pre>';print_r($configuration);echo '</pre>';
 				?>
                 <div class="_input_item abp_dropdown">

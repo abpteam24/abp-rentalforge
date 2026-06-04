@@ -77,7 +77,7 @@
 			}
 
 			public function show_tab_content( $abprf_configuration ): void {
-				$plugin_label = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+				$plugin_label = ABPRF_Function::label();
 				$all_fields   = $this->configuration_data( $abprf_configuration );
 				foreach ( $this->configuration_section( $abprf_configuration ) as $form ) {
 					$section_id = $form['id'];
@@ -142,9 +142,9 @@
 				}
 			}
 
-			public function configuration_section( $abprf_configuration ): array {
-				$label         = isset( $abprf_configuration['label'] ) && $abprf_configuration['label'] ? $abprf_configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
-				$brand_icon    = isset( $abprf_configuration['brand_icon'] ) && $abprf_configuration['brand_icon'] ? $abprf_configuration['brand_icon'] : 'fas fa-hammer';
+			public function configuration_section(): array {
+				$label         = ABPRF_Function::label();
+				$brand_icon    = ABPRF_Function::icon();
 				$configuration = apply_filters( 'abprf_configuration_after', array( array( 'id' => 'abprf_configuration', 'icon' => $brand_icon, 'menu' => $label ) ) );
 				$contact       = apply_filters( 'abprf_contact_after', array(
 					array( 'id' => 'abprf_slider', 'icon' => 'fas fa-photo-video', 'menu' => __( 'Slider', 'abprf-rental-forge' ) ),

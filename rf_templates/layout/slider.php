@@ -19,6 +19,7 @@
 							$id = array_key_exists( 'id', $img_info ) ? $img_info['id'] : '';
 							if ( ! empty( $id ) ) {
 								$url = ABPRF_Function::get_image_url( '', $id );
+								$url = $url ?: ABPRF_BLANK_IMG_URL;
 								?>
                                 <div class="slider_item" <?php if ( $active_popup == 'on' ){ ?>data-target-popup="<?php echo esc_attr( $popup_id ); ?>"<?php } ?> data-img="<?php echo esc_url( $url ); ?>">
                                     <div class="slider_loading"></div>
