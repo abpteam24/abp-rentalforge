@@ -6,6 +6,7 @@
 		class ABPRF_Category {
 			public function __construct() {
 				add_action( 'abprf_global_category', array( $this, 'global_category' ) );
+				add_action( 'abprf_category_update', array( $this, 'update_category' ) );
 				add_action( 'wp_ajax_abprf_save_category', array( $this, 'save_category' ) );
 				add_action( 'wp_ajax_abprf_delete_category', array( $this, 'delete_category' ) );
 				add_action( 'wp_ajax_abprf_add_category', array( $this, 'add_category' ) );

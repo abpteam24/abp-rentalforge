@@ -783,7 +783,7 @@
 					'fec_id_11' => [ 'icon' => '🧭', 'label' => 'Navigation', 'value' => 'Smart GPS & route optimization' ],
 					'fec_id_12' => [ 'icon' => 'fas fa-users', 'label' => 'Capacity', 'value' => '4 Persons' ],
 					'fec_id_13' => [ 'icon' => 'fas fa-users', 'label' => 'Capacity', 'value' => '5 Seater' ],
-					'fec_id_14' => [ 'icon' => 'fas fa-suitcase', 'label' => 'Boot Space', 'value' => '400L' ],
+					'fec_id_14' => [ 'icon' => 'fas fa-suitcase', 'label' => 'Boot Space', 'value' => '400L' ]
 				];
 			}
 

@@ -152,8 +152,8 @@
 						$icon  = is_array( $feature ) && array_key_exists( 'icon', $feature ) ? $feature['icon'] : '';
 						?>
                         <div class="_list_item">
-                            <h6 class="_abprf_color_theme"> <?php ABPRF_Layout::image_icon( $icon ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $value ); ?></h6>
-                            <div class="_f_wrap">
+                            <h6 class="_abprf"> <?php ABPRF_Layout::image_icon( $icon ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $value ); ?></h6>
+                            <div class="_d_flex">
                                 <button type="button" class="_btn_light_yellow_mar_r_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abprf-rental-forge' ) . ' ' . esc_attr( $label ); ?>">✍️</button>
                                 <button type="button" class="_btn_light_danger_xxs delete_feature" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abprf-rental-forge' ) . ' ' . esc_attr( $label ); ?>">❌</button>
                             </div>

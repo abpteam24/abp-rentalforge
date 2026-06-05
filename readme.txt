@@ -83,8 +83,8 @@ You can easily configure booking rules, set minimum and maximum rental durations
 If you need any further assistance or support, do contact us at this [🎫 support form](https://abp-team.com/submit-ticket/). We are very open to your suggestions. So do feel free to tell us if there is anything we can do to improve the plugin.
 Need help or have suggestions?
 
-🌐 [Live Demo](https://demo.rf.abp-team.com/)
-📖 [Documentation](https://www.demo.rf.abp-team.com/docs/)
+🌐 [Live Demo](https://demo-rf.abp-team.com/)
+📖 [Documentation](https://www.demo-rf.abp-team.com/documentation/)
 💬 [Support Forum](https://wordpress.org/support/plugin/abp-rentalforge/)
 🐛 [Bug Reports](https://github.com/abpteam24/abprf-rental-forge/issues)
 📧 Email: support@abp-team.com
@@ -184,7 +184,7 @@ Absolutely. You can add unlimited properties, each with its own gallery, pricing
 
 = Does it support automatic and manual booking approval? =
 
-Yes. You can choose **Instant Booking** (auto-confirmed) or **Manual Approval** per property, or set a global default in Settings.
+Yes. You can choose **Instant Booking** (auto-confirmed) or **Manual Approval**  Settings.
 
 = Is it translation ready? =
 
@@ -216,9 +216,11 @@ This plugin uses Appsero SDK for optional telemetry data collection. No data is 
 
 [Learn more]( https://appsero.com/privacy-policy/)
 
-== Upgrade Notice ==
+
+== Changelog ==
 = 1.0.0 =
 *Initial Release*
-== Changelog ==
+
+== Upgrade Notice ==
 = 1.0.0 =
 *Initial Release*

@@ -6,6 +6,7 @@
 		class ABPRF_Brand {
 			public function __construct() {
 				add_action( 'abprf_global_brand', array( $this, 'global_brand' ) );
+				add_action( 'abprf_brand_update', array( $this, 'update_brand' ) );
 				add_action( 'wp_ajax_abprf_save_brand', array( $this, 'save_brand' ) );
 				add_action( 'wp_ajax_abprf_delete_brand', array( $this, 'delete_brand' ) );
 				add_action( 'wp_ajax_abprf_edit_brand', array( $this, 'edit_brand' ) );
@@ -60,7 +61,7 @@
 					$icons        = isset( $_POST['brand_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_icon'] ) ) : [];
 					$slugs        = isset( $_POST['brand_slug'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_slug'] ) ) : [];
 					$descriptions = isset( $_POST['brand_description'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_description'] ) ) : [];
-					$property_add  = isset( $_POST['property_add'] ) ? sanitize_text_field( wp_unslash( $_POST['property_add'] ) ) : 0;
+					$property_add = isset( $_POST['property_add'] ) ? sanitize_text_field( wp_unslash( $_POST['property_add'] ) ) : 0;
 					$options      = [];
 					if ( ! empty( $names ) && sizeof( $names ) > 0 ) {
 						foreach ( $names as $key => $name ) {
@@ -104,18 +105,18 @@
 						$msg = esc_html__( 'Brand not Saved ! Brand Name can not Blank !...!', 'abprf-rental-forge' );
 					}
 					ob_start();
-					if (!empty($property_add) && $property_add>0 ) {
-						$brands    = '';
+					if ( ! empty( $property_add ) && $property_add > 0 ) {
+						$brands      = '';
 						$property_id = isset( $_POST['property_id'] ) ? sanitize_text_field( wp_unslash( $_POST['property_id'] ) ) : '';
 						if ( ! empty( $property_id ) ) {
 							$properties = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
 							if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
 								$property = current( $properties );
-								$brands = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
+								$brands   = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
 							}
 						}
-						self::brand_selection($brands);
-					} else{
+						self::brand_selection( $brands );
+					} else {
 						$this->brand_list();
 					}
 					$html = ob_get_clean();
@@ -164,18 +165,20 @@
 			public function update_brand( $options = [] ): void {
 				$taxonomies = ABPRF_Function::get_taxonomy( 'abprf_brand' );
 				$brands     = [];
-				if ( ! empty( $taxonomies ) && is_array( $taxonomies ) && sizeof( $taxonomies ) > 0 ) {
+				if ( ! empty( $taxonomies ) && is_array( $taxonomies ) ) {
 					$brand = ABPRF_Function::get_option( 'abprf_brand' );
+					$brand = is_array( $brand ) ? $brand : [];
 					foreach ( $taxonomies as $taxonomy ) {
-						$brands[ $taxonomy->term_id ]['name']        = $taxonomy->name;
-						$brands[ $taxonomy->term_id ]['description'] = $taxonomy->description;
-						$brands[ $taxonomy->term_id ]['slug']        = $taxonomy->slug;
-						if ( array_key_exists( $taxonomy->term_id, $options ) ) {
-							$brands[ $taxonomy->term_id ]['icon'] = $options[ $taxonomy->term_id ];
+						$term_id = $taxonomy->term_id;
+						$brands[ $term_id ]['name']        = $taxonomy->name;
+						$brands[ $term_id ]['description'] = $taxonomy->description;
+						$brands[ $term_id ]['slug']        = $taxonomy->slug;
+						if ( isset( $options[ $term_id ] ) ) {
+							$brands[ $term_id ]['icon'] = $options[ $term_id ];
+						} elseif ( isset( $brand[ $term_id ]['icon'] ) ) {
+							$brands[ $term_id ]['icon'] = $brand[ $term_id ]['icon'];
 						} else {
-							if ( array_key_exists( $taxonomy->term_id, $brand ) ) {
-								$brands[ $taxonomy->term_id ]['icon'] = $brand[ $taxonomy->term_id ]['icon'];
-							}
+							$brands[ $term_id ]['icon'] = '';
 						}
 					}
 				}

@@ -58,6 +58,8 @@
 						'post_restored' => __( 'Post Restored successfully!', 'abprf-rental-forge' ),
 						'wc_install' => __( 'Woocommerce Downloading And Installing.........!', 'abprf-rental-forge' ),
 						'wc_installing' => __( 'Woocommerce  Installing.........!', 'abprf-rental-forge' ),
+						'wc_installed_success' => __( 'Woocommerce Downloaded And Installed successfully ..... !! ', 'abprf-rental-forge' ),
+						'wc_installed' => __( 'Woocommerce Installed successfully.... !  ', 'abprf-rental-forge' ),
 						'create_post_page' => $label . ' ' . __( 'Post Page Creating ........!', 'abprf-rental-forge' ),
 						'create_property_page' => $label . ' ' . __( 'Property Page Creating ........!', 'abprf-rental-forge' ),
 					],

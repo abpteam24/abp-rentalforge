@@ -6,6 +6,7 @@
 		class ABPRF_Location {
 			public function __construct() {
 				add_action( 'abprf_global_location', array( $this, 'global_location' ) );
+				add_action( 'abprf_location_update', array( $this, 'update_location' ) );
 				add_action( 'wp_ajax_abprf_save_location', array( $this, 'save_location' ) );
 				add_action( 'wp_ajax_abprf_delete_location', array( $this, 'delete_location' ) );
 				add_action( 'wp_ajax_abprf_add_location', array( $this, 'add_location' ) );

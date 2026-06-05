@@ -50,7 +50,7 @@
 
 			public function tab_content( $abprf_infos ): void {
 				$copy_post_id                = array_key_exists( 'copy_post_id', $abprf_infos ) ? $abprf_infos['copy_post_id'] : '';
-				$rent_rule                   = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : 'hourly';
+				$rent_rule                   = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : 'multi_day';
 				$day_time_start              = array_key_exists( 'day_time_start', $abprf_infos ) ? $abprf_infos['day_time_start'] : '';
 				$day_time_end                = array_key_exists( 'day_time_end', $abprf_infos ) ? $abprf_infos['day_time_end'] : '';
 				$hour_threshold              = array_key_exists( 'hour_threshold', $abprf_infos ) ? $abprf_infos['hour_threshold'] : 24;
@@ -536,8 +536,8 @@
 
 			public function property_price_qty( $property = [], $current_post_id = '' ): void {
 				$price_info  = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
-				$rent_rule   = array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : 'multi_day';
-				$rent_rule   = ! empty( $current_post_id ) ? ABPRF_Function::get_post_info( $current_post_id, 'rent_rule' ) : $rent_rule;
+				$rent_rule   = array_key_exists( 'rent_rule', $property )  && $property['rent_rule']? $property['rent_rule'] : 'multi_day';
+				$rent_rule   = ! empty( $current_post_id ) ? ABPRF_Function::get_post_info( $current_post_id, 'rent_rule' ,'multi_day') : $rent_rule;
 				$price_info  = ! empty( $price_info ) ? json_decode( $price_info, true ) : [];
 				$_price_info = ! empty( $price_info ) && array_key_exists( $rent_rule, $price_info ) ? $price_info[ $rent_rule ] : [];
 				/**************************/

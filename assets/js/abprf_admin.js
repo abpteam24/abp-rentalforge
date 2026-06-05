@@ -695,8 +695,8 @@ function abprf_property_filter_arg($this) {
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.wc_install);
-            }, success: function (response) {
-                abprf_toast_msg(response.data.msg, 'success');
+            }, success: function () {
+                abprf_toast_msg(abprf_admin_data.msg.wc_installed_success, 'success');
                 window.location.reload();
             }
         });
@@ -709,8 +709,8 @@ function abprf_property_filter_arg($this) {
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.wc_installing);
-            }, success: function (response) {
-                abprf_toast_msg(response.data.msg, 'success');
+            }, success: function () {
+                abprf_toast_msg(abprf_admin_data.msg.wc_installed, 'success');
                 window.location.reload();
             }
         });

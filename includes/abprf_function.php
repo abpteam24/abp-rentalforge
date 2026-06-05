@@ -745,7 +745,7 @@
 			public static function update_time_slot( $post_id = '' ): void {
 				$all_slots    = ABPRF_Function::get_option( 'abprf_time_info' );
 				$all_js_slots = ABPRF_Function::get_option( 'abprf_time_info_js' );
-				$date_infos   = [];
+				$date_infos   =ABPRF_Dates;
 				$key          = 'global';
 				if ( ! empty( $post_id ) ) {
 					$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
@@ -753,10 +753,8 @@
 						$date_infos = self::get_post_info( $post_id, 'abprf_dates', [] );
 						$key        = $post_id;
 					}
-				} else {
-					$date_infos = ABPRF_Dates;
 				}
-				if ( ! empty( $date_infos ) ) {
+				if ( is_array( $date_infos ) ) {
 					$slots             = self::get_time_slot( $date_infos );
 					$all_slots[ $key ] = $slots;
 					$js_slots          = [];

@@ -36,12 +36,12 @@
                     </div>
                     <div class="item_body">
                         <div>
-                            <a class="list_title">
+                            <h5 class="_abprf list_title">
 								<?php echo esc_html( $property_name ); ?>
 								<?php if ( ! empty( $brand ) ) { ?>
                                     <small class="_abprf_color_theme"><?php echo esc_html( ABPRF_Function::brand_value( $brand ) ); ?></small>
 								<?php } ?>
-                            </a>
+                            </h5>
 							<?php ABPRF_Layout::item_feature( $features ); ?>
                             <div class="pricing_box">
                                 <div class="price_row">
