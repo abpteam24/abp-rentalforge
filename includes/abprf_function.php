@@ -90,9 +90,15 @@
 			}
 
 			public static function label() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['label'] ) ? ABPRF_Configuration['label'] : __( 'RentalForge', 'abprf-rental-forge' );
+				return is_array( ABPRF_Configuration ) && array_key_exists( 'label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['label'] ) ? ABPRF_Configuration['label'] : __( 'RentalForge', 'abp-rentalforge' );
 			}
 
+			public static function slug() {
+				return is_array( ABPRF_Configuration ) && array_key_exists( 'slug', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['slug'] ) ? ABPRF_Configuration['slug'] : 'rental-forge';
+			}
+			public static function icon_wp() {
+				return is_array( ABPRF_Configuration ) && array_key_exists( 'icon', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['icon'] ) ? ABPRF_Configuration['icon'] : 'dashicons-hammer';
+			}
 			public static function icon() {
 				return is_array( ABPRF_Configuration ) && array_key_exists( 'brand_icon', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['brand_icon'] ) ? ABPRF_Configuration['brand_icon'] : 'fas fa-hammer';
 			}
@@ -102,7 +108,14 @@
 			}
 
 			public static function category_label() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'category_label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['category_label'] ) ? ABPRF_Configuration['category_label'] : __( 'Category', 'abprf-rental-forge' );
+				return is_array( ABPRF_Configuration ) && array_key_exists( 'category_label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['category_label'] ) ? ABPRF_Configuration['category_label'] : __( 'Category', 'abp-rentalforge' );
+			}
+			public static function category_slug() {
+				return is_array( ABPRF_Configuration ) && array_key_exists( 'cat_slug', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['cat_slug'] ) ? ABPRF_Configuration['cat_slug'] : 'category';
+			}
+
+			public static function location_label() {
+				return is_array( ABPRF_Configuration ) && array_key_exists( 'location_label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['location_label'] ) ? ABPRF_Configuration['location_label'] : __( 'Location', 'abp-rentalforge' );
 			}
 
 			public static function location_value( $location ) {
@@ -167,15 +180,18 @@
 			}
 
 			public static function check_wc(): int {
-				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-				$plugin_dir = ABSPATH . 'wp-content/plugins/woocommerce';
-				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
-					return 2;
-				} elseif ( is_dir( $plugin_dir ) ) {
-					return 1;
-				} else {
-					return 0;
+				if ( ! function_exists( 'is_plugin_active' ) ) {
+					include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 				}
+				if ( class_exists( 'WooCommerce' ) || is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+					return 2;
+				}
+				$wc_dir = trailingslashit( WP_PLUGIN_DIR ) . 'woocommerce';
+				if ( is_dir( $wc_dir ) ) {
+					return 1;
+				}
+
+				return 0;
 			}
 
 			public static function already_in_cart( $post_id, $bp, $dp, $bp_date, $seat_name ) {
@@ -310,7 +326,7 @@
 					$all_dates     = self::get_dates( $post_id );
 					$start         = gmdate( 'Y-m-d', strtotime( $start_date_time ) );
 					$end           = gmdate( 'Y-m-d', strtotime( $end_date_time ) );
-					$all_end_dates = self::get_end_dates( $post_id, $start, $all_dates );
+					$all_end_dates = $rent_rule == 'hourly' ? $all_dates : self::get_end_dates( $post_id, $start, $all_dates );
 					if ( in_array( $start, $all_dates ) && in_array( $end, $all_end_dates ) ) {
 						if ( $rent_rule == 'hourly' || $rent_rule == 'multi_day' ) {
 							$start_time = gmdate( 'H:i', strtotime( $start_date_time ) );
@@ -499,6 +515,7 @@
 			public static function get_end_dates( $post_id = '', $start_date = '', $all_dates = [], $filters = [] ): array {
 				$all_dates    = empty( $all_dates ) ? self::get_dates( $post_id, $filters ) : $all_dates;
 				$all_end_date = [];
+				$start_date   = gmdate( 'Y-m-d', strtotime( $start_date ) );
 				if ( in_array( $start_date, $all_dates ) ) {
 					$mm_time = ABPRF_Function::get_option( 'abprf_mm_time' );
 					if ( ! empty( $post_id ) && $post_id > 0 ) {
@@ -745,7 +762,7 @@
 			public static function update_time_slot( $post_id = '' ): void {
 				$all_slots    = ABPRF_Function::get_option( 'abprf_time_info' );
 				$all_js_slots = ABPRF_Function::get_option( 'abprf_time_info_js' );
-				$date_infos   =ABPRF_Dates;
+				$date_infos   = ABPRF_Dates;
 				$key          = 'global';
 				if ( ! empty( $post_id ) ) {
 					$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
@@ -970,38 +987,38 @@
 					if ( $years > 0 ) {
 						$text          .= sprintf(
 						/* translators: %s =Years */
-							_n( ' %s Year', ' %s Years', $years, 'abprf-rental-forge' ), $years );
+							_n( ' %s Year', ' %s Years', $years, 'abp-rentalforge' ), $years );
 						$info['month'] = $years * 12;
 					}
 					if ( $months > 0 ) {
 						$text          .= sprintf(
 						/* translators: %s = Months */
-							_n( ' %s Month', ' %s Months', $months, 'abprf-rental-forge' ), $months );
+							_n( ' %s Month', ' %s Months', $months, 'abp-rentalforge' ), $months );
 						$exit_month    = $info['month'] ?? 0;
 						$info['month'] = $exit_month + $months;
 					}
 					if ( $days > 0 ) {
 						$text        .= sprintf(
 						/* translators: %s = Days */
-							_n( ' %s Day', ' %s Days', $days, 'abprf-rental-forge' ), $days );
+							_n( ' %s Day', ' %s Days', $days, 'abp-rentalforge' ), $days );
 						$info['day'] = $days;
 					}
 					if ( $hours > 0 ) {
 						$text         .= sprintf(
 						/* translators: %s = Hours */
-							_n( ' %s Hour', ' %s Hours', $hours, 'abprf-rental-forge' ), $hours );
+							_n( ' %s Hour', ' %s Hours', $hours, 'abp-rentalforge' ), $hours );
 						$info['hour'] = $hours;
 					}
 					if ( $minutes > 0 ) {
 						$text        .= sprintf(
 						/* translators: %s = Minutes */
-							_n( ' %s Minute', ' %s Minutes', $minutes, 'abprf-rental-forge' ), $minutes );
+							_n( ' %s Minute', ' %s Minutes', $minutes, 'abp-rentalforge' ), $minutes );
 						$info['min'] = $minutes;
 					}
 					if ( $seconds > 0 ) {
 						$text        .= sprintf(
 						/* translators: %s = Seconds */
-							_n( ' %s Second', ' %s Seconds', $seconds, 'abprf-rental-forge' ), $seconds );
+							_n( ' %s Second', ' %s Seconds', $seconds, 'abp-rentalforge' ), $seconds );
 						$info['sec'] = $seconds;
 					}
 					$info['text']     = $text;

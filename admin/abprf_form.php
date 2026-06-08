@@ -17,12 +17,12 @@
 				?>
                 <div class="tab_item" data-tabs="#abprf_global_client_form">
                     <form class="save_client_form" method="post" action="">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abprf-rental-forge' ); ?></h4>
+                        <h4 class="_abprf"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
                         <div class="_divider_xs"></div>
 						<?php $this->passenger_form_settings( $abprf_forms ); ?>
                         <div class="_divider_xs"></div>
-                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Client Form Configuration', 'abprf-rental-forge' ); ?></button>
+                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Client Form Configuration', 'abp-rentalforge' ); ?></button>
                     </form>
                 </div>
 				<?php
@@ -34,27 +34,27 @@
 				$active_global_form = array_key_exists( 'active_global_form', $abprf_infos ) ? $abprf_infos['active_global_form'] : 'on';
 				?>
                 <div class="tab_item abprf_client_form" data-tabs="#abprf_client_form">
-                    <h4 class=" _abprf_color_theme"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Forms Configuration', 'abprf-rental-forge' ); ?></h4>
+                    <h4 class=" _abprf_color_theme"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Forms Configuration', 'abp-rentalforge' ); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="group_setting">
-                        <div class="_setting_item">
+                        <div class="setting_item">
                             <div class="_f_wrap_fj_between_fa_center">
                                 <div class="_fa_center">
 									<?php ABPRF_Layout::switch_checkbox( 'display_client_form', $display ); ?>
-                                    <span class="_fs_label_mar_l_xs"><?php esc_html_e( 'Active Client Form ?', 'abprf-rental-forge' ); ?></span>
+                                    <span class="_fs_label_mar_l_xs"><?php esc_html_e( 'Active Client Form ?', 'abp-rentalforge' ); ?></span>
                                 </div>
                             </div>
                             <div class="_divider_xs"></div>
 							<?php ABPRF_Layout::info_text( 'display_client_form' ); ?>
                         </div>
-                        <div data-collapse="#display_client_form" class="_setting_item <?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
+                        <div data-collapse="#display_client_form" class="setting_item <?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
                             <div class="_fj_between">
                                 <div class="_fa_center">
 									<?php ABPRF_Layout::switch_checkbox( 'active_global_form', $active_global_form ); ?>
-                                    <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Client Form ?', 'abprf-rental-forge' ); ?></span>
+                                    <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Client Form ?', 'abp-rentalforge' ); ?></span>
                                 </div>
                                 <div data-collapse="#active_global_form" class=" <?php echo esc_attr( $active_global_form == 'on' ? '' : 'rf_active' ); ?>">
-                                    <button type="button" class="_btn_theme import_global_form"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Global Client Form', 'abprf-rental-forge' ); ?></button>
+                                    <button type="button" class="_btn_theme import_global_form"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Global Client Form', 'abp-rentalforge' ); ?></button>
                                 </div>
                             </div>
                             <div class="_divider_xs"></div>
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <div class="<?php echo esc_attr( $active_global_form == 'on' ? '' : 'rf_active' ); ?>" data-collapse="#active_global_form">
-                        <div class="client_form_content">
+                        <div class="client_form_content _mar_t_xs">
 							<?php $this->passenger_form_settings( $client_forms ); ?>
                         </div>
                     </div>
@@ -70,18 +70,6 @@
 				<?php
 			}
 
-			public function save_global_client_form() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$client_forms = $this->get_form_array();
-					update_option( 'abprf_forms', $client_forms );
-					wp_send_json_success( [ 'msg' => esc_html__( 'Client Form Configuration Saved Successfully..... !! ', 'abprf-rental-forge' ) ] );
-				} else {
-					wp_send_json_success( [ 'msg' => esc_html__( 'Client Form Configuration not Saved ..... !! ', 'abprf-rental-forge' ) ] );
-				}
-				wp_die();
-			}
-
-			//=============================//
 			public function passenger_form_settings( $passenger_forms ): void {
 				?>
                 <div class="configuration_content">
@@ -89,16 +77,16 @@
                         <table class=" _abprf">
                             <thead>
                             <tr>
-                                <th class="_text_table_center"><?php esc_html_e( 'Form Title', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></th>
-                                <th class="_text_table_center"><?php esc_html_e( 'Unique ID', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></th>
-                                <th class="_text_table_center"><?php esc_html_e( 'Form Type', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></th>
+                                <th class="_text_table_center"><?php esc_html_e( 'Form Title', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></th>
+                                <th class="_text_table_center"><?php esc_html_e( 'Unique ID', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></th>
+                                <th class="_text_table_center"><?php esc_html_e( 'Form Type', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></th>
                                 <th class="_text_table_center">
-									<?php esc_html_e( 'Value Option', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup>
+									<?php esc_html_e( 'Value Option', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup>
 									<?php ABPRF_Layout::info_text( 'client_form_option' ); ?>
                                 </th>
-                                <th class="_text_table_center"><?php esc_html_e( 'Default Value', 'abprf-rental-forge' ); ?></th>
-                                <th class="_w_100_text_table_center"><?php esc_html_e( 'Required', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></th>
-                                <th class="_w_75_text_table_center"><?php esc_html_e( 'Action', 'abprf-rental-forge' ); ?></th>
+                                <th class="_text_table_center"><?php esc_html_e( 'Default Value', 'abp-rentalforge' ); ?></th>
+                                <th class="_w_100_text_table_center"><?php esc_html_e( 'Required', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></th>
+                                <th class="_w_75_text_table_center"><?php esc_html_e( 'Action', 'abp-rentalforge' ); ?></th>
                             </tr>
                             </thead>
                             <tbody class="insertable_area sortable_area">
@@ -114,7 +102,7 @@
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fj_between">
-						<?php ABPRF_Layout::button_add( __( 'Add New Form', 'abprf-rental-forge' ) ); ?>
+						<?php ABPRF_Layout::button_add( __( 'Add New Form', 'abp-rentalforge' ) ); ?>
                     </div>
                     <div class="abprf_d_none">
                         <table class=" _abprf">
@@ -146,7 +134,7 @@
                 <tr class="delete_area data_single_collapse">
                     <td>
                         <label>
-                            <input type="text" class="_form_control_min_150 validation_name" name="client_form_title[]" placeholder="<?php esc_attr_e( 'Name', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $label ); ?>"/>
+                            <input type="text" class="_form_control_min_150 validation_name" name="client_form_title[]" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $label ); ?>"/>
                         </label>
                     </td>
                     <th class="_text_table_center">
@@ -154,40 +142,40 @@
                             <input type="hidden" value="<?php echo esc_attr( $id ); ?>" name="client_form_id[]" /><?php echo esc_html( $id ); ?>
 						<?php } else { ?>
                             <label>
-                                <input type="text" class="_form_control_min_150 validation_id" name="client_form_id[]" placeholder="<?php esc_attr_e( 'Unique ID', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $id ); ?>"/>
+                                <input type="text" class="_form_control_min_150 validation_id" name="client_form_id[]" placeholder="<?php esc_attr_e( 'Unique ID', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $id ); ?>"/>
                             </label>
 						<?php } ?>
                     </th>
                     <td>
                         <label>
                             <select class="_form_control_min_150" name="client_form_type[]" data-collapse-target data-collapse-target-multi>
-                                <option value="text" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'text' ? 'selected' : '' ); ?>><?php esc_html_e( 'Text', 'abprf-rental-forge' ); ?></option>
-                                <option value="email" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'email' ? 'selected' : '' ); ?>><?php esc_html_e( 'E-Mail', 'abprf-rental-forge' ); ?></option>
-                                <option value="number" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'number' ? 'selected' : '' ); ?>><?php esc_html_e( 'Number', 'abprf-rental-forge' ); ?></option>
-                                <option value="select" data-option-target-multi="#client_form_type #client_form_value" <?php echo esc_attr( $type == 'select' ? 'selected' : '' ); ?>><?php esc_html_e( 'Select', 'abprf-rental-forge' ); ?></option>
-                                <option value="checkbox" data-option-target-multi="#client_form_type #client_form_value" <?php echo esc_attr( $type == 'checkbox' ? 'selected' : '' ); ?>><?php esc_html_e( 'Checkbox', 'abprf-rental-forge' ); ?></option>
-                                <option value="radio" data-option-target-multi="#client_form_type #client_form_value" <?php echo esc_attr( $type == 'radio' ? 'selected' : '' ); ?>><?php esc_html_e( 'Radio', 'abprf-rental-forge' ); ?></option>
-                                <option value="textarea" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'textarea' ? 'selected' : '' ); ?>><?php esc_html_e( 'Textarea', 'abprf-rental-forge' ); ?></option>
-                                <option value="date" data-option-target-multi="#client_form_type_date" <?php echo esc_attr( $type == 'date' ? 'selected' : '' ); ?>><?php esc_html_e( 'Date', 'abprf-rental-forge' ); ?></option>
+                                <option value="text" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'text' ? 'selected' : '' ); ?>><?php esc_html_e( 'Text', 'abp-rentalforge' ); ?></option>
+                                <option value="email" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'email' ? 'selected' : '' ); ?>><?php esc_html_e( 'E-Mail', 'abp-rentalforge' ); ?></option>
+                                <option value="number" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'number' ? 'selected' : '' ); ?>><?php esc_html_e( 'Number', 'abp-rentalforge' ); ?></option>
+                                <option value="select" data-option-target-multi="#client_form_type #client_form_value" <?php echo esc_attr( $type == 'select' ? 'selected' : '' ); ?>><?php esc_html_e( 'Select', 'abp-rentalforge' ); ?></option>
+                                <option value="checkbox" data-option-target-multi="#client_form_type #client_form_value" <?php echo esc_attr( $type == 'checkbox' ? 'selected' : '' ); ?>><?php esc_html_e( 'Checkbox', 'abp-rentalforge' ); ?></option>
+                                <option value="radio" data-option-target-multi="#client_form_type #client_form_value" <?php echo esc_attr( $type == 'radio' ? 'selected' : '' ); ?>><?php esc_html_e( 'Radio', 'abp-rentalforge' ); ?></option>
+                                <option value="textarea" data-option-target-multi="#client_form_value" <?php echo esc_attr( $type == 'textarea' ? 'selected' : '' ); ?>><?php esc_html_e( 'Textarea', 'abp-rentalforge' ); ?></option>
+                                <option value="date" data-option-target-multi="#client_form_type_date" <?php echo esc_attr( $type == 'date' ? 'selected' : '' ); ?>><?php esc_html_e( 'Date', 'abp-rentalforge' ); ?></option>
                             </select>
                         </label>
                     </td>
                     <td>
                         <label data-collapse="#client_form_type" class="<?php echo esc_attr( $active_type ); ?>">
-                            <input type="text" class="_form_control_min_150 validation_name" name="client_form_option[]" placeholder="<?php esc_attr_e( 'Value Option', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $options ); ?>"/>
+                            <input type="text" class="_form_control_min_150 validation_name" name="client_form_option[]" placeholder="<?php esc_attr_e( 'Value Option', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $options ); ?>"/>
                         </label>
                     </td>
                     <td>
                         <div class="<?php echo esc_attr( $active_value ); ?>" data-collapse="#client_form_value">
                             <label>
-                                <input type="text" class="_form_control_min_150 validation_name" name="client_form_value[]" placeholder="<?php esc_attr_e( 'Default Value', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $d_value ); ?>"/>
+                                <input type="text" class="_form_control_min_150 validation_name" name="client_form_value[]" placeholder="<?php esc_attr_e( 'Default Value', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $d_value ); ?>"/>
                             </label>
                         </div>
                         <div class="<?php echo esc_attr( $active_date ); ?>" data-collapse="#client_form_type_date">
                             <label>
                                 <input type="hidden" name="client_form_value_date[]" value="<?php echo esc_attr( $hidden_date ); ?>"/>
                                 <input type="text" readonly name="" class="_form_control_min_150 abp_datepicker" value="<?php echo esc_attr( $visible_date ); ?>" placeholder="<?php echo esc_attr( $now ); ?>"/>
-                                <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abprf-rental-forge' ); ?>"></span>
+                                <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abp-rentalforge' ); ?>"></span>
                             </label>
                         </div>
                     </td>
@@ -232,13 +220,33 @@
 				return apply_filters( 'abprf_form_infos_filter', $form_infos );
 			}
 
-			public function import_global_form(): void {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$forms = ABPRF_Function::get_option( 'abprf_forms', ABPRF_Layout::static_form() );
-					$forms = $forms && is_array( $forms ) ? $forms : [];
-					$this->passenger_form_settings( $forms );
+			public function save_global_client_form(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
-				wp_die();
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				$client_forms = $this->get_form_array();
+				$client_forms = is_array( $client_forms ) ? $client_forms : [];
+				update_option( 'abprf_forms', $client_forms );
+				wp_send_json_success( [ 'msg' => __( 'Client Form Configuration Saved Successfully..... !! ', 'abp-rentalforge' ) ] );
+			}
+
+			public function import_global_form(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+				}
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				$default_form = ABPRF_Layout::static_form();
+				$forms        = ABPRF_Function::get_option( 'abprf_forms', $default_form ) ?? [];
+				$forms        = is_array( $forms ) ? $forms : [];
+				ob_start();
+				$this->passenger_form_settings( $forms );
+				$html_content = ob_get_clean();
+				wp_send_json_success( ['html'=>$html_content, 'msg' => __( 'Global Client Form Imported Successfully ..... !! ', 'abp-rentalforge' ) ] );;
 			}
 		}
 		new ABPRF_Form();

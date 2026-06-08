@@ -15,7 +15,7 @@
 				?>
                 <div class="client_info_area">
                     <div class="item_box_1 attendee_item" >
-                        <h5 class=" _abprf_title"> <?php esc_html_e('Client Info : ', 'abprf-rental-forge'); ?>&nbsp;<span class="_color_theme attendee_seat_name"></span></h5>
+                        <h5 class=" _abprf_title"> <?php esc_html_e('Client Info : ', 'abp-rentalforge'); ?>&nbsp;<span class="_color_theme attendee_seat_name"></span></h5>
 	                    <?php foreach ($forms as $id => $form) {
 		                    ABPRF_Layout::create_client_form($form, $id );
 	                    } ?>

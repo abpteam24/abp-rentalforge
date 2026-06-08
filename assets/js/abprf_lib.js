@@ -3,6 +3,7 @@
     "use strict";
     $(document).ready(function () {
         abprf_load_datepicker();
+        abprf_init_all_dynamic_datepickers();
         abprf_load_tabs();
         $('body').find('div.abprf_area [data-image-href]').each(function () {
             abprf_spinner($(this));
@@ -647,6 +648,44 @@ function abprf_load_datepicker(parent = jQuery('.abprf_area')) {
         });
     });
 }
+function abprf_init_all_dynamic_datepickers(newSelector = null, newConfig = null) {
+    window.abprf_picker_data = window.abprf_picker_data || {};
+    if (newSelector && newConfig) {
+        window.abprf_picker_data[newSelector] = newConfig;
+    }
+    if (jQuery.isEmptyObject(window.abprf_picker_data)) {
+        return;
+    }
+    let currentDateFormat = (typeof abprf_var !== 'undefined' && abprf_var.date_format) ? abprf_var.date_format : 'yy-mm-dd';
+    jQuery.each(window.abprf_picker_data, function (selector, config) {
+        let $el = jQuery(selector);
+        if ($el.length) {
+            if ($el.hasClass('hasDatepicker')) {
+                $el.datepicker("destroy").removeClass('hasDatepicker').removeAttr('id').unbind();
+            }
+            $el.datepicker({
+                dateFormat: currentDateFormat,
+                autoSize: true,
+                changeMonth: true,
+                changeYear: true,
+                minDate: new Date(config.minYear, config.minMonth, config.minDay),
+                maxDate: new Date(config.maxYear, config.maxMonth, config.maxDay),
+                beforeShowDay: function (date) {
+                    var dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+                    if (jQuery.inArray(dmy, config.activeDates) !== -1) {
+                        return [true, "enabled-date", config.txtAvail];
+                    } else {
+                        return [false, "disabled-date", config.txtUnavail];
+                    }
+                },
+                onSelect: function (dateString, data) {
+                    let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                    jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+                }
+            });
+        }
+    });
+}
 function abprf_alert($this, attr = 'alert') {
     alert($this.data(attr));
 }
@@ -873,3 +912,4 @@ document.addEventListener('DOMContentLoaded', () => {
 //     "use strict";
 //
 // }(jQuery));
+

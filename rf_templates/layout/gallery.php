@@ -10,7 +10,7 @@
 			?>
             <div class="_abp_panel ">
                 <div class="_panel_head">
-                    <h4 class="_abprf"><span class="far fa-image _mar_r_xxs"></span> <?php esc_html_e( 'Gallery', 'abprf-rental-forge' ); ?></h4>
+                    <h4 class="_abprf"><span class="far fa-image _mar_r_xxs"></span> <?php esc_html_e( 'Gallery', 'abp-rentalforge' ); ?></h4>
                 </div>
                 <div class="_panel_body_xs abprf_gallery">
                     <div class="gallery_area item_<?php echo esc_attr($image_column);?>">

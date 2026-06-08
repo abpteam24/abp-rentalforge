@@ -8,9 +8,9 @@
 				add_action( 'abprf_load_dashboard', [ $this, 'load_dashboard' ] );
 			}
 
-			public function load_dashboard($abprf_info) {
+			public function load_dashboard( $abprf_info ): void {
 				$total_post     = isset( $abprf_info['total_post'] ) && $abprf_info['total_post'] ? $abprf_info['total_post'] : 0;
-				$total_property     = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
+				$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
 				?>
                 <div class="abprf_dashboard">
                     <div class="dashboard_head _f_wrap">
@@ -18,8 +18,8 @@
                             <div class="_d_flex">
                                 <h2 class="_abprf_all_center_mar_r_xs">🏘️</h2>
                                 <div class="_fd_column">
-                                    <h5 class="_abprf"><?php esc_html_e( 'Post', 'abprf-rental-forge' ); ?></h5>
-                                    <h4 class="_abprf_color_theme"><?php echo esc_html( $total_post); ?></h4>
+                                    <h5 class="_abprf"><?php esc_html_e( 'Post', 'abp-rentalforge' ); ?></h5>
+                                    <h4 class="_abprf_color_theme"><?php echo esc_html( $total_post ); ?></h4>
                                 </div>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                             <div class="_d_flex">
                                 <h2 class="_abprf_all_center_mar_r_xs">🏠</h2>
                                 <div class="_fd_column">
-                                    <h5 class="_abprf"><?php esc_html_e( 'Properties', 'abprf-rental-forge' ); ?></h5>
+                                    <h5 class="_abprf"><?php esc_html_e( 'Properties', 'abp-rentalforge' ); ?></h5>
                                     <h4 class="_abprf_color_theme"><?php echo esc_html( $total_property ); ?></h4>
                                 </div>
                             </div>

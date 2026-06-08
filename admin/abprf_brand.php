@@ -12,7 +12,7 @@
 				add_action( 'wp_ajax_abprf_edit_brand', array( $this, 'edit_brand' ) );
 			}
 
-			public function global_brand() {
+			public function global_brand(): void {
 				?>
                 <div class="tab_item brand_area" data-tabs="#abprf_global_brand">
                     <div class="brand_list _ov_auto">
@@ -25,11 +25,11 @@
                                 <table class="_abprf ">
                                     <thead>
                                     <tr>
-                                        <th><?php esc_html_e( 'Icon', 'abprf-rental-forge' ); ?></th>
-                                        <th><?php esc_html_e( 'Brand Title', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></th>
-                                        <th><?php esc_html_e( 'Brand Slug (Optional)', 'abprf-rental-forge' ); ?></th>
-                                        <th><?php esc_html_e( 'Description', 'abprf-rental-forge' ); ?></th>
-                                        <th class="_w_10"><?php esc_html_e( 'Action', 'abprf-rental-forge' ); ?></th>
+                                        <th><?php esc_html_e( 'Icon', 'abp-rentalforge' ); ?></th>
+                                        <th><?php esc_html_e( 'Brand Title', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></th>
+                                        <th><?php esc_html_e( 'Brand Slug (Optional)', 'abp-rentalforge' ); ?></th>
+                                        <th><?php esc_html_e( 'Description', 'abp-rentalforge' ); ?></th>
+                                        <th class="_w_10"><?php esc_html_e( 'Action', 'abp-rentalforge' ); ?></th>
                                     </tr>
                                     </thead>
                                     <tbody class="insertable_area sortable_area">
@@ -38,8 +38,8 @@
                                 <div class="_divider_xs"></div>
                             </div>
                             <div class="_fj_between">
-								<?php ABPRF_Layout::button_add( __( 'Add New Brand', 'abprf-rental-forge' ) ); ?>
-                                <button type="button" class="_btn_theme hide_on_load save_brand"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Brand', 'abprf-rental-forge' ); ?></button>
+								<?php ABPRF_Layout::button_add( __( 'Add New Brand', 'abp-rentalforge' ) ); ?>
+                                <button type="button" class="_btn_theme hide_on_load save_brand"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
                             </div>
                         </div>
                         <div class="abprf_d_none">
@@ -54,114 +54,6 @@
 				<?php
 			}
 
-			public function save_brand() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$ids          = isset( $_POST['brand_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_id'] ) ) : [];
-					$names        = isset( $_POST['brand_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_name'] ) ) : [];
-					$icons        = isset( $_POST['brand_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_icon'] ) ) : [];
-					$slugs        = isset( $_POST['brand_slug'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_slug'] ) ) : [];
-					$descriptions = isset( $_POST['brand_description'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_description'] ) ) : [];
-					$property_add = isset( $_POST['property_add'] ) ? sanitize_text_field( wp_unslash( $_POST['property_add'] ) ) : 0;
-					$options      = [];
-					if ( ! empty( $names ) && sizeof( $names ) > 0 ) {
-						foreach ( $names as $key => $name ) {
-							if ( ! empty( $name ) ) {
-								$id          = array_key_exists( $key, $ids ) && ! empty( $ids[ $key ] ) ? $ids[ $key ] : '';
-								$slug        = array_key_exists( $key, $slugs ) && ! empty( $slugs[ $key ] ) ? $slugs[ $key ] : '';
-								$description = array_key_exists( $key, $descriptions ) && ! empty( $descriptions[ $key ] ) ? $descriptions[ $key ] : '';
-								if ( ! empty( $id ) ) {
-									$result = wp_update_term( $id, 'abprf_brand', array(
-										'name' => $name,
-										'slug' => $slug,
-										'description' => $description,
-									) );
-								} else {
-									$result = wp_insert_term(
-										$name,
-										'abprf_brand',
-										array(
-											'slug' => $slug,
-											'description' => $description,
-										)
-									);
-								}
-								if ( is_wp_error( $result ) ) {
-									$msg = $result->get_error_message();
-								} else {
-									if ( empty( $id ) ) {
-										$id = is_array( $result ) && array_key_exists( 'term_id', $result ) ? $result['term_id'] : '';
-									}
-									if ( ! empty( $id ) ) {
-										$options[ $id ] = array_key_exists( $key, $icons ) && ! empty( $icons[ $key ] ) ? $icons[ $key ] : '';
-									}
-								}
-							}
-						}
-						$this->update_brand( $options );
-						if ( empty( $msg ) ) {
-							$msg = esc_html__( 'Brand Saved Successfully !', 'abprf-rental-forge' );
-						}
-					} else {
-						$msg = esc_html__( 'Brand not Saved ! Brand Name can not Blank !...!', 'abprf-rental-forge' );
-					}
-					ob_start();
-					if ( ! empty( $property_add ) && $property_add > 0 ) {
-						$brands      = '';
-						$property_id = isset( $_POST['property_id'] ) ? sanitize_text_field( wp_unslash( $_POST['property_id'] ) ) : '';
-						if ( ! empty( $property_id ) ) {
-							$properties = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
-							if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
-								$property = current( $properties );
-								$brands   = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
-							}
-						}
-						self::brand_selection( $brands );
-					} else {
-						$this->brand_list();
-					}
-					$html = ob_get_clean();
-				} else {
-					$html = '';
-					$msg  = esc_html__( 'Brand not Saved ! Authentication Error .', 'abprf-rental-forge' );
-				}
-				wp_send_json_success( [ 'html' => $html, 'msg' => $msg ] );
-				wp_die();
-			}
-
-			public function delete_brand() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$brand_id = isset( $_POST['brand_id'] ) ? sanitize_text_field( wp_unslash( $_POST['brand_id'] ) ) : '';
-					$result   = wp_delete_term( $brand_id, 'abprf_brand' );
-					if ( ! is_wp_error( $result ) && ! empty( $brand_id ) ) {
-						$brands = ABPRF_Function::get_option( 'abprf_brand' );
-						unset( $brands[ $brand_id ] );
-						update_option( 'abprf_brand', $brands );
-					}
-					ob_start();
-					$this->brand_list();
-					$html = ob_get_clean();
-					if ( is_wp_error( $result ) ) {
-						wp_send_json_success( [ 'html' => $html, 'msg' => $result->get_error_message() ] );
-					} else {
-						wp_send_json_success( [ 'html' => $html, 'msg' => esc_html__( 'Brand Delete Successfully !', 'abprf-rental-forge' ) ] );
-					}
-				}
-				wp_die();
-			}
-
-			public function edit_brand() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$id     = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
-					$brands = ABPRF_Function::get_option( 'abprf_brand' );
-					$brand  = array_key_exists( $id, $brands ) ? $brands[ $id ] : [];
-					ob_start();
-					self::form_brand( $brand, $id );
-					$html = ob_get_clean();
-					wp_send_json_success( [ 'html' => $html, 'msg' => esc_html__( 'Feature Ready to Editing...... !', 'abprf-rental-forge' ) ] );
-				}
-				wp_die();
-			}
-
 			public function update_brand( $options = [] ): void {
 				$taxonomies = ABPRF_Function::get_taxonomy( 'abprf_brand' );
 				$brands     = [];
@@ -169,7 +61,7 @@
 					$brand = ABPRF_Function::get_option( 'abprf_brand' );
 					$brand = is_array( $brand ) ? $brand : [];
 					foreach ( $taxonomies as $taxonomy ) {
-						$term_id = $taxonomy->term_id;
+						$term_id                           = $taxonomy->term_id;
 						$brands[ $term_id ]['name']        = $taxonomy->name;
 						$brands[ $term_id ]['description'] = $taxonomy->description;
 						$brands[ $term_id ]['slug']        = $taxonomy->slug;
@@ -193,12 +85,12 @@
                     <table class="_abprf">
                         <thead>
                         <tr>
-                            <th><?php esc_html_e( 'SI', 'abprf-rental-forge' ) ?></th>
-                            <th class="_min_200"><?php esc_html_e( 'Brand Title', 'abprf-rental-forge' ) ?></th>
-                            <th><?php esc_html_e( 'ID', 'abprf-rental-forge' ) ?></th>
-                            <th class="_min_150"><?php esc_html_e( 'Description', 'abprf-rental-forge' ) ?></th>
-                            <th class="_w_250"><?php esc_html_e( 'Shortcode Property', 'abprf-rental-forge' ) ?></th>
-                            <th class="_w_100"><?php esc_html_e( 'Action', 'abprf-rental-forge' ) ?></th>
+                            <th><?php esc_html_e( 'SI', 'abp-rentalforge' ) ?></th>
+                            <th class="_min_200"><?php esc_html_e( 'Brand Title', 'abp-rentalforge' ) ?></th>
+                            <th><?php esc_html_e( 'ID', 'abp-rentalforge' ) ?></th>
+                            <th class="_min_150"><?php esc_html_e( 'Description', 'abp-rentalforge' ) ?></th>
+                            <th class="_w_250"><?php esc_html_e( 'Shortcode Property', 'abp-rentalforge' ) ?></th>
+                            <th class="_w_100"><?php esc_html_e( 'Action', 'abp-rentalforge' ) ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -215,8 +107,8 @@
                                 <th><code> [abprf-property brand_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th>
                                     <div class="_f_wrap">
-                                        <button type="button" class="_btn_light_yellow_mar_r_xxs edit_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abprf-rental-forge' ) . ' ' . esc_attr( $name ); ?>">✍️</button>
-                                        <button type="button" class="_btn_light_danger_xxs delete_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abprf-rental-forge' ) . ' ' . esc_attr( $name ); ?>">❌</button>
+                                        <button type="button" class="_btn_light_yellow_mar_r_xxs edit_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">✍️</button>
+                                        <button type="button" class="_btn_light_danger_xxs delete_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">❌</button>
                                     </div>
                                 </th>
                             </tr>
@@ -235,7 +127,7 @@
 				if ( ! empty( $brands ) && is_array( $brands ) && sizeof( $brands ) > 0 ) { ?>
                     <label class="_w_full">
                         <select class="_form_control" name="brand">
-                            <option value="" selected><?php esc_html_e( 'Please Select Brand', 'abprf-rental-forge' ); ?></option>
+                            <option value="" selected><?php esc_html_e( 'Please Select Brand', 'abp-rentalforge' ); ?></option>
 							<?php foreach ( $brands as $key => $brand ) { ?>
                                 <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( in_array( $key, $brand_array ) ? 'selected' : '' ); ?>><?php echo esc_html( is_array( $brand ) && array_key_exists( 'name', $brand ) ? $brand['name'] : '' ); ?></option>
 							<?php } ?>
@@ -257,17 +149,17 @@
                     <th>
                         <label>
                             <input type="hidden" name="brand_id[]" value="<?php echo esc_attr( $id ); ?>"/>
-                            <input class="_form_control_min_auto_w_full" name="brand_name[]" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abprf-rental-forge' ); ?>" required/>
+                            <input class="_form_control_min_auto_w_full" name="brand_name[]" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" required/>
                         </label>
                     </th>
                     <th>
                         <label>
-                            <input class="_form_control_min_auto_w_full" name="brand_slug[]" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abprf-rental-forge' ); ?>"/>
+                            <input class="_form_control_min_auto_w_full" name="brand_slug[]" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abp-rentalforge' ); ?>"/>
                         </label>
                     </th>
                     <th>
                         <label>
-                            <textarea class="_form_control_min_auto_w_full" name="brand_description[]" placeholder="<?php esc_attr_e( 'Description', 'abprf-rental-forge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
+                            <textarea class="_form_control_min_auto_w_full" name="brand_description[]" placeholder="<?php esc_attr_e( 'Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
                         </label>
                     </th>
                     <td><?php ABPRF_Layout::button_delete_sort(); ?></td>
@@ -275,11 +167,11 @@
 				<?php
 			}
 
-			public static function brand_selection_form( $brand = [], $id = '' ) {
-				$name        = is_array( $brand ) && array_key_exists( 'name', $brand ) ? $brand['name'] : '';
-				$slug        = is_array( $brand ) && array_key_exists( 'slug', $brand ) ? $brand['slug'] : '';
-				$icon        = is_array( $brand ) && array_key_exists( 'icon', $brand ) ? $brand['icon'] : '';
-				$description = is_array( $brand ) && array_key_exists( 'description', $brand ) ? $brand['description'] : '';
+			public static function brand_selection_form( $brand = [], $id = '' ): void {
+				$name        = $brand['name'] ?? '';
+				$slug        = $brand['slug'] ?? '';
+				$icon        = $brand['icon'] ?? '';
+				$description = $brand['description'] ?? '';
 				?>
                 <div class="configuration_content">
                     <div class="form_area">
@@ -291,8 +183,8 @@
                             <div class="_divider_xs"></div>
                         </div>
                         <div class="_fj_between">
-							<?php ABPRF_Layout::button_add_xs( __( 'Add New Brand', 'abprf-rental-forge' ) ); ?>
-                            <button type="button" class="_btn_theme_xs hide_on_load save_brand"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Brand', 'abprf-rental-forge' ); ?></button>
+							<?php ABPRF_Layout::button_add_xs( __( 'Add New Brand', 'abp-rentalforge' ) ); ?>
+                            <button type="button" class="_btn_theme_xs hide_on_load save_brand"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
                         </div>
                     </div>
                     <div class="abprf_d_none">
@@ -303,17 +195,17 @@
                                 <th>
                                     <label>
                                         <input type="hidden" name="brand_id[]" value="<?php echo esc_attr( $id ); ?>"/>
-                                        <input class="_form_control_min_auto_w_full" name="brand_name[]" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abprf-rental-forge' ); ?>" required/>
+                                        <input class="_form_control_min_auto_w_full" name="brand_name[]" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" required/>
                                     </label>
                                 </th>
                                 <th>
                                     <label>
-                                        <input class="_form_control_min_auto_w_full" name="brand_slug[]" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abprf-rental-forge' ); ?>"/>
+                                        <input class="_form_control_min_auto_w_full" name="brand_slug[]" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abp-rentalforge' ); ?>"/>
                                     </label>
                                 </th>
                                 <th>
                                     <label>
-                                        <textarea class="_form_control_min_auto_w_full" name="brand_description[]" placeholder="<?php esc_attr_e( 'Description', 'abprf-rental-forge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
+                                        <textarea class="_form_control_min_auto_w_full" name="brand_description[]" placeholder="<?php esc_attr_e( 'Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
                                     </label>
                                 </th>
                             </tr>
@@ -322,6 +214,124 @@
                     </div>
                 </div>
 				<?php
+			}
+
+			public function save_brand(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+				}
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
+				}
+				$ids          = isset( $_POST['brand_id'] ) ? array_map( 'absint', wp_unslash( $_POST['brand_id'] ) ) : [];
+				$names        = isset( $_POST['brand_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_name'] ) ) : [];
+				$icons        = isset( $_POST['brand_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['brand_icon'] ) ) : [];
+				$slugs        = isset( $_POST['brand_slug'] ) ? array_map( 'sanitize_title', wp_unslash( $_POST['brand_slug'] ) ) : [];
+				$descriptions = isset( $_POST['brand_description'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['brand_description'] ) ) : [];
+				$property_add = isset( $_POST['property_add'] ) ? absint( wp_unslash( $_POST['property_add'] ) ) : 0;
+				$options      = [];
+				$msg          = '';
+				if ( ! empty( $names ) && count( $names ) > 0 ) {
+					foreach ( $names as $key => $name ) {
+						if ( ! empty( $name ) ) {
+							$id          = ( array_key_exists( $key, $ids ) && ! empty( $ids[ $key ] ) ) ? $ids[ $key ] : 0;
+							$slug        = ( array_key_exists( $key, $slugs ) && ! empty( $slugs[ $key ] ) ) ? $slugs[ $key ] : '';
+							$description = ( array_key_exists( $key, $descriptions ) && ! empty( $descriptions[ $key ] ) ) ? $descriptions[ $key ] : '';
+							if ( $id > 0 ) {
+								$result = wp_update_term( $id, 'abprf_brand', [
+									'name' => $name,
+									'slug' => $slug,
+									'description' => $description,
+								] );
+							} else {
+								$result = wp_insert_term( $name, 'abprf_brand', [
+									'slug' => $slug,
+									'description' => $description,
+								] );
+							}
+							if ( is_wp_error( $result ) ) {
+								$msg = $result->get_error_message();
+							} else {
+								if ( ! $id ) {
+									$id = ( is_array( $result ) && array_key_exists( 'term_id', $result ) ) ? absint( $result['term_id'] ) : 0;
+								}
+								if ( $id > 0 ) {
+									$options[ $id ] = ( array_key_exists( $key, $icons ) && ! empty( $icons[ $key ] ) ) ? $icons[ $key ] : '';
+								}
+							}
+						}
+					}
+					$this->update_brand( $options );
+					if ( empty( $msg ) ) {
+						$msg = __( 'Brand Saved Successfully !', 'abp-rentalforge' );
+					}
+				} else {
+					$msg = __( 'Brand not Saved ! Brand Name can not Blank !...!', 'abp-rentalforge' );
+				}
+				ob_start();
+				if ( $property_add > 0 ) {
+					$brands      = '';
+					$property_id = isset( $_POST['property_id'] ) ? absint( wp_unslash( $_POST['property_id'] ) ) : 0;
+					if ( $property_id > 0 ) {
+						$properties = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+						if ( ! empty( $properties ) && is_array( $properties ) && count( $properties ) > 0 ) {
+							$property = current( $properties );
+							$brands   = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
+						}
+					}
+					self::brand_selection( $brands );
+				} else {
+					$this->brand_list();
+				}
+				$html = ob_get_clean();
+				wp_send_json_success( [ 'html' => $html, 'msg' => $msg ] );
+			}
+
+			public function delete_brand(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+				}
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				$brand_id = isset( $_POST['brand_id'] ) ? absint( wp_unslash( $_POST['brand_id'] ) ) : 0;
+				$result   = false;
+				if ( $brand_id > 0 ) {
+					$result = wp_delete_term( $brand_id, 'abprf_brand' );
+					if ( ! is_wp_error( $result ) ) {
+						$brands = ABPRF_Function::get_option( 'abprf_brand' );
+						if ( is_array( $brands ) && isset( $brands[ $brand_id ] ) ) {
+							unset( $brands[ $brand_id ] );
+							update_option( 'abprf_brand', $brands );
+						}
+					}
+				}
+				ob_start();
+				$this->brand_list();
+				$html = ob_get_clean();
+				if ( is_wp_error( $result ) ) {
+					wp_send_json_error( [ 'html' => $html, 'msg' => $result->get_error_message() ], 400 );
+				}
+				wp_send_json_success( [ 'html' => $html, 'msg' => __( 'Brand Delete Successfully !', 'abp-rentalforge' ) ] );
+			}
+
+			public function edit_brand(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+				}
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				$id     = isset( $_POST['id'] ) ? absint( wp_unslash( $_POST['id'] ) ) : 0;
+				$brand  = [];
+				$brands = ABPRF_Function::get_option( 'abprf_brand' );
+				if ( $id > 0 && is_array( $brands ) && array_key_exists( $id, $brands ) ) {
+					$brand = $brands[ $id ];
+				}
+				ob_start();
+				self::form_brand( $brand, $id );
+				$html = ob_get_clean();
+				wp_send_json_success( [ 'html' => $html, 'msg' => __( 'Brand Ready to Editing...... !', 'abp-rentalforge' ) ] );
 			}
 		}
 		new ABPRF_Brand();

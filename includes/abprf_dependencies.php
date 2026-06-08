@@ -33,35 +33,30 @@
 					'nonce' => wp_create_nonce( 'abprf_admin_ajax_nonce' ),
 					'icon_url' => ABPRF_URL . '/assets/js/abprf_icons.json',
 					'msg' => [
-						'confirm_delete' => __( 'Are you sure you want to delete this item?', 'abprf-rental-forge' ),
-						'confirm_ok' => __( '1. Ok : To Remove Item .', 'abprf-rental-forge' ),
-						'confirm_cancel' => __( '2. Cancel : To Cancel .', 'abprf-rental-forge' ),
-						'saving' => __( 'Saving.............!', 'abprf-rental-forge' ),
-						'saved' => __( 'Saved...............!', 'abprf-rental-forge' ),
-						'importing' => __( 'Importing........', 'abprf-rental-forge' ),
-						'imported' => __( 'Imported Successfully............. !', 'abprf-rental-forge' ),
-						'loading' => __( 'Loading........', 'abprf-rental-forge' ),
-						'loaded' => __( 'Loaded Successfully............. !', 'abprf-rental-forge' ),
-						'order_loading' => __( 'Order Loading........ !', 'abprf-rental-forge' ),
-						'error' => __( 'An error occurred. Please try again.', 'abprf-rental-forge' ),
-						'deleting' => __( 'Deleting.............', 'abprf-rental-forge' ),
-						'delete_success' => __( 'Delete Successfully.............', 'abprf-rental-forge' ),
-						'property_loading' => __( 'Property List Loading.............', 'abprf-rental-forge' ),
-						'property_loading_success' => __( 'Property List already Loaded !', 'abprf-rental-forge' ),
-						'post_loading' => __( 'Post List Loading.............', 'abprf-rental-forge' ),
-						'post_loading_success' => __( 'Post List already Loaded !', 'abprf-rental-forge' ),
-						'post_deleting' => __( 'Post Permanent Deleting.........!', 'abprf-rental-forge' ),
-						'post_delete_success' => __( 'Post Delete successfully!', 'abprf-rental-forge' ),
-						'post_trashing' => __( 'Post move to Trashing.........!', 'abprf-rental-forge' ),
-						'post_trash_success' => __( 'Post move to trashed successfully!', 'abprf-rental-forge' ),
-						'post_restoring' => __( 'Post Restoring.........!', 'abprf-rental-forge' ),
-						'post_restored' => __( 'Post Restored successfully!', 'abprf-rental-forge' ),
-						'wc_install' => __( 'Woocommerce Downloading And Installing.........!', 'abprf-rental-forge' ),
-						'wc_installing' => __( 'Woocommerce  Installing.........!', 'abprf-rental-forge' ),
-						'wc_installed_success' => __( 'Woocommerce Downloaded And Installed successfully ..... !! ', 'abprf-rental-forge' ),
-						'wc_installed' => __( 'Woocommerce Installed successfully.... !  ', 'abprf-rental-forge' ),
-						'create_post_page' => $label . ' ' . __( 'Post Page Creating ........!', 'abprf-rental-forge' ),
-						'create_property_page' => $label . ' ' . __( 'Property Page Creating ........!', 'abprf-rental-forge' ),
+						'confirm_delete' => __( 'Are you sure you want to delete this item?', 'abp-rentalforge' ),
+						'confirm_ok' => __( '1. Ok : To Remove Item .', 'abp-rentalforge' ),
+						'confirm_cancel' => __( '2. Cancel : To Cancel .', 'abp-rentalforge' ),
+						'saving' => __( 'Saving.............!', 'abp-rentalforge' ),
+						'saved' => __( 'Saved...............!', 'abp-rentalforge' ),
+						'importing' => __( 'Importing........', 'abp-rentalforge' ),
+						'imported' => __( 'Imported Successfully............. !', 'abp-rentalforge' ),
+						'loading' => __( 'Loading........', 'abp-rentalforge' ),
+						'loaded' => __( 'Loaded Successfully............. !', 'abp-rentalforge' ),
+						'order_loading' => __( 'Order Loading........ !', 'abp-rentalforge' ),
+						'error' => __( 'An error occurred. Please try again.', 'abp-rentalforge' ),
+						'deleting' => __( 'Deleting.............', 'abp-rentalforge' ),
+						'delete_success' => __( 'Delete Successfully.............', 'abp-rentalforge' ),
+						'property_loading' => __( 'Property List Loading.............', 'abp-rentalforge' ),
+						'post_loading' => __( 'Post List Loading.............', 'abp-rentalforge' ),
+						'post_deleting' => __( 'Post Permanent Deleting.........!', 'abp-rentalforge' ),
+						'post_trashing' => __( 'Post move to Trashing.........!', 'abp-rentalforge' ),
+						'post_restoring' => __( 'Post Restoring.........!', 'abp-rentalforge' ),
+						'wc_install' => __( 'Woocommerce Downloading And Installing.........!', 'abp-rentalforge' ),
+						'wc_installing' => __( 'Woocommerce  Installing.........!', 'abp-rentalforge' ),
+						'wc_installed_success' => __( 'Woocommerce Downloaded And Installed successfully ..... !! ', 'abp-rentalforge' ),
+						'wc_installed' => __( 'Woocommerce Installed successfully.... !  ', 'abp-rentalforge' ),
+						'create_post_page' => $label . ' ' . __( 'Post Page Creating ........!', 'abp-rentalforge' ),
+						'create_property_page' => $label . ' ' . __( 'Property Page Creating ........!', 'abp-rentalforge' ),
 					],
 				] );
 				wp_enqueue_style( 'abprf_admin', ABPRF_URL . '/assets/css/abprf_admin.css', array(), time() );
@@ -133,8 +128,8 @@
 				$button_fs       = isset( $abprf_css_var['fs_button'] ) && $abprf_css_var['fs_button'] ? $abprf_css_var['fs_button'] . 'px' : '14px';
 				$bg_button       = isset( $abprf_css_var['bg_button'] ) && $abprf_css_var['bg_button'] ? $abprf_css_var['bg_button'] : '#222';
 				$color_button    = isset( $abprf_css_var['color_button'] ) && $abprf_css_var['color_button'] ? $abprf_css_var['color_button'] : $alternate_color;
-				$off             = __( 'OFF', 'abprf-rental-forge' );
-				$on              = __( 'ON', 'abprf-rental-forge' );
+				$off             = __( 'OFF', 'abp-rentalforge' );
+				$on              = __( 'ON', 'abp-rentalforge' );
 				$abprf_var       =
 					":root {
 						--rf_br: {$default_br};						
@@ -164,6 +159,24 @@
 					}";
 				wp_add_inline_style( 'abprf_lib', $abprf_var );
 				wp_enqueue_style( 'abprf', ABPRF_URL . '/assets/css/abprf.css', array(), time() );
+				$all_time = ABPRF_Function::get_time( get_the_id(), 'js' );
+				wp_enqueue_script( 'abprf_infos', ABPRF_URL . '/assets/js/abprf.js', array( 'jquery' ), time(), true );
+				$rental_data = array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'nonce' => wp_create_nonce( 'abprf_ajax_nonce' ),
+					'date_info' => json_encode( $all_time ),
+					'now' => current_time( 'Y-m-d H:i' ),
+					'msg' => [
+						'end_date_loading' => __( 'End Date  Loading.............', 'abp-rentalforge' ),
+						'property_loading' => __( 'Property List Loading.............', 'abp-rentalforge' ),
+						'select_rent_start_date' => __( 'Please Select rent Start Date', 'abp-rentalforge' ),
+						'select_rent_end_date' => __( 'Please Select rent End Date', 'abp-rentalforge' ),
+						'select_rent_start_time' => __( 'Please Select rent Start Time', 'abp-rentalforge' ),
+						'select_rent_end_time' => __( 'Please Select rent End Time', 'abp-rentalforge' ),
+						'free' => __( 'FREE', 'abp-rentalforge' ),
+					],
+				);
+				wp_localize_script( 'abprf_infos', 'abprf_infos', $rental_data );
 				do_action( 'abprf_global_script' );
 			}
 
@@ -199,39 +212,38 @@
 			}
 
 			public function register_cpt(): void {
-				$configuration = ABPRF_Configuration;
 				$cpt           = ABPRF_Function::get_cpt();
 				$label         = ABPRF_Function::label();
-				$slug          = isset( $configuration['slug'] ) && $configuration['slug'] ? $configuration['slug'] : 'rental-forge';
-				$icon          = isset( $configuration['icon'] ) && $configuration['icon'] ? $configuration['icon'] : 'dashicons-hammer';
+				$slug          = ABPRF_Function::slug();
+				$icon          = ABPRF_Function::icon_wp();
 				$labels        = [
 					'name' => esc_html( $label ),
 					'singular_name' => esc_html( $label ),
 					'menu_name' => esc_html( $label ),
 					'name_admin_bar' => esc_html( $label ),
-					'archives' => __( 'Post List', 'abprf-rental-forge' ),
-					'attributes' => __( 'Post List', 'abprf-rental-forge' ),
-					'parent_item_colon' => __( 'Post Item:', 'abprf-rental-forge' ),
-					'all_items' => __( 'Post', 'abprf-rental-forge' ),
-					'add_new_item' => __( 'Add Post', 'abprf-rental-forge' ),
-					'add_new' => __( 'Add Post', 'abprf-rental-forge' ),
-					'new_item' => __( 'Add Post', 'abprf-rental-forge' ),
-					'edit_item' => __( 'Edit Post', 'abprf-rental-forge' ),
-					'update_item' => __( 'Update Post', 'abprf-rental-forge' ),
-					'view_item' => __( 'View Post', 'abprf-rental-forge' ),
-					'view_items' => __( 'View Post', 'abprf-rental-forge' ),
-					'search_items' => __( 'Search Post', 'abprf-rental-forge' ),
-					'not_found' => __( 'Post Not Found', 'abprf-rental-forge' ),
-					'not_found_in_trash' => __( 'Post Not found in Trash', 'abprf-rental-forge' ),
-					'featured_image' => __( 'Post Image', 'abprf-rental-forge' ),
-					'set_featured_image' => __( 'Post Image', 'abprf-rental-forge' ),
-					'remove_featured_image' => __( 'Remove Post Image', 'abprf-rental-forge' ),
-					'use_featured_image' => __( 'Use image Post as featured image', 'abprf-rental-forge' ),
-					'insert_into_item' => __( 'Insert  Post', 'abprf-rental-forge' ),
-					'uploaded_to_this_item' => __( 'Uploaded  Post', 'abprf-rental-forge' ),
-					'items_list' => __( 'Post List', 'abprf-rental-forge' ),
-					'items_list_navigation' => __( 'Category list navigation', 'abprf-rental-forge' ),
-					'filter_items_list' => __( 'Filter Post List', 'abprf-rental-forge' )
+					'archives' => __( 'Post List', 'abp-rentalforge' ),
+					'attributes' => __( 'Post List', 'abp-rentalforge' ),
+					'parent_item_colon' => __( 'Post Item:', 'abp-rentalforge' ),
+					'all_items' => __( 'Post', 'abp-rentalforge' ),
+					'add_new_item' => __( 'Add Post', 'abp-rentalforge' ),
+					'add_new' => __( 'Add Post', 'abp-rentalforge' ),
+					'new_item' => __( 'Add Post', 'abp-rentalforge' ),
+					'edit_item' => __( 'Edit Post', 'abp-rentalforge' ),
+					'update_item' => __( 'Update Post', 'abp-rentalforge' ),
+					'view_item' => __( 'View Post', 'abp-rentalforge' ),
+					'view_items' => __( 'View Post', 'abp-rentalforge' ),
+					'search_items' => __( 'Search Post', 'abp-rentalforge' ),
+					'not_found' => __( 'Post Not Found', 'abp-rentalforge' ),
+					'not_found_in_trash' => __( 'Post Not found in Trash', 'abp-rentalforge' ),
+					'featured_image' => __( 'Post Image', 'abp-rentalforge' ),
+					'set_featured_image' => __( 'Post Image', 'abp-rentalforge' ),
+					'remove_featured_image' => __( 'Remove Post Image', 'abp-rentalforge' ),
+					'use_featured_image' => __( 'Use image Post as featured image', 'abp-rentalforge' ),
+					'insert_into_item' => __( 'Insert  Post', 'abp-rentalforge' ),
+					'uploaded_to_this_item' => __( 'Uploaded  Post', 'abp-rentalforge' ),
+					'items_list' => __( 'Post List', 'abp-rentalforge' ),
+					'items_list_navigation' => __( 'Category list navigation', 'abp-rentalforge' ),
+					'filter_items_list' => __( 'Filter Post List', 'abp-rentalforge' )
 				];
 				$args          = [
 					'public' => true,
@@ -251,7 +263,7 @@
 				];
 				register_post_type( $cpt, $args );
 				$category_label = ABPRF_Function::category_label();
-				$category_slug  = isset( $configuration['cat_slug'] ) && $configuration['cat_slug'] ? $configuration['cat_slug'] : 'category';
+				$category_slug  =ABPRF_Function::category_slug();
 				$full_text      = $label . ' ' . $category_label;
 				$label_category = array(
 					'name' => $full_text,
@@ -271,7 +283,7 @@
 					'meta_box_cb' => false,
 				];
 				register_taxonomy( 'abprf_category', $cpt, $args );
-				$full_text      = $label . ' ' . __( 'Locations', 'abprf-rental-forge' );
+				$full_text      = $label . ' ' . __( 'Locations', 'abp-rentalforge' );
 				$label_location = array(
 					'name' => $full_text,
 					'singular_name' => $full_text,
@@ -290,7 +302,7 @@
 					'meta_box_cb' => false,
 				];
 				register_taxonomy( 'abprf_location', $cpt, $args );
-				$full_text   = $label . ' ' . __( 'Brand', 'abprf-rental-forge' );
+				$full_text   = $label . ' ' . __( 'Brand', 'abp-rentalforge' );
 				$label_brand = array(
 					'name' => $full_text,
 					'singular_name' => $full_text,
@@ -406,7 +418,7 @@
 
 			public function plugin_settings_link( $links_array, $plugin_file_name ) {
 				if ( strpos( $plugin_file_name, ABPRF_BASE ) ) {
-					array_unshift( $links_array, '<a class="_abprf" href="' . esc_url( admin_url() ) . 'admin.php?page=rental-forge&rf_tab=configuration">' . __( 'Configuration', 'abprf-rental-forge' ) . '</a>' );
+					array_unshift( $links_array, '<a class="_abprf" href="' . esc_url( admin_url() ) . 'admin.php?page=rental-forge&rf_tab=configuration">' . __( 'Configuration', 'abp-rentalforge' ) . '</a>' );
 				}
 
 				return $links_array;
@@ -427,7 +439,7 @@
 			public function activation_redirect(): void {
 				$active_tab = filter_input( INPUT_GET, 'rf_tab', FILTER_SANITIZE_SPECIAL_CHARS );
 				$page       = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_SPECIAL_CHARS );
-				if ( $page === 'rental-forge' && ABPRF_Function::check_wc() < 2 && $active_tab != 'status' ) {
+				if ( $page === 'rental-forge' && ABPRF_WC < 2 && $active_tab != 'status' ) {
 					wp_safe_redirect( admin_url( 'admin.php?page=rental-forge&rf_tab=status' ) );
 					exit;
 				}

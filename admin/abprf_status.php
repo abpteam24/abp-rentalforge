@@ -20,24 +20,23 @@
 				?>
                 <div class="_abp_panel_max_1200_mar_auto abprf_status">
                     <div class="_panel_head">
-                        <h3 class="_abprf"><span class="_mar_r_xxs">🛡️</span> <?php esc_html_e( 'Status  & Information', 'abprf-rental-forge' ); ?></h3>
+                        <h3 class="_abprf"><span class="_mar_r_xxs">🛡️</span> <?php esc_html_e( 'Status  & Information', 'abp-rentalforge' ); ?></h3>
                     </div>
                     <div class="_panel_body">
 						<?php
-							$wc_status = ABPRF_Function::check_wc();
-							if ( $wc_status < 2 ) {
+							if ( ABPRF_WC < 2 ) {
 								ABPRF_Layout::layout_warning_info_xs( 'must_wc' );
-								if ( $wc_status == 1 ) { ?>
-                                    <button class="_btn_navy_blue_mar_t active_wc" type="button"><span class="fas fa-tasks _mar_r_xxs"></span><?php esc_html_e( 'Active Now', 'abprf-rental-forge' ); ?></button>
+								if ( ABPRF_WC == 1 ) { ?>
+                                    <button class="_btn_navy_blue_mar_t active_wc" type="button"><span class="fas fa-tasks _mar_r_xxs"></span><?php esc_html_e( 'Active Now', 'abp-rentalforge' ); ?></button>
 								<?php } else { ?>
-                                    <button class="_btn_navy_blue_mar_t _mar_t install_and_active_wc" type="button"><span class="fas fa-file-download _mar_r_xxs"></span><?php esc_html_e( 'Install & Active Now', 'abprf-rental-forge' ); ?></button>
+                                    <button class="_btn_navy_blue_mar_t _mar_t install_and_active_wc" type="button"><span class="fas fa-file-download _mar_r_xxs"></span><?php esc_html_e( 'Install & Active Now', 'abp-rentalforge' ); ?></button>
 								<?php }
 							}
 							$this->version();
 							$this->wordpress();
 							$this->php();
-							$this->wc( $wc_status );
-							if ( $wc_status > 1 ) {
+							$this->wc();
+							if ( ABPRF_WC > 1 ) {
 								do_action( 'abprf_add_tools' );
 								$this->post_page( $abprf_info );
 							}
@@ -51,7 +50,7 @@
 				?>
                 <div class="_section_xs_mar_t_xs">
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"> <?php esc_html_e( 'RentalForge Version', 'abprf-rental-forge' ) ?> </h6>
+                        <h6 class="_abprf"> <?php esc_html_e( 'RentalForge Version', 'abp-rentalforge' ) ?> </h6>
                         <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( get_plugin_data( ABPRF_PLUGIN_FILE ) ['Version'] ); ?></button>
                     </div>
                 </div>
@@ -63,7 +62,7 @@
 				?>
                 <div class="_section_xs">
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"> <?php esc_html_e( 'WordPress Version', 'abprf-rental-forge' ); ?> </h6>
+                        <h6 class="_abprf"> <?php esc_html_e( 'WordPress Version', 'abp-rentalforge' ); ?> </h6>
 						<?php if ( $version > 5.5 ) { ?>
                             <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
 						<?php } else { ?>
@@ -79,7 +78,7 @@
 				?>
                 <div class="_section_xs">
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"> <?php esc_html_e( 'Php Version', 'abprf-rental-forge' ); ?> </h6>
+                        <h6 class="_abprf"> <?php esc_html_e( 'Php Version', 'abp-rentalforge' ); ?> </h6>
 						<?php if ( $version > 7.4 ) { ?>
                             <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
 						<?php } else { ?>
@@ -90,27 +89,27 @@
 				<?php
 			}
 
-			public function wc( $wc_status = 0 ): void {
-				$title = $wc_status == 2 ? __( 'Woocommerce Plugin', 'abprf-rental-forge' ) : __( 'Woocommerce need to install and active', 'abprf-rental-forge' );
-				$title = $wc_status == 1 ? __( 'Woocommerce already installed but  not  activated', 'abprf-rental-forge' ) : $title;
+			public function wc(): void {
+				$title = ABPRF_WC == 2 ? __( 'Woocommerce Plugin', 'abp-rentalforge' ) : __( 'Woocommerce need to install and active', 'abp-rentalforge' );
+				$title = ABPRF_WC == 1 ? __( 'Woocommerce already installed but  not  activated', 'abp-rentalforge' ) : $title;
 				$name  = get_option( 'woocommerce_email_from_name' );
 				$email = get_option( 'woocommerce_email_from_address' );
 				?>
                 <div class="_section_xs">
                     <div class="_fa_center_fj_between">
                         <h6 class="_abprf"> <?php echo esc_html( $title ); ?></h6>
-						<?php if ( $wc_status == 2 ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
-						<?php } elseif ( $wc_status == 1 ) { ?>
-                            <button class="_btn_warning_xs_min_125 active_wc" type="button"><span class="fas fa-tasks _mar_r_xxs"></span><?php esc_html_e( 'Active Now', 'abprf-rental-forge' ); ?></button>
+						<?php if ( ABPRF_WC == 2 ) { ?>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
+						<?php } elseif ( ABPRF_WC == 1 ) { ?>
+                            <button class="_btn_warning_xs_min_125 active_wc" type="button"><span class="fas fa-tasks _mar_r_xxs"></span><?php esc_html_e( 'Active Now', 'abp-rentalforge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 install_and_active_wc" type="button"><span class="fas fa-file-download _mar_r_xxs"></span><?php esc_html_e( 'Install & Active Now', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 install_and_active_wc" type="button"><span class="fas fa-file-download _mar_r_xxs"></span><?php esc_html_e( 'Install & Active Now', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
-					<?php if ( $wc_status == 2 && defined( 'WC_VERSION' ) ) { ?>
+					<?php if ( ABPRF_WC == 2 && defined( 'WC_VERSION' ) ) { ?>
                         <div class="_fa_center_fj_between">
-                            <h6 class="_abprf"><?php esc_html_e( 'Woocommerce Version', 'abprf-rental-forge' ); ?></h6>
+                            <h6 class="_abprf"><?php esc_html_e( 'Woocommerce Version', 'abp-rentalforge' ); ?></h6>
 							<?php if ( version_compare( WC_VERSION, '8.0', '>' ) ) { ?>
                                 <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( WC_VERSION ); ?></button>
 							<?php } else { ?>
@@ -120,14 +119,14 @@
 						<?php if ( ! empty( $name ) ) { ?>
                             <div class="_divider_xs"></div>
                             <div class="_fa_center_fj_between">
-                                <h6 class="_abprf"><?php esc_html_e( 'Name', 'abprf-rental-forge' ); ?></h6>
+                                <h6 class="_abprf"><?php esc_html_e( 'Name', 'abp-rentalforge' ); ?></h6>
                                 <button class="_btn_light_success_xs_min_125" type="button"><?php echo esc_html( $name ); ?></button>
                             </div>
 						<?php } ?>
 						<?php if ( ! empty( $email ) ) { ?>
                             <div class="_divider_xs"></div>
                             <div class="_fa_center_fj_between">
-                                <h6 class="_abprf"><?php esc_html_e( 'Email Address', 'abprf-rental-forge' ); ?></h6>
+                                <h6 class="_abprf"><?php esc_html_e( 'Email Address', 'abp-rentalforge' ); ?></h6>
                                 <button class="_btn_light_success_xs_min_125_text_inherit" type="button"><?php echo esc_html( $email ); ?></button>
                             </div>
 						<?php } ?>
@@ -145,138 +144,191 @@
 				?>
                 <div class="_section_xs">
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"><?php echo esc_html( $label ) . ' ' . esc_html__( 'Post List Page', 'abprf-rental-forge' ); ?></h6>
+                        <h6 class="_abprf"><?php echo esc_html( $label ) . ' ' . esc_html__( 'Post List Page', 'abp-rentalforge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'rf_post_list' ) ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 create_post_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add RentalForge List Page', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 create_post_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add RentalForge List Page', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"><?php esc_html_e( 'Property List Page', 'abprf-rental-forge' ); ?></h6>
+                        <h6 class="_abprf"><?php esc_html_e( 'Property List Page', 'abp-rentalforge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'rf_property_list' ) ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 create_property_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Property List Page', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 create_property_list_page" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Property List Page', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"> <?php esc_html_e( 'Number of Post', 'abprf-rental-forge' ); ?> </h6>
+                        <h6 class="_abprf"> <?php esc_html_e( 'Number of Post', 'abp-rentalforge' ); ?> </h6>
 						<?php if ( $total > 0 ) { ?>
                             <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $total ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Post', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Post', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"> <?php esc_html_e( 'Number of Property', 'abprf-rental-forge' ); ?> </h6>
+                        <h6 class="_abprf"> <?php esc_html_e( 'Number of Property', 'abp-rentalforge' ); ?> </h6>
 						<?php if ( $total_property > 0 ) { ?>
                             <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $total_property ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Any Property', 'abprf-rental-forge' ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Any Property', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
-                        <h6 class="_abprf"> <?php esc_html_e( 'Dummy Import', 'abprf-rental-forge' ); ?> </h6>
-                        <button class="<?php echo esc_attr( $total > 0 ? '_btn_light_success_xs' : '_btn_warning_xs' ); ?>_btn_theme_min_125 import_dummy" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add New Dummy Post', 'abprf-rental-forge' ); ?></button>
+                        <h6 class="_abprf"> <?php esc_html_e( 'Dummy Import', 'abp-rentalforge' ); ?> </h6>
+                        <button class="<?php echo esc_attr( $total > 0 ? '_btn_light_success_xs' : '_btn_warning_xs' ); ?>_btn_theme_min_125 import_dummy" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add New Dummy Post', 'abp-rentalforge' ); ?></button>
                     </div>
                 </div>
 				<?php
 			}
 
 			//=============================//
-			public function install_and_active_wc() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
-					include_once( ABSPATH . 'wp-admin/includes/file.php' );
-					include_once( ABSPATH . 'wp-admin/includes/misc.php' );
-					include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
-					$plugin             = 'woocommerce';
-					$api                = plugins_api( 'plugin_information', array(
-						'slug' => $plugin,
-						'fields' => array(
-							'short_description' => false,
-							'sections' => false,
-							'requires' => false,
-							'rating' => false,
-							'ratings' => false,
-							'downloaded' => false,
-							'last_updated' => false,
-							'added' => false,
-							'tags' => false,
-							'compatibility' => false,
-							'homepage' => false,
-							'donate_link' => false,
-						),
-					) );
-					$title              = 'title';
-					$url                = 'url';
-					$nonce              = 'nonce';
-					$woocommerce_plugin = new Plugin_Upgrader( new Plugin_Installer_Skin( compact( 'title', 'url', 'nonce', 'plugin', 'api' ) ) );
-					$woocommerce_plugin->install( $api->download_link );
-					activate_plugin( 'woocommerce/woocommerce.php' );
+			public function install_and_active_wc(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
-				wp_die();
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
+				include_once( ABSPATH . 'wp-admin/includes/file.php' );
+				include_once( ABSPATH . 'wp-admin/includes/misc.php' );
+				include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+				$plugin = 'woocommerce';
+				$api    = plugins_api( 'plugin_information', array(
+					'slug' => $plugin,
+					'fields' => array(
+						'short_description' => false,
+						'sections' => false,
+						'requires' => false,
+						'rating' => false,
+						'ratings' => false,
+						'downloaded' => false,
+						'last_updated' => false,
+						'added' => false,
+						'tags' => false,
+						'compatibility' => false,
+						'homepage' => false,
+						'donate_link' => false,
+					),
+				) );
+				if ( is_wp_error( $api ) ) {
+					wp_send_json_error( ['html'=>'', 'msg' => $api->get_error_message() ] );
+				}
+				$title              = 'title';
+				$url                = 'url';
+				$nonce              = 'nonce';
+				$woocommerce_plugin = new Plugin_Upgrader( new Plugin_Installer_Skin( compact( 'title', 'url', 'nonce', 'plugin', 'api' ) ) );
+				$installed          = $woocommerce_plugin->install( $api->download_link );
+				if ( is_wp_error( $installed ) ) {
+					wp_send_json_error( [ 'msg' => $installed->get_error_message() ] );
+				}
+				$activated = activate_plugin( 'woocommerce/woocommerce.php' );
+				if ( is_wp_error( $activated ) ) {
+					wp_send_json_error( [ 'msg' => $activated->get_error_message() ] );
+				}
+				wp_send_json_success( [ 'msg' => esc_html__( 'WooCommerce installed and activated successfully!', 'abp-rentalforge' ) ] );
 			}
 
-			public function active_wc() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					if ( is_dir( ABSPATH . 'wp-content/plugins/woocommerce' ) ) {
-						activate_plugin( 'woocommerce/woocommerce.php' );
+			public function active_wc(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+				}
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				if ( defined( 'ABPRF_WC' ) && ABPRF_WC == 1 ) {
+					$activated = activate_plugin( 'woocommerce/woocommerce.php' );
+					if ( is_wp_error( $activated ) ) {
+						wp_send_json_error( [ 'msg' => $activated->get_error_message() ] );
 					}
+					wp_send_json_success( [ 'msg' => esc_html__( 'WooCommerce activated successfully!', 'abp-rentalforge' ) ] );
 				}
-				wp_die();
+				wp_send_json_error( [ 'msg' => esc_html__( 'WooCommerce is either not installed or already active.', 'abp-rentalforge' ) ] );
 			}
 
-			public function create_post_list_page() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					if ( ! ABPRF_Function::get_page_by_slug( 'rf_post_list' ) ) {
-						$label = ABPRF_Function::label();
-						$page  = array(
-							'post_type' => 'page',
-							'post_name' => 'rf_post_list',
-							'post_title' => $label . ' ' . __( 'List', 'abprf-rental-forge' ),
-							'post_content' => '[abprf-post]',
-							'post_status' => 'publish',
-						);
-						wp_insert_post( $page );
-						flush_rewrite_rules();
-						echo esc_html( $label ) . ' ' . esc_html_e( 'Page Created successfully.....', 'abprf-rental-forge' );
+			public function create_post_list_page(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+				}
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				if ( ! ABPRF_Function::get_page_by_slug( 'rf_post_list' ) ) {
+					$label   = ABPRF_Function::label();
+					$page    = array(
+						'post_type' => 'page',
+						'post_name' => 'rf_post_list',
+						'post_title' => $label . ' ' . __( 'List', 'abp-rentalforge' ),
+						'post_content' => '[abprf-post]',
+						'post_status' => 'publish',
+					);
+					$post_id = wp_insert_post( $page );
+					if ( is_wp_error( $post_id ) || 0 === $post_id ) {
+						wp_send_json_error( [ 'msg' => esc_html__( 'Failed to create page.', 'abp-rentalforge' ) ] );
 					}
+					flush_rewrite_rules();
+					/* translators: %s: Custom rental item type label (e.g., Vehicle, Equipment, Property) */
+					$translated_format = esc_html__( '%s Page Created successfully.....', 'abp-rentalforge' );
+					$msg               = sprintf( $translated_format, $label );
+					wp_send_json_success( [ 'msg' => $msg ] );
 				}
-				wp_die();
+				wp_send_json_error( [ 'msg' => esc_html__( 'Page already exists.', 'abp-rentalforge' ) ] );
 			}
 
-			public function create_property_list_page() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					if ( ! ABPRF_Function::get_page_by_slug( 'rf_property_list' ) ) {
-						$label = ABPRF_Function::label();
-						$page  = array(
-							'post_type' => 'page',
-							'post_name' => 'rf_property_list',
-							'post_title' => $label . ' ' . __( 'Property List', 'abprf-rental-forge' ),
-							'post_content' => '[abprf-property]',
-							'post_status' => 'publish',
-						);
-						wp_insert_post( $page );
-						flush_rewrite_rules();
-						echo esc_html( $label ) . ' ' . esc_html_e( 'Property Page Created successfully.....', 'abprf-rental-forge' );
+			public function create_property_list_page(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+				}
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				if ( ! ABPRF_Function::get_page_by_slug( 'rf_property_list' ) ) {
+					$label   = ABPRF_Function::label();
+					$page    = array(
+						'post_type' => 'page',
+						'post_name' => 'rf_property_list',
+						'post_title' => $label . ' ' . __( 'Property List', 'abp-rentalforge' ),
+						'post_content' => '[abprf-property]',
+						'post_status' => 'publish',
+					);
+					$post_id = wp_insert_post( $page );
+					if ( is_wp_error( $post_id ) || 0 === $post_id ) {
+						wp_send_json_error( [ 'msg' => esc_html__( 'Failed to create property page.', 'abp-rentalforge' ) ] );
 					}
+					flush_rewrite_rules();
+					/* translators: %s: Custom rental item type label (e.g., Vehicle, Equipment, Property) */
+					$translated_format = esc_html__( '%s Property Page Created successfully.....', 'abp-rentalforge' );
+					$msg = sprintf( $translated_format, $label );
+					wp_send_json_success( [ 'msg' => $msg ] );
 				}
-				wp_die();
+				wp_send_json_error( [ 'msg' => esc_html__( 'Property page already exists.', 'abp-rentalforge' ) ] );
 			}
 
-			public function import_dummy() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
+			public function import_dummy(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+				}
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				$category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
+				try {
 					$this->add_data( $category );
 					flush_rewrite_rules();
+					wp_send_json_success( [
+						'msg' => esc_html__( 'Dummy data imported successfully!', 'abp-rentalforge' )
+					] );
+				} catch ( Exception $e ) {
+					wp_send_json_error( [
+						'msg' => esc_html__( 'An error occurred during data import.', 'abp-rentalforge' )
+					] );
 				}
-				wp_die();
 			}
 
 			public static function add_data( $_category ): void {
@@ -295,9 +347,9 @@
 							}
 						}
 					}
-					do_action( 'abprf_category_update');
-					do_action( 'abprf_location_update');
-					do_action( 'abprf_brand_update');
+					do_action( 'abprf_category_update' );
+					do_action( 'abprf_location_update' );
+					do_action( 'abprf_brand_update' );
 				}
 				if ( array_key_exists( 'options', $dummy_infos ) ) {
 					foreach ( $dummy_infos['options'] as $option => $dummy_option ) {
@@ -373,7 +425,6 @@
 						}
 					}
 				}
-
 			}
 
 			public static function dummy_data(): array {

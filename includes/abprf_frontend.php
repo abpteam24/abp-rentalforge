@@ -9,25 +9,29 @@
 				add_filter( 'template_include', array( $this, 'load_taxonomy_page' ) );
 			}
 
-			public function load_single_page( $template ) {
-				global $post;
-				if ( $post->post_type && $post->post_type == ABPRF_Function::get_cpt() ) {
-					$template = ABPRF_Function::template_path( 'page/details_page.php' );
+			public function load_single_page( $template ): string {
+				if ( is_singular( ABPRF_Function::get_cpt() ) ) {
+					$custom_template = ABPRF_Function::template_path( 'page/details_page.php' );
+					if ( ! empty( $custom_template ) ) {
+						return $custom_template;
+					}
 				}
 
-				return $template;
+				return (string) $template;
 			}
+
 			public function load_taxonomy_page( $template ): string {
 				if ( is_tax( 'abprf_category' ) ) {
-					$template = ABPRF_Function::template_path( 'page/category.php' );
+					return ABPRF_Function::template_path( 'page/category.php' );
 				}
 				if ( is_tax( 'abprf_location' ) ) {
-					$template = ABPRF_Function::template_path( 'page/location.php' );
+					return ABPRF_Function::template_path( 'page/location.php' );
 				}
 				if ( is_tax( 'abprf_brand' ) ) {
-					$template = ABPRF_Function::template_path( 'page/brand.php' );
+					return ABPRF_Function::template_path( 'page/brand.php' );
 				}
-				return $template;
+
+				return (string) $template;
 			}
 		}
 		new ABPRF_Frontend();

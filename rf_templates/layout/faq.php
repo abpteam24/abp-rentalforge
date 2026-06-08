@@ -17,7 +17,7 @@
 			?>
             <div class="_abp_panel faq_area">
                 <div class="_panel_head">
-                    <h4 class="_abprf"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'Frequently Asked Questions', 'abprf-rental-forge' ); ?></h4>
+                    <h4 class="_abprf"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'Frequently Asked Questions', 'abp-rentalforge' ); ?></h4>
                 </div>
                 <div class="_panel_body_xs faq_list">
 					<?php

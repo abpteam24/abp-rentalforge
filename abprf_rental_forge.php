@@ -5,7 +5,7 @@
 	 * Version: 1.0.0
 	 * Author: abpteam
 	 * Author URI: https://abp-team.com
-	 * Text Domain: abprf-rental-forge
+	 * Text Domain: abp-rentalforge
 	 * Domain Path: /languages
 	 * WC requires at least: 8.0.0
 	 *  WC tested up to: latest
@@ -41,6 +41,9 @@
 					define( 'ABPRF_PLUGIN_FILE', __FILE__ );
 				}
 				require_once ABPRF_DIR . '/includes/abprf_dependencies.php';
+				if ( ! defined( 'ABPRF_WC' ) ) {
+					define( 'ABPRF_WC',  ABPRF_Function::check_wc());
+				}
 				if ( ! defined( 'ABPRF_Configuration' ) ) {
 					define( 'ABPRF_Configuration',  ABPRF_Function::get_option( 'abprf_configuration' ));
 				}

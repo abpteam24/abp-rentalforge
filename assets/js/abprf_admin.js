@@ -88,9 +88,9 @@ function abprf_property_filter_arg($this) {
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_deleting, 'error');
-            }, success: function () {
+            }, success: function (response) {
                 abprf_spinner_remove(parent);
-                abprf_toast_msg(abprf_admin_data.msg.post_delete_success, 'warn');
+                abprf_toast_msg(response.data.msg, 'warn');
                 window.location.reload();
             }
         })
@@ -104,9 +104,9 @@ function abprf_property_filter_arg($this) {
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_trashing, 'error');
-            }, success: function () {
+            }, success: function (response) {
                 abprf_spinner_remove(parent);
-                abprf_toast_msg(abprf_admin_data.msg.post_trash_success, 'warn');
+                abprf_toast_msg(response.data.msg, 'warn');
                 window.location.reload();
             }
         })
@@ -120,9 +120,9 @@ function abprf_property_filter_arg($this) {
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_restoring, 'info');
-            }, success: function () {
+            }, success: function (response) {
                 abprf_spinner_remove(parent);
-                abprf_toast_msg(abprf_admin_data.msg.post_restored, 'success');
+                abprf_toast_msg(response.data.msg, 'success');
                 window.location.reload();
             }
         })
@@ -151,10 +151,10 @@ function abprf_property_filter_arg($this) {
                 }, beforeSend: function () {
                     abprf_spinner(parent);
                     abprf_toast_msg(abprf_admin_data.msg.post_loading);
-                }, success: function (data) {
-                    target.html(data);
+                }, success: function (response) {
+                    target.html(response.data.html);
                     abprf_spinner_remove(parent);
-                    abprf_toast_msg(abprf_admin_data.msg.post_loading_success, 'success');
+                    abprf_toast_msg(response.data.html, 'success');
                 }
             });
         } else {
@@ -217,9 +217,9 @@ function abprf_property_filter_arg($this) {
                 }, beforeSend: function () {
                     abprf_spinner(target);
                     abprf_toast_msg(abprf_admin_data.msg.property_loading);
-                }, success: function (data) {
-                    target.html(data);
-                    abprf_toast_msg(abprf_admin_data.msg.property_loading_success, 'success');
+                }, success: function (response) {
+                    target.html(response.data.html);
+                    abprf_toast_msg(response.data.msg, 'success');
                 }
             });
         } else {
@@ -326,10 +326,10 @@ function abprf_property_filter_arg($this) {
                 }, beforeSend: function () {
                     abprf_spinner(parent);
                     abprf_toast_msg(abprf_admin_data.msg.loading);
-                }, success: function (data) {
+                }, success: function (response) {
                     abprf_spinner_remove(parent);
-                    target.html(data).promise().done(function () {
-                        abprf_toast_msg(abprf_admin_data.msg.loaded, 'success');
+                    target.html(response.data.html).promise().done(function () {
+                        abprf_toast_msg(response.data.msg, 'success');
                     });
                 }
             })
@@ -384,12 +384,12 @@ function abprf_property_filter_arg($this) {
             }, beforeSend: function () {
                 abprf_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.importing);
-            }, success: function (data) {
-                target.html(data).promise().done(function () {
+            }, success: function (response) {
+                target.html(response.data.html).promise().done(function () {
                     target.find('.sortable_area').sortable({
                         handle: jQuery(this).find('.sortable_handle')
                     });
-                    abprf_toast_msg(abprf_admin_data.msg.imported, 'success');
+                    abprf_toast_msg(response.data.msg, 'success');
                 });
             }
         });
@@ -423,12 +423,12 @@ function abprf_property_filter_arg($this) {
             }, beforeSend: function () {
                 abprf_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.importing);
-            }, success: function (data) {
-                target.html(data).promise().done(function () {
+            }, success: function (response) {
+                target.html(response.data.html).promise().done(function () {
                     target.find('.sortable_area').sortable({
                         handle: jQuery(this).find('.sortable_handle')
                     });
-                    abprf_toast_msg(abprf_admin_data.msg.imported, 'success');
+                    abprf_toast_msg(response.data.msg, 'success');
                 });
             }
         });
@@ -676,12 +676,12 @@ function abprf_property_filter_arg($this) {
             }, beforeSend: function () {
                 abprf_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.importing);
-            }, success: function (data) {
-                target.html(data).promise().done(function () {
+            }, success: function (response) {
+                target.html(response.data.html).promise().done(function () {
                     target.find('.edit_area').each(function () {
                         abprf_wp_editor_init($(this));
                     });
-                    abprf_toast_msg(abprf_admin_data.msg.imported, 'success');
+                    abprf_toast_msg(response.data.msg, 'success');
                 });
             }
         });
@@ -725,7 +725,7 @@ function abprf_property_filter_arg($this) {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.create_post_page);
             }, success: function (response) {
-                abprf_toast_msg(response, 'success');
+                abprf_toast_msg(response.data.msg, 'success');
                 window.location.reload();
             }
         });
@@ -739,7 +739,7 @@ function abprf_property_filter_arg($this) {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.create_property_page);
             }, success: function (response) {
-                abprf_toast_msg(response, 'success');
+                abprf_toast_msg(response.data.msg, 'success');
                 window.location.reload();
             }
         });
@@ -752,7 +752,9 @@ function abprf_property_filter_arg($this) {
                 "action": "abprf_import_dummy", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
                 abprf_spinner(parent);
-            }, success: function () {
+                abprf_toast_msg(abprf_admin_data.msg.importing);
+            }, success: function (response) {
+                abprf_toast_msg(response.data.msg, 'success');
                 window.location.reload();
             }
         });
@@ -910,10 +912,8 @@ function abprf_wp_editor_init(target) {
     //========= ==============//
     $(document).on('click', 'div.abprf_admin .delete_hook', function () {
         if (confirm(abprf_admin_data.msg.confirm_delete + ' \n\n' + abprf_admin_data.msg.confirm_ok + ' \n ' + abprf_admin_data.msg.confirm_cancel)) {
-            // let parent = $(this).closest('.insertable_area');
             $(this).closest('.delete_area ').slideUp(250).remove();
             abprf_toast_msg(abprf_admin_data.msg.delete_success);
-            // parent.trigger('rf_trigger');
         }
     });
     $(document).on('click', 'div.abprf_admin .add_new_hook', function () {
@@ -932,7 +932,8 @@ function abprf_wp_editor_init(target) {
         $(this).trigger('rf_trigger');
     });
     $(document).on('click', 'div.abprf_admin .edit_hook', function () {
-        $(this).closest('.delete_area').find('.edit_area').slideToggle('fast');
+        $(this).closest('.delete_area').toggleClass('active').find('.edit_area').slideToggle('fast');
+        //$(this).closest('.delete_area').find('.edit_area').slideToggle('fast');
     });
     $(document).on('keyup change', 'div.abprf_admin [data-pass]', function () {
         let input_value = $(this).val();

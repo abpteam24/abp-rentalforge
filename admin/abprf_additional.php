@@ -7,8 +7,8 @@
 			public function __construct() {
 				add_action( 'abprf_global_additional_service', array( $this, 'global_additional_service' ) );
 				add_action( 'abprf_post_content', [ $this, 'post_additional_service' ] );
-				add_action( 'wp_ajax_abprf_save_additional_service', array( $this, 'save_global_additional_service' ) );
 				add_filter( 'abprf_get_additional_array', array( $this, 'get_additional_array' ) );
+				add_action( 'wp_ajax_abprf_save_additional_service', array( $this, 'save_global_additional_service' ) );
 				add_action( 'wp_ajax_abprf_import_additional', array( $this, 'import_additional' ) );
 			}
 
@@ -17,12 +17,12 @@
 				?>
                 <div class="tab_item" data-tabs="#abprf_global_additional_service">
                     <form class=" save_additional_service" method="post" action="">
-                        <h4 class="_abprf_color"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Global Additional services Configuration', 'abprf-rental-forge' ); ?></h4>
+                        <h4 class="_abprf_color"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Global Additional services Configuration', 'abp-rentalforge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'additional_services' ); ?>
                         <div class="_divider_xs"></div>
 						<?php $this->additional_service( $additional_services ); ?>
                         <div class="_divider_xs"></div>
-                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Additional services Configuration', 'abprf-rental-forge' ); ?></button>
+                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Additional services Configuration', 'abp-rentalforge' ); ?></button>
                     </form>
                 </div>
 				<?php
@@ -34,27 +34,27 @@
 				$active_global_additional = array_key_exists( 'active_global_additional', $abprf_infos ) ? $abprf_infos['active_global_additional'] : 'on';
 				?>
                 <div class="tab_item additional_configuration" data-tabs="#abprf_additional_service">
-                    <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">💰</span><?php esc_html_e( 'Additional services Configuration', 'abprf-rental-forge' ); ?></h4>
+                    <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">💰</span><?php esc_html_e( 'Additional services Configuration', 'abp-rentalforge' ); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="group_setting">
-                        <div class="_setting_item">
+                        <div class="setting_item">
                             <div class="_f_wrap_fj_between_fa_center">
                                 <div class="_fa_center">
 									<?php ABPRF_Layout::switch_checkbox( 'display_additional_services', $display ); ?>
-                                    <span class="_fs_label_mar_l_xs"><?php esc_html_e( 'Active Additional services ?', 'abprf-rental-forge' ); ?></span>
+                                    <span class="_fs_label_mar_l_xs"><?php esc_html_e( 'Active Additional services ?', 'abp-rentalforge' ); ?></span>
                                 </div>
                             </div>
                             <div class="_divider_xs"></div>
 							<?php ABPRF_Layout::info_text( 'display_additional_services' ); ?>
                         </div>
-                        <div data-collapse="#display_additional_services" class="_setting_item <?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
+                        <div data-collapse="#display_additional_services" class="setting_item <?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
                             <div class="_fj_between">
                                 <div class="_fa_center">
 									<?php ABPRF_Layout::switch_checkbox( 'active_global_additional', $active_global_additional ); ?>
-                                    <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Additional Service ?', 'abprf-rental-forge' ); ?></span>
+                                    <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Additional Service ?', 'abp-rentalforge' ); ?></span>
                                 </div>
                                 <div data-collapse="#active_global_additional" class=" <?php echo esc_attr( $active_global_additional == 'on' ? '' : 'rf_active' ); ?>">
-                                    <button type="button" class="_btn_theme import_additional"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Additional Service', 'abprf-rental-forge' ); ?></button>
+                                    <button type="button" class="_btn_theme import_additional"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Additional Service', 'abp-rentalforge' ); ?></button>
                                 </div>
                             </div>
                             <div class="_divider_xs"></div>
@@ -62,23 +62,12 @@
                         </div>
                     </div>
                     <div class="<?php echo esc_attr( $active_global_additional == 'on' ? '' : 'rf_active' ); ?>" data-collapse="#active_global_additional">
-                        <div class="additional_content">
+                        <div class="additional_content _mar_t_xs">
 							<?php $this->additional_service( $additional_services ); ?>
                         </div>
                     </div>
                 </div>
 				<?php
-			}
-
-			public function save_global_additional_service() {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$additional_services = $this->get_additional_array();
-					update_option( 'abprf_additional', $additional_services );
-					wp_send_json_success( [ 'msg' => esc_html__( 'Additional services Configuration Saved Successfully ..... !! ', 'abprf-rental-forge' ) ] );
-				} else {
-					wp_send_json_success( [ 'msg' => esc_html__( 'Additional services Configuration not Saved  ..... !! ', 'abprf-rental-forge' ) ] );
-				}
-				wp_die();
 			}
 
 			public function get_additional_array() {
@@ -112,6 +101,8 @@
 				return $additional_services;
 			}
 
+
+
 			public function additional_service( $services = [] ): void {
 				?>
                 <div class="configuration_content additional_service">
@@ -119,14 +110,14 @@
                         <table class="_abprf">
                             <thead>
                             <tr>
-                                <th class="_w_125"><?php esc_html_e( 'Icon / Image', 'abprf-rental-forge' ); ?></th>
-                                <th class="_min_200"><?php esc_html_e( 'Name', 'abprf-rental-forge' ); ?><sup class="_color_required">*</sup></th>
-                                <th class="_min_100"><?php esc_html_e( 'Quantity', 'abprf-rental-forge' ); ?></th>
-                                <th class="_min_100"><?php esc_html_e( 'Price', 'abprf-rental-forge' ); ?></th>
-                                <th class="_min_100"><?php esc_html_e( 'Max qty', 'abprf-rental-forge' ); ?></th>
-                                <th class="_min_100"><?php esc_html_e( 'Returnable or Not', 'abprf-rental-forge' ); ?></th>
-                                <th class="_min_250"><?php esc_html_e( 'Description', 'abprf-rental-forge' ); ?></th>
-                                <th class="_w_75"><?php esc_html_e( 'Action', 'abprf-rental-forge' ); ?></th>
+                                <th class="_w_125"><?php esc_html_e( 'Icon / Image', 'abp-rentalforge' ); ?></th>
+                                <th class="_min_200"><?php esc_html_e( 'Name', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></th>
+                                <th class="_min_100"><?php esc_html_e( 'Quantity', 'abp-rentalforge' ); ?></th>
+                                <th class="_min_100"><?php esc_html_e( 'Price', 'abp-rentalforge' ); ?></th>
+                                <th class="_min_100"><?php esc_html_e( 'Max qty', 'abp-rentalforge' ); ?></th>
+                                <th class="_min_100"><?php esc_html_e( 'Returnable or Not', 'abp-rentalforge' ); ?></th>
+                                <th class="_min_250"><?php esc_html_e( 'Description', 'abp-rentalforge' ); ?></th>
+                                <th class="_w_75"><?php esc_html_e( 'Action', 'abp-rentalforge' ); ?></th>
                             </tr>
                             </thead>
                             <tbody class="insertable_area sortable_area">
@@ -141,7 +132,7 @@
                         </table>
                     </div>
                     <div class="_divider_xs"></div>
-					<?php ABPRF_Layout::button_add( __( 'Add New Additional services', 'abprf-rental-forge' ) ); ?>
+					<?php ABPRF_Layout::button_add( __( 'Add New Additional services', 'abp-rentalforge' ) ); ?>
                     <div class="abprf_d_none">
                         <table class="_abprf">
                             <tbody class="hidden_content">
@@ -168,49 +159,69 @@
                     <td>
                         <input type="hidden" name="additional_id[]" value="<?php echo esc_attr( $key ?: uniqid() ); ?>"/>
                         <label>
-                            <input type="text" class="_form_control validation_name" name="additional_name[]" placeholder="<?php esc_attr_e( 'EX: Water Bottle', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $name ); ?>"/>
+                            <input type="text" class="_form_control validation_name" name="additional_name[]" placeholder="<?php esc_attr_e( 'EX: Water Bottle', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $name ); ?>"/>
                         </label>
                     </td>
                     <td>
                         <label>
-                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="additional_qty[]" placeholder="<?php esc_attr_e( 'EX: 15', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $qty ); ?>"/>
+                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="additional_qty[]" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $qty ); ?>"/>
                         </label>
                     </td>
                     <td>
                         <label>
-                            <input type="number" pattern="[0-9]*" step="0.01" class="_form_control validation_price" name="additional_price[]" placeholder="<?php esc_attr_e( 'EX: 15', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $price ); ?>"/>
+                            <input type="number" pattern="[0-9]*" step="0.01" class="_form_control validation_price" name="additional_price[]" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $price ); ?>"/>
                         </label>
                     </td>
                     <td>
                         <label>
-                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="additional_max_qty[]" placeholder="<?php esc_attr_e( 'EX: 15', 'abprf-rental-forge' ); ?>" value="<?php echo esc_attr( $max_ty ); ?>"/>
+                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="additional_max_qty[]" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_ty ); ?>"/>
                         </label>
                     </td>
                     <td>
                         <label>
                             <select class="_form_control" name="additional_returnable[]">
-                                <option value="yes" <?php echo esc_attr( $returnable == 'yes' ? 'selected' : '' ); ?>><?php esc_html_e( 'Yes', 'abprf-rental-forge' ); ?></option>
-                                <option value="no" <?php echo esc_attr( $returnable == 'no' ? 'selected' : '' ); ?>><?php esc_html_e( 'No', 'abprf-rental-forge' ); ?></option>
+                                <option value="yes" <?php echo esc_attr( $returnable == 'yes' ? 'selected' : '' ); ?>><?php esc_html_e( 'Yes', 'abp-rentalforge' ); ?></option>
+                                <option value="no" <?php echo esc_attr( $returnable == 'no' ? 'selected' : '' ); ?>><?php esc_html_e( 'No', 'abp-rentalforge' ); ?></option>
                             </select>
                         </label>
                     </td>
                     <td>
                         <label>
-                            <textarea class="_form_control" name="additional_description[]" placeholder="<?php esc_attr_e( 'EX: Description', 'abprf-rental-forge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
+                            <textarea class="_form_control" name="additional_description[]" placeholder="<?php esc_attr_e( 'EX: Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
                         </label>
                     </td>
                     <td><?php ABPRF_Layout::button_delete_sort(); ?></td>
                 </tr>
 				<?php
 			}
+			public function save_global_additional_service(): void {
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+				}
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				$additional_services = $this->get_additional_array();
+				if ( is_array( $additional_services ) ) {
+					update_option( 'abprf_additional', $additional_services );
+					wp_send_json_success( [ 'msg' => __( 'Additional services Configuration Saved Successfully ..... !! ', 'abp-rentalforge' ) ] );
+				}
+				wp_send_json_error( [ 'msg' => __( 'Additional services Configuration not Saved  ..... !! ', 'abp-rentalforge' ) ], 400 );
+			}
 
 			public function import_additional(): void {
-				if ( is_admin() && check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
-					$additional_services = ABPRF_Function::get_option( 'abprf_additional', ABPRF_Layout::static_additional() );
-					$additional_services = $additional_services && is_array( $additional_services ) ? $additional_services : [];
-					$this->additional_service( $additional_services );
+				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
-				wp_die();
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+				}
+				$additional_services = ABPRF_Function::get_option( 'abprf_additional', ABPRF_Layout::static_additional() );
+				$additional_services = is_array( $additional_services ) ? $additional_services : [];
+				ob_start();
+				$this->additional_service( $additional_services );
+				$html_content = ob_get_clean();
+				wp_send_json_success( ['html'=>$html_content, 'msg' => __( 'Additional services ImportedSuccessfully ..... !! ', 'abp-rentalforge' ) ] );
 			}
 		}
 		new ABPRF_Additional();

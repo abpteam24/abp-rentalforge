@@ -11,21 +11,21 @@
             <div class="total_continue_area">
                 <div class="total_continue item_box_1">
                     <div class="_fd_column_max_500">
-                        <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Property Rent : ', 'abprf-rental-forge' ); ?>&nbsp;</span><span class="item_total _color_theme_text_right"></span></h5>
+                        <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Property Rent : ', 'abp-rentalforge' ); ?>&nbsp;</span><span class="item_total _color_theme_text_right"></span></h5>
 						<?php if ( $display_additional == 'on' ) { ?>
-                            <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Additional : ', 'abprf-rental-forge' ); ?>&nbsp;</span><span class="additional_total _color_theme_text_right"></span></h5>
+                            <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Additional : ', 'abp-rentalforge' ); ?>&nbsp;</span><span class="additional_total _color_theme_text_right"></span></h5>
 						<?php } ?>
-                        <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Deposit : ', 'abprf-rental-forge' ); ?>&nbsp;</span><span class="deposit_total _color_theme_text_right"></span></h5>
+                        <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Deposit : ', 'abp-rentalforge' ); ?>&nbsp;</span><span class="deposit_total _color_theme_text_right"></span></h5>
                         <div class="_divider_xs"></div>
-                        <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Total : ', 'abprf-rental-forge' ); ?>&nbsp;</span><span class="abprf_total _color_theme_text_right"></span></h5>
+                        <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Total : ', 'abp-rentalforge' ); ?>&nbsp;</span><span class="abprf_total _color_theme_text_right"></span></h5>
                     </div>
 					<?php if ( is_admin() && str_contains( wp_get_referer(), 'add_order' ) ) { ?>
                         <input type="submit" class="_d_none" name="add-admin-order" value="<?php echo esc_attr( $wc_link ); ?>"/>
 					<?php } else { ?>
                         <input type="submit" class="_d_none" name="add-to-cart" value="<?php echo esc_attr( $wc_link ); ?>"/>
 					<?php } ?>
-                    <button class="_btn_light_theme abprf_book_continue" type="button" data-alert="<?php esc_attr_e( 'No property Selected ! Please Select property', 'abprf-rental-forge' ); ?>" data-msg="<?php esc_attr_e( 'Added to Cart Successfully', 'abprf-rental-forge' ); ?>">
-						<?php esc_html_e( 'Continue', 'abprf-rental-forge' ); ?>
+                    <button class="_btn_light_theme abprf_book_continue" type="button" data-alert="<?php esc_attr_e( 'No property Selected ! Please Select property', 'abp-rentalforge' ); ?>" data-msg="<?php esc_attr_e( 'Added to Cart Successfully', 'abp-rentalforge' ); ?>">
+						<?php esc_html_e( 'Continue', 'abp-rentalforge' ); ?>
                         <span class="fas fa-angle-double-right _mar_l_xs"></span>
                     </button>
                 </div>

@@ -16,7 +16,7 @@
 				?>
                 <div class="additional_service_area">
                     <div class="item_box_1 additional_service">
-                        <h5 class="_abprf_title"> <?php esc_html_e( 'Additional services ( Optional ) : ', 'abprf-rental-forge' ); ?></h5>
+                        <h5 class="_abprf_title"> <?php esc_html_e( 'Additional services ( Optional ) : ', 'abp-rentalforge' ); ?></h5>
 						<?php foreach ( $additional_services as $id => $service ) {
 							$icon_image = array_key_exists( 'icon', $service ) ? $service['icon'] : '';
 							$name       = array_key_exists( 'name', $service ) ? $service['name'] : '';
@@ -51,7 +51,7 @@
 											$input_info = [ 'name' => 'qty_' . $id, 'price' => $tax_price, 'min_qty' => 0, 'max_qty' => $max_qty, 'class' => 'ex_price_calculate', ];
 											ABPRF_Layout::quantity_input( $input_info );
 										} else { ?>
-                                            <span class="_color_warning"> <?php esc_html_e( 'Not Available !', 'abprf-rental-forge' ); ?></span>
+                                            <span class="_color_warning"> <?php esc_html_e( 'Not Available !', 'abp-rentalforge' ); ?></span>
 										<?php } ?>
                                     </div>
                                     <h5 class="_abprf_color_theme">
@@ -59,12 +59,12 @@
 											if ( $tax_price > 0 ) {
 												echo wp_kses_post( wc_price( $tax_price ) );
 											} else {
-												esc_html_e( 'Free', 'abprf-rental-forge' );
+												esc_html_e( 'Free', 'abp-rentalforge' );
 											}
 											if ( $returnable == 'yes' ) {
-												?> <span class="trash"><?php esc_html_e( 'Returnable', 'abprf-rental-forge' ); ?></span><?php
+												?> <span class="trash"><?php esc_html_e( 'Returnable', 'abp-rentalforge' ); ?></span><?php
 											} else {
-												?><span class="publish"><?php esc_html_e( 'Nor-Returnable', 'abprf-rental-forge' ); ?></span>  <?php
+												?><span class="publish"><?php esc_html_e( 'Nor-Returnable', 'abp-rentalforge' ); ?></span>  <?php
 											}
 										?>
                                     </h5>

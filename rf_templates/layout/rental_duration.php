@@ -10,7 +10,7 @@
 			$end_time   = array_key_exists( 'end_time', $abprf_infos ) ? $abprf_infos['end_time'] : '';
 			?>
             <div class="duration_area">
-                <h5 class="_abprf"><?php esc_html_e( 'Total Rental Duration', 'abprf-rental-forge' ); ?></h5>
+                <h5 class="_abprf"><?php esc_html_e( 'Total Rental Duration', 'abp-rentalforge' ); ?></h5>
                 <h2 class="_abprf"><?php echo esc_html( $dif_text ); ?></h2>
                 <h6 class="_abprf">
 					<?php echo esc_html( ABPRF_Function::date_format( $start_time ) ) . '  →  ' . esc_html( ABPRF_Function::date_format( $end_time ) ); ?>

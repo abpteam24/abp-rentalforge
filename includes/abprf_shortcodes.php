@@ -84,6 +84,7 @@
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
 				$post_id  = array_key_exists( 'post_id', $params ) && $params['post_id'] ? $params['post_id'] : '';
+				ob_start();
 				?>
                 <div class="abprf_area">
                     <div class="abprf_container">
@@ -106,6 +107,7 @@
                     </div>
                 </div>
 				<?php
+				return ob_get_clean();
 			}
 
 			public function default_attribute(): array {

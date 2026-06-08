@@ -10,7 +10,7 @@
 		if ( $total > $per_page ) {			?>
             <div class="pagination_area _all_center">
 				<?php if ( $style == 'live' ) { ?>
-                    <button type="button" class="_btn_theme_min_200 live_pagination" data-load-more="0"><?php esc_html_e( 'View More', 'abprf-rental-forge' ); ?></button>
+                    <button type="button" class="_btn_theme_min_200 live_pagination" data-load-more="0"><?php esc_html_e( 'View More', 'abp-rentalforge' ); ?></button>
                     <input type="hidden" name="page_item" value="<?php echo esc_attr( $per_page ); ?>"/>
 				<?php } else {
 					$page_mod   = $total % $per_page;
@@ -19,12 +19,12 @@
 					$end_page   = min( $start_page + 10, $total_page );
 					?>
                     <label class="_mar_r _max_200">
-                        <span class="_mar_r_xs"><?php esc_html_e( 'Showing Item', 'abprf-rental-forge' ); ?></span>
+                        <span class="_mar_r_xs"><?php esc_html_e( 'Showing Item', 'abp-rentalforge' ); ?></span>
                         <input type="number" class="_form_control_h_min_auto_w_min_auto  validation_number" name="page_item" value="<?php echo esc_attr( $per_page ); ?>" data-min="1" data-max="100"/>
                     </label>
                     <div class="_group_content">
 						<?php if ( $total_page > 1 ) { ?>
-                            <button class="_btn_tp_xs" type="button" data-page="<?php echo esc_attr( $page - 1 > 0 ? $page - 1 : $total_page ); ?>" title="<?php esc_attr_e( 'Previous Page', 'abprf-rental-forge' ); ?>"><span class="fas fa-angle-left"></span></button>
+                            <button class="_btn_tp_xs" type="button" data-page="<?php echo esc_attr( $page - 1 > 0 ? $page - 1 : $total_page ); ?>" title="<?php esc_attr_e( 'Previous Page', 'abp-rentalforge' ); ?>"><span class="fas fa-angle-left"></span></button>
 						<?php }
 							if ( $total_page > 11 && $page > 6 ) { ?>
                                 <button class="_btn_tp_xs" type="button" disabled><span class="fas fa-ellipsis-h "></span></button>
@@ -36,7 +36,7 @@
                                 <button class="_btn_tp_xs" type="button" disabled><span class="fas fa-ellipsis-h"></span></button>
 							<?php }
 							if ( $total_page > 1 ) { ?>
-                                <button class="_btn_tp_xs" type="button" data-page="<?php echo esc_attr( $page < $total_page ? $page + 1 : 1 ); ?>" title="<?php esc_attr_e( 'Next Page', 'abprf-rental-forge' ); ?>"><span class="fas fa-angle-right"></span></button>
+                                <button class="_btn_tp_xs" type="button" data-page="<?php echo esc_attr( $page < $total_page ? $page + 1 : 1 ); ?>" title="<?php esc_attr_e( 'Next Page', 'abp-rentalforge' ); ?>"><span class="fas fa-angle-right"></span></button>
 							<?php } ?>
                     </div>
 				<?php } ?>

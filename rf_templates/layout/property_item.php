@@ -65,7 +65,7 @@
                                 <div>
                                     <div class="_divider_xs"></div>
                                     <button type="button" class="_btn_theme_xs" data-href="<?php echo esc_url( get_the_permalink( $post_id ) ); ?>" data-blank="_blank">
-										<?php esc_html_e( 'Book Now', 'abprf-rental-forge' ); ?>
+										<?php esc_html_e( 'Book Now', 'abp-rentalforge' ); ?>
                                     </button>
                                 </div>
 							<?php } ?>

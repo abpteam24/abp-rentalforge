@@ -46,14 +46,14 @@
                                         ?>
                                         <span class="price_value">
                                                 <?php
-	                                                esc_html_e( 'Min Rent :', 'abprf-rental-forge' );
-	                                                echo $min_rate > 0 ? wp_kses_post( wc_price( $min_rate ) ) : esc_html__( 'Free', 'abprf-rental-forge' );
+	                                                esc_html_e( 'Min Rent :', 'abp-rentalforge' );
+	                                                echo $min_rate > 0 ? wp_kses_post( wc_price( $min_rate ) ) : esc_html__( 'Free', 'abp-rentalforge' );
 	                                                echo esc_html( ABPRF_Layout::per_rent_rules( $rent_rule ) );
                                                 ?>
                                             </span>
 									<?php } ?>
                                     <button type="button" class="_btn_theme_xs" data-href="<?php echo esc_url( $url ); ?>" data-blank="_blank">
-										<?php esc_html_e( 'Book Now', 'abprf-rental-forge' ); ?>
+										<?php esc_html_e( 'Book Now', 'abp-rentalforge' ); ?>
                                     </button>
                                 </div>
                             </div>

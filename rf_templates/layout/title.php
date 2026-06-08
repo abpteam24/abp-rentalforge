@@ -3,13 +3,11 @@
 		exit; // Exit if accessed directly
 	}
 	add_action( 'abprf_title_template', function ( $post_id, $abprf_infos = [] ) {
-		if ( $post_id > 0 ) {
-			$display_sku = array_key_exists( 'display_sku', $abprf_infos ) ? $abprf_infos['display_sku'] : 'off';
-			$post_sku    = array_key_exists( 'post_sku', $abprf_infos ) ? $abprf_infos['post_sku'] : '';
-			$brand_icon =ABPRF_Function::icon();
+		if (!empty($post_id) &&  $post_id > 0 ) {
+			$display_sku =  $abprf_infos['display_sku'] ??ABPRF_Function::get_post_info($post_id,'display_sku','off');
+			$post_sku    = $abprf_infos['post_sku']?? ABPRF_Function::get_post_info($post_id,'post_sku');
 			?>
             <h1 class="_abprf_color_theme">
-				<?php ABPRF_Layout::image_icon( $brand_icon,'_mar_r_xs' ); ?>
 				<?php echo esc_html( get_the_title( $post_id ) ); ?>
 				<?php if ( !empty($post_sku) && $display_sku == 'on' ) { ?>
                     <small class="_abprf_color_gray">&nbsp;(<?php echo esc_html( $post_sku ); ?>)</small>

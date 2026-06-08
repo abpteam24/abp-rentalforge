@@ -102,13 +102,17 @@
             success: function (response) {
                 abprf_spinner_remove(target);
                 abprf_spinner_remove(form_area);
-                target.find('.property_item_area').html(response.data.property_info);
-                target.find('.property_others').html(response.data.property_others);
-                form_area.find('.date_details').html(response.data.date_details).promise().done(function () {
-                    abprf_load_datepicker(target);
-                    abprf_load_image(target);
-                });
-                abprf_toast_msg(abprf_infos.msg.property_loading_success, 'success');
+                if (response.data && response.data.hasOwnProperty('property_info')) {
+                    target.find('.property_item_area').html(response.data.property_info);
+                    target.find('.property_others').html(response.data.property_others);
+                    form_area.find('.date_details').html(response.data.date_details).promise().done(function () {
+                        abprf_load_datepicker(target);
+                        abprf_load_image(target);
+                    });
+                    abprf_toast_msg(response.data.msg, 'success');
+                }else{
+                    abprf_toast_msg(response.data.msg, 'warn');
+                }
             }
         });
     });
@@ -161,10 +165,17 @@
             },
             success: function (response) {
                 abprf_spinner_remove(target);
-                target.html(response.data.html).promise().done(function () {
-                    abprf_load_datepicker(target);
-                });
-                abprf_toast_msg(response.data.msg, 'success');
+                if (response.data && response.data.hasOwnProperty('html')) {
+                    target.html(response.data.html).promise().done(function () {
+                        abprf_init_all_dynamic_datepickers(
+                            response.data.selector,
+                            response.data.picker_config
+                        );
+                    });
+                    abprf_toast_msg(response.data.msg, 'success');
+                }else{
+                    abprf_toast_msg(response.data.msg, 'warn');
+                }
             }
         });
     }

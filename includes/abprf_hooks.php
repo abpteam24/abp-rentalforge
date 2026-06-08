@@ -27,7 +27,7 @@
 				add_action( 'abprf_slider', [ $this, 'slider' ], 10, 3 );
 				add_action( 'abprf_slider_popup', [ $this, 'slider_popup' ], 10, 3 );
 			}
-			public function details_template($post_id) {
+			public function details_template($post_id): void {
 				require_once ABPRF_Function::details_template_path( $post_id);
 				$template_name = ABPRF_Function::get_post_info( $post_id, 'abprf_template', 'grid' );
 				do_action( 'abprf_details_' . $template_name . '_template', $post_id );

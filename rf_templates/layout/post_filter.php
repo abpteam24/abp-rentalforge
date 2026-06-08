@@ -51,7 +51,7 @@
 						?>
                         <label>
                             <select class="_form_control" name="cat_id">
-                                <option value="" selected><?php echo esc_html__( 'All ', 'abprf-rental-forge' ) . ' ' . esc_html(ABPRF_Function::category_label()); ?></option>
+                                <option value="" selected><?php echo esc_html__( 'All ', 'abp-rentalforge' ) . ' ' . esc_html(ABPRF_Function::category_label()); ?></option>
 								<?php foreach ( $categories as $cat_id ) {
 									$category = array_key_exists( $cat_id, ABPRF_Category ) ? ABPRF_Category[ $cat_id ] : [];
 									$name     = ! empty( $category ) && array_key_exists( 'name', $category ) ? $category['name'] : '';
@@ -69,7 +69,7 @@
                             <input type="hidden" name="cat_id" value=""/>
                             <div class="radio_item">
                                 <button type="button" class="_btn_light_info_xs_fs_h6 rf_active" data-radio="" data-open-icon="fa-check-circle" data-close-icon="fa-circle">
-                                    <span data-icon class="_mar_r_xs far fa-check-circle"></span><?php echo esc_html__( 'All ', 'abprf-rental-forge' ) . ' ' .esc_html( ABPRF_Function::category_label()); ?>
+                                    <span data-icon class="_mar_r_xs far fa-check-circle"></span><?php echo esc_html__( 'All ', 'abp-rentalforge' ) . ' ' .esc_html( ABPRF_Function::category_label()); ?>
                                 </button>
                             </div>
 							<?php foreach ( $categories as $cat_id ) {
@@ -93,7 +93,7 @@
 							?>
                             <label>
                                 <select class="_form_control" name="loc_id">
-                                    <option value="" selected><?php esc_html_e( 'All Location', 'abprf-rental-forge' ); ?></option>
+                                    <option value="" selected><?php esc_html_e( 'All Location', 'abp-rentalforge' ); ?></option>
 									<?php foreach ( $locations as $loc_id ) {
 										$location = array_key_exists( $loc_id, ABPRF_Locations ) ? ABPRF_Locations[ $loc_id ] : [];
 										$name     = ! empty( $location ) && array_key_exists( 'name', $location ) ? $location['name'] : '';
@@ -111,7 +111,7 @@
                                 <input type="hidden" name="loc_id" value=""/>
                                 <div class="radio_item">
                                     <button type="button" class="_btn_light_info_xs_fs_h6 rf_active" data-radio="" data-open-icon="fa-check-circle" data-close-icon="fa-circle">
-                                        <span data-icon class="_mar_r_xs far fa-check-circle"></span><?php esc_html_e( 'All Location', 'abprf-rental-forge' ); ?>
+                                        <span data-icon class="_mar_r_xs far fa-check-circle"></span><?php esc_html_e( 'All Location', 'abp-rentalforge' ); ?>
                                     </button>
                                 </div>
 								<?php foreach ( $locations as $loc_id ) {
