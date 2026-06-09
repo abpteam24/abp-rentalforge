@@ -56,7 +56,7 @@
 			//=============================//
 			public function post_table( $filter_args ): void {
 				//echo '<pre>';print_r($filter_args);echo '</pre>';
-				$status = array_key_exists( 'status', $filter_args ) && $filter_args['status'] ? $filter_args['status'] : '';
+				$status = $filter_args['status'] ?? '';
 				if ( empty( $status ) || $status == 'all' ) {
 					$status = [ 'publish', 'draft', 'private', 'trash' ];
 				}
@@ -93,6 +93,7 @@
 								$post_rent_continue = ABPRF_Function::get_post_info( $post_id, 'rent_continue', 'on' );
 								$rent_rule          = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
 								$post_status        = get_post_status( $post_id );
+								$new_post_url       = add_query_arg( array( 'copy_post' => $post_id, '_abprf_nonce' => wp_create_nonce( 'abprf_copy_post_action' ), ), $new_post_url );
 								?>
                                 <tr>
                                     <th><?php echo esc_html( $count ); ?>.</th>
@@ -117,7 +118,7 @@
                                     </th>
                                     <th>
                                         <div class="_f_wrap">
-                                            <button type="button" class="_btn_light_navy_blue _mar_r_xxs" data-href="<?php echo esc_url( $new_post_url . '&copy_post=' . $post_id ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Copy/Clone : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">🔁</button>
+                                            <button type="button" class="_btn_light_navy_blue _mar_r_xxs" data-href="<?php echo esc_url( $new_post_url ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Copy/Clone : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">🔁</button>
 											<?php if ( $post_status == 'trash' ) { ?>
                                                 <button type="button" class="_btn_light_success_mar_r_xxs post_restore" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Restore : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">♻️</button>
                                                 <button type="button" class="_btn_light_danger_xxs post_permanent_remove" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Permanent Remove : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">❌</button>
@@ -143,16 +144,20 @@
 			}
 
 			public function settings(): void {
-				$post_id                     = get_the_id();
-				$copy_post_id                = filter_input( INPUT_GET, 'copy_post', FILTER_SANITIZE_SPECIAL_CHARS );
-				$new_post_id                 = $copy_post_id ?? $post_id;
-				$abprf_infos                 = ABPRF_Function::get_all_meta( $new_post_id );
-				$abprf_infos['copy_post_id'] = $copy_post_id;
+				$post_id      = get_the_id();
+				$copy_post_id = isset( $_GET['copy_post'] ) ? absint( $_GET['copy_post'] ) : '';
+				if ( ! empty( $copy_post_id ) && isset( $_GET['_abprf_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_abprf_nonce'] ) ), 'abprf_copy_post_action' ) && current_user_can( 'edit_post', $copy_post_id ) ) {
+					?> <input type="hidden" name="abprf_copy_post" value="<?php echo esc_attr( $copy_post_id ); ?>"/><?php
+					$abprf_infos['copy_post_id'] = $copy_post_id;
+					$new_post_id                 = $copy_post_id;
+				} else {
+					$new_post_id = $post_id;
+				}
+				$abprf_infos = ABPRF_Function::get_all_meta( $new_post_id );
 				wp_nonce_field( 'abprf_post_nonce', 'abprf_post_nonce' );
 				?>
                 <div class="abprf_area abprf_admin rf_post_config">
                     <input type="hidden" name="abprf_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
-                    <input type="hidden" name="abprf_copy_post" value="<?php echo esc_attr( $copy_post_id ); ?>"/>
                     <div class="_abp_panel">
                         <div class="abprf_tabs tab_top">
                             <div class="_panel_head">
@@ -325,7 +330,13 @@
 
 			//====================================//
 			public function save_settings( $post_id ): void {
-				if ( ! isset( $_POST['abprf_post_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['abprf_post_nonce'] ) ), 'abprf_post_nonce' ) && defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE && ! current_user_can( 'edit_post', $post_id ) ) {
+				if ( ! isset( $_POST['abprf_post_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['abprf_post_nonce'] ) ), 'abprf_post_nonce' ) ) {
+					return;
+				}
+				if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+					return;
+				}
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
 					return;
 				}
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
@@ -353,18 +364,77 @@
 					//=============additional================//
 					$meta_info['display_additional_services'] = isset( $_POST['display_additional_services'] ) ? sanitize_text_field( wp_unslash( $_POST['display_additional_services'] ) ) : 'off';
 					$meta_info['active_global_additional']    = isset( $_POST['active_global_additional'] ) ? sanitize_text_field( wp_unslash( $_POST['active_global_additional'] ) ) : 'on';
-					$meta_info['additional_services']         = apply_filters( 'abprf_get_additional_array', [] );
+					$additional_services                      = [];
+					$additional_ids                           = isset( $_POST['additional_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_id'] ) ) : [];
+					$additional_icon                          = isset( $_POST['additional_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_icon'] ) ) : [];
+					$additional_name                          = isset( $_POST['additional_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_name'] ) ) : [];
+					$additional_qty                           = isset( $_POST['additional_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_qty'] ) ) : [];
+					$max_qty                                  = isset( $_POST['additional_max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_max_qty'] ) ) : [];
+					$returnable                               = isset( $_POST['additional_returnable'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_returnable'] ) ) : [];
+					$additional_price                         = isset( $_POST['additional_price'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_price'] ) ) : [];
+					$additional_description                   = isset( $_POST['additional_description'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['additional_description'] ) ) : [];
+					if ( sizeof( $additional_ids ) > 0 ) {
+						foreach ( $additional_ids as $key => $additional_id ) {
+							if ( $additional_name[ $key ] ) {
+								$additional_id                                        = array_key_exists( $additional_id, $additional_services ) ? uniqid() : $additional_id;
+								$additional_services[ $additional_id ]['icon']        = $additional_icon[ $key ] ?? '';
+								$additional_services[ $additional_id ]['name']        = $additional_name[ $key ];
+								$additional_services[ $additional_id ]['qty']         = $additional_qty[ $key ];
+								$additional_services[ $additional_id ]['max_qty']     = $max_qty[ $key ];
+								$additional_services[ $additional_id ]['price']       = $additional_price[ $key ];
+								$additional_services[ $additional_id ]['returnable']  = $returnable[ $key ];
+								$additional_services[ $additional_id ]['description'] = $additional_description[ $key ] ?? '';
+							}
+						}
+					}
+					$meta_info['additional_services'] = apply_filters( 'abprf_additional_services_filter', $additional_services );
 					//=============form================//
 					$meta_info['display_client_form'] = isset( $_POST['display_client_form'] ) ? sanitize_text_field( wp_unslash( $_POST['display_client_form'] ) ) : 'off';
 					$meta_info['active_global_form']  = isset( $_POST['active_global_form'] ) ? sanitize_text_field( wp_unslash( $_POST['active_global_form'] ) ) : 'on';
-					$meta_info['abprf_forms']         = apply_filters( 'abprf_get_form_array', [] );
+					$form_infos                       = [];
+					$form_title                       = isset( $_POST['client_form_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_title'] ) ) : [];
+					$form_ids                         = isset( $_POST['client_form_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_id'] ) ) : [];
+					$types                            = isset( $_POST['client_form_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_type'] ) ) : [];
+					$option                           = isset( $_POST['client_form_option'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_option'] ) ) : [];
+					$d_value                          = isset( $_POST['client_form_value'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_value'] ) ) : [];
+					$date_value                       = isset( $_POST['client_form_value_date'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['client_form_value_date'] ) ) : [];
+					$required                         = isset( $_POST['client_form_required'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['client_form_required'] ) ) : [];
+					if ( sizeof( $form_ids ) > 0 ) {
+						foreach ( $form_ids as $key => $form_id ) {
+							$title = $form_title[ $key ];
+							$type  = $types[ $key ];
+							if ( $form_id && $title && $type ) {
+								$value = $d_value[ $key ];
+								if ( $type == 'date' ) {
+									$value = $date_value[ $key ];
+								}
+								$form_infos[ $form_id ]['label']    = $title;
+								$form_infos[ $form_id ]['type']     = $type;
+								$form_infos[ $form_id ]['option']   = $option[ $key ];
+								$form_infos[ $form_id ]['d_value']  = $value;
+								$form_infos[ $form_id ]['required'] = $required[ $key ];
+							}
+						}
+					}
+					$meta_info['abprf_forms'] = $form_infos;
 					//=============Faq =TC================//
 					$meta_info['display_faq']       = isset( $_POST['display_faq'] ) ? sanitize_text_field( wp_unslash( $_POST['display_faq'] ) ) : 'on';
 					$meta_info['active_global_faq'] = isset( $_POST['active_global_faq'] ) ? sanitize_text_field( wp_unslash( $_POST['active_global_faq'] ) ) : 'on';
-					$meta_info['abprf_faqs']        = apply_filters( 'abprf_get_faq_array', [] );
-					$meta_info['display_tc']        = isset( $_POST['display_tc'] ) ? sanitize_text_field( wp_unslash( $_POST['display_tc'] ) ) : 'on';
-					$meta_info['active_global_tc']  = isset( $_POST['active_global_tc'] ) ? sanitize_text_field( wp_unslash( $_POST['active_global_tc'] ) ) : 'on';
-					$meta_info['abprf_tc']          = isset( $_POST['tc_content'] ) ? wp_kses_post( wp_unslash( $_POST['tc_content'] ) ) : '';
+					$abprf_faqs                     = [];
+					$titles                         = isset( $_POST['faq_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['faq_title'] ) ) : [];
+					$description                    = isset( $_POST['fag_description'] ) ? array_map( 'wp_kses_post', wp_unslash( $_POST['fag_description'] ) ) : [];
+					if ( sizeof( $titles ) > 0 && sizeof( $description ) > 0 ) {
+						foreach ( $titles as $key => $title ) {
+							if ( $title && array_key_exists( $key, $description ) && $description[ $key ] ) {
+								$abprf_faqs[ $key ]['title'] = $title;
+								$abprf_faqs[ $key ]['des']   = $description[ $key ];
+							}
+						}
+					}
+					$meta_info['abprf_faqs']       = $abprf_faqs;
+					$meta_info['display_tc']       = isset( $_POST['display_tc'] ) ? sanitize_text_field( wp_unslash( $_POST['display_tc'] ) ) : 'on';
+					$meta_info['active_global_tc'] = isset( $_POST['active_global_tc'] ) ? sanitize_text_field( wp_unslash( $_POST['active_global_tc'] ) ) : 'on';
+					$meta_info['abprf_tc']         = isset( $_POST['tc_content'] ) ? wp_kses_post( wp_unslash( $_POST['tc_content'] ) ) : '';
 					//=============tax================//
 					if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) {
 						$meta_info['_tax_status'] = isset( $_POST['_tax_status'] ) ? sanitize_text_field( wp_unslash( $_POST['_tax_status'] ) ) : 'none';
@@ -382,32 +452,34 @@
 					//=============================//
 					if ( ! empty( get_the_title( $post_id ) ) ) {
 						global $wpdb;
-						$table_name        = $wpdb->prefix . 'abprf_property';
-						$copy_post_id      = isset( $_POST['abprf_copy_post'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_copy_post'] ) ) : '';
-						$copy_property_ids = isset( $_POST['copy_property_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['copy_property_id'] ) ) : [];
-						if ( ! empty( $copy_post_id ) && ! empty( $copy_property_ids ) && sizeof( $copy_property_ids ) > 0 ) {
-							foreach ( $copy_property_ids as $property_id ) {
-								//echo '<pre>';print_r($property_id);echo '</pre>';
-								$properties = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
-								if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
-									$property = current( $properties );
-									$data     = [
-										'post_id' => intval( $post_id ),
-										'rent_continue' => array_key_exists( 'rent_continue', $property ) ? $property['rent_continue'] : '',
-										'name' => array_key_exists( 'name', $property ) ? $property['name'] : '',
-										'brand' => array_key_exists( 'brand', $property ) ? $property['brand'] : '',
-										'category' => array_key_exists( 'category', $property ) ? $property['category'] : '',
-										'location' => array_key_exists( 'location', $property ) ? $property['location'] : '',
-										'features' => array_key_exists( 'features', $property ) ? $property['features'] : '',
-										'rent_rule' => array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : '',
-										'price_qty_info' => array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '',
-										'gallery' => array_key_exists( 'gallery', $property ) ? $property['gallery'] : '',
-										'status' => get_post_status( $post_id ),
-										'others' => array_key_exists( 'others', $property ) ? $property['others'] : '',
-										'updated_at' => current_time( 'Y-m-d H:i' )
-									];
-									// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-									$wpdb->insert( $table_name, $data );
+						$table_name   = $wpdb->prefix . 'abprf_property';
+						$copy_post_id = isset( $_POST['abprf_copy_post'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_copy_post'] ) ) : '';
+						if ( ! empty( $copy_post_id ) && current_user_can( 'edit_post', $copy_post_id ) ) {
+							$copy_property_ids = isset( $_POST['copy_property_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['copy_property_id'] ) ) : [];
+							if ( ! empty( $copy_property_ids ) && sizeof( $copy_property_ids ) > 0 ) {
+								foreach ( $copy_property_ids as $property_id ) {
+									//echo '<pre>';print_r($property_id);echo '</pre>';
+									$properties = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+									if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
+										$property = current( $properties );
+										$data     = [
+											'post_id' => intval( $post_id ),
+											'rent_continue' => array_key_exists( 'rent_continue', $property ) ? $property['rent_continue'] : '',
+											'name' => array_key_exists( 'name', $property ) ? $property['name'] : '',
+											'brand' => array_key_exists( 'brand', $property ) ? $property['brand'] : '',
+											'category' => array_key_exists( 'category', $property ) ? $property['category'] : '',
+											'location' => array_key_exists( 'location', $property ) ? $property['location'] : '',
+											'features' => array_key_exists( 'features', $property ) ? $property['features'] : '',
+											'rent_rule' => array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : '',
+											'price_qty_info' => array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '',
+											'gallery' => array_key_exists( 'gallery', $property ) ? $property['gallery'] : '',
+											'status' => get_post_status( $post_id ),
+											'others' => array_key_exists( 'others', $property ) ? $property['others'] : '',
+											'updated_at' => current_time( 'Y-m-d H:i' )
+										];
+										// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+										$wpdb->insert( $table_name, $data );
+									}
 								}
 							}
 						} else {
@@ -435,7 +507,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
 				if ( $post_id > 0 ) {
@@ -448,9 +520,9 @@
 					$table_name = $wpdb->prefix . 'abprf_property';
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					$wpdb->delete( $table_name, [ 'post_id' => $post_id ], [ '%d' ] );
-					wp_send_json_success( ['html'=>'', 'msg' => __( 'Post permanently removed. ..... !! ', 'abp-rentalforge' ) ] );
+					wp_send_json_success( [ 'html' => '', 'msg' => __( 'Post permanently removed. ..... !! ', 'abp-rentalforge' ) ] );
 				}
-				wp_send_json_error( ['html'=>'', 'msg' => __( 'Invalid Post ID ..... !! ', 'abp-rentalforge' ) ], 400 );
+				wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid Post ID ..... !! ', 'abp-rentalforge' ) ], 400 );
 			}
 
 			public function post_move_trash(): void {
@@ -458,7 +530,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
 				if ( $post_id > 0 ) {
@@ -474,9 +546,9 @@
 					$where          = [ 'post_id' => $post_id ];
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					$wpdb->update( $table_name, $data, $where, [ '%s', '%s', '%s' ], [ '%d' ] );
-					wp_send_json_success( ['html'=>'', 'msg' => __( 'Post moved to trash successfully...... !! ', 'abp-rentalforge' ) ] );
+					wp_send_json_success( [ 'html' => '', 'msg' => __( 'Post moved to trash successfully...... !! ', 'abp-rentalforge' ) ] );
 				}
-				wp_send_json_error( ['html'=>'', 'msg' => __( 'Invalid Post ID ..... !! ', 'abp-rentalforge' ) ], 400 );
+				wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid Post ID ..... !! ', 'abp-rentalforge' ) ], 400 );
 			}
 
 			public function post_restore(): void {
@@ -484,7 +556,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
 				if ( $post_id > 0 ) {
@@ -505,9 +577,9 @@
 					$where          = [ 'post_id' => $post_id ];
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					$wpdb->update( $table_name, $data, $where, [ '%s', '%s', '%s' ], [ '%d' ] );
-					wp_send_json_success( ['html'=>'', 'msg' => __( 'Property restored successfully...... !! ', 'abp-rentalforge' ) ] );
+					wp_send_json_success( [ 'html' => '', 'msg' => __( 'Property restored successfully...... !! ', 'abp-rentalforge' ) ] );
 				}
-				wp_send_json_error( ['html'=>'', 'msg' => __( 'Invalid Post ID ..... !! ', 'abp-rentalforge' ) ], 400 );
+				wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid Post ID ..... !! ', 'abp-rentalforge' ) ], 400 );
 			}
 
 			public function reload_post_list(): void {
@@ -515,7 +587,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$filter_args = [];
 				if ( isset( $_POST['filter_args'] ) && is_array( $_POST['filter_args'] ) ) {
@@ -524,7 +596,7 @@
 				ob_start();
 				$this->post_table( $filter_args );
 				$table_html = ob_get_clean();
-				wp_send_json_success( ['html'=>$table_html, 'msg' => __( 'Post List Loaded successfully...... !! ', 'abp-rentalforge' ) ] );
+				wp_send_json_success( [ 'html' => $table_html, 'msg' => __( 'Post List Loaded successfully...... !! ', 'abp-rentalforge' ) ] );
 			}
 		}
 		new ABPRF_Post();

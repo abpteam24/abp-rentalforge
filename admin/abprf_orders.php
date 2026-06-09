@@ -145,7 +145,8 @@
                                 <tr>
                                     <th>
                                         <div class="_group_content">
-											<?php if ( in_array( $status, $booked_status, true ) ) { ?>
+											<?php do_action('abprf_order_action',$order_id);
+                                                if ( in_array( $status, $booked_status, true ) ) { ?>
                                                 <button class="_btn_light_danger_xxs abprf_item_cancel" data-item_id="<?php echo esc_attr( $item_id ); ?>" title="<?php esc_attr_e( 'Rent Cancel', 'abp-rentalforge' ); ?>" type="button"><span class="fas fa-times"></span></button>
 											<?php } ?>
                                         </div>

@@ -29,8 +29,11 @@
 				$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
 				$total_order    = isset( $abprf_info['total_order'] ) && $abprf_info['total_order'] ? $abprf_info['total_order'] : 0;
 				$new_post_url   = isset( $abprf_info['new_post_url'] ) && $abprf_info['new_post_url'] ? $abprf_info['new_post_url'] : '';
-				$active_tab     = filter_input( INPUT_GET, 'rf_tab', FILTER_SANITIZE_SPECIAL_CHARS );
-				$active_tab     = $active_tab ?? 'posts';
+				$allowed_tabs   = [ 'dashboard', 'posts', 'properties', 'orders', 'global', 'configuration', 'status', 'documentation' ];
+				$active_tab     = isset( $_GET['rf_tab'] ) ? sanitize_text_field( wp_unslash( $_GET['rf_tab'] ) ) : 'posts';
+				if ( ! in_array( $active_tab, $allowed_tabs, true ) ) {
+					$active_tab = 'posts';
+				}
 				?>
                 <div class="abprf_area  abprf_admin">
                     <div class="admin_head _fj_between">
@@ -50,8 +53,8 @@
                             </div>
 						<?php } ?>
                     </div>
-                    <div class="admin_menu _bg_info">
-                        <div class="menu_list _d_flex">
+                    <div class="admin_menu">
+                        <div class="menu_list">
                             <!--                            <a href="--><?php //echo esc_url( add_query_arg( 'rf_tab', 'dashboard' ) ); ?><!--" class="_btn_light_info --><?php //echo esc_attr( $active_tab == 'dashboard' ? 'rf_active' : '' ); ?><!--"><span class="_mar_r_xs">📊</span>--><?php //esc_html_e( 'Dashboard', 'abp-rentalforge' ); ?><!--</a>-->
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'posts' ) ); ?>" class="_btn_info post_tab <?php echo esc_attr( $active_tab == 'posts' ? 'rf_active' : '' ); ?>"><?php ABPRF_Layout::image_icon( $brand_icon, '_mar_r_xs' ); ?><?php esc_html_e( 'Post Lists', 'abp-rentalforge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_post ); ?></sup></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'properties' ) ); ?>" class="_btn_info properties_tab <?php echo esc_attr( $active_tab == 'properties' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🏠</span><?php esc_html_e( 'Properties', 'abp-rentalforge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_property ); ?></sup></a>
@@ -71,34 +74,30 @@
 			}
 
 			public function load_global( $abprf_info ): void {
+				$allowed_tabs = [ 'dates', 'additional_service', 'client_form', 'tc', 'faq', 'category', 'location', 'feature', 'brand' ];
+				$active_tab   = isset( $_GET['rf_global'] ) ? sanitize_text_field( wp_unslash( $_GET['rf_global'] ) ) : 'dates';
+				if ( ! in_array( $active_tab, $allowed_tabs, true ) ) {
+					$active_tab = 'dates';
+				}
 				?>
                 <div class="_abp_panel_max_1200_mar_auto">
                     <div class="abprf_tabs tab_top">
                         <div class="_panel_head">
-                            <ul class="_abprf tab_lists">
-                                <li data-tabs-target="#abprf_global_dates"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Dates', 'abp-rentalforge' ); ?></li>
-                                <li data-tabs-target="#abprf_global_additional_service"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Additional services', 'abp-rentalforge' ); ?></li>
-                                <li data-tabs-target="#abprf_global_client_form"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Form', 'abp-rentalforge' ); ?></li>
-                                <li data-tabs-target="#abprf_global_tc"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e( 'T & C', 'abp-rentalforge' ); ?></li>
-                                <li data-tabs-target="#abprf_global_faq"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'FAQ', 'abp-rentalforge' ); ?></li>
-                                <li data-tabs-target="#abprf_global_category"><span class="_mar_r_xxs">🏘️</span><?php echo esc_html( ABPRF_Function::category_label() ); ?></li>
-                                <li data-tabs-target="#abprf_global_location"><span class="_mar_r_xxs">📍</span><?php esc_html_e( 'Location', 'abp-rentalforge' ); ?></li>
-                                <li data-tabs-target="#abprf_global_feature"><span class="_mar_r_xxs">🔗</span><?php esc_html_e( 'Feature', 'abp-rentalforge' ); ?></li>
-                                <li data-tabs-target="#abprf_global_brand"><span class="_mar_r_xxs">🏷️</span><?php esc_html_e( 'Brand', 'abp-rentalforge' ); ?></li>
-                            </ul>
+                            <div class="menu_list _group_content">
+                                <a href="<?php echo esc_url( add_query_arg( 'rf_global', 'dates' ) ); ?>" class="_btn_light_white  <?php echo esc_attr( $active_tab == 'dates' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Dates', 'abp-rentalforge' ); ?></a>
+                                <a href="<?php echo esc_url( add_query_arg( 'rf_global', 'additional_service' ) ); ?>" class="_btn_light_white  <?php echo esc_attr( $active_tab == 'additional_service' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Additional services', 'abp-rentalforge' ); ?></a>
+                                <a href="<?php echo esc_url( add_query_arg( 'rf_global', 'client_form' ) ); ?>" class="_btn_light_white  <?php echo esc_attr( $active_tab == 'client_form' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Form', 'abp-rentalforge' ); ?></a>
+                                <a href="<?php echo esc_url( add_query_arg( 'rf_global', 'tc' ) ); ?>" class="_btn_light_white  <?php echo esc_attr( $active_tab == 'tc' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e( 'T & C', 'abp-rentalforge' ); ?></a>
+                                <a href="<?php echo esc_url( add_query_arg( 'rf_global', 'faq' ) ); ?>" class="_btn_light_white  <?php echo esc_attr( $active_tab == 'faq' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'FAQ', 'abp-rentalforge' ); ?></a>
+                                <a href="<?php echo esc_url( add_query_arg( 'rf_global', 'category' ) ); ?>" class="_btn_light_white  <?php echo esc_attr( $active_tab == 'category' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🏘️</span><?php echo esc_html( ABPRF_Function::category_label() ); ?></a>
+                                <a href="<?php echo esc_url( add_query_arg( 'rf_global', 'location' ) ); ?>" class="_btn_light_white  <?php echo esc_attr( $active_tab == 'location' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">📍</span><?php esc_html_e( 'Location', 'abp-rentalforge' ); ?></a>
+                                <a href="<?php echo esc_url( add_query_arg( 'rf_global', 'brand' ) ); ?>" class="_btn_light_white  <?php echo esc_attr( $active_tab == 'brand' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🏷️</span><?php esc_html_e( 'Brand', 'abp-rentalforge' ); ?></a>
+                                <a href="<?php echo esc_url( add_query_arg( 'rf_global', 'feature' ) ); ?>" class="_btn_light_white  <?php echo esc_attr( $active_tab == 'feature' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🔗</span><?php esc_html_e( 'Feature', 'abp-rentalforge' ); ?></a>
+								<?php do_action( 'abprf_add_admin_global_tab', $active_tab ); ?>
+                            </div>
                         </div>
-                        <div class="_panel_body tab_content _bg_white">
-							<?php
-								do_action( 'abprf_global_dates' );
-								do_action( 'abprf_global_additional_service' );
-								do_action( 'abprf_global_client_form' );
-								do_action( 'abprf_global_tc' );
-								do_action( 'abprf_global_faq' );
-								do_action( 'abprf_global_category', $abprf_info );
-								do_action( 'abprf_global_location' );
-								do_action( 'abprf_global_feature' );
-								do_action( 'abprf_global_brand' );
-							?>
+                        <div class="_panel_body  _bg_white">
+							<?php do_action( 'abprf_global_' . $active_tab, $abprf_info ); ?>
                         </div>
                     </div>
                 </div>

@@ -192,7 +192,7 @@
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
-				if ( ! current_user_can( 'manage_options' ) ) {
+				if ( ! current_user_can( 'manage_options' ) || ! current_user_can('install_plugins') ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
 				}
 				include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );

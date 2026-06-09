@@ -16,7 +16,7 @@
 			}
 
 			public function admin_enqueue(): void {
-				$label         = ABPRF_Function::label();
+				$label = ABPRF_Function::label();
 				$this->global_enqueue();
 				wp_enqueue_editor();
 				wp_enqueue_media();
@@ -212,11 +212,11 @@
 			}
 
 			public function register_cpt(): void {
-				$cpt           = ABPRF_Function::get_cpt();
-				$label         = ABPRF_Function::label();
-				$slug          = ABPRF_Function::slug();
-				$icon          = ABPRF_Function::icon_wp();
-				$labels        = [
+				$cpt    = ABPRF_Function::get_cpt();
+				$label  = ABPRF_Function::label();
+				$slug   = ABPRF_Function::slug();
+				$icon   = ABPRF_Function::icon_wp();
+				$labels = [
 					'name' => esc_html( $label ),
 					'singular_name' => esc_html( $label ),
 					'menu_name' => esc_html( $label ),
@@ -245,7 +245,7 @@
 					'items_list_navigation' => __( 'Category list navigation', 'abp-rentalforge' ),
 					'filter_items_list' => __( 'Filter Post List', 'abp-rentalforge' )
 				];
-				$args          = [
+				$args   = [
 					'public' => true,
 					'labels' => $labels,
 					'menu_icon' => esc_html( $icon ),
@@ -263,7 +263,7 @@
 				];
 				register_post_type( $cpt, $args );
 				$category_label = ABPRF_Function::category_label();
-				$category_slug  =ABPRF_Function::category_slug();
+				$category_slug  = ABPRF_Function::category_slug();
 				$full_text      = $label . ' ' . $category_label;
 				$label_category = array(
 					'name' => $full_text,
@@ -396,10 +396,12 @@
         PRIMARY KEY  (id),
         KEY post_id (post_id)
     ) $collate;";
-				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+				if ( ! function_exists( 'dbDelta' ) ) {
+					require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+				}
 				dbDelta( $abprf_orders );
 				dbDelta( $abprf_property );
-				$row_count = ABPRF_Query::get_property([],true);
+				$row_count = ABPRF_Query::get_property( [], true );
 				if ( 0 == $row_count ) {
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					$wpdb->insert(

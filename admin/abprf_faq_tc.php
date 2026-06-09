@@ -9,7 +9,6 @@
 				add_action( 'abprf_global_faq', array( $this, 'global_faq' ) );
 				add_action( 'abprf_post_content', array( $this, 'post_faq' ) );
 				add_action( 'abprf_post_content', array( $this, 'post_tc' ) );
-				add_filter( 'abprf_get_faq_array', array( $this, 'get_faq_array' ) );
 				add_action( 'wp_ajax_abprf_save_faqs', array( $this, 'save_faqs' ) );
 				add_action( 'wp_ajax_abprf_save_tc', array( $this, 'save_tc' ) );
 				add_action( 'wp_ajax_abprf_import_faq', array( $this, 'import_faq' ) );
@@ -19,32 +18,28 @@
 			public function global_tc(): void {
 				$tcs = ABPRF_Function::get_option( 'abprf_tc', '' );
 				?>
-                <div class="tab_item" data-tabs="#abprf_global_tc">
-                    <form class=" save_tc " method="post" action="">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e( 'Global Term & Conditions Configuration', 'abp-rentalforge' ); ?></h4>
-						<?php ABPRF_Layout::info_text( 'abprf_tc' ); ?>
-                        <div class="_divider_xs"></div>
-						<?php $this->tc( $tcs ); ?>
-                        <div class="_divider_xs"></div>
-                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Term & Conditions Configuration', 'abp-rentalforge' ); ?></button>
-                    </form>
-                </div>
+                <form class=" save_tc " method="post" action="">
+                    <h4 class="_abprf"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e( 'Global Term & Conditions Configuration', 'abp-rentalforge' ); ?></h4>
+					<?php ABPRF_Layout::info_text( 'abprf_tc' ); ?>
+                    <div class="_divider_xs"></div>
+					<?php $this->tc( $tcs ); ?>
+                    <div class="_divider_xs"></div>
+                    <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Term & Conditions Configuration', 'abp-rentalforge' ); ?></button>
+                </form>
 				<?php
 			}
 
 			public function global_faq(): void {
 				$faqs = ABPRF_Function::get_option( 'abprf_faqs' );
 				?>
-                <div class="tab_item" data-tabs="#abprf_global_faq">
-                    <form class=" save_faq " method="post" action="">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'Global FAQ Configuration', 'abp-rentalforge' ); ?></h4>
-						<?php ABPRF_Layout::info_text( 'abprf_faqs' ); ?>
-                        <div class="_divider_xs"></div>
-						<?php $this->faq( $faqs ); ?>
-                        <div class="_divider_xs"></div>
-                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save FAQs Configuration', 'abp-rentalforge' ); ?></button>
-                    </form>
-                </div>
+                <form class=" save_faq " method="post" action="">
+                    <h4 class="_abprf"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'Global FAQ Configuration', 'abp-rentalforge' ); ?></h4>
+					<?php ABPRF_Layout::info_text( 'abprf_faqs' ); ?>
+                    <div class="_divider_xs"></div>
+					<?php $this->faq( $faqs ); ?>
+                    <div class="_divider_xs"></div>
+                    <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save FAQs Configuration', 'abp-rentalforge' ); ?></button>
+                </form>
 				<?php
 			}
 
@@ -225,30 +220,12 @@
 				<?php
 			}
 
-			public function get_faq_array(): array {
-				$abprf_faqs = array();
-				if ( is_admin() && ( ( isset( $_POST['abprf_post_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['abprf_post_nonce'] ) ), 'abprf_post_nonce' ) ) || check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) ) ) {
-					$titles      = isset( $_POST['faq_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['faq_title'] ) ) : [];
-					$description = isset( $_POST['fag_description'] ) ? array_map( 'wp_kses_post', wp_unslash( $_POST['fag_description'] ) ) : [];
-					if ( sizeof( $titles ) > 0 && sizeof( $description ) > 0 ) {
-						foreach ( $titles as $key => $title ) {
-							if ( $title && array_key_exists( $key, $description ) && $description[ $key ] ) {
-								$abprf_faqs[ $key ]['title'] = $title;
-								$abprf_faqs[ $key ]['des']   = $description[ $key ];
-							}
-						}
-					}
-				}
-
-				return $abprf_faqs;
-			}
-
 			public function save_tc(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$abprf_tc = isset( $_POST['tc_content'] ) ? wp_kses_post( wp_unslash( $_POST['tc_content'] ) ) : '';
 				update_option( 'abprf_tc', $abprf_tc );
@@ -260,9 +237,19 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
-				$abprf_faqs = $this->get_faq_array();
+				$abprf_faqs  = [];
+				$titles      = isset( $_POST['faq_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['faq_title'] ) ) : [];
+				$description = isset( $_POST['fag_description'] ) ? array_map( 'wp_kses_post', wp_unslash( $_POST['fag_description'] ) ) : [];
+				if ( sizeof( $titles ) > 0 && sizeof( $description ) > 0 ) {
+					foreach ( $titles as $key => $title ) {
+						if ( $title && array_key_exists( $key, $description ) && $description[ $key ] ) {
+							$abprf_faqs[ $key ]['title'] = $title;
+							$abprf_faqs[ $key ]['des']   = $description[ $key ];
+						}
+					}
+				}
 				update_option( 'abprf_faqs', $abprf_faqs );
 				wp_send_json_success( [ 'msg' => __( 'FAQs Configuration Saved Successfully..... !! ', 'abp-rentalforge' ) ] );
 			}
@@ -272,13 +259,13 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$tcs = ABPRF_Function::get_option( 'abprf_tc', '' );
 				ob_start();
 				$this->tc( $tcs );
 				$html_content = ob_get_clean();
-				wp_send_json_success( ['html'=>$html_content, 'msg' => __( 'Term & Conditions  Imported Successfully ..... !! ', 'abp-rentalforge' ) ] );
+				wp_send_json_success( [ 'html' => $html_content, 'msg' => __( 'Term & Conditions  Imported Successfully ..... !! ', 'abp-rentalforge' ) ] );
 			}
 
 			public function import_faq(): void {
@@ -286,14 +273,14 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$faqs = ABPRF_Function::get_option( 'abprf_faqs' );
 				$faqs = is_array( $faqs ) ? $faqs : [];
 				ob_start();
 				$this->faq( $faqs );
 				$html_content = ob_get_clean();
-				wp_send_json_success( ['html'=>$html_content, 'msg' => __( 'FAQ ImportedSuccessfully ..... !! ', 'abp-rentalforge' ) ] );
+				wp_send_json_success( [ 'html' => $html_content, 'msg' => __( 'FAQ ImportedSuccessfully ..... !! ', 'abp-rentalforge' ) ] );
 			}
 		}
 		new ABPRF_FAQ();

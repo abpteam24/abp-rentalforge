@@ -15,13 +15,11 @@
 			public function global_category(): void {
 				$category_label = ABPRF_Function::category_label();
 				?>
-                <div class="tab_item" data-tabs="#abprf_global_category">
-                    <div class="category_list _ov_auto">
-						<?php $this->category_list(); ?>
-                    </div>
-                    <div class="_divider_xs"></div>
-                    <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( $category_label ); ?></button>
+                <div class="category_list _ov_auto">
+					<?php $this->category_list(); ?>
                 </div>
+                <div class="_divider_xs"></div>
+                <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( $category_label ); ?></button>
 				<?php
 			}
 
@@ -153,7 +151,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$cat_term_id   = isset( $_POST['cat_term_id'] ) ? absint( wp_unslash( $_POST['cat_term_id'] ) ) : 0;
 				$name          = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
@@ -195,7 +193,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$cat_id = isset( $_POST['cat_id'] ) ? absint( wp_unslash( $_POST['cat_id'] ) ) : 0;
 				if ( ! $cat_id ) {
@@ -236,7 +234,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$cat_id = isset( $_POST['tax_id'] ) ? absint( wp_unslash( $_POST['tax_id'] ) ) : 0;
 				ob_start();

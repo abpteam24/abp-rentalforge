@@ -20,11 +20,15 @@
 	if ( ! class_exists( 'ABPRF_Rental_Forge' ) ) {
 		class ABPRF_Rental_Forge {
 			public function __construct() {
+				add_action( 'admin_init', function () {
+					if ( ! function_exists( 'is_plugin_active' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/plugin.php';
+					}
+				} );
 				$this->load_plugin();
 			}
 
 			private function load_plugin(): void {
-				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 				if ( ! defined( 'ABPRF_DIR' ) ) {
 					define( 'ABPRF_DIR', dirname( __FILE__ ) );
 				}
@@ -42,34 +46,34 @@
 				}
 				require_once ABPRF_DIR . '/includes/abprf_dependencies.php';
 				if ( ! defined( 'ABPRF_WC' ) ) {
-					define( 'ABPRF_WC',  ABPRF_Function::check_wc());
+					define( 'ABPRF_WC', ABPRF_Function::check_wc() );
 				}
 				if ( ! defined( 'ABPRF_Configuration' ) ) {
-					define( 'ABPRF_Configuration',  ABPRF_Function::get_option( 'abprf_configuration' ));
+					define( 'ABPRF_Configuration', ABPRF_Function::get_option( 'abprf_configuration' ) );
 				}
 				if ( ! defined( 'ABPRF_Dates' ) ) {
-					define( 'ABPRF_Dates',  ABPRF_Function::get_option( 'abprf_dates' ));
+					define( 'ABPRF_Dates', ABPRF_Function::get_option( 'abprf_dates' ) );
 				}
 				if ( ! defined( 'ABPRF_Category' ) ) {
-					define( 'ABPRF_Category',  ABPRF_Function::get_option( 'abprf_category' ));
+					define( 'ABPRF_Category', ABPRF_Function::get_option( 'abprf_category' ) );
 				}
 				if ( ! defined( 'ABPRF_Features' ) ) {
-					define( 'ABPRF_Features',  ABPRF_Function::get_option( 'abprf_feature' ));
+					define( 'ABPRF_Features', ABPRF_Function::get_option( 'abprf_feature' ) );
 				}
 				if ( ! defined( 'ABPRF_Locations' ) ) {
-					define( 'ABPRF_Locations',  ABPRF_Function::get_option( 'abprf_location' ));
+					define( 'ABPRF_Locations', ABPRF_Function::get_option( 'abprf_location' ) );
 				}
 				if ( ! defined( 'ABPRF_Brands' ) ) {
-					define( 'ABPRF_Brands',  ABPRF_Function::get_option( 'abprf_brand' ));
+					define( 'ABPRF_Brands', ABPRF_Function::get_option( 'abprf_brand' ) );
 				}
 				if ( ! defined( 'ABPRF_Min_Price' ) ) {
-					define( 'ABPRF_Min_Price',  ABPRF_Function::get_option( 'abprf_min_price' ));
+					define( 'ABPRF_Min_Price', ABPRF_Function::get_option( 'abprf_min_price' ) );
 				}
 				if ( ! defined( 'ABPRF_Date_Format' ) ) {
-					define( 'ABPRF_Date_Format', is_array(ABPRF_Dates) && array_key_exists('date_format',ABPRF_Dates)?ABPRF_Dates['date_format']: 'D d M , yy' );
+					define( 'ABPRF_Date_Format', is_array( ABPRF_Dates ) && array_key_exists( 'date_format', ABPRF_Dates ) ? ABPRF_Dates['date_format'] : 'D d M , yy' );
 				}
 				if ( ! defined( 'ABPRF_Time_Format' ) ) {
-					define( 'ABPRF_Time_Format', is_array(ABPRF_Dates) && array_key_exists('time_format',ABPRF_Dates)?ABPRF_Dates['time_format']: get_option( 'time_format' ));
+					define( 'ABPRF_Time_Format', is_array( ABPRF_Dates ) && array_key_exists( 'time_format', ABPRF_Dates ) ? ABPRF_Dates['time_format'] : get_option( 'time_format' ) );
 				}
 			}
 		}

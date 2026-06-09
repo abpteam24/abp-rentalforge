@@ -180,9 +180,6 @@
 			}
 
 			public static function check_wc(): int {
-				if ( ! function_exists( 'is_plugin_active' ) ) {
-					include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-				}
 				if ( class_exists( 'WooCommerce' ) || is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 					return 2;
 				}

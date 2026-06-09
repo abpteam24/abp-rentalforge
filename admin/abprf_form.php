@@ -7,7 +7,6 @@
 			public function __construct() {
 				add_action( 'abprf_global_client_form', array( $this, 'global_client_form' ) );
 				add_action( 'abprf_post_content', [ $this, 'post_client_form' ] );
-				add_filter( 'abprf_get_form_array', array( $this, 'get_form_array' ) );
 				add_action( 'wp_ajax_abprf_save_client_form', array( $this, 'save_global_client_form' ) );
 				add_action( 'wp_ajax_abprf_import_global_form', array( $this, 'import_global_form' ) );
 			}
@@ -15,16 +14,14 @@
 			public function global_client_form(): void {
 				$abprf_forms = ABPRF_Function::get_option( 'abprf_forms', ABPRF_Layout::static_form() );
 				?>
-                <div class="tab_item" data-tabs="#abprf_global_client_form">
-                    <form class="save_client_form" method="post" action="">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
-						<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
-                        <div class="_divider_xs"></div>
-						<?php $this->passenger_form_settings( $abprf_forms ); ?>
-                        <div class="_divider_xs"></div>
-                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Client Form Configuration', 'abp-rentalforge' ); ?></button>
-                    </form>
-                </div>
+                <form class="save_client_form" method="post" action="">
+                    <h4 class="_abprf"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
+					<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
+                    <div class="_divider_xs"></div>
+					<?php $this->passenger_form_settings( $abprf_forms ); ?>
+                    <div class="_divider_xs"></div>
+                    <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Client Form Configuration', 'abp-rentalforge' ); ?></button>
+                </form>
 				<?php
 			}
 
@@ -188,48 +185,39 @@
 			}
 
 			//=============================//
-			public static function get_form_array() {
-				$form_infos = array();
-				if ( is_admin() && ( ( isset( $_POST['abprf_post_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['abprf_post_nonce'] ) ), 'abprf_post_nonce' ) ) || check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce' ) ) ) {
-					$form_title = isset( $_POST['client_form_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_title'] ) ) : [];
-					$form_ids   = isset( $_POST['client_form_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_id'] ) ) : [];
-					$types      = isset( $_POST['client_form_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_type'] ) ) : [];
-					$option     = isset( $_POST['client_form_option'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_option'] ) ) : [];
-					$d_value    = isset( $_POST['client_form_value'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_value'] ) ) : [];
-					$date_value = isset( $_POST['client_form_value_date'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['client_form_value_date'] ) ) : [];
-					$required   = isset( $_POST['client_form_required'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['client_form_required'] ) ) : [];
-					if ( sizeof( $form_ids ) > 0 ) {
-						foreach ( $form_ids as $key => $form_id ) {
-							$title = $form_title[ $key ];
-							$type  = $types[ $key ];
-							if ( $form_id && $title && $type ) {
-								$value = $d_value[ $key ];
-								if ( $type == 'date' ) {
-									$value = $date_value[ $key ];
-								}
-								$form_infos[ $form_id ]['label']    = $title;
-								$form_infos[ $form_id ]['type']     = $type;
-								$form_infos[ $form_id ]['option']   = $option[ $key ];
-								$form_infos[ $form_id ]['d_value']  = $value;
-								$form_infos[ $form_id ]['required'] = $required[ $key ];
-							}
-						}
-					}
-				}
-
-				return apply_filters( 'abprf_form_infos_filter', $form_infos );
-			}
-
 			public function save_global_client_form(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
-				$client_forms = $this->get_form_array();
-				$client_forms = is_array( $client_forms ) ? $client_forms : [];
-				update_option( 'abprf_forms', $client_forms );
+				$form_infos = [];
+				$form_title = isset( $_POST['client_form_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_title'] ) ) : [];
+				$form_ids   = isset( $_POST['client_form_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_id'] ) ) : [];
+				$types      = isset( $_POST['client_form_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_type'] ) ) : [];
+				$option     = isset( $_POST['client_form_option'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_option'] ) ) : [];
+				$d_value    = isset( $_POST['client_form_value'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['client_form_value'] ) ) : [];
+				$date_value = isset( $_POST['client_form_value_date'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['client_form_value_date'] ) ) : [];
+				$required   = isset( $_POST['client_form_required'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['client_form_required'] ) ) : [];
+				if ( sizeof( $form_ids ) > 0 ) {
+					foreach ( $form_ids as $key => $form_id ) {
+						$title = $form_title[ $key ];
+						$type  = $types[ $key ];
+						if ( $form_id && $title && $type ) {
+							$value = $d_value[ $key ];
+							if ( $type == 'date' ) {
+								$value = $date_value[ $key ];
+							}
+							$form_infos[ $form_id ]['label']    = $title;
+							$form_infos[ $form_id ]['type']     = $type;
+							$form_infos[ $form_id ]['option']   = $option[ $key ];
+							$form_infos[ $form_id ]['d_value']  = $value;
+							$form_infos[ $form_id ]['required'] = $required[ $key ];
+						}
+					}
+				}
+				update_option( 'abprf_forms', $form_infos );
 				wp_send_json_success( [ 'msg' => __( 'Client Form Configuration Saved Successfully..... !! ', 'abp-rentalforge' ) ] );
 			}
 
@@ -238,7 +226,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$default_form = ABPRF_Layout::static_form();
 				$forms        = ABPRF_Function::get_option( 'abprf_forms', $default_form ) ?? [];
@@ -246,7 +234,7 @@
 				ob_start();
 				$this->passenger_form_settings( $forms );
 				$html_content = ob_get_clean();
-				wp_send_json_success( ['html'=>$html_content, 'msg' => __( 'Global Client Form Imported Successfully ..... !! ', 'abp-rentalforge' ) ] );;
+				wp_send_json_success( [ 'html' => $html_content, 'msg' => __( 'Global Client Form Imported Successfully ..... !! ', 'abp-rentalforge' ) ] );;
 			}
 		}
 		new ABPRF_Form();

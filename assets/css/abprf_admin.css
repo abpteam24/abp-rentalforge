@@ -84,11 +84,11 @@
 	div.admin_head .brand_icon {color: var(--rf_color_off_white);font-size: var(--rf_fs_h3);}
 	div.admin_head .brand_version {color: var(--rf_color_5);}
 	/********************/
-	div.abprf_admin .admin_menu {position: sticky; top: 32px; z-index: 100;}
-	div.admin_menu .menu_list {padding: 0 var(--rf_gap);-webkit-flex-wrap: wrap;flex-wrap: wrap;}
-	div.admin_menu .menu_list button {border: none;}
-	/***********************/
+	div.abprf_admin .admin_menu {position: sticky; top: 32px; z-index: 100; background-color: var(--rf_color_info);}
+	div.abprf_admin .menu_list {padding: 0 var(--rf_gap);display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap;flex-wrap: wrap;}
+	div.abprf_admin .menu_list button {border: none;}
 	div.abprf_admin .dashboard_content {margin: var(--rf_gap);}
+	div.abprf_admin .dashboard_content .menu_list {padding: 0}
 	div.abprf_admin .properties_list {overflow-x: auto;margin-top: var(--rf_gap_xs);}
 	div.abprf_admin .abprf_properties .properties_list {margin: 0;}
 	div.abprf_admin .category_list table {text-align: left;}

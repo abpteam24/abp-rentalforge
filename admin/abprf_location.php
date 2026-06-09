@@ -14,15 +14,13 @@
 
 			public function global_location(): void {
 				?>
-                <div class="tab_item" data-tabs="#abprf_global_location">
-                    <div class="location_list _ov_auto">
-						<?php $this->location_list(); ?>
-                    </div>
-                    <div class="_divider_xs"></div>
-                    <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="location">
-                        <span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?>
-                    </button>
+                <div class="location_list _ov_auto">
+					<?php $this->location_list(); ?>
                 </div>
+                <div class="_divider_xs"></div>
+                <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="location">
+                    <span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?>
+                </button>
 				<?php
 			}
 
@@ -262,7 +260,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$loc_id    = isset( $_POST['tax_id'] ) ? sanitize_text_field( wp_unslash( $_POST['tax_id'] ) ) : '';
 				$locations = ABPRF_Function::get_option( 'abprf_location' );
@@ -279,7 +277,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$msg            = '';
 				$cat_term_id    = isset( $_POST['loc_term_id'] ) ? sanitize_text_field( wp_unslash( $_POST['loc_term_id'] ) ) : '';
@@ -308,7 +306,7 @@
 						] );
 					}
 					if ( is_wp_error( $result ) ) {
-						wp_send_json_error( ['html' => '', 'msg' => $result->get_error_message() ] );
+						wp_send_json_error( [ 'html' => '', 'msg' => $result->get_error_message() ] );
 					}
 					$term_id = is_array( $result ) ? ( $result['term_id'] ?? 0 ) : 0;
 					if ( $term_id > 0 ) {
@@ -355,10 +353,10 @@
 						$this->update_location( $options, $term_id );
 						$msg = __( 'Location Saved Successfully !', 'abp-rentalforge' );
 					} else {
-						wp_send_json_error( ['html' => '', 'msg' => __( 'Failed to resolve location context.', 'abp-rentalforge' ) ] );
+						wp_send_json_error( [ 'html' => '', 'msg' => __( 'Failed to resolve location context.', 'abp-rentalforge' ) ] );
 					}
 				} else {
-					wp_send_json_error( ['html' => '', 'msg' => __( 'Location Name cannot be blank!', 'abp-rentalforge' ) ] );
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Location Name cannot be blank!', 'abp-rentalforge' ) ] );
 				}
 				ob_start();
 				if ( ! empty( $abprf_post_id ) && (int) $abprf_post_id > 0 ) {
@@ -376,7 +374,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$loc_id = isset( $_POST['loc_id'] ) ? sanitize_text_field( wp_unslash( $_POST['loc_id'] ) ) : '';
 				$result = wp_delete_term( (int) $loc_id, 'abprf_location' );

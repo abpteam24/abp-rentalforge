@@ -13,7 +13,7 @@
 
 			public function global_feature(): void {
 				?>
-                <div class="tab_item feature_area" data-tabs="#abprf_global_feature">
+                <div class="feature_area">
                     <div class="feature_list _group_list">
 						<?php $this->feature_list(); ?>
                     </div>

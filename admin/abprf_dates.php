@@ -14,17 +14,15 @@
 			public function global_dates(): void {
 				$date_infos = ABPRF_Function::get_option( 'abprf_dates' );
 				?>
-                <div class="tab_item" data-tabs="#abprf_global_dates">
-                    <form class="save_dates" method="post" action="">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abp-rentalforge' ); ?></h4>
-						<?php ABPRF_Layout::info_text( 'abprf_dates' ); ?>
-                        <div class="_divider_xs"></div>
-						<?php $this->date_time_format( $date_infos );
-							$this->date_content( $date_infos ); ?>
-                        <div class="_divider_xs"></div>
-                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Date Configuration', 'abp-rentalforge' ); ?></button>
-                    </form>
-                </div>
+                <form class="save_dates" method="post" action="">
+                    <h4 class="_abprf"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abp-rentalforge' ); ?></h4>
+					<?php ABPRF_Layout::info_text( 'abprf_dates' ); ?>
+                    <div class="_divider_xs"></div>
+					<?php $this->date_time_format( $date_infos );
+						$this->date_content( $date_infos ); ?>
+                    <div class="_divider_xs"></div>
+                    <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Date Configuration', 'abp-rentalforge' ); ?></button>
+                </form>
 				<?php
 			}
 
@@ -622,7 +620,7 @@
 					wp_send_json_error( [ 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$date_infos                = $this->get_date_array();
 				$date_infos['date_format'] = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
