@@ -71,8 +71,14 @@
 				$brand_icon            = ABPRF_Function::icon();
 				$booked_status         = isset( $configuration['booked_status'] ) && $configuration['booked_status'] ? $configuration['booked_status'] : 'wc-processing,wc-completed';
 				$booked_status         = $booked_status ? explode( ',', $booked_status ) : [];
+				$_filter_args          = $filter_args;
+				$total_rent            = 0;
+				$total_additional      = 0;
+				$total_deposit         = 0;
+				$total_sale            = 0;
+				//echo '<pre>';print_r($filter_args);echo '</pre>';
 				?>
-                <div class="_panel_head_xs_ov_auto">
+                <div class="_panel_head_xs_ov_auto _fj_between">
                     <div class="_group_content order_status_menu">
                         <button class="_btn_white_xs_text_nowrap <?php echo esc_attr( $data_status === 'all' ? 'rf_active' : '' ); ?>" type="button" data-status="all" title="<?php esc_attr_e( 'All Booking', 'abp-rentalforge' ); ?>">
 							<?php echo esc_html( __( 'All Booking', 'abp-rentalforge' ) . ' (' . ABPRF_Query::get_booking_query( $filter_args, 0, 0, true ) . ' )' ) ?>
@@ -99,6 +105,7 @@
 							}
 						?>
                     </div>
+					<?php do_action( 'abprf_order_tab_action', $_filter_args ); ?>
                 </div>
                 <div class="_panel_body">
 					<?php if ( ! empty( $booking_lists ) && is_array( $booking_lists ) ) { ?>
@@ -111,13 +118,16 @@
                                     <th><?php ABPRF_Layout::image_icon( $brand_icon, '_mar_r_xs' ); ?><?php echo esc_html( $label ); ?></th>
 								<?php } ?>
                                 <th class="_min_150"><?php esc_html_e( 'Rent Time', 'abp-rentalforge' ); ?></th>
-                                <th><?php esc_html_e( 'Property Information', 'abp-rentalforge' ); ?></th>
-                                <th><?php esc_html_e( 'Rent + Additional + Deposit = Total ', 'abp-rentalforge' ); ?></th>
+                                <th><?php esc_html_e( 'Property Info', 'abp-rentalforge' ); ?></th>
+                                <th><?php esc_html_e( 'Additional Info', 'abp-rentalforge' ); ?></th>
+                                <th><?php esc_html_e( 'Rent ', 'abp-rentalforge' ); ?></th>
+                                <th><?php esc_html_e( 'Additional ', 'abp-rentalforge' ); ?></th>
+                                <th><?php esc_html_e( 'Deposit ', 'abp-rentalforge' ); ?></th>
+                                <th><?php esc_html_e( 'Total ', 'abp-rentalforge' ); ?></th>
                                 <th><?php esc_html_e( 'Status', 'abp-rentalforge' ); ?></th>
                                 <th><?php esc_html_e( 'Payment Method', 'abp-rentalforge' ); ?></th>
-                                <th><?php esc_html_e( 'Additional services', 'abp-rentalforge' ); ?></th>
-                                <th><?php esc_html_e( 'Billing Information', 'abp-rentalforge' ); ?></th>
-                                <th><?php esc_html_e( 'Client Information', 'abp-rentalforge' ); ?></th>
+                                <th><?php esc_html_e( 'Billing Info', 'abp-rentalforge' ); ?></th>
+                                <th><?php esc_html_e( 'Client Info', 'abp-rentalforge' ); ?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -132,6 +142,10 @@
 								$rent             = $price_info['rent'] ?? 0;
 								$ex_price         = $price_info['ex_price'] ?? 0;
 								$deposit          = $price_info['deposit'] ?? 0;
+								$total_sale       = $total_sale + (int) ( $total_price );
+								$total_rent       = $total_rent + (int) ( $rent );
+								$total_additional = $total_additional + (int) ( $ex_price );
+								$total_deposit    = $total_deposit + (int) ( $deposit );
 								$ticket_infos     = json_decode( $booking_list['property_info'] ?? '', true ) ?: [];
 								$passenger_infos  = json_decode( $booking_list['pass_info'] ?? '', true ) ?: [];
 								$additional_infos = json_decode( $booking_list['ex_info'] ?? '', true ) ?: [];
@@ -145,10 +159,10 @@
                                 <tr>
                                     <th>
                                         <div class="_group_content">
-											<?php do_action('abprf_order_action',$order_id);
-                                                if ( in_array( $status, $booked_status, true ) ) { ?>
-                                                <button class="_btn_light_danger_xxs abprf_item_cancel" data-item_id="<?php echo esc_attr( $item_id ); ?>" title="<?php esc_attr_e( 'Rent Cancel', 'abp-rentalforge' ); ?>" type="button"><span class="fas fa-times"></span></button>
-											<?php } ?>
+											<?php do_action( 'abprf_order_action', $item_id );
+												if ( in_array( $status, $booked_status, true ) ) { ?>
+                                                    <button class="_btn_light_danger_xxs abprf_item_cancel" data-item_id="<?php echo esc_attr( $item_id ); ?>" title="<?php esc_attr_e( 'Rent Cancel', 'abp-rentalforge' ); ?>" type="button"><span class="fas fa-times"></span></button>
+												<?php } ?>
                                         </div>
                                     </th>
                                     <th class="_text_left">
@@ -160,95 +174,50 @@
 									<?php } ?>
                                     <td>
 										<?php echo esc_html( ABPRF_Function::date_format( $start_time, 'full' ) . '-' . ABPRF_Function::date_format( $end_time, $end_time_format ) ); ?>
-                                        <p class="_abprf_fs_label_color_theme"><?php echo esc_html( $others['duration'] ?? '' ); ?></p>
+                                        <p class="_abprf_fs_label_color_theme"><?php echo esc_html( $others['duration'] ?? '' ) . '-' . esc_html( ABPRF_Layout::rent_rules( $others['rent_rule'] ?? '' ) ); ?></p>
                                     </td>
-                                    <th>
-										<?php if ( ! empty( $ticket_infos ) && is_array( $ticket_infos ) ) {
-											foreach ( $ticket_infos as $ticket_info ) {
-												if ( ! empty( $ticket_info ) && is_array( $ticket_info ) ) {
-													$name  = $ticket_info['name'] ?? '';
-													$qty   = $ticket_info['qty'] ?? 1;
-													$price = $ticket_info['price'] ?? '';
-													if ( ! empty( $name ) ) {
-														?><p class="_abprf"><?php echo esc_html( $name . ' X ' . $qty . ' = ' ) . ' ' . ( ! empty( $price ) && $price > 0 ? wp_kses_post( wc_price( $price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ) ); ?></p><?php
-													}
-												}
-											}
-										} ?>
-                                    </th>
-                                    <th>
-                                        <span><?php echo ( ! empty( $rent ) && $rent > 0 ) ? wp_kses_post( wc_price( $rent ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></span>+
-                                        <span><?php echo ( ! empty( $ex_price ) && $ex_price > 0 ) ? wp_kses_post( wc_price( $ex_price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></span>+
-                                        <span><?php echo ( ! empty( $deposit ) && $deposit > 0 ) ? wp_kses_post( wc_price( $deposit ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></span>=
-                                        <span><?php echo ( ! empty( $total_price ) && $total_price > 0 ) ? wp_kses_post( wc_price( $total_price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></span>
-                                    </th>
+                                    <th><?php ABPRF_Layout::ticket_info( $ticket_infos ); ?></th>
+                                    <td><?php ABPRF_Layout::additional_info( $additional_infos ); ?></td>
+                                    <th><?php echo $rent > 0 ? wp_kses_post( wc_price( $rent ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
+                                    <th><?php echo $ex_price > 0 ? wp_kses_post( wc_price( $ex_price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
+                                    <th><?php $deposit > 0 ? wp_kses_post( wc_price( $deposit ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
+                                    <th><?php echo $total_price > 0 ? wp_kses_post( wc_price( $total_price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
                                     <th class="_text_capitalize">
-                                        <p class="_abprf <?php echo esc_attr( ABPRF_Function::status_text( $status ) ); ?>"> <?php echo esc_html( ABPRF_Function::status_text( $status ) ); ?></p>
-                                        <p class="_abprf <?php echo esc_attr( $booking_list['book_status'] ?? '' ); ?>"><?php echo esc_html( $booking_list['book_status'] ?? '' ); ?></p>
+                                        <p class="_abprf <?php echo esc_attr( ABPRF_Layout::status_text( $status ) ); ?>"> <?php echo esc_html( ABPRF_Layout::status_text( $status ) ); ?></p>
+                                        <p class="_abprf <?php echo esc_attr( $booking_list['book_status'] ?? '' ); ?>">
+											<?php
+												$book_status = $booking_list['book_status'] ?? '';
+												$book_status = ABPRF_Layout::get_book_status( $order_id, $start_time, $end_time, $book_status );
+												echo esc_html( ABPRF_Layout::book_status_text( $book_status ) ); ?>
+                                        </p>
                                     </th>
                                     <th class="_text_capitalize"><?php echo esc_html( $booking_list['payment_method'] ?? '' ); ?></th>
                                     <td>
-										<?php if ( ! empty( $additional_infos ) && is_array( $additional_infos ) ) {
-											foreach ( $additional_infos as $ex_info ) {
-												if ( ! empty( $ex_info ) && is_array( $ex_info ) ) {
-													$name       = $ex_info['name'] ?? '';
-													$qty        = $ex_info['qty'] ?? 1;
-													$price      = $ex_info['price'] ?? '';
-													$returnable = $ex_info['returnable'] ?? 'no';
-													if ( ! empty( $name ) ) { ?>
-                                                        <p class="_abprf">
-															<?php echo esc_html( $name . ' X ' . $qty . ' = ' ) . ' ' . ( ! empty( $price ) && $price > 0 ? wp_kses_post( wc_price( $price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ) );
-																if ( $returnable === 'yes' ) {
-																	?> <span class="trash"><?php esc_html_e( 'Returnable', 'abp-rentalforge' ); ?></span><?php
-																} else {
-																	?><span class="publish"><?php esc_html_e( 'Non-Returnable', 'abp-rentalforge' ); ?></span>  <?php
-																} ?>
-                                                        </p>
-														<?php
-													}
-												}
-											}
-										} ?>
+                                        <div class="info_text load_more">
+                                            <div class="load_more_content"><?php ABPRF_Layout::billing_info( $booking_list ); ?></div>
+                                            <span class="load_more_action" data-less="<?php esc_attr_e( '....Show Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_attr_e( '....Load More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '....Load More', 'abp-rentalforge' ); ?></span>
+                                        </div>
                                     </td>
                                     <td>
-                                        <p class="_abprf"><?php echo esc_html( $booking_list['billing_name'] ?? '' ); ?></p>
-                                        <p class="_abprf"><?php echo esc_html( $booking_list['billing_email'] ?? '' ); ?></p>
-                                        <p class="_abprf" data-collapse="#bill_<?php echo esc_attr( $order_id . '_' . $item_id ); ?>"><?php echo esc_html( $booking_list['billing_phone'] ?? '' ); ?></p>
-                                        <p class="_abprf" data-collapse="#bill_<?php echo esc_attr( $order_id . '_' . $item_id ); ?>"><?php echo esc_html( $booking_list['billing_address'] ?? '' ); ?></p>
-                                        <p class="_abprf_fs_label_color_theme" data-collapse-target="#bill_<?php echo esc_attr( $order_id . '_' . $item_id ); ?>" data-close-text="<?php esc_attr_e( 'Less More', 'abp-rentalforge' ); ?>" data-open-text="<?php esc_attr_e( 'Load More', 'abp-rentalforge' ); ?>">
-                                            <span data-text><?php esc_html_e( 'Load More', 'abp-rentalforge' ); ?></span>
-                                        </p>
-                                    </td>
-                                    <td>
-										<?php if ( ! empty( $passenger_infos ) && is_array( $passenger_infos ) ) {
-											$pass_count = 0;
-											foreach ( $passenger_infos as $pas_form ) {
-												if ( ! empty( $pas_form ) && is_array( $pas_form ) ) {
-													$p_label = $pas_form['label'] ?? '';
-													$p_value = $pas_form['value'] ?? '';
-													if ( ! empty( $p_label ) && ! empty( $p_value ) ) {
-														$pass_count ++;
-														if ( $pass_count > 2 ) {
-															?><p class="_abprf" data-collapse="#pass_<?php echo esc_attr( $order_id . '_' . $item_id ); ?>"><?php echo esc_html( $p_label . ' : ' . $p_value ); ?></p><?php
-														} else {
-															?><p class="_abprf"><?php echo esc_html( $p_label . ' : ' . $p_value ); ?></p><?php
-														}
-													}
-												}
-											}
-											if ( $pass_count > 2 ) {
-												?>
-                                                <p class="_abprf_fs_label_color_theme" data-collapse-target="#pass_<?php echo esc_attr( $order_id . '_' . $item_id ); ?>" data-close-text="<?php esc_attr_e( 'Less More', 'abp-rentalforge' ); ?>" data-open-text="<?php esc_attr_e( 'Load More', 'abp-rentalforge' ); ?>">
-                                                    <span data-text><?php esc_html_e( 'Load More', 'abp-rentalforge' ); ?></span>
-                                                </p>
-												<?php
-											}
-										} ?>
+                                        <div class="info_text load_more">
+                                            <div class="load_more_content"><?php ABPRF_Layout::client_info( $passenger_infos ); ?></div>
+                                            <span class="load_more_action" data-less="<?php esc_html_e( '....Show Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '....Load More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '....Load More', 'abp-rentalforge' ); ?></span>
+                                        </div>
                                     </td>
                                 </tr>
 								<?php $si ++;
 							} ?>
                             </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="6"><?php esc_html_e( 'Total Summary', 'abp-rentalforge' ); ?></th>
+                                <th><?php echo ( ! empty( $total_rent ) && $total_rent > 0 ) ? wp_kses_post( wc_price( $total_rent ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
+                                <th><?php echo ( ! empty( $total_additional ) && $total_additional > 0 ) ? wp_kses_post( wc_price( $total_additional ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
+                                <th><?php echo ( ! empty( $total_deposit ) && $total_deposit > 0 ) ? wp_kses_post( wc_price( $total_deposit ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
+                                <th><?php echo ( ! empty( $total_sale ) && $total_sale > 0 ) ? wp_kses_post( wc_price( $total_sale ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
+                                <th colspan="4"></th>
+                            </tr>
+                            </tfoot>
                         </table>
 					<?php } else {
 						ABPRF_Layout::layout_warning_info( 'no_order_found' );
@@ -263,7 +232,7 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				ob_start();
 				$filter_args              = isset( $_POST ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST ) ) : [];
@@ -283,14 +252,15 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403);
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				$item_id = isset( $_POST['item_id'] ) ? sanitize_text_field( wp_unslash( $_POST['item_id'] ) ) : '';
 				if ( ! empty( $item_id ) ) {
 					global $wpdb;
-					$table_name = $wpdb->prefix . 'abprf_orders';
-					$value      = ABPRF_Query::get_item_query( $item_id );
-					if ( ! empty( $value ) && is_array( $value ) ) {
+					$table_name    = $wpdb->prefix . 'abprf_orders';
+					$booking_lists = ABPRF_Query::get_booking_query( [ 'item_id' => $item_id ] );
+					if ( ! empty( $booking_lists ) && is_array( $booking_lists ) ) {
+						$value  = current( $booking_lists );
 						$others = $value['others'] ?? '';
 						if ( ! empty( $others ) ) {
 							$others              = json_decode( $others, true ) ?: [];
@@ -298,6 +268,7 @@
 							$others['cancel_by'] = $user_id;
 							$data                = [
 								'others' => json_encode( $others ),
+								'book_status' => 5,
 								'order_status' => 'wc-cancelled',
 								'updated_at' => current_time( 'Y-m-d H:i:s' )
 							];
@@ -306,9 +277,9 @@
 							$wpdb->update( $table_name, $data, $where, [ '%s', '%s', '%s' ], [ '%d' ] );
 						}
 					}
-					wp_send_json_success( ['html' => '', 'msg' => esc_html__( 'Deleted Successfully !', 'abp-rentalforge' ) ] );
+					wp_send_json_success( [ 'html' => '', 'msg' => esc_html__( 'Deleted Successfully !', 'abp-rentalforge' ) ] );
 				}
-				wp_send_json_error( ['html' => '', 'msg' => esc_html__( 'Something Error Occurred !', 'abp-rentalforge' ) ] );
+				wp_send_json_error( [ 'html' => '', 'msg' => esc_html__( 'Something Error Occurred !', 'abp-rentalforge' ) ] );
 			}
 		}
 		new ABPRF_Orders();

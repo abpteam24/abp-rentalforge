@@ -276,7 +276,7 @@
 						}
 						$brand = array_key_exists( 'brand', $ticket_info ) ? $ticket_info['brand'] : '';
 						if ( ! empty( $brand ) ) {
-							$item_data[] = array( 'name' => __( 'Brand', 'abp-rentalforge' ), 'value' => ABPRF_Function::brand_value( $brand ) . '<br />' );
+							$item_data[] = array( 'name' => ABPRF_Function::brand_label(), 'value' => ABPRF_Function::brand_value( $brand ) . '<br />' );
 						}
 						$item_data = apply_filters( 'abprf_cart_property_info_block', $item_data, $cart_item, $key );
 					}
@@ -392,7 +392,7 @@
 							$brand     = array_key_exists( 'brand', $ticket_info ) ? $ticket_info['brand'] : '';
 							$all_brand = ! empty( $all_brand ) ? $all_brand . ',' . $brand : $brand;
 							if ( ! empty( $brand ) ) {
-								$item->add_meta_data( __( 'Brand', 'abp-rentalforge' ), ABPRF_Function::brand_value( $brand ) );
+								$item->add_meta_data( ABPRF_Function::brand_label(), ABPRF_Function::brand_value( $brand ) );
 							}
 						}
 						if ( ! empty( $additional_info ) && sizeof( $additional_info ) > 0 ) {
@@ -457,6 +457,8 @@
 					$_billing_address_2  = array_key_exists( '_billing_address_2', $order_meta ) ? $order_meta['_billing_address_2'][0] : '';
 					$billing_name        = $_billing_first_name . ' ' . $_billing_last_name;
 					$billing_address     = $_billing_address_1 . ' ' . $_billing_address_2;
+					$booked_status       = ABPRF_Function::booking_status();
+					$booked_status       = $booked_status ? explode( ',', $booked_status ) : [];
 					if ( $order_status != 'failed' ) {
 						$total_order = ABPRF_Query::get_booking_query( [ 'order_id' => $order_id ], 0, 0, true );
 						if ( $total_order == 0 ) {
@@ -489,6 +491,7 @@
 											$price_info['item_total'] = $item_info['item_total'] ?? '';
 											$others['rent_rule']      = $item_info['rent_rule'] ?? '';
 											$others['duration']       = $item_info['duration'] ?? '';
+											$order_status             = 'wc-' . $order_status;
 											$data                     = [
 												'order_id' => intval( $order_id ),
 												'item_id' => intval( $item_id ),
@@ -509,9 +512,9 @@
 												'property_info' => json_encode( $ticket_infos ),
 												'ex_info' => json_encode( $additional_info ),
 												'pass_info' => json_encode( $item_info['pass_info'] ?? [] ),
-												'delivery_option' => sanitize_text_field( 'self' ),
-												'book_status' => sanitize_text_field( 'placed' ),
-												'order_status' => sanitize_text_field( 'wc-' . $order_status ),
+												'delivery_option' => 0,
+												'book_status' =>  in_array( $order_status, $booked_status ) ? 1 : 0 ,
+												'order_status' => sanitize_text_field( $order_status ),
 												'payment_method' => sanitize_text_field( $payment_method ),
 												'billing_name' => sanitize_text_field( $billing_name ),
 												'billing_email' => sanitize_text_field( $billing_email ),
@@ -541,7 +544,7 @@
 			}
 
 			public function order_status_changed( $order_id ): void {
-				if ( $order_id && $order_id > 0 ) {
+				if ( ! empty( $order_id ) && $order_id > 0 ) {
 					global $wpdb;
 					$table_name   = $wpdb->prefix . 'abprf_orders';
 					$order        = wc_get_order( $order_id );

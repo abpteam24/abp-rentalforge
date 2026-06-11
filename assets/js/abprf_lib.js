@@ -76,11 +76,6 @@ function abprf_input_value_change(currentTarget) {
 }
 (function ($) {
     "use strict";
-    $(document).on('click', 'div.abprf_area .load_more [data-read]', function (e) {
-        e.stopPropagation();
-        let parent = $(this).closest('.load_more');
-        parent.find('[data-content]').toggleClass('_d_none')
-    });
     $(document).on('click', '.abprf_area [data-all-change]', function () {
         abprf_data_change($(this));
     });
@@ -122,14 +117,15 @@ function abprf_input_value_change(currentTarget) {
         parent.find('input[type="time"]').val('').trigger('rf_trigger');
     });
 }(jQuery));
-document.querySelectorAll('div.abprf_area [data-href]').forEach(div => {
-    div.addEventListener('click', function () {
-        const url = this.getAttribute('data-href');
-        const target = this.getAttribute('data-blank');
+document.body.addEventListener('click', function (event) {
+    const targetDiv = event.target.closest('div.abprf_area [data-href]');
+    if (targetDiv) {
+        const url = targetDiv.getAttribute('data-href');
+        const target = targetDiv.getAttribute('data-blank');
         if (url) {
             window.open(url, target ? target : '_self');
         }
-    });
+    }
 });
 //==============================================================================Collapse & Tabs & Modal / Popup=================//
 function abprf_load_tabs() {
@@ -188,6 +184,7 @@ function abprf_popup_close(target_id = '') {
                 });
             });
         }
+        abprf_load_more();
     });
     //================//
     $(document).on('click', 'div.abprf_area [data-target-popup]', function () {
@@ -869,6 +866,7 @@ class ABPRFSlider {
     }
 }
 document.addEventListener('DOMContentLoaded', () => {
+    abprf_load_more()
     document.querySelectorAll('div.abprf_area [data-rf-slider]').forEach(el => new ABPRFSlider(el));
     const rf_gallery_item = document.querySelectorAll('div.abprf_area .gallery_item');
     rf_gallery_item.forEach(item => {
@@ -907,6 +905,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+function abprf_load_more() {
+    const containers = document.querySelectorAll('div.abprf_area .load_more');
+    containers.forEach(container => {
+        const textContent = container.querySelector('.load_more_content');
+        const toggleBtn = container.querySelector('.load_more_action');
+        if (!textContent || !toggleBtn) return;
+        const textMore = toggleBtn.getAttribute('data-more') || '... Load More';
+        const textLess = toggleBtn.getAttribute('data-less') || ' ....Show Less';
+        if (textContent.scrollHeight <= textContent.clientHeight) {
+            toggleBtn.style.display = 'none';
+        } else {
+            toggleBtn.style.display = 'inline';
+        }
+        toggleBtn.replaceWith(toggleBtn.cloneNode(true));
+        const newToggleBtn = container.querySelector('.load_more_action');
+        newToggleBtn.addEventListener('click', function () {
+            textContent.classList.toggle('expanded');
+            if (textContent.classList.contains('expanded')) {
+                newToggleBtn.textContent = textLess;
+            } else {
+                newToggleBtn.textContent = textMore;
+            }
+        });
+    });
+}
 //
 // (function ($) {
 //     "use strict";

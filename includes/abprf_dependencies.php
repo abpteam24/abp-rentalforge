@@ -91,7 +91,7 @@
 						'decimal_num' => ABPRF_Function::get_option( 'woocommerce_price_num_decimals', 2 ),
 						'currency_suffix' => ABPRF_Function::get_option( 'woocommerce_price_display_suffix', '' ),
 						'blank_image' => ABPRF_BLANK_IMG_URL,
-						'date_format' => ABPRF_Function::get_date_format(),
+						'date_format' => ABPRF_JS_Date_Format,
 					] );
 				} else {
 					wp_localize_script( 'abprf_lib', 'abprf_var', [
@@ -102,7 +102,7 @@
 						'decimal_num' => '',
 						'wc_suffix' => '',
 						'blank_image' => ABPRF_BLANK_IMG_URL,
-						'date_format' => ABPRF_Function::get_date_format(),
+						'date_format' => ABPRF_JS_Date_Format,
 					] );
 				}
 				$abprf_css_var   = ABPRF_Function::get_option( 'abprf_css_var' );
@@ -302,7 +302,7 @@
 					'meta_box_cb' => false,
 				];
 				register_taxonomy( 'abprf_location', $cpt, $args );
-				$full_text   = $label . ' ' . __( 'Brand', 'abp-rentalforge' );
+				$full_text   = $label . ' ' . ABPRF_Function::brand_label();
 				$label_brand = array(
 					'name' => $full_text,
 					'singular_name' => $full_text,
@@ -360,8 +360,8 @@
         property_info longtext NOT NULL,
         ex_info longtext NOT NULL,
         pass_info longtext NOT NULL,
-        delivery_option varchar(50) DEFAULT NULL,
-        book_status varchar(20) NOT NULL,
+        delivery_option TINYINT UNSIGNED NOT NULL DEFAULT 0,
+        book_status TINYINT UNSIGNED NOT NULL DEFAULT 0,
         order_status varchar(20) NOT NULL,
         payment_method varchar(100) DEFAULT NULL,
         billing_name varchar(100) DEFAULT NULL,

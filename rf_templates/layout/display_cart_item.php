@@ -43,7 +43,7 @@
                                 <li><span class="_fs_label"><?php esc_html_e( 'Deposit : ', 'abp-rentalforge' ); ?></span><?php echo wp_kses_post( wc_price( $deposit ) ); ?></li>
 							<?php } ?>
 							<?php								if ( ! empty( $brand ) ) {	 	?>
-                                    <li><span class="_fs_label"><?php esc_html_e( 'Brand : ', 'abp-rentalforge' ); ?></span><?php echo esc_html( ABPRF_Function::brand_value($brand) ); ?></li>
+                                    <li><span class="_fs_label"><?php echo esc_html(ABPRF_Function::brand_label()); ?></span><?php echo esc_html( ABPRF_Function::brand_value($brand) ); ?></li>
 								<?php } ?>
                         </ul>
 					<?php } ?>

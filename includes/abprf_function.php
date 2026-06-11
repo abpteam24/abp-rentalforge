@@ -96,20 +96,31 @@
 			public static function slug() {
 				return is_array( ABPRF_Configuration ) && array_key_exists( 'slug', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['slug'] ) ? ABPRF_Configuration['slug'] : 'rental-forge';
 			}
+
 			public static function icon_wp() {
 				return is_array( ABPRF_Configuration ) && array_key_exists( 'icon', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['icon'] ) ? ABPRF_Configuration['icon'] : 'dashicons-hammer';
 			}
+
 			public static function icon() {
 				return is_array( ABPRF_Configuration ) && array_key_exists( 'brand_icon', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['brand_icon'] ) ? ABPRF_Configuration['brand_icon'] : 'fas fa-hammer';
 			}
 
-			public static function brand_value( $brand ) {
-				return is_array( ABPRF_Brands ) && array_key_exists( $brand, ABPRF_Brands ) && ! empty( ABPRF_Brands[ $brand ] ) && array_key_exists( 'name', ABPRF_Brands[ $brand ] ) ? ABPRF_Brands[ $brand ]['name'] : $brand;
+			public static function brand_label() {
+				return is_array( ABPRF_Configuration ) && array_key_exists( 'brand_label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['brand_label'] ) ? ABPRF_Configuration['brand_label'] : __( 'Brand', 'abp-rentalforge' );
+			}
+
+			public static function brand_value( $id ) {
+				return is_array( ABPRF_Brands ) && array_key_exists( $id, ABPRF_Brands ) && ! empty( ABPRF_Brands[ $id ] ) && array_key_exists( 'name', ABPRF_Brands[ $id ] ) ? ABPRF_Brands[ $id ]['name'] : $id;
 			}
 
 			public static function category_label() {
 				return is_array( ABPRF_Configuration ) && array_key_exists( 'category_label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['category_label'] ) ? ABPRF_Configuration['category_label'] : __( 'Category', 'abp-rentalforge' );
 			}
+
+			public static function category_value( $id ) {
+				return is_array( ABPRF_Category ) && array_key_exists( $id, ABPRF_Category ) && ! empty( ABPRF_Category[ $id ] ) && array_key_exists( 'name', ABPRF_Category[ $id ] ) ? ABPRF_Category[ $id ]['name'] : $id;
+			}
+
 			public static function category_slug() {
 				return is_array( ABPRF_Configuration ) && array_key_exists( 'cat_slug', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['cat_slug'] ) ? ABPRF_Configuration['cat_slug'] : 'category';
 			}
@@ -271,7 +282,7 @@
 			//============= Date function================//
 			public function modify_cart_date( $cart_item ) {
 				$rent_rule = $cart_item['rent_rule'] ?? '';
-				$post_id   = $cart_item['post_id'] ?? 0;;
+				$post_id   = $cart_item['post_id'] ?? 0;
 				if ( ! empty( $post_id ) && $post_id > 0 && $rent_rule === 'daily' ) {
 					$start_date_raw = $cart_item['start_time'] ?? '';
 					$end_date_raw   = $cart_item['end_time'] ?? '';
@@ -871,36 +882,12 @@
 				return implode( '##', $slots );
 			}
 
-			public static function date_picker_format(): string {
-				$formats = [
-					'yy/mm/dd' => 'Y/m/d',
-					'yy-dd-mm' => 'Y-d-m',
-					'yy/dd/mm' => 'Y/d/m',
-					'dd-mm-yy' => 'd-m-Y',
-					'dd/mm/yy' => 'd/m/Y',
-					'mm-dd-yy' => 'm-d-Y',
-					'mm/dd/yy' => 'm/d/Y',
-					'd M , yy' => 'j M , Y',
-					'D d M , yy' => 'D j M , Y',
-					'M d , yy' => 'M  j, Y',
-					'D M d , yy' => 'D M  j, Y',
-				];
-
-				return $formats[ ABPRF_Date_Format ] ?? 'Y-m-d';
-			}
-
 			public static function date_format( $date, $format = '' ): string {
 				if ( ! empty( $date ) ) {
-					if ( gmdate( 'H:i:s', strtotime( $date ) ) === '00:00:00' ) {
-						$date = gmdate( 'Y-m-d', strtotime( $date ) );
-						if ( empty( $format ) ) {
-							$format = 'date';
-						}
-					}
 					if ( empty( $format ) ) {
 						$format = ABPRF_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 					}
-					$date_format = ABPRF_Date_Format;
+					$date_format = self::date_format_php();
 					$time_format = ABPRF_Time_Format;
 					$wp_settings = $date_format . '  ' . $time_format;
 					//$timezone = wp_timezone_string();
@@ -925,8 +912,26 @@
 				return $date;
 			}
 
-			public static function get_date_format() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'date_format', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['date_format'] ) ? ABPRF_Configuration['date_format'] : 'D d M , yy';
+			public static function date_format_php(): string {
+				$formats = [
+					'yy/mm/dd' => 'Y/m/d',
+					'yy-dd-mm' => 'Y-d-m',
+					'yy/dd/mm' => 'Y/d/m',
+					'dd-mm-yy' => 'd-m-Y',
+					'dd/mm/yy' => 'd/m/Y',
+					'mm-dd-yy' => 'm-d-Y',
+					'mm/dd/yy' => 'm/d/Y',
+					'd M , yy' => 'j M , Y',
+					'D d M , yy' => 'D j M , Y',
+					'M d , yy' => 'M  j, Y',
+					'D M d , yy' => 'D M  j, Y',
+				];
+
+				return $formats[ ABPRF_JS_Date_Format ] ?? 'Y-m-d';
+			}
+
+			public static function date_format_js() {
+				return is_array( ABPRF_Dates ) && array_key_exists( 'date_format', ABPRF_Dates ) && ABPRF_Dates['date_format'] ? ABPRF_Dates['date_format'] : 'D d M , yy';
 			}
 
 			public static function date_separate_period( $start_date, $end_date, $repeat = 1 ): DatePeriod {
@@ -1288,13 +1293,6 @@
 						update_option( 'abprf_mm_time', $mm_time );
 					}
 				}
-			}
-
-			//=============================//
-			public static function status_text( $status ) {
-				$status_array = wc_get_order_statuses();
-
-				return array_key_exists( $status, $status_array ) ? $status_array[ $status ] : '';
 			}
 		}
 		new ABPRF_Function();

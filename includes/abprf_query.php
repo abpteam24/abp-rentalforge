@@ -187,37 +187,6 @@
 				return $results;
 			}
 
-			public static function get_item_query( $item_id, $key = '*' ) {
-				if ( empty( $item_id ) || $item_id <= 0 ) {
-					return null;
-				}
-				global $wpdb;
-				$table_name   = $wpdb->prefix . 'abprf_orders';
-				$allowed_keys = [ '*', 'id', 'item_id', 'order_id', 'user_id', 'status', 'created_at' ];
-				if ( $key !== '*' && ! in_array( $key, $allowed_keys, true ) ) {
-					$key = '*';
-				}
-				$cache_key   = 'abprf_item_' . $item_id . '_' . md5( $key );
-				$cache_group = 'abprf_orders';
-				$return      = wp_cache_get( $cache_key, $cache_group );
-				if ( false === $return ) {
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-					$return = $wpdb->get_row(
-						$wpdb->prepare(
-							"SELECT %i FROM %i WHERE item_id = %d",
-							$key,
-							$table_name,
-							$item_id
-						),
-						ARRAY_A
-					);
-					$return = ! empty( $return ) ? $return : [];
-					wp_cache_set( $cache_key, $return, $cache_group, 0 );
-				}
-
-				return $return;
-			}
-
 			public static function get_booking_query( $filters = array(), $limit = 0, $offset = 0, $count = false ) {
 				global $wpdb;
 				$table_name  = $wpdb->prefix . 'abprf_orders';

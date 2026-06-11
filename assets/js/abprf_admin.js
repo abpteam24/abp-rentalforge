@@ -330,6 +330,7 @@ function abprf_property_filter_arg($this) {
                     abprf_spinner_remove(parent);
                     target.html(response.data.html).promise().done(function () {
                         abprf_toast_msg(response.data.msg, 'success');
+                        abprf_load_more();
                     });
                 }
             })

@@ -162,12 +162,12 @@
 						<?php foreach ( $properties as $property ) {
 							$others             = array_key_exists( 'others', $property ) ? $property['others'] : '';
 							$others             = ! empty( $others ) ? json_decode( $others, true ) : [];
-							$icon               = array_key_exists( 'icon', $others ) ? $others['icon'] : '';
-							$name               = array_key_exists( 'name', $property ) ? $property['name'] : '';
-							$property_id        = array_key_exists( 'id', $property ) ? $property['id'] : '';
-							$post_id            = array_key_exists( 'post_id', $property ) ? $property['post_id'] : '';
-							$status             = array_key_exists( 'status', $property ) ? $property['status'] : '';
-							$rent_continue      = array_key_exists( 'rent_continue', $property ) ? $property['rent_continue'] : '';
+							$icon               =$others['icon'] ?? '';
+							$name               =$property['name'] ?? '';
+							$property_id        = $property['id'] ?? '';
+							$post_id            = $property['post_id'] ?? '';
+							$status             = $property['status'] ?? '';
+							$rent_continue      = $property['rent_continue'] ?? '';
 							$post_rent_continue = ABPRF_Function::get_post_info( $post_id, 'rent_continue', 'on' );
 							$post_status        = get_post_status( $post_id );
 							$rent_rule          = array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : '';

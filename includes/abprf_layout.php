@@ -183,13 +183,13 @@
 			}
 
 			//=============================//
-			public static function info_text( $key ): void {
-				$data = ABPRF_Layout::array_info( $key );
+			public static function info_text( $key = '', $data = '' ): void {
+				$data = empty( $data ) ? ABPRF_Layout::array_info( $key ) : $data;
 				if ( $data ) {
 					?>
-                    <div class="info_text">
-                        <span class="_mar_r_xxs">ℹ️</span>
-                        <span><?php self::load_more_text( $data ); ?></span>
+                    <div class="info_text load_more">
+                        <span class="load_more_content">ℹ️ &nbsp;<?php echo wp_kses_post( $data ); ?></span>
+                        <span class="load_more_action" data-less="<?php esc_html_e( '....Show Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '....Load More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '....Load More', 'abp-rentalforge' ); ?></span>
                     </div>
 					<?php
 				}
@@ -237,22 +237,6 @@
 					} else { ?>
                         <i class="<?php echo esc_attr( $icon . ' ' . $class ); ?>"><?php echo esc_html( $emoji ); ?></i>
 					<?php }
-				}
-			}
-
-			public static function load_more_text( $text = '', $length = 200 ): void {
-				$text_length = strlen( $text );
-				if ( $text && $text_length > $length ) {
-					?>
-                    <span class="load_more">
-                        <span data-content><?php echo esc_html( substr( $text, 0, $length ) ); ?> .... <span data-read><?php esc_html_e( 'Load More', 'abp-rentalforge' ); ?></span></span>
-                        <span data-content class="_d_none"><?php echo esc_html( $text ); ?>.... <span data-read><?php esc_html_e( 'Less More', 'abp-rentalforge' ); ?></span></span>
-                    </span>
-					<?php
-				} else {
-					?>
-                    <span><?php echo esc_html( $text ); ?></span>
-					<?php
 				}
 			}
 
@@ -339,7 +323,7 @@
 			}
 
 			public static function input_date( $name, $date = '', $label = '', $required = '' ): void {
-				$date_format  = ABPRF_Function::date_picker_format();
+				$date_format  = ABPRF_Function::date_format_php();
 				$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				$hidden_date  = $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
 				$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
@@ -529,6 +513,55 @@
 			}
 
 			//=============static array================//
+			public static function status_text( $status ): string {
+				$status_array = wc_get_order_statuses();
+
+				return array_key_exists( $status, $status_array ) ? $status_array[ $status ] : '';
+			}
+
+			public static function book_status_text( $key ) {
+				$rules = [
+					'0' => __( 'Pending', 'abp-rentalforge' ),
+					'1' => __( 'Waiting', 'abp-rentalforge' ),
+					'2' => __( 'In Rent', 'abp-rentalforge' ),
+					'3' => __( 'Completed', 'abp-rentalforge' ),
+					'4' => __( 'Delay', 'abp-rentalforge' ),
+					'5' => __( 'Canceled', 'abp-rentalforge' )
+				];
+				$rules = apply_filters( 'abprf_filter_book_status_rule', $rules );
+
+				return ! empty( $key ) && array_key_exists( $key, $rules ) ? $rules[ $key ] : $key;
+			}
+
+			public static function get_book_status( $order_id, $start_time, $end_time, $book_status ): int {
+				$now = current_time( 'Y-m-d H:i:s' );
+				if ( ! empty( $book_status ) && $book_status < 5 && $book_status > 0 ) {
+					$_book_status = 0;
+					if ( strtotime( $now ) < strtotime( $start_time ) && strtotime( $now ) > strtotime( $end_time ) ) {
+						$_book_status = 2;
+					} elseif ( strtotime( $now ) < strtotime( $start_time ) && strtotime( $now ) < strtotime( $end_time ) ) {
+						$_book_status = 3;
+					}
+					if ( $_book_status > $book_status ) {
+						$book_status = $_book_status;
+						global $wpdb;
+						$table_name    = $wpdb->prefix . 'abprf_orders';
+						$booking_lists = ABPRF_Query::get_booking_query( [ 'order_id' => $order_id ] );
+						if ( ! empty( $booking_lists ) && is_array( $booking_lists ) ) {
+							$data  = [
+								'book_status' => intval( $book_status ),
+								'updated_at' => current_time( 'Y-m-d H:i:s' )
+							];
+							$where = [ 'order_id' => (int) $order_id ];
+							// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+							$wpdb->update( $table_name, $data, $where, [ '%s', '%s', '%s' ], [ '%d' ] );
+						}
+					}
+				}
+
+				return $book_status;
+			}
+
 			public static function week_day(): array {
 				return [
 					'monday' => __( 'Monday', 'abp-rentalforge' ),
@@ -838,7 +871,7 @@
 			public static function rent_start_date( $all_dates, $date = '' ): void {
 				//echo '<pre>';print_r($all_dates);					echo '</pre>';
 				if ( sizeof( $all_dates ) > 0 ) {
-					$date_format = ABPRF_Function::date_picker_format();
+					$date_format = ABPRF_Function::date_format_php();
 					$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 					$date        = $date ?: current( $all_dates );
 					//if ( sizeof( $all_dates ) > 10 ) {
@@ -859,7 +892,7 @@
 
 			public static function rent_end_date( $all_dates, $end_date = '' ): void {
 				//echo '<pre>';print_r(self::get_end_dates( $post_id , $start_date , $all_dates , $filters));					echo '</pre>';
-				$date_format = ABPRF_Function::date_picker_format();
+				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				if ( sizeof( $all_dates ) > 0 ) {
 					$date = $end_date ?: current( $all_dates );
@@ -1112,6 +1145,97 @@
 			}
 
 			//=============================//
+			public static function ticket_info( $ticket_infos ): void {
+				if ( ! empty( $ticket_infos ) && is_array( $ticket_infos ) ) { ?>
+                    <ul class=" _abprf">
+						<?php foreach ( $ticket_infos as $ticket_info ) {
+							if ( ! empty( $ticket_info ) && sizeof( $ticket_info ) > 0 ) {
+								$name  = $ticket_info['name'] ?? '';
+								$qty   = $ticket_info['qty'] ?? 1;
+								$price = $ticket_info['price'] ?? '';
+								if ( ! empty( $name ) ) { ?>
+                                    <li>
+                                        <strong><?php echo esc_html( $name ); ?></strong>
+										<?php echo esc_html( ' X ' . $qty . ' = ' ) . ' ' . ( ! empty( $price ) && $price > 0 ? wp_kses_post( wc_price( $price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ) ); ?>
+                                    </li>
+								<?php }
+							}
+						} ?>
+                    </ul>
+				<?php }
+			}
+
+			public static function additional_info( $additional_infos ): void {
+				if ( ! empty( $additional_infos ) && is_array( $additional_infos ) ) { ?>
+                    <ul class=" _abprf">
+						<?php foreach ( $additional_infos as $ex_info ) {
+							if ( ! empty( $ex_info ) && sizeof( $ex_info ) > 0 ) {
+								$name       = $ex_info['name'] ?? '';
+								$qty        = $ex_info['qty'] ?? 1;
+								$price      = $ex_info['price'] ?? '';
+								$returnable = $ex_info['returnable'] ?? 'no';
+								if ( ! empty( $name ) ) { ?>
+                                    <li>
+                                        <strong><?php echo esc_html( $name ); ?></strong>
+										<?php echo esc_html( ' X ' . $qty . ' = ' ) . ' ' . ( ! empty( $price ) && $price > 0 ? wp_kses_post( wc_price( $price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ) ); ?>
+										<?php
+											if ( $returnable == 'yes' ) {
+												?> <span class="_color_required"> - <?php esc_html_e( 'Returnable', 'abp-rentalforge' ); ?></span><?php
+											} ?>
+                                    </li>
+									<?php
+								}
+							}
+						} ?>
+                    </ul>
+				<?php }
+			}
+
+			public static function client_info( $passenger_infos ): void {
+				if ( ! empty( $passenger_infos ) && is_array( $passenger_infos ) ) { ?>
+                    <ul class=" _abprf">
+						<?php foreach ( $passenger_infos as $pas_form ) {
+							if ( ! empty( $pas_form ) && sizeof( $pas_form ) > 0 ) {
+								$label = $pas_form['label'] ?? '';
+								$value = $pas_form['value'] ?? '';
+								if ( ! empty( $label ) && ! empty( $value ) ) { ?>
+                                    <li>
+                                        <strong><?php echo esc_html( $label ); ?></strong> : <?php echo esc_html( $value ); ?>
+                                    </li>
+									<?php
+								}
+							}
+						} ?>
+                    </ul>
+				<?php }
+			}
+
+			public static function billing_info( $booking_list ): void {
+				if ( ! empty( $booking_list ) ) {
+					$billing_name    = $booking_list['billing_name'] ?? '';
+					$billing_email   = $booking_list['billing_email'] ?? '';
+					$billing_phone   = $booking_list['billing_phone'] ?? '';
+					$billing_address = $booking_list['billing_address'] ?? '';
+					?>
+                    <ul class=" _abprf">
+						<?php if ( ! empty( $billing_name ) ) { ?>
+                            <li><strong><?php esc_html_e( 'Name :', 'abp-rentalforge' ); ?></strong>&nbsp;<?php echo esc_html( $billing_name ); ?></li>
+						<?php } ?>
+						<?php if ( ! empty( $billing_email ) ) { ?>
+                            <li><strong><?php esc_html_e( 'E-Mail :', 'abp-rentalforge' ); ?></strong>&nbsp;<?php echo esc_html( $billing_email ); ?></li>
+						<?php } ?>
+						<?php if ( ! empty( $billing_phone ) ) { ?>
+                            <li><strong><?php esc_html_e( 'Phone :', 'abp-rentalforge' ); ?></strong>&nbsp;<?php echo esc_html( $billing_phone ); ?></li>
+						<?php } ?>
+						<?php if ( ! empty( $billing_address ) ) { ?>
+                            <li><strong><?php esc_html_e( 'Address :', 'abp-rentalforge' ); ?></strong>&nbsp;<?php echo esc_html( $billing_address ); ?></li>
+						<?php } ?>
+                    </ul>
+					<?php
+				}
+			}
+
+			//=============================//
 			public static function filter_post_list( $post_id = 0 ): void {
 				$label        = ABPRF_Function::label();
 				$all_post_ids = ABPRF_Query::get_post_id();
@@ -1153,7 +1277,7 @@
 			}
 
 			public static function filter_booking_date(): void {
-				$date_format = ABPRF_Function::date_picker_format();
+				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				?>
                 <div class="_input_item">
@@ -1168,7 +1292,7 @@
 			}
 
 			public static function filter_order_date(): void {
-				$date_format = ABPRF_Function::date_picker_format();
+				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				?>
                 <div class="_input_item">
@@ -1183,7 +1307,7 @@
 			}
 
 			public static function filter_booking_date_between(): void {
-				$date_format = ABPRF_Function::date_picker_format();
+				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				?>
                 <div class="_g_input_input_item_fd_column">
@@ -1205,7 +1329,7 @@
 			}
 
 			public static function filter_order_date_between(): void {
-				$date_format = ABPRF_Function::date_picker_format();
+				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				?>
                 <div class="_g_input_input_item_fd_column" data-collapse="#view_more_filter_option">

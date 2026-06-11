@@ -29,9 +29,9 @@
 			}
 
 			public function update_sanitize( $new, $old, $option ) {
-				$all_fields          = $this->configuration_data();
-				$field_infos         = array_key_exists( $option, $all_fields ) ? $all_fields[ $option ] : array();
-				$remove_name         = [ 'collapse_start', 'collapse_end' ];
+				$all_fields  = $this->configuration_data();
+				$field_infos = array_key_exists( $option, $all_fields ) ? $all_fields[ $option ] : array();
+				$remove_name = [ 'collapse_start', 'collapse_end' ];
 				if ( sizeof( $field_infos ) > 0 && is_array( $new ) ) {
 					foreach ( $field_infos as $field_info ) {
 						$name = array_key_exists( 'name', $field_info ) ? $field_info['name'] : '';
@@ -81,7 +81,7 @@
 					$fields     = array_key_exists( $section_id, $all_fields ) ? $all_fields[ $section_id ] : array();
 					if ( sizeof( $fields ) > 0 ) {
 						?>
-                        <div class="tab_item" data-tabs="#<?php echo esc_attr( $section_id ); ?>">
+                        <div class="tab_item <?php echo esc_attr( $section_id ); ?>" data-tabs="#<?php echo esc_attr( $section_id ); ?>">
                             <h3 class="_abprf"><?php echo esc_html( $plugin_label . __( ' : ', 'abp-rentalforge' ) . $form['menu'] . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></h3>
                             <div class="_divider_xs"></div>
                             <form method="post" action="options.php">
@@ -493,11 +493,8 @@
 				$desc = $option['desc'] ?? '';
 				if ( $desc ) { ?>
                     <div class="_divider_xs"></div>
-                    <div class="info_text">
-                        <span class="_mar_r_xxs">ℹ️</span>
-                        <span><?php echo wp_kses_post( $desc ); ?></span>
-                    </div>
 					<?php
+					ABPRF_Layout::info_text( '', $desc );
 				}
 			}
 

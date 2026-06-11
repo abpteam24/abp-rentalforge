@@ -122,7 +122,7 @@
 				$active_type  = ( $type == 'select' || $type == 'checkbox' || $type == 'radio' ) ? 'rf_active' : '';
 				$active_value = $type != 'date' ? 'rf_active' : '';
 				$date         = $type == 'date' ? $d_value : '';
-				$date_format  = ABPRF_Function::date_picker_format();
+				$date_format  = ABPRF_Function::date_format_php();
 				$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				$hidden_date  = $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
 				$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';

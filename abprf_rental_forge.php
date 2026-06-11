@@ -69,8 +69,8 @@
 				if ( ! defined( 'ABPRF_Min_Price' ) ) {
 					define( 'ABPRF_Min_Price', ABPRF_Function::get_option( 'abprf_min_price' ) );
 				}
-				if ( ! defined( 'ABPRF_Date_Format' ) ) {
-					define( 'ABPRF_Date_Format', is_array( ABPRF_Dates ) && array_key_exists( 'date_format', ABPRF_Dates ) ? ABPRF_Dates['date_format'] : 'D d M , yy' );
+				if ( ! defined( 'ABPRF_JS_Date_Format' ) ) {
+					define( 'ABPRF_JS_Date_Format', ABPRF_Function::date_format_js());
 				}
 				if ( ! defined( 'ABPRF_Time_Format' ) ) {
 					define( 'ABPRF_Time_Format', is_array( ABPRF_Dates ) && array_key_exists( 'time_format', ABPRF_Dates ) ? ABPRF_Dates['time_format'] : get_option( 'time_format' ) );
