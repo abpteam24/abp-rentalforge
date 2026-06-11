@@ -9,8 +9,6 @@
 	#abprf_search_area .duration_area h5 {color: var(--rf_color_light);}
 	#abprf_search_area .duration_area h6 {color: var(--rf_color_5);}
 	/**********************************/
-	div.abprf_rental_result {width: 100%; max-width: 100%;}
-	div.abprf_rental_result div.abprf_booking {padding: 0;margin: 0;}
 	div.abprf_booking .client_info_area,
 	div.abprf_booking .total_continue_area,
 	div.abprf_booking .additional_service_area {width: 100%;margin-top: var(--rf_gap);display: none; }

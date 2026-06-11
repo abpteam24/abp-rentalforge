@@ -6,7 +6,7 @@
 		$post_id     = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : '';
 		$location    = array_key_exists( 'abprf_location', $abprf_infos ) ? $abprf_infos['abprf_location'] : '';
 		$params_form = array_key_exists( 'form', $abprf_infos ) ? $abprf_infos['form'] : 'inline';
-		$rent_rule   = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : 'hourly';
+		$rent_rule   = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : ABPRF_Function::get_post_info($post_id,'rent_rule','multi_day');
 		$brand_icon  = ABPRF_Function::icon();
 		//echo '<pre>';print_r( ABPRF_Function::get_option( 'abprf_mm_time' ));					echo '</pre>';
 		if ( isset( $_SESSION['abprf_cart_success'] ) ) {

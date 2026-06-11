@@ -29,7 +29,7 @@
 				$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
 				$total_order    = isset( $abprf_info['total_order'] ) && $abprf_info['total_order'] ? $abprf_info['total_order'] : 0;
 				$new_post_url   = isset( $abprf_info['new_post_url'] ) && $abprf_info['new_post_url'] ? $abprf_info['new_post_url'] : '';
-				$allowed_tabs   = [ 'dashboard', 'posts', 'properties', 'orders', 'global', 'configuration', 'status', 'documentation' ];
+				$allowed_tabs   = [ 'dashboard', 'posts', 'properties', 'orders', 'global', 'configuration', 'status', 'documentation','add_order' ];
 				$active_tab     = isset( $_GET['rf_tab'] ) ? sanitize_text_field( wp_unslash( $_GET['rf_tab'] ) ) : 'posts';
 				if ( ! in_array( $active_tab, $allowed_tabs, true ) ) {
 					$active_tab = 'posts';
@@ -59,6 +59,7 @@
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'posts' ) ); ?>" class="_btn_info post_tab <?php echo esc_attr( $active_tab == 'posts' ? 'rf_active' : '' ); ?>"><?php ABPRF_Layout::image_icon( $icon, '_mar_r_xs' ); ?><?php esc_html_e( 'Post Lists', 'abp-rentalforge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_post ); ?></sup></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'properties' ) ); ?>" class="_btn_info properties_tab <?php echo esc_attr( $active_tab == 'properties' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🏠</span><?php esc_html_e( 'Properties', 'abp-rentalforge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_property ); ?></sup></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'orders' ) ); ?>" class="_btn_info <?php echo esc_attr( $active_tab == 'orders' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">📋</span><?php esc_html_e( 'Orders', 'abp-rentalforge' ); ?><sup class="_mar_l_xs_circle_icon_xs"><?php echo esc_html( $total_order ); ?></sup></a>
+	                        <?php do_action( 'abprf_add_admin_menu_tab_middle', $active_tab ); ?>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'global' ) ); ?>" class="_btn_info <?php echo esc_attr( $active_tab == 'global' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🌐</span><?php esc_html_e( 'Global Data', 'abp-rentalforge' ); ?></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'configuration' ) ); ?>" class="_btn_info <?php echo esc_attr( $active_tab == 'configuration' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">⚙️</span><?php esc_html_e( 'Configuration', 'abp-rentalforge' ); ?></a>
                             <a href="<?php echo esc_url( add_query_arg( 'rf_tab', 'status' ) ); ?>" class="_btn_info <?php echo esc_attr( $active_tab == 'status' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🛡️</span><?php esc_html_e( 'Status', 'abp-rentalforge' ); ?></a>
