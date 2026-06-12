@@ -43,7 +43,7 @@
 					$cart_item['end_time']          = $end_time;
 					$cart_item['rent_rule']         = $rent_rule;
 					$cart_item['location']          = $location;
-					$cart_item['duration']          = array_key_exists( 'text', $date_info ) ? $date_info['text'] : '';
+					$cart_item['duration']          = $date_info['text'] ?? '';
 					$cart_item['ticket_info']       = $ticket_info;
 					$cart_item['additional_info']   = $additional_infos;
 					$cart_item['pass_info']         = self::get_passenger_info( $post_id );
@@ -356,61 +356,63 @@
 			public function checkout_create_order_line_item( $item, $key, $cart_item ): void {
 				$post_id = $cart_item['post_id'] ?? 0;
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
-					$rent_rule       = $cart_item['rent_rule'] ?? '';
-					$start_time      = $cart_item['start_time'] ?? '';
-					$end_time        = $cart_item['end_time'] ?? '';
-					$book_from       = ( $rent_rule == 'daily' || $rent_rule == 'monthly' ) ? $start_time : ABPRF_Function::booking_buffer( $start_time );
-					$book_to         = ( $rent_rule == 'daily' || $rent_rule == 'monthly' ) ? $end_time : ABPRF_Function::booking_buffer( $end_time, true );
-					$cart_item       = apply_filters( 'abprf_modify_cart_date', $cart_item );
-					$start_time      = $cart_item['start_time'] ?? '';
-					$end_time        = $cart_item['end_time'] ?? '';
-					$duration        = $cart_item['duration'] ?? '';
-					$location        = $cart_item['location'] ?? '';
-					$ticket_infos    = $cart_item['ticket_info'] ?? [];
-					$additional_info = $cart_item['additional_info'] ?? [];
-					$attendee_infos  = $cart_item['pass_info'] ?? [];
+					$rent_rule        = $cart_item['rent_rule'] ?? '';
+					$start_time       = $cart_item['start_time'] ?? '';
+					$end_time         = $cart_item['end_time'] ?? '';
+					$book_from        = ( $rent_rule == 'daily' || $rent_rule == 'monthly' ) ? $start_time : ABPRF_Function::booking_buffer( $start_time );
+					$book_to          = ( $rent_rule == 'daily' || $rent_rule == 'monthly' ) ? $end_time : ABPRF_Function::booking_buffer( $end_time, true );
+					$cart_item        = apply_filters( 'abprf_modify_cart_date', $cart_item );
+					$start_time       = $cart_item['start_time'] ?? '';
+					$end_time         = $cart_item['end_time'] ?? '';
+					$duration         = $cart_item['duration'] ?? '';
+					$location         = $cart_item['location'] ?? '';
+					$ticket_infos     = $cart_item['ticket_info'] ?? [];
+					$additional_infos = $cart_item['additional_info'] ?? [];
+					$attendee_infos   = $cart_item['pass_info'] ?? [];
 					if ( ! empty( $ticket_infos ) && sizeof( $ticket_infos ) > 0 ) {
 						$item->add_meta_data( __( 'Booking Information', 'abp-rentalforge' ), '' );
 						$item->add_meta_data( __( 'Rent Start', 'abp-rentalforge' ), ABPRF_Function::date_format( $start_time ) );
 						$item->add_meta_data( __( 'Rent End', 'abp-rentalforge' ), ABPRF_Function::date_format( $end_time ) );
 						$item->add_meta_data( __( 'Duration', 'abp-rentalforge' ), $duration );
 						if ( ! empty( $location ) ) {
-							$item->add_meta_data( __( 'Location', 'abp-rentalforge' ), ABPRF_Function::location_value( $location ) );
+							$item->add_meta_data( ABPRF_Function::location_label(), ABPRF_Function::location_value( $location ) );
 						}
 						$item->add_meta_data( __( 'Property Information', 'abp-rentalforge' ), '' );
 						$all_brand = '';
 						foreach ( $ticket_infos as $ticket_info ) {
 							$item->add_meta_data( __( 'Property Name', 'abp-rentalforge' ), $ticket_info['name'] );
 							$item->add_meta_data( __( 'Quantity', 'abp-rentalforge' ), $ticket_info['qty'] );
-							$price = array_key_exists( 'price', $ticket_info ) ? $ticket_info['price'] : 0;
+							$price = $ticket_info['price'] ?? 0;
 							$price = $price > 0 ? wc_price( $price ) : __( 'FREE', 'abp-rentalforge' );
 							$item->add_meta_data( __( 'Rent', 'abp-rentalforge' ), $price );
-							$deposit = array_key_exists( 'deposit', $ticket_info ) ? $ticket_info['deposit'] : '';
+							$deposit = $ticket_info['deposit'] ?? '';
 							if ( ! empty( $deposit ) ) {
 								$item->add_meta_data( __( 'Deposit', 'abp-rentalforge' ), wc_price( $deposit ) );
 							}
-							$brand     = array_key_exists( 'brand', $ticket_info ) ? $ticket_info['brand'] : '';
+							$brand     = $ticket_info['brand'] ?? '';
 							$all_brand = ! empty( $all_brand ) ? $all_brand . ',' . $brand : $brand;
 							if ( ! empty( $brand ) ) {
 								$item->add_meta_data( ABPRF_Function::brand_label(), ABPRF_Function::brand_value( $brand ) );
 							}
 						}
-						if ( ! empty( $additional_info ) && sizeof( $additional_info ) > 0 ) {
+						if ( ! empty( $additional_infos ) && sizeof( $additional_infos ) > 0 ) {
 							$item->add_meta_data( __( 'Additional Information', 'abp-rentalforge' ), '' );
-							foreach ( $additional_info as $additional ) {
-								$name       = array_key_exists( 'name', $additional ) && $additional['name'] ? $additional['name'] : '';
-								$qty        = array_key_exists( 'qty', $additional ) ? $additional['qty'] : 1;
-								$price      = array_key_exists( 'price', $additional ) ? $additional['price'] : 0;
+							foreach ( $additional_infos as $additional ) {
+								$name       = $additional['name'] ?? '';
+								$qty        = $additional['qty'] ?? 1;
+								$price      = $additional['price'] ?? 0;
 								$price_text = $price > 0 ? wc_price( $price ) : __( 'FREE', 'abp-rentalforge' );
-								$ex_price   = $price > 0 ? wc_price( $price * $qty ) : __( 'FREE', 'abp-rentalforge' );
-								$item->add_meta_data( $name, '  ( ' . $price_text . ' X ' . $additional['qty'] . ') = ' . $ex_price );
+								if ( ! empty( $name ) && $qty > 0 ) {
+									$ex_price = $price > 0 ? wc_price( $price * $qty ) : __( 'FREE', 'abp-rentalforge' );
+									$item->add_meta_data( $name, '  ( ' . $price_text . ' X ' . $qty . ') = ' . $ex_price );
+								}
 							}
 						}
 						if ( ! empty( $attendee_infos ) && sizeof( $attendee_infos ) > 0 ) {
 							$item->add_meta_data( __( 'Client Information', 'abp-rentalforge' ), '' );
 							foreach ( $attendee_infos as $attendee_info ) {
-								$label = array_key_exists( 'label', $attendee_info ) ? $attendee_info['label'] : '';
-								$value = array_key_exists( 'value', $attendee_info ) ? $attendee_info['value'] : '';
+								$label = $attendee_info['label'] ?? '';
+								$value = $attendee_info['value'] ?? '';
 								if ( ! empty( $label ) && ! empty( $value ) ) {
 									$item->add_meta_data( $label, $value );
 								}
@@ -429,7 +431,7 @@
 							'brand' => $all_brand,
 							'rent_rule' => $rent_rule,
 							'ticket_info' => $ticket_infos,
-							'additional_info' => $additional_info,
+							'additional_info' => $additional_infos,
 							'pass_info' => $attendee_infos,
 							'rent' => $cart_item['rent'] ?? '',
 							'ex_price' => $cart_item['ex_price'] ?? '',
@@ -513,7 +515,7 @@
 												'ex_info' => json_encode( $additional_info ),
 												'pass_info' => json_encode( $item_info['pass_info'] ?? [] ),
 												'delivery_option' => 0,
-												'book_status' =>  in_array( $order_status, $booked_status ) ? 1 : 0 ,
+												'book_status' => in_array( $order_status, $booked_status ) ? 1 : 0,
 												'order_status' => sanitize_text_field( $order_status ),
 												'payment_method' => sanitize_text_field( $payment_method ),
 												'billing_name' => sanitize_text_field( $billing_name ),
@@ -567,7 +569,7 @@
 									$where                = [ 'item_id' => $item_id ];
 									// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 									$wpdb->update( $table_name, $data, $where, [ '%s', '%s', '%s' ], [ '%d' ] );
-									do_action( 'abprf_send_mail', $item_id );
+									$mail_send = apply_filters( 'abprf_send_mail', false, $item_id );
 								}
 							}
 						}

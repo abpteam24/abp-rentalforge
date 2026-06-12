@@ -180,7 +180,7 @@
                                     <td><?php ABPRF_Layout::additional_info( $additional_infos ); ?></td>
                                     <th><?php echo $rent > 0 ? wp_kses_post( wc_price( $rent ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
                                     <th><?php echo $ex_price > 0 ? wp_kses_post( wc_price( $ex_price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
-                                    <th><?php $deposit > 0 ? wp_kses_post( wc_price( $deposit ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
+                                    <th><?php echo $deposit > 0 ? wp_kses_post( wc_price( $deposit ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
                                     <th><?php echo $total_price > 0 ? wp_kses_post( wc_price( $total_price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
                                     <th class="_text_capitalize">
                                         <p class="_abprf <?php echo esc_attr( ABPRF_Layout::status_text( $status ) ); ?>"> <?php echo esc_html( ABPRF_Layout::status_text( $status ) ); ?></p>

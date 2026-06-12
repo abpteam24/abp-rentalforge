@@ -204,7 +204,7 @@
 
 			public static function already_in_cart( $post_id, $bp, $dp, $bp_date, $seat_name ) {
 				$count = 0;
-				if ( is_admin() && str_contains( wp_get_referer(), 'add_order' ) ) {
+				if ( is_admin() && str_contains( wp_get_referer(), 'admin_order' ) ) {
 					return $count;
 				}
 				global $woocommerce;
@@ -331,7 +331,7 @@
 				$start_date_time = $abprf_infos['start_time'] ?? '';
 				$end_date_time   = $abprf_infos['end_time'] ?? '';
 				if ( ! empty( $post_id ) && $post_id > 0 && ! empty( $start_date_time ) && ! empty( $end_date_time ) && ! empty( $rent_rule ) ) {
-					$all_dates     = self::get_dates( $post_id );
+					$all_dates     = self::get_start_dates( $post_id );
 					$start         = gmdate( 'Y-m-d', strtotime( $start_date_time ) );
 					$end           = gmdate( 'Y-m-d', strtotime( $end_date_time ) );
 					$all_end_dates = $rent_rule == 'hourly' ? $all_dates : self::get_end_dates( $post_id, $start, $all_dates );
@@ -375,7 +375,7 @@
 				return false;
 			}
 
-			public static function get_dates( $post_id = '', $filters = [] ): array {
+			public static function get_start_dates( $post_id ): array {
 				$all_dates = [];
 				if ( ! empty( $post_id ) && $post_id > 0 ) {
 					$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
@@ -389,303 +389,86 @@
 						self::update_dates( $post_id );
 						$all_dates = json_decode( get_transient( 'abprf_date_' . $post_id ), true );
 					}
-				} else {
-					$post_ids = ABPRF_Query::get_post_id( $filters );
-					if ( ! empty( $post_ids ) ) {
-						$global = 0;
-						foreach ( $post_ids as $post_id ) {
-							$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
-							if ( $active_global_dates == 'on' ) {
-								if ( $global == 0 ) {
-									$dates = json_decode( get_transient( 'abprf_date_global' ), true );
-									$global ++;
-									if ( empty( $dates ) ) {
-										self::update_dates( 'global' );
-										$dates     = json_decode( get_transient( 'abprf_date_global' ), true );
-										$all_dates = array_merge( $all_dates, $dates );
-									}
-								}
-							} else {
-								$dates = json_decode( get_transient( 'abprf_date_' . $post_id ), true );
-								if ( empty( $dates ) ) {
-									self::update_dates( $post_id );
-									$dates = json_decode( get_transient( 'abprf_date_' . $post_id ), true );
-								}
-								$all_dates = array_merge( $all_dates, $dates );
-							}
-						}
-						if ( ! empty( $all_dates ) ) {
-							$all_dates = array_unique( $all_dates );
-							usort( $all_dates, "ABPRF_Function::sort_date" );
-						}
-					}
 				}
 
 				return $all_dates;
 			}
 
-			public static function get_date_list( $date_infos ): array {
-				$all_dates = [];
-				$date_type = $date_infos['date_type'] ?? 'periodic_date';
-				$now       = current_time( 'Y-m-d' );
-				if ( $date_type == 'specific_date' ) {
-					$specific_dates = $date_infos['specific_dates'] ?? [];
-					if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
-						foreach ( $specific_dates as $specific_date ) {
-							$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
-							if ( ! empty( $date_item ) ) {
-								$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
-								if ( strtotime( $date_item ) >= strtotime( $now ) ) {
-									$all_dates[] = $date_item;
-								}
-							}
-						}
+			public static function get_end_dates( $post_id, $_start_date = '', $all_dates = [] ): array {
+				$all_dates    = empty( $all_dates ) ? self::get_start_dates( $post_id ) : $all_dates;
+				$all_end_date = [];
+				$_start_date  = gmdate( 'Y-m-d', strtotime( $_start_date ) );
+				if ( ! empty( $post_id ) && $post_id > 0 && ! empty( $_start_date ) && in_array( $_start_date, $all_dates ) ) {
+					$mm_time             = ABPRF_Function::get_option( 'abprf_mm_time' );
+					$mm                  = $mm_time[ $post_id ] ?? [];
+					$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
+					if ( $active_global_dates == 'on' ) {
+						$date_infos = self::get_option( 'abprf_dates' );
+					} else {
+						$date_infos = self::get_post_info( $post_id, 'abprf_dates', [] );
 					}
-				} else {
-					$start_date    = $date_infos['periodic_start_date'] ?? '';
-					$start_date    = $start_date ?: $now;
-					$sale_end_date = $date_infos['periodic_end_date'] ?? '';
-					$sale_end_date = $sale_end_date ? gmdate( 'Y-m-d', strtotime( $sale_end_date ) ) : '';
-					$active_days   = $date_infos['advance_date_number'] ?? 28;
-					if ( strtotime( $now ) >= strtotime( $start_date ) ) {
-						$start_date = $now;
+					$min       = ( $mm['min'] ?? null ) ?: 1;
+					$max       = ( $mm['max'] ?? null ) ?: 100;
+					$rent_rule = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
+					if ( $rent_rule == 'monthly' ) {
+						$_date = new DateTime( $_start_date );
+						$_date->modify( 'first day of this month' );
+						if ( $min > 1 ) {
+							$_date->modify( '+' . ( $min - 1 ) . ' months' );
+						}
+						$start_date_obj = clone $_date;
+						$start_date_obj->modify( 'last day of this month' );
+						$_start_date = $start_date_obj->format( 'Y-m-d' );
+						if ( $min == $max ) {
+							$_end_date = $_start_date;
+						} else {
+							if ( $max > $min ) {
+								$months_to_add = $max - $min;
+								$_date->modify( '+' . $months_to_add . ' months' );
+								$_date->modify( 'last day of this month' );
+								$_end_date = $_date->format( 'Y-m-d' );
+							}
+						}
+					} else {
+						$_start_date = $min > 1 ? gmdate( 'Y-m-d', strtotime( $_start_date . ' +' . ( $min - 1 ) . ' day' ) ) : $_start_date;
+						$_end_date   = gmdate( 'Y-m-d', strtotime( $_start_date . ' +' . ( $max - 1 ) . ' day' ) );
 					}
-					$end_date = gmdate( 'Y-m-d', strtotime( $start_date . ' +' . $active_days . ' day' ) );
-					if ( $sale_end_date && strtotime( $sale_end_date ) < strtotime( $end_date ) ) {
-						$end_date = $sale_end_date;
-					}
-					if ( strtotime( $start_date ) < strtotime( $end_date ) ) {
-						$off_dates       = [];
-						$date_rule       = $date_infos['date_rule'] ?? '';
-						$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
-						if ( in_array( 'off_date_range', $date_rule_array ) ) {
-							$off_date_range = $date_infos['off_date_range'] ?? [];
-							if ( is_array( $off_date_range ) && sizeof( $off_date_range ) > 0 ) {
-								foreach ( $off_date_range as $off_date ) {
-									if ( is_array( $off_date ) && array_key_exists( 'from', $off_date ) && $off_date['from'] && array_key_exists( 'to', $off_date ) && $off_date['to'] ) {
-										$from_date      = gmdate( 'Y-m-d', strtotime( $off_date['from'] ) );
-										$to_date        = gmdate( 'Y-m-d', strtotime( $off_date['to'] ) );
-										$off_date_lists = self::date_separate_period( $from_date, $to_date );
-										foreach ( $off_date_lists as $off_date_list ) {
-											$off_dates[] = $off_date_list->format( 'Y-m-d' );
-										}
-									}
-								}
-							}
-						}
-						if ( in_array( 'specific_of_date', $date_rule_array ) ) {
-							$particular_off_dates = $date_infos['specific_off_dates'] ?? [];
-							if ( is_array( $particular_off_dates ) && sizeof( $particular_off_dates ) > 0 ) {
-								foreach ( $particular_off_dates as $particular_off_date ) {
-									$particular_off_date = gmdate( 'Y-m-d', strtotime( $particular_off_date ) );
-									$off_dates[]         = $particular_off_date;
-								}
-							}
-						}
-						$off_dates     = array_unique( $off_dates );
-						$off_day_array = [];
-						if ( in_array( 'weekend', $date_rule_array ) ) {
-							$off_days      = $date_infos['weekend'] ?? '';
-							$off_day_array = $off_days ? explode( ',', $off_days ) : [];
-						}
-						$repeat = $date_infos['periodic_after'] ?? 1;
-						$dates  = self::date_separate_period( $start_date, $end_date, $repeat );
-						foreach ( $dates as $date ) {
-							$date = $date->format( 'Y-m-d' );
-							if ( strtotime( $date ) >= strtotime( $now ) ) {
-								$day = strtolower( gmdate( 'l', strtotime( $date ) ) );
-								if ( ! in_array( $date, $off_dates ) && ! in_array( $day, $off_day_array ) ) {
-									$all_dates[] = $date;
-								}
-							}
-						}
-						//==================//
-						if ( in_array( 'special_on_dates', $date_rule_array ) ) {
-							$special_on_dates = $date_infos['special_on_dates'] ?? [];
-							if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
-								foreach ( $special_on_dates as $special_on_date ) {
-									$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
+					if ( ! empty( $_end_date ) ) {
+						$date_type = ( $date_infos['date_type'] ?? null ) ?: 'periodic_date';
+						if ( $date_type == 'specific_date' ) {
+							$specific_dates = $date_infos['specific_dates'] ?? [];
+							if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
+								foreach ( $specific_dates as $specific_date ) {
+									$date_item = $specific_date['date'] ?? '';
 									if ( ! empty( $date_item ) ) {
 										$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
-										if ( strtotime( $date_item ) >= strtotime( $now ) ) {
-											$all_dates[] = $date_item;
+										if ( strtotime( $date_item ) >= strtotime( $_start_date ) && strtotime( $date_item ) <= strtotime( $_end_date ) ) {
+											$all_end_date[] = $date_item;
 										}
 									}
 								}
 							}
-						}
-					}
-				}
-
-				return $all_dates;
-			}
-
-			public static function get_end_dates( $post_id = '', $start_date = '', $all_dates = [], $filters = [] ): array {
-				$all_dates    = empty( $all_dates ) ? self::get_dates( $post_id, $filters ) : $all_dates;
-				$all_end_date = [];
-				$start_date   = gmdate( 'Y-m-d', strtotime( $start_date ) );
-				if ( in_array( $start_date, $all_dates ) ) {
-					$mm_time = ABPRF_Function::get_option( 'abprf_mm_time' );
-					if ( ! empty( $post_id ) && $post_id > 0 ) {
-						$mm                  = array_key_exists( $post_id, $mm_time ) ? $mm_time[ $post_id ] : [];
-						$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
-						if ( $active_global_dates == 'on' ) {
-							$date_infos = self::get_option( 'abprf_dates' );
 						} else {
-							$date_infos = self::get_post_info( $post_id, 'abprf_dates', [] );
-						}
-						$all_end_date = self::get_end_date_list( $date_infos, $start_date, $mm, $post_id );
-					} else {
-						$post_ids = ABPRF_Query::get_post_id( $filters );
-						if ( ! empty( $post_ids ) ) {
-							$global = 0;
-							foreach ( $post_ids as $post_id ) {
-								$mm                  = array_key_exists( $post_id, $mm_time ) ? $mm_time[ $post_id ] : [];
-								$active_global_dates = self::get_post_info( $post_id, 'active_global_dates', 'on' );
-								if ( $active_global_dates == 'on' ) {
-									if ( $global == 0 ) {
-										$global ++;
-										$date_infos   = self::get_option( 'abprf_dates' );
-										$_end_date    = self::get_end_date_list( $date_infos, $start_date, $mm, $post_id );
-										$all_end_date = array_merge( $all_end_date, $_end_date );
-									}
-								} else {
-									$date_infos   = self::get_post_info( $post_id, 'abprf_dates', [] );
-									$_end_date    = self::get_end_date_list( $date_infos, $start_date, $mm, $post_id );
-									$all_end_date = array_merge( $all_end_date, $_end_date );
-								}
+							$start_date = $date_infos['periodic_start_date'] ?? '';
+							$start_date = $start_date ?: $_start_date;
+							$end_date   = $date_infos['periodic_end_date'] ?? '';
+							$end_date   = ! empty( $end_date ) ? gmdate( 'Y-m-d', strtotime( $end_date ) ) : $_end_date;
+							if ( strtotime( $_start_date ) >= strtotime( $start_date ) ) {
+								$start_date = $_start_date;
 							}
+							if ( strtotime( $end_date ) >= strtotime( $_end_date ) ) {
+								$end_date = $_end_date;
+							}
+							$all_end_date = self::repeated_date_list_modify( $start_date, $end_date, $date_infos );
 						}
 					}
-				}
-				if ( ! empty( $all_end_date ) ) {
-					$all_end_date = array_unique( $all_end_date );
-					usort( $all_end_date, "ABPRF_Function::sort_date" );
+					if ( ! empty( $all_end_date ) ) {
+						$all_end_date = array_unique( $all_end_date );
+						usort( $all_end_date, "ABPRF_Function::sort_date" );
+					}
 				}
 
 				return $all_end_date;
-			}
-
-			public static function get_end_date_list( $date_infos, $_start_date, $mm, $post_id ): array {
-				$min       = array_key_exists( 'min', $mm ) && $mm['min'] ? $mm['min'] : 1;
-				$max       = array_key_exists( 'max', $mm ) && $mm['max'] ? $mm['max'] : 100;
-				$rent_rule = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
-				if ( $rent_rule == 'monthly' ) {
-					$_date = new DateTime( $_start_date );
-					$_date->modify( 'first day of this month' );
-					if ( $min > 1 ) {
-						$_date->modify( '+' . ( $min - 1 ) . ' months' );
-					}
-					$start_date_obj = clone $_date;
-					$start_date_obj->modify( 'last day of this month' );
-					$_start_date = $start_date_obj->format( 'Y-m-d' );
-					if ( $min == $max ) {
-						$_end_date = $_start_date;
-					} else {
-						if ( $max > $min ) {
-							$months_to_add = $max - $min;
-							$_date->modify( '+' . $months_to_add . ' months' );
-							$_date->modify( 'last day of this month' );
-							$_end_date = $_date->format( 'Y-m-d' );
-						}
-					}
-				} else {
-					$_start_date = $min > 1 ? gmdate( 'Y-m-d', strtotime( $_start_date . ' +' . ( $min - 1 ) . ' day' ) ) : $_start_date;
-					$_end_date   = gmdate( 'Y-m-d', strtotime( $_start_date . ' +' . ( $max - 1 ) . ' day' ) );
-				}
-				$all_dates = [];
-				if ( ! empty( $_end_date ) ) {
-					$date_type = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
-					$now       = current_time( 'Y-m-d' );
-					if ( $date_type == 'specific_date' ) {
-						$specific_dates = array_key_exists( 'specific_dates', $date_infos ) ? $date_infos['specific_dates'] : [];
-						if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
-							foreach ( $specific_dates as $specific_date ) {
-								$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
-								if ( ! empty( $date_item ) ) {
-									$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
-									if ( strtotime( $date_item ) >= strtotime( $_start_date ) && strtotime( $date_item ) <= strtotime( $_end_date ) ) {
-										$all_dates[] = $date_item;
-									}
-								}
-							}
-						}
-					} else {
-						$start_date = array_key_exists( 'periodic_start_date', $date_infos ) ? $date_infos['periodic_start_date'] : '';
-						$start_date = $start_date ?: $_start_date;
-						$end_date   = array_key_exists( 'periodic_end_date', $date_infos ) ? $date_infos['periodic_end_date'] : '';
-						$end_date   = ! empty( $end_date ) ? gmdate( 'Y-m-d', strtotime( $end_date ) ) : $_end_date;
-						if ( strtotime( $_start_date ) >= strtotime( $start_date ) ) {
-							$start_date = $_start_date;
-						}
-						if ( strtotime( $end_date ) >= strtotime( $_end_date ) ) {
-							$end_date = $_end_date;
-						}
-						if ( strtotime( $start_date ) < strtotime( $end_date ) ) {
-							$off_dates       = [];
-							$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
-							$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
-							if ( in_array( 'off_date_range', $date_rule_array ) ) {
-								$off_date_range = array_key_exists( 'off_date_range', $date_infos ) ? $date_infos['off_date_range'] : [];
-								if ( is_array( $off_date_range ) && sizeof( $off_date_range ) > 0 ) {
-									foreach ( $off_date_range as $off_date ) {
-										if ( is_array( $off_date ) && array_key_exists( 'from', $off_date ) && $off_date['from'] && array_key_exists( 'to', $off_date ) && $off_date['to'] ) {
-											$from_date      = gmdate( 'Y-m-d', strtotime( $off_date['from'] ) );
-											$to_date        = gmdate( 'Y-m-d', strtotime( $off_date['to'] ) );
-											$off_date_lists = self::date_separate_period( $from_date, $to_date );
-											foreach ( $off_date_lists as $off_date_list ) {
-												$off_dates[] = $off_date_list->format( 'Y-m-d' );
-											}
-										}
-									}
-								}
-							}
-							if ( in_array( 'specific_of_date', $date_rule_array ) ) {
-								$particular_off_dates = array_key_exists( 'specific_off_dates', $date_infos ) ? $date_infos['specific_off_dates'] : [];
-								if ( is_array( $particular_off_dates ) && sizeof( $particular_off_dates ) > 0 ) {
-									foreach ( $particular_off_dates as $particular_off_date ) {
-										$particular_off_date = gmdate( 'Y-m-d', strtotime( $particular_off_date ) );
-										$off_dates[]         = $particular_off_date;
-									}
-								}
-							}
-							$off_dates     = array_unique( $off_dates );
-							$off_day_array = [];
-							if ( in_array( 'weekend', $date_rule_array ) ) {
-								$off_days      = array_key_exists( 'weekend', $date_infos ) ? $date_infos['weekend'] : '';
-								$off_day_array = $off_days ? explode( ',', $off_days ) : [];
-							}
-							$repeat = array_key_exists( 'periodic_after', $date_infos ) ? $date_infos['periodic_after'] : 1;
-							$dates  = self::date_separate_period( $start_date, $end_date, $repeat );
-							foreach ( $dates as $date ) {
-								$date = $date->format( 'Y-m-d' );
-								if ( strtotime( $date ) >= strtotime( $now ) ) {
-									$day = strtolower( gmdate( 'l', strtotime( $date ) ) );
-									if ( ! in_array( $date, $off_dates ) && ! in_array( $day, $off_day_array ) ) {
-										$all_dates[] = $date;
-									}
-								}
-							}
-							//==================//
-							if ( in_array( 'special_on_dates', $date_rule_array ) ) {
-								$special_on_dates = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];
-								if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
-									foreach ( $special_on_dates as $special_on_date ) {
-										$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
-										if ( ! empty( $date_item ) ) {
-											$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
-											if ( strtotime( $date_item ) >= strtotime( $now ) ) {
-												$all_dates[] = $date_item;
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-
-				return $all_dates;
 			}
 
 			public static function get_start_month( $post_id, $dateList = [] ): array {
@@ -735,19 +518,18 @@
 				return $month_list;
 			}
 
-			public static function get_time( $post_id = '', $type = 'time' ): array {
+			public static function get_time( $post_id, $type = 'time' ): array {
 				$option_name = $type == 'js' ? 'abprf_time_info_js' : 'abprf_time_info';
 				$time_info   = ABPRF_Function::get_option( $option_name );
+				$info        = [];
 				if ( ! empty( $post_id ) ) {
 					$info = array_key_exists( $post_id, $time_info ) ? $time_info[ $post_id ] : ( array_key_exists( 'global', $time_info ) ? $time_info['global'] : [] );
-				} else {
-					$info = [];
 				}
 
 				return $info;
 			}
 
-			public static function update_dates( $post_id = '' ): void {
+			public static function update_dates( $post_id ): void {
 				if ( ! empty( $post_id ) ) {
 					if ( $post_id == 'global' ) {
 						$date_infos = self::get_option( 'abprf_dates' );
@@ -760,11 +542,109 @@
 							$date_infos = self::get_post_info( $post_id, 'abprf_dates', [] );
 						}
 					}
-					$all_dates = self::get_date_list( $date_infos );
-					$all_dates = array_unique( $all_dates );
+					$all_dates = [];
+					$date_type = $date_infos['date_type'] ?? 'periodic_date';
+					$now       = current_time( 'Y-m-d' );
+					if ( $date_type == 'specific_date' ) {
+						$specific_dates = $date_infos['specific_dates'] ?? [];
+						if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
+							foreach ( $specific_dates as $specific_date ) {
+								$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
+								if ( ! empty( $date_item ) ) {
+									$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
+									if ( strtotime( $date_item ) >= strtotime( $now ) ) {
+										$all_dates[] = $date_item;
+									}
+								}
+							}
+						}
+					} else {
+						$start_date    = $date_infos['periodic_start_date'] ?? '';
+						$start_date    = $start_date ?: $now;
+						$sale_end_date = $date_infos['periodic_end_date'] ?? '';
+						$sale_end_date = $sale_end_date ? gmdate( 'Y-m-d', strtotime( $sale_end_date ) ) : '';
+						$active_days   = $date_infos['advance_date_number'] ?? 28;
+						if ( strtotime( $now ) >= strtotime( $start_date ) ) {
+							$start_date = $now;
+						}
+						$end_date = gmdate( 'Y-m-d', strtotime( $start_date . ' +' . $active_days . ' day' ) );
+						if ( $sale_end_date && strtotime( $sale_end_date ) < strtotime( $end_date ) ) {
+							$end_date = $sale_end_date;
+						}
+						$all_dates = self::repeated_date_list_modify( $start_date, $end_date, $date_infos );
+					}
+					$all_dates = sizeof( $all_dates ) > 1 ? array_unique( $all_dates ) : $all_dates;
 					usort( $all_dates, "ABPRF_Function::sort_date" );
 					set_transient( 'abprf_date_' . $post_id, json_encode( $all_dates ), HOUR_IN_SECONDS );
 				}
+			}
+
+			public static function repeated_date_list_modify( $start_date, $end_date, $date_infos ): array {
+				$all_dates = [];
+				if ( strtotime( $start_date ) <= strtotime( $end_date ) ) {
+					$now             = current_time( 'Y-m-d' );
+					$off_dates       = [];
+					$date_rule       = $date_infos['date_rule'] ?? '';
+					$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
+					if ( in_array( 'off_date_range', $date_rule_array ) ) {
+						$off_date_range = $date_infos['off_date_range'] ?? [];
+						if ( is_array( $off_date_range ) && sizeof( $off_date_range ) > 0 ) {
+							foreach ( $off_date_range as $off_date ) {
+								if ( is_array( $off_date ) && array_key_exists( 'from', $off_date ) && $off_date['from'] && array_key_exists( 'to', $off_date ) && $off_date['to'] ) {
+									$from_date      = gmdate( 'Y-m-d', strtotime( $off_date['from'] ) );
+									$to_date        = gmdate( 'Y-m-d', strtotime( $off_date['to'] ) );
+									$off_date_lists = self::date_separate_period( $from_date, $to_date );
+									foreach ( $off_date_lists as $off_date_list ) {
+										$off_dates[] = $off_date_list->format( 'Y-m-d' );
+									}
+								}
+							}
+						}
+					}
+					if ( in_array( 'specific_of_date', $date_rule_array ) ) {
+						$particular_off_dates = $date_infos['specific_off_dates'] ?? [];
+						if ( is_array( $particular_off_dates ) && sizeof( $particular_off_dates ) > 0 ) {
+							foreach ( $particular_off_dates as $particular_off_date ) {
+								$particular_off_date = gmdate( 'Y-m-d', strtotime( $particular_off_date ) );
+								$off_dates[]         = $particular_off_date;
+							}
+						}
+					}
+					$off_dates     = array_unique( $off_dates );
+					$off_day_array = [];
+					if ( in_array( 'weekend', $date_rule_array ) ) {
+						$off_days      = $date_infos['weekend'] ?? '';
+						$off_day_array = $off_days ? explode( ',', $off_days ) : [];
+					}
+					$repeat = $date_infos['periodic_after'] ?? 1;
+					$dates  = self::date_separate_period( $start_date, $end_date, $repeat );
+					foreach ( $dates as $date ) {
+						$date = $date->format( 'Y-m-d' );
+						if ( strtotime( $date ) >= strtotime( $now ) ) {
+							$day = strtolower( gmdate( 'l', strtotime( $date ) ) );
+							if ( ! in_array( $date, $off_dates ) && ! in_array( $day, $off_day_array ) ) {
+								$all_dates[] = $date;
+							}
+						}
+					}
+					//==================//
+					if ( in_array( 'special_on_dates', $date_rule_array ) ) {
+						$special_on_dates = $date_infos['special_on_dates'] ?? [];
+						if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
+							foreach ( $special_on_dates as $special_on_date ) {
+								$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
+								if ( ! empty( $date_item ) ) {
+									$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
+									if ( strtotime( $date_item ) >= strtotime( $now ) ) {
+										$all_dates[] = $date_item;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				return $all_dates;
 			}
 
 			public static function update_time_slot( $post_id = '' ): void {
@@ -1047,32 +927,31 @@
 			}
 
 			public static function time_duration( $abprf_infos = [], $price_info = [] ) {
-				$post_id   = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : 0;
-				$rent_rule = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : '';
-				$date_info = array_key_exists( 'date_info', $abprf_infos ) ? $abprf_infos['date_info'] : [];
-				$duration  = array_key_exists( 'duration', $date_info ) ? $date_info['duration'] : 0;
-				$min       = array_key_exists( 'min', $price_info ) ? $price_info['min'] : 1;
-				$max       = array_key_exists( 'max', $price_info ) ? $price_info['max'] : '';
-				$dif       = 0;
-				if ( $rent_rule == 'hourly' ) {
-					$dif = $duration / 3600;
-					$dif = ceil( $dif );
-					$dif = max( 1, $dif );
-				} elseif ( $rent_rule == 'daily' ) {
-					$dif = array_key_exists( 'day', $date_info ) ? $date_info['day'] : 0;
-				} elseif ( $rent_rule == 'multi_day' ) {
-					$dif = $duration / 86400;
-				} elseif ( $rent_rule == 'monthly' ) {
-					$dif = array_key_exists( 'month', $date_info ) ? $date_info['month'] : 0;
-				} elseif ( $rent_rule == 'multi_month' ) {
-					$day   = array_key_exists( 'day', $date_info ) ? $date_info['day'] : 0;
-					$month = array_key_exists( 'month', $date_info ) ? $date_info['month'] : 0;
-					$dif   = $month . '.' . $day;
-				}
-				if ( ! empty( $max ) ) {
-					$dif_exit = $min <= $dif && $max >= $dif ? 1 : 0;
-				} else {
-					$dif_exit = $min <= $dif ? 1 : 0;
+				$rent_rule = $abprf_infos['rent_rule'] ?? '';
+				$date_info = $abprf_infos['date_info'] ?? [];
+				$dif       = $dif_exit = 0;
+				if ( ! empty( $rent_rule ) && ! empty( $date_info ) ) {
+					$duration = $date_info['duration'] ?? 0;
+					$min      = $price_info['min'] ?? 1;
+					$max      = $price_info['max'] ?? '';
+					if ( $rent_rule == 'hourly' ) {
+						$dif = $duration / 3600;
+						$dif = ceil( $dif );
+						$dif = max( 1, $dif );
+					} elseif ( $rent_rule == 'daily' ) {
+						$dif = $date_info['day'] ?? 0;
+					} elseif ( $rent_rule == 'multi_day' ) {
+						$dif = $duration / 86400;
+					} elseif ( $rent_rule == 'monthly' ) {
+						$dif = $date_info['month'] ?? 0;
+					} elseif ( $rent_rule == 'multi_month' ) {
+						$dif = ( $date_info['month'] ?? 0 ) . '.' . ( $date_info['day'] ?? 0 );
+					}
+					if ( ! empty( $max ) ) {
+						$dif_exit = $min <= $dif && $max >= $dif ? 1 : 0;
+					} else {
+						$dif_exit = $min <= $dif ? 1 : 0;
+					}
 				}
 
 				return $dif_exit > 0 ? $dif : false;
@@ -1081,11 +960,11 @@
 			public static function booking_buffer( $time, $end = '' ): string {
 				$date_infos = ABPRF_Dates;
 				if ( ! empty( $end ) ) {
-					$buffer_time = array_key_exists( 'sale_close_after', $date_infos ) ? $date_infos['sale_close_after'] : 0;
+					$buffer_time = $date_infos['sale_close_after'] ?? 0;
 					$buffer_time = $buffer_time * 60;
 					$time        = gmdate( 'Y-m-d H:i', strtotime( $time ) + $buffer_time );
 				} else {
-					$buffer_time = array_key_exists( 'sale_close_before', $date_infos ) ? $date_infos['sale_close_before'] : 0;
+					$buffer_time = $date_infos['sale_close_before'] ?? 0;
 					$buffer_time = $buffer_time * 60;
 					$time        = gmdate( 'Y-m-d H:i', strtotime( $time ) - $buffer_time );
 				}

@@ -120,6 +120,7 @@ If you find RentalForge useful, please leave a ⭐⭐⭐⭐⭐ review on WordPre
 
 Use these shortcodes anywhere on your site:
 
+[abprf-booking]      — Display all post listings and booking
 [abprf-post]      — Display all post listings
 [abprf-property]  — Display all property listings
 [abprf-gallery]  — Display all property/post image

@@ -717,30 +717,17 @@ function abprf_property_filter_arg($this) {
         });
     });
     //==========page create=================//
-    $(document).on('click', 'div.abprf_admin button.create_post_list_page', function () {
+    $(document).on('click', 'div.abprf_admin button.create_page', function () {
+        let type=$(this).attr('data-page_type');
         let parent = $(this).closest('.abprf_status');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_create_post_list_page", 'nonce': abprf_admin_data.nonce
+                "action": "abprf_create_page", 'nonce': abprf_admin_data.nonce,'type':type
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.create_post_page);
             }, success: function (response) {
-                abprf_toast_msg(response.data.msg, 'success');
-                window.location.reload();
-            }
-        });
-    });
-    $(document).on('click', 'div.abprf_admin button.create_property_list_page', function () {
-        let parent = $(this).closest('.abprf_status');
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_create_property_list_page", 'nonce': abprf_admin_data.nonce
-            }, beforeSend: function () {
-                abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.create_property_page);
-            }, success: function (response) {
-                abprf_toast_msg(response.data.msg, 'success');
+                abprf_toast_msg(response.data.msg, response.data.info_type);
                 window.location.reload();
             }
         });

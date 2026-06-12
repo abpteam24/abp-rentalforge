@@ -55,8 +55,7 @@
 						'wc_installing' => __( 'Woocommerce  Installing.........!', 'abp-rentalforge' ),
 						'wc_installed_success' => __( 'Woocommerce Downloaded And Installed successfully ..... !! ', 'abp-rentalforge' ),
 						'wc_installed' => __( 'Woocommerce Installed successfully.... !  ', 'abp-rentalforge' ),
-						'create_post_page' => $label . ' ' . __( 'Post Page Creating ........!', 'abp-rentalforge' ),
-						'create_property_page' => $label . ' ' . __( 'Property Page Creating ........!', 'abp-rentalforge' ),
+						'create_post_page' => $label . ' ' . __( 'Page Creating ........!', 'abp-rentalforge' ),
 					],
 				] );
 				wp_enqueue_style( 'abprf_admin', ABPRF_URL . '/assets/css/abprf_admin.css', array(), time() );
@@ -169,11 +168,13 @@
 					'msg' => [
 						'end_date_loading' => __( 'End Date  Loading.............', 'abp-rentalforge' ),
 						'property_loading' => __( 'Property List Loading.............', 'abp-rentalforge' ),
+						'select_post' => __( 'Please Select', 'abp-rentalforge' ).' '.ABPRF_Function::label(),
 						'select_rent_start_date' => __( 'Please Select rent Start Date', 'abp-rentalforge' ),
 						'select_rent_end_date' => __( 'Please Select rent End Date', 'abp-rentalforge' ),
 						'select_rent_start_time' => __( 'Please Select rent Start Time', 'abp-rentalforge' ),
 						'select_rent_end_time' => __( 'Please Select rent End Time', 'abp-rentalforge' ),
 						'free' => __( 'FREE', 'abp-rentalforge' ),
+						'loading' => __( 'Loading..............!', 'abp-rentalforge' ),
 					],
 				);
 				wp_localize_script( 'abprf_infos', 'abprf_infos', $rental_data );

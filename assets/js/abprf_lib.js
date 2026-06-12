@@ -9,6 +9,20 @@
             abprf_spinner($(this));
         });
         abprf_load_image();
+        if ($('div.abprf_area .toast_msg_area').length === 0) {
+            $('div.abprf_area').append('<div class="toast_msg_area"></div>');
+        }
+        let toast_notices = $('body div.abprf_area ').find('.toast_notice');
+        if (toast_notices.length > 0) {
+            toast_notices.each(function (index) {
+                let current_notice = $(this);
+                let type = current_notice.attr('data-type') || 'info';
+                let msg = current_notice.html();
+                setTimeout(function() {
+                    abprf_toast_msg(msg, type);
+                }, index * 600);
+            });
+        }
     });
     //======================================================================Outer Close==========//
     $(document).click(function (e) {
@@ -470,6 +484,7 @@ function abprf_popup_close(target_id = '') {
                                 if (exit < 1) {
                                     parent.find('input[type="text"]').val('');
                                     parent.find('input[type="hidden"]').val('');
+                                    parent.find('input[type="hidden"]').trigger('rf_trigger');
                                 }
                             });
                         }
@@ -694,7 +709,7 @@ function abprf_page_scroll(target) {
 function abprf_toast_msg(msg, type = 'info') {
     const icons = {success: '✅', error: '❌', warn: '⚠️', info: 'ℹ️'};
     const el = jQuery(`<div class="toast_msg_box ${type}"><span>${icons[type] || 'ℹ️'}</span><span>${msg}</span></div>`);
-    jQuery('div.abprf_area .toast_msg_area').append(el);
+    jQuery('div.abprf_area .toast_msg_area').append(el).hide().fadeIn(200);
     setTimeout(() => el.fadeOut(300, () => el.remove()), 3400);
 }
 function abprf_wc_price_format(price) {

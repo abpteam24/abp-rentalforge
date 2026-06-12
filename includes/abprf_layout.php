@@ -58,7 +58,6 @@
 			public static function load_admin_globally(): void {
 				ABPRF_Layout::popup_empty( '#abprf_global_popup' );
 				ABPRF_Layout::icon_popup(); ?>
-                <div class="toast_msg_area"></div>
 				<?php
 			}
 
@@ -150,7 +149,7 @@
 
 			public static function popup_empty( $target_popup_id, $class = '' ): void {
 				?>
-                <div class="abprf_popup abprf_area <?php echo esc_attr( $class ); ?>" data-popup="<?php echo esc_attr( $target_popup_id ); ?>">
+                <div class="abprf_popup <?php echo esc_attr( $class ); ?>" data-popup="<?php echo esc_attr( $target_popup_id ); ?>">
                     <div class="popup_area">
                         <span class="popup_close"><i class="fas fa-times"></i></span>
                         <div class="popup_body"></div>
@@ -537,12 +536,14 @@
 				$now = current_time( 'Y-m-d H:i:s' );
 				if ( ! empty( $book_status ) && $book_status < 5 && $book_status > 0 ) {
 					$_book_status = 0;
-					if ( strtotime( $now ) < strtotime( $start_time ) && strtotime( $now ) > strtotime( $end_time ) ) {
+					if ( strtotime( $now ) < strtotime( $start_time )) {
+						$_book_status = $book_status;
+					} elseif ( strtotime( $now ) > strtotime( $start_time ) && strtotime( $now ) < strtotime( $end_time ) ) {
 						$_book_status = 2;
-					} elseif ( strtotime( $now ) < strtotime( $start_time ) && strtotime( $now ) < strtotime( $end_time ) ) {
+					}elseif ( strtotime( $now ) > strtotime( $start_time ) && strtotime( $now )> strtotime( $end_time ) ) {
 						$_book_status = 3;
 					}
-					if ( $_book_status > $book_status ) {
+					if ( $_book_status > $book_status) {
 						$book_status = $_book_status;
 						global $wpdb;
 						$table_name    = $wpdb->prefix . 'abprf_orders';
@@ -868,7 +869,7 @@
 				}
 			}
 
-			public static function rent_start_date( $all_dates, $date = '' ): void {
+			public static function rent_start_date( $all_dates, $date = '', $post_id = '' ): void {
 				//echo '<pre>';print_r($all_dates);					echo '</pre>';
 				if ( sizeof( $all_dates ) > 0 ) {
 					$date_format = ABPRF_Function::date_format_php();
@@ -879,7 +880,7 @@
 					$visible_date = ! empty( $date ) ? date_i18n( $date_format, strtotime( $date ) ) : '';
 					?>
                     <label>
-                        <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Pickup Date', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                        <span>📆<i class="_mar_r_xxs"></i><?php esc_html_e( 'Pickup Date', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
                         <input type="hidden" name="rent_start_date" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
                         <input id="start_date" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="_form_control" placeholder="<?php echo esc_attr( $now ); ?>" data-alert="<?php esc_attr_e( 'Please Select Pickup Date', 'abp-rentalforge' ); ?>" readonly required/>
                         <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abp-rentalforge' ); ?>"></span>
@@ -887,21 +888,35 @@
 					<?php
 					do_action( 'abprf_load_date_picker', '#start_date', $all_dates );
 					//}
+				} else {
+					if ( ! empty( $post_id ) ) {
+						ABPRF_Layout::layout_warning_info_xs( 'not_date' );
+					} else {
+						$date_format = ABPRF_Function::date_format_php();
+						$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+						?>
+                        <label>
+                            <span>📆<i class="_mar_r_xxs"></i><?php esc_html_e( 'Pickup Date', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                            <input type="hidden" name="rent_start_date" value="" required/>
+                            <input type="text" id="start_date" value="" class="_form_control abp_datepicker" placeholder="<?php echo esc_attr( $now ); ?>" readonly/>
+                            <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abp-rentalforge' ); ?>"></span>
+                        </label>
+						<?php
+					}
 				}
 			}
 
-			public static function rent_end_date( $all_dates, $end_date = '' ): void {
-				//echo '<pre>';print_r(self::get_end_dates( $post_id , $start_date , $all_dates , $filters));					echo '</pre>';
+			public static function rent_end_date( $all_dates, $post_id = '' ): void {
 				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				if ( sizeof( $all_dates ) > 0 ) {
-					$date = $end_date ?: current( $all_dates );
+					$date = current( $all_dates );
 					//if ( sizeof( $all_dates ) > 10 ) {
 					$hidden_date  = ! empty( $date ) ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
 					$visible_date = ! empty( $date ) ? date_i18n( $date_format, strtotime( $date ) ) : '';
 					?>
                     <label>
-                        <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Drop-Off Date', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                        <span>🗓️<i class=" _mar_r_xxs"></i><?php esc_html_e( 'Drop-Off Date', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
                         <input type="hidden" name="rent_end_date" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
                         <input id="end_date" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="_form_control" placeholder="<?php echo esc_attr( $now ); ?>" data-alert="<?php esc_attr_e( 'Please Select Drop-Off  Date', 'abp-rentalforge' ); ?>" readonly required/>
                         <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abp-rentalforge' ); ?>"></span>
@@ -910,7 +925,20 @@
 					do_action( 'abprf_load_date_picker', '#end_date', $all_dates );
 					//}
 				} else {
-					ABPRF_Layout::layout_warning_info_xs( 'not_date' );
+					if ( ! empty( $post_id ) ) {
+						ABPRF_Layout::layout_warning_info_xs( 'not_date' );
+					} else {
+						$date_format = ABPRF_Function::date_format_php();
+						$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+						?>
+                        <label>
+                            <span>🗓️<i class=" _mar_r_xxs"></i><?php esc_html_e( 'Drop-Off Date', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                            <input type="hidden" name="rent_end_date" value="" required/>
+                            <input type="text" id="end_date" value="" class="_form_control abp_datepicker" placeholder="<?php echo esc_attr( $now ); ?>" readonly/>
+                            <span class="fas fa-times date_close_icon" title="<?php esc_attr_e( 'Clear Date', 'abp-rentalforge' ); ?>"></span>
+                        </label>
+						<?php
+					}
 				}
 			}
 
@@ -1245,7 +1273,7 @@
 				?>
                 <div class="_input_item abp_dropdown">
                     <label>
-                        <span><?php ABPRF_Layout::image_icon( $brand_icon, '_mar_r_xs' ); ?><?php echo esc_html( $label ); ?></span>
+                        <span><?php ABPRF_Layout::image_icon( $brand_icon, '_mar_r_xxs' ); ?><?php echo esc_html( $label ); ?></span>
                         <input type="hidden" name="post_id" value="<?php echo esc_attr( $value ); ?>"/>
                         <input type="text" class="_form_control_w_full" name="" placeholder="<?php echo esc_attr( $label ); ?>" value="<?php echo esc_attr( get_the_title( $post_id ) ); ?>"/>
                     </label>

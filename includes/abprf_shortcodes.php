@@ -5,15 +5,54 @@
 	if ( ! class_exists( 'ABPRF_Shortcodes' ) ) {
 		class ABPRF_Shortcodes {
 			public function __construct() {
+				add_shortcode( 'abprf-booking', array( $this, 'booking' ) );
 				add_shortcode( 'abprf-post', array( $this, 'post_list' ) );
 				add_shortcode( 'abprf-property', array( $this, 'property_list' ) );
 				add_shortcode( 'abprf-gallery', array( $this, 'gallery' ) );
 			}
 
+			public function booking( $attribute ): bool|string {
+				$defaults = $this->default_attribute();
+				$params   = shortcode_atts( $defaults, $attribute );
+				$post_id  = $params['post_id'] ?? '';
+				ob_start();
+				if ( ! empty( $post_id ) ) {
+					do_action( 'abprf_load_details_template', $post_id );
+				} else {
+					$params['all_post']     = ABPRF_Query::get_post_id( $params );
+					$params['global_order'] = 'yes';
+					$style                  = array_key_exists( 'style', $params ) && $params['style'] ? $params['style'] : 'grid';
+					$file                   = ABPRF_Function::template_path( 'list/' . $style . '.php' );
+					?>
+                    <div class="abprf_area">
+                        <div class="abprf_container">
+                            <div class="global_form"><?php do_action( 'abprf_search_form', $params ); ?></div>
+                            <div class="abprf_global_registration rf_pagination">
+								<?php
+									do_action( 'abprf_post_filter', $params );
+									if ( is_file( $file ) ) {
+										include_once $file;
+										do_action( 'abprf_' . $style . '_template', $params );
+									} else {
+										include_once ABPRF_Function::template_path( 'list/default.php' );
+										do_action( 'abprf_default_template', $params );
+									} ?>
+                                <div class="rf_no_results _d_none">
+									<?php ABPRF_Layout::layout_warning_info( 'not_match' ); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<?php
+				}
+
+				return ob_get_clean();
+			}
+
 			public function post_list( $attribute ): bool|string {
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
-				$post_id  = array_key_exists( 'post_id', $params ) && $params['post_id'] ? $params['post_id'] : '';
+				$post_id  = $params['post_id'] ?? '';
 				//echo '<pre>';print_r($params);echo '</pre>';
 				ob_start();
 				if ( ! empty( $post_id ) ) {
@@ -48,7 +87,7 @@
 			public function property_list( $attribute ): bool|string {
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
-				$post_id  = array_key_exists( 'post_id', $params ) && $params['post_id'] ? $params['post_id'] : '';
+				$post_id  = $params['post_id'] ?? '';
 				ob_start();
 				if ( ! empty( $post_id ) ) {
 					do_action( 'abprf_load_details_template', $post_id );

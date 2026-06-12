@@ -6,8 +6,8 @@
 		//echo '<pre>';print_r($params);echo '</pre>';
 		$post_ids = array_key_exists( 'all_post', $params ) && $params['all_post'] ? $params['all_post'] : [];
 		if ( ! empty( $post_ids ) && sizeof( $post_ids ) > 0 ) {
-			$add_order         = $params['add_order'] ?? '';
-			$style             = array_key_exists( 'style', $params ) && $params['style'] ? $params['style'] : 'default';
+			$global_order = $params['global_order'] ?? '';
+			$style             = array_key_exists( 'style', $params ) && $params['style'] ? $params['style'] : 'grid';
 			$column            = array_key_exists( 'column', $params ) ? $params['column'] : 3;
 			$class             = $style == 'grid' && $column > 1 ? 'abprf_grid item_' . $column : 'abprf_lists item_' . $column;
 			$show_post         = array_key_exists( 'show', $params ) && $params['show'] ? $params['show'] : $column * 3;
@@ -53,8 +53,8 @@
                                                 ?>
                                             </span>
 									<?php } ?>
-									<?php if ( ! empty( $add_order ) ) { ?>
-                                        <button type="button" class="_btn_theme_xs select_post">
+									<?php if ( ! empty( $global_order ) ) { ?>
+                                        <button type="button" class="_btn_theme_xs select_post"  data-post_id="<?php echo esc_attr($post_id); ?>">
 											<?php esc_html_e( 'Book Now', 'abp-rentalforge' ); ?>
                                         </button>
 									<?php } else { ?>

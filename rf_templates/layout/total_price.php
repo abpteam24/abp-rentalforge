@@ -19,7 +19,7 @@
                         <div class="_divider_xs"></div>
                         <h5 class="_abprf _f_equal"><span><?php esc_html_e( 'Total : ', 'abp-rentalforge' ); ?>&nbsp;</span><span class="abprf_total _color_theme_text_right"></span></h5>
                     </div>
-					<?php if ( is_admin() && str_contains( wp_get_referer(), 'add_order' ) ) { ?>
+					<?php if ( is_admin() && str_contains( wp_get_referer(), 'admin_order' ) ) { ?>
                         <input type="submit" class="_d_none" name="add-admin-order" value="<?php echo esc_attr( $wc_link ); ?>"/>
 					<?php } else { ?>
                         <input type="submit" class="_d_none" name="add-to-cart" value="<?php echo esc_attr( $wc_link ); ?>"/>

@@ -370,7 +370,7 @@
 	div.abprf_area [class*="_main_widget"] { width: 100%; max-width: var(--rf_widget_main); margin: 0 0 0 var(--rf_gap); }
 	div.abprf_area [class*="_right_widget"] { width: 100%; max-width: var(--rf_widget_right); }
 	/*=============================*/
-	div.abprf_area [class*="_section"] { padding: var(--rf_gap); margin-bottom: var(--rf_gap); background-color: var(--rf_color_section); border: 1px solid var(--rf_color_border);display: block;width: 100%;border-radius: var(--rf_br); }
+	div.abprf_area [class*="_section"] { padding: var(--rf_gap); margin-bottom: var(--rf_gap); background-color: var(--rf_color_section); border: 1px solid var(--rf_color_border);width: 100%;border-radius: var(--rf_br); }
 	div.abprf_area [class*="_section_light"] { background-color: var(--rf_color_light); }
 	div.abprf_area [class*="_section_alert"] { background-color: var(--rf_color_alert);color: #0C5460;border-color: #BEE5EB; }
 	div.abprf_area [class*="_section_admin"] {padding: 50px;max-width: 1000px;margin: 100px auto;background-color: #FFF;border: 1px solid var(--rf_color_border);border-radius: var(--rf_br);}
@@ -421,6 +421,7 @@
 	.abprf_area input:hover ~ .date_close_icon,
 	.abprf_area input:hover ~ .time_close_icon {opacity: 1;}
 	/***********toast msg***********/
+	div.abprf_area .toast_notice{display: none;}
 	div.abprf_area .toast_msg_area { position: fixed; bottom: 22px; right: 22px; z-index: 999999; display: flex; flex-direction: column; gap: 9px; pointer-events: none; }
 	div.abprf_area .toast_msg_box { background: var(--rf_color_light); color: #FFF; border-radius: 9px; padding: 11px 18px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; min-width: 240px; box-shadow: 0 8px 24px rgba(0, 0, 0, .3); animation: rf_toast_slide .25s ease; pointer-events: all; }
 	div.abprf_area .toast_msg_box.success { background: var(--rf_color_green_pale); }

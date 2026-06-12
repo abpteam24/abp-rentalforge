@@ -29,7 +29,7 @@
 				$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
 				$total_order    = isset( $abprf_info['total_order'] ) && $abprf_info['total_order'] ? $abprf_info['total_order'] : 0;
 				$new_post_url   = isset( $abprf_info['new_post_url'] ) && $abprf_info['new_post_url'] ? $abprf_info['new_post_url'] : '';
-				$allowed_tabs   = [ 'dashboard', 'posts', 'properties', 'orders', 'global', 'configuration', 'status', 'documentation','add_order' ];
+				$allowed_tabs   = [ 'dashboard', 'posts', 'properties', 'orders', 'global', 'configuration', 'status', 'documentation','admin_order' ];
 				$active_tab     = isset( $_GET['rf_tab'] ) ? sanitize_text_field( wp_unslash( $_GET['rf_tab'] ) ) : 'posts';
 				if ( ! in_array( $active_tab, $allowed_tabs, true ) ) {
 					$active_tab = 'posts';
