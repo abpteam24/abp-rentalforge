@@ -66,10 +66,9 @@
 				$booking_lists         = ABPRF_Query::get_booking_query( $filter_args, $limit, $offset );
 				$filter_args['status'] = 'all';
 				$total_order           = ABPRF_Query::get_booking_query( $filter_args, 0, 0, true );
-				$configuration         = ABPRF_Function::get_option( 'abprf_configuration' );
 				$label                 = ABPRF_Function::label();
 				$brand_icon            = ABPRF_Function::icon();
-				$booked_status         = isset( $configuration['booked_status'] ) && $configuration['booked_status'] ? $configuration['booked_status'] : 'wc-processing,wc-completed';
+				$booked_status         =ABPRF_Function::booking_status();
 				$booked_status         = $booked_status ? explode( ',', $booked_status ) : [];
 				$_filter_args          = $filter_args;
 				$total_rent            = 0;

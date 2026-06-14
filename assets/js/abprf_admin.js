@@ -1,3 +1,4 @@
+let abprf_feature_data = JSON.parse(abprf_admin_data.feature_data);
 function abprf_save_data(form_area, target, action) {
     let body = jQuery('body .rf_post_config');
     let formData = new FormData();
@@ -44,13 +45,16 @@ function abprf_save_data(form_area, target, action) {
                 target.html(response.data.html);
                 abprf_load_image(target);
             }
+            if (action === 'abprf_save_feature' && response.data && response.data.hasOwnProperty('feature_js')) {
+                abprf_feature_data = response.data.feature_js;
+                abprf_feature_selection_init();
+            }
             if (action === 'abprf_save_feature' || action === 'abprf_save_brand') {
                 form_area.find('.insertable_area').html('');
                 form_area.find('.hide_on_load').slideUp('fast');
             } else {
                 abprf_popup_close('#abprf_global_popup');
             }
-
         }
     });
 }
@@ -331,6 +335,9 @@ function abprf_property_filter_arg($this) {
                     target.html(response.data.html).promise().done(function () {
                         abprf_toast_msg(response.data.msg, 'success');
                         abprf_load_more();
+                        if (type === 'property') {
+                            abprf_feature_selection_init();
+                        }
                     });
                 }
             })
@@ -718,11 +725,11 @@ function abprf_property_filter_arg($this) {
     });
     //==========page create=================//
     $(document).on('click', 'div.abprf_admin button.create_page', function () {
-        let type=$(this).attr('data-page_type');
+        let type = $(this).attr('data-page_type');
         let parent = $(this).closest('.abprf_status');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_create_page", 'nonce': abprf_admin_data.nonce,'type':type
+                "action": "abprf_create_page", 'nonce': abprf_admin_data.nonce, 'type': type
             }, beforeSend: function () {
                 abprf_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.create_post_page);
@@ -949,9 +956,6 @@ function abprf_wp_editor_init(target) {
     }).fail(function () {
         abprf_icon_area.html('Nothing Found !');
     });
-    function check_emoji(str) {
-        return !(/^fa[bsrld]\s/.test(str));
-    }
     $(document).on('click', 'div.abprf_admin .icon_image_selection_area button.icon_add', function () {
         load_icon_list();
     });
@@ -985,7 +989,7 @@ function abprf_wp_editor_init(target) {
             parent.find('.image_icon_select_area').slideUp('fast');
             parent.find('.image_item').slideUp('fast');
             parent.find('.icon_item').slideDown('fast');
-            if (check_emoji(icon_class)) {
+            if (abprf_emoji_check(icon_class)) {
                 parent.find('[data-add-icon]').removeAttr('class').html(icon_class);
             } else {
                 parent.find('[data-add-icon]').removeAttr('class').addClass(icon_class).html('');
@@ -1057,7 +1061,7 @@ function abprf_wp_editor_init(target) {
         $.each(search_result_icon, function (i, item) {
             let $item = $('<div>').addClass('icon_item').attr('title', item.label).attr('data-icon-class', item.key);
             let $preview;
-            if (check_emoji(item.key)) {
+            if (abprf_emoji_check(item.key)) {
                 $preview = $('<span>').text(item.key);
             } else {
                 $preview = $('<span>').addClass(item.key);
@@ -1074,6 +1078,9 @@ function abprf_wp_editor_init(target) {
         abprf_icon_title.text(search_value + ' : ' + search_result_icon.length + ' / ' + total_icon + ' icons');
     }
 })(jQuery);
+function abprf_emoji_check(str) {
+    return !(/^fa[bsrld]\s/.test(str));
+}
 jQuery(document).ready(function ($) {
     $('#publish, .editor-post-publish-button').on('click', function (e) {
         let title = $('#title').val() || $('.editor-post-title__input').val();
@@ -1084,3 +1091,88 @@ jQuery(document).ready(function ($) {
         }
     });
 });
+//============================//
+function abprf_feature_selection_init() {
+    let hiddenVal = document.querySelector('div.abprf_admin .feature_selection_area input[name="feature"]').value;
+    let preIds = hiddenVal ? hiddenVal.split(',').map(function (s) {
+        return s.trim();
+    }).filter(Boolean) : [];
+    if (preIds.length > 0) {
+        let selList = document.querySelector('div.abprf_admin .feature_selection_area .selected_list');
+        selList.innerHTML = '';
+        preIds.forEach(function (id) {
+            let f = abprf_feature_data.find(function (x) {
+                return String(x.id) === String(id);
+            });
+            if (!f) return;
+            let div = document.createElement('div');
+            div.className = 'selected_item';
+            div.setAttribute('data-id', f.id);
+            div.innerHTML = abprf_feature_inner_html(f);
+            selList.appendChild(div);
+        });
+    }
+    document.querySelector('div.feature_selection_area .feature_selection').innerHTML = '<label><input class="_form_control feature_search" type="text"  placeholder="' + abprf_admin_data.msg.search_feature + '" /></label><div class="feature_list"></div>';
+    document.querySelector('div.feature_selection_area .feature_search').addEventListener('input', abprf_feature_render);
+    abprf_feature_render();
+}
+function abprf_feature_selected_id() {
+    let ids = [];
+    document.querySelectorAll('div.feature_selection_area .selected_item').forEach(function (el) {
+        let id = el.getAttribute('data-id');
+        if (id) ids.push(id);
+    });
+    return ids;
+}
+function abprf_feature_render() {
+    let q = '';
+    let searchEl = document.querySelector('div.feature_selection_area .feature_search');
+    if (searchEl) q = searchEl.value.toLowerCase();
+    let selectedIds = abprf_feature_selected_id();
+    let available = abprf_feature_data.filter(function (f) {
+        return selectedIds.indexOf(String(f.id)) === -1 && f.label.toLowerCase().indexOf(q) !== -1;
+    });
+    let el = document.querySelector('div.feature_selection_area .feature_list')
+    if (!el) return;
+    el.innerHTML = available.length === 0
+        ? '<div class="feature_empty">' + abprf_admin_data.msg.no_feature + '</div>'
+        : available.map(function (f) {
+            let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<span class="' + f.icon + ' _mar_r_xxs"></span>';
+            return '<div class="feature_item" data-id="' + f.id + '" onclick="abprf_feature_select(\'' + f.id + '\')"><div>' + icon_text + f.label + ' - ' + f.value + '</div><span class="fa-solid fa-plus fs-add"></span></div>';
+        }).join('');
+}
+function abprf_feature_select(id) {
+    let f = abprf_feature_data.find(function (x) {
+        return String(x.id) === String(id);
+    });
+    if (!f) return;
+    let selList = document.querySelector('div.abprf_admin .feature_selection_area .selected_list');
+    let placeholder = selList.querySelector('.feature_empty');
+    if (placeholder) placeholder.remove();
+    let div = document.createElement('div');
+    div.className = 'selected_item';
+    div.setAttribute('data-id', f.id);
+    div.innerHTML = abprf_feature_inner_html(f);
+    selList.appendChild(div);
+    abprf_feature_update_hidden();
+    abprf_feature_render();
+}
+function abprf_feature_inner_html(f) {
+    let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<i class="' + f.icon + ' _mar_r_xxs"></i>';
+    return '<div>' + icon_text + f.label + ' - ' + f.value + '</div><span class="remove_feature" onclick="abprf_feature_remove(\'' + f.id + '\')">❌</span>';
+}
+function abprf_feature_remove(id) {
+    let item = document.querySelector('.selected_list .selected_item[data-id="' + id + '"]');
+    if (item) item.remove();
+    let selList = document.querySelector('div.abprf_admin .feature_selection_area .selected_list');
+    if (!selList.querySelector('.selected_item')) {
+        selList.innerHTML = '<div class="feature_empty">' + abprf_admin_data.msg.no_feature_selected + '</div>';
+    }
+    abprf_feature_update_hidden();
+    abprf_feature_render();
+}
+function abprf_feature_update_hidden() {
+    let ids = abprf_feature_selected_id();
+    document.querySelector('div.abprf_admin .feature_selection_area input[name="feature"]').value = ids.join(',');
+}
+

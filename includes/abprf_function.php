@@ -7,15 +7,12 @@
 			public function __construct() {
 				add_filter( 'abprf_modify_cart_date', [ $this, 'modify_cart_date' ] );
 			}
-
 			public static function get_cpt(): string { return 'abprf_post'; }
-
 			public static function get_post_info( $post_id, $key, $default = '' ) {
 				$data = get_post_meta( $post_id, $key, true ) ?: $default;
 
 				return self::data_sanitize( $data );
 			}
-
 			public static function data_sanitize( $data ) {
 				$data = maybe_unserialize( $data );
 				if ( is_string( $data ) ) {
@@ -37,7 +34,6 @@
 
 				return $data;
 			}
-
 			public static function get_all_meta( $post_id = 0 ): array {
 				$all_data = [];
 				if ( $post_id > 0 ) {
@@ -53,11 +49,9 @@
 
 				return $all_data;
 			}
-
 			public static function get_taxonomy( $name ): array|WP_Error|string {
 				return get_terms( array( 'taxonomy' => $name, 'hide_empty' => false ) );
 			}
-
 			public static function get_all_term_data( $term_name ): array {
 				$all_data   = [];
 				$taxonomies = self::get_taxonomy( $term_name );
@@ -69,13 +63,11 @@
 
 				return $all_data;
 			}
-
 			public static function get_option( $option, $default = [] ) {
 				$option_data = get_option( sanitize_key( $option ) );
 
-				return $option_data ?: $default;
+				return ! empty( $option_data ) ? $option_data : $default;
 			}
-
 			public static function get_options( $option, $key, $default = '' ) {
 				$options = get_option( sanitize_key( $option ) );
 				if ( isset( $options[ $key ] ) && $options[ $key ] ) {
@@ -84,55 +76,20 @@
 
 				return $default;
 			}
-
-			public static function booking_status() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'booked_status', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['booked_status'] ) ? ABPRF_Configuration['booked_status'] : 'wc-processing,wc-completed';
-			}
-
-			public static function label() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['label'] ) ? ABPRF_Configuration['label'] : __( 'RentalForge', 'abp-rentalforge' );
-			}
-
-			public static function slug() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'slug', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['slug'] ) ? ABPRF_Configuration['slug'] : 'rental-forge';
-			}
-
-			public static function icon_wp() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'icon', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['icon'] ) ? ABPRF_Configuration['icon'] : 'dashicons-hammer';
-			}
-
-			public static function icon() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'brand_icon', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['brand_icon'] ) ? ABPRF_Configuration['brand_icon'] : 'fas fa-hammer';
-			}
-
-			public static function brand_label() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'brand_label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['brand_label'] ) ? ABPRF_Configuration['brand_label'] : __( 'Brand', 'abp-rentalforge' );
-			}
-
-			public static function brand_value( $id ) {
-				return is_array( ABPRF_Brands ) && array_key_exists( $id, ABPRF_Brands ) && ! empty( ABPRF_Brands[ $id ] ) && array_key_exists( 'name', ABPRF_Brands[ $id ] ) ? ABPRF_Brands[ $id ]['name'] : $id;
-			}
-
-			public static function category_label() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'category_label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['category_label'] ) ? ABPRF_Configuration['category_label'] : __( 'Category', 'abp-rentalforge' );
-			}
-
-			public static function category_value( $id ) {
-				return is_array( ABPRF_Category ) && array_key_exists( $id, ABPRF_Category ) && ! empty( ABPRF_Category[ $id ] ) && array_key_exists( 'name', ABPRF_Category[ $id ] ) ? ABPRF_Category[ $id ]['name'] : $id;
-			}
-
-			public static function category_slug() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'cat_slug', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['cat_slug'] ) ? ABPRF_Configuration['cat_slug'] : 'category';
-			}
-
-			public static function location_label() {
-				return is_array( ABPRF_Configuration ) && array_key_exists( 'location_label', ABPRF_Configuration ) && ! empty( ABPRF_Configuration['location_label'] ) ? ABPRF_Configuration['location_label'] : __( 'Location', 'abp-rentalforge' );
-			}
-
-			public static function location_value( $location ) {
-				return is_array( ABPRF_Locations ) && array_key_exists( $location, ABPRF_Locations ) && ! empty( ABPRF_Locations[ $location ] ) && array_key_exists( 'name', ABPRF_Locations[ $location ] ) ? ABPRF_Locations[ $location ]['name'] : $location;
-			}
-
+			public static function booking_status() { return ( ABPRF_Configuration['booked_status'] ?? null ) ?: 'wc-processing,wc-completed'; }
+			public static function label() { return ( ABPRF_Configuration['label'] ?? null ) ?: __( 'RentalForge', 'abp-rentalforge' ); }
+			public static function slug() { return ( ABPRF_Configuration['slug'] ?? null ) ?: 'rental-forge'; }
+			public static function icon_wp() { return ( ABPRF_Configuration['icon'] ?? null ) ?: 'dashicons-hammer'; }
+			public static function icon() { return ( ABPRF_Configuration['brand_icon'] ?? null ) ?: 'fas fa-hammer'; }
+			public static function brand_label() { return ( ABPRF_Configuration['brand_label'] ?? null ) ?: __( 'Brand', 'abp-rentalforge' ); }
+			public static function brand_slug() { return ( ABPRF_Configuration['brand_slug'] ?? null ) ?: 'brand'; }
+			public static function brand_value( $id ) { return ( ABPRF_Brands[ $id ]['name'] ?? null ) ?: $id; }
+			public static function category_label() { return ( ABPRF_Configuration['category_label'] ?? null ) ?: __( 'Category', 'abp-rentalforge' ); }
+			public static function category_slug() { return ( ABPRF_Configuration['cat_slug'] ?? null ) ?: 'category'; }
+			public static function category_value( $id ) { return ( ABPRF_Category[ $id ]['name'] ?? null ) ?: $id; }
+			public static function location_label() { return ( ABPRF_Configuration['location_label'] ?? null ) ?: __( 'Location', 'abp-rentalforge' ); }
+			public static function location_slug() { return ( ABPRF_Configuration['location_slug'] ?? null ) ?: 'location'; }
+			public static function location_value( $id ) { return ( ABPRF_Locations[ $id ]['name'] ?? null ) ?: $id; }
 			public static function array_to_string( $array ) {
 				$ids = '';
 				if ( sizeof( $array ) > 0 ) {
@@ -145,7 +102,6 @@
 
 				return $ids;
 			}
-
 			public static function serialize_array_convert( $form_data ): array {
 				$infos = [];
 				if ( sizeof( $form_data ) > 0 ) {
@@ -165,13 +121,11 @@
 
 				return $infos;
 			}
-
 			public static function get_image_url( $post_id = '', $image_id = '', $size = 'full' ): bool|string {
 				$image_id = $post_id && $post_id > 0 ? get_post_thumbnail_id( $post_id ) : $image_id;
 
 				return wp_get_attachment_image_url( $image_id, $size );
 			}
-
 			public static function get_page_by_slug( $slug ): bool|WP_Post {
 				if ( $pages = get_pages() ) {
 					foreach ( $pages as $page ) {
@@ -183,13 +137,11 @@
 
 				return false;
 			}
-
 			public static function get_id_by_slug( $page_slug ): ?int {
 				$page = get_page_by_path( $page_slug );
 
 				return $page?->ID;
 			}
-
 			public static function check_wc(): int {
 				if ( class_exists( 'WooCommerce' ) || is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 					return 2;
@@ -201,7 +153,6 @@
 
 				return 0;
 			}
-
 			public static function already_in_cart( $post_id, $bp, $dp, $bp_date, $seat_name ) {
 				$count = 0;
 				if ( is_admin() && str_contains( wp_get_referer(), 'admin_order' ) ) {
@@ -239,7 +190,6 @@
 
 				return $count;
 			}
-
 			public static function get_user_role( $user_ID ): string {
 				global $wp_roles;
 				$user_role_list = '';
@@ -258,7 +208,6 @@
 
 				return $user_role_list;
 			}
-
 			//=========== Template Related==================//
 			public static function details_template_path( $post_id ): string {
 				$post_id       = $post_id ?? get_the_id();
@@ -271,14 +220,12 @@
 
 				return self::template_path( $file_name );
 			}
-
 			public static function template_path( $file_name ): string {
 				$file_path   = wp_normalize_path( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '/rf_templates/' . $file_name );
 				$default_dir = wp_normalize_path( ABPRF_DIR . '/rf_templates/' . $file_name );
 
 				return file_exists( $file_path ) ? $file_path : $default_dir;
 			}
-
 			//============= Date function================//
 			public function modify_cart_date( $cart_item ) {
 				$rent_rule = $cart_item['rent_rule'] ?? '';
@@ -324,7 +271,6 @@
 
 				return $cart_item;
 			}
-
 			public static function check_date_exit( $abprf_infos ): bool {
 				$post_id         = $abprf_infos['post_id'] ?? 0;
 				$rent_rule       = $abprf_infos['rent_rule'] ?? self::get_post_info( $post_id, 'rent_rule' );
@@ -374,7 +320,6 @@
 
 				return false;
 			}
-
 			public static function get_start_dates( $post_id ): array {
 				$all_dates = [];
 				if ( ! empty( $post_id ) && $post_id > 0 ) {
@@ -393,7 +338,6 @@
 
 				return $all_dates;
 			}
-
 			public static function get_end_dates( $post_id, $_start_date = '', $all_dates = [] ): array {
 				$all_dates    = empty( $all_dates ) ? self::get_start_dates( $post_id ) : $all_dates;
 				$all_end_date = [];
@@ -470,7 +414,6 @@
 
 				return $all_end_date;
 			}
-
 			public static function get_start_month( $post_id, $dateList = [] ): array {
 				$cut_off_date = self::get_post_info( $post_id, 'cut_off_date', 10 );
 				sort( $dateList );
@@ -494,7 +437,6 @@
 
 				return $month_list;
 			}
-
 			public static function get_end_month( $post_id = '', $start_date = '' ): array {
 				$dateList   = self::get_end_dates( $post_id, $start_date );
 				$month_list = [];
@@ -517,18 +459,16 @@
 
 				return $month_list;
 			}
-
 			public static function get_time( $post_id, $type = 'time' ): array {
 				$option_name = $type == 'js' ? 'abprf_time_info_js' : 'abprf_time_info';
 				$time_info   = ABPRF_Function::get_option( $option_name );
 				$info        = [];
 				if ( ! empty( $post_id ) ) {
-					$info = array_key_exists( $post_id, $time_info ) ? $time_info[ $post_id ] : ( array_key_exists( 'global', $time_info ) ? $time_info['global'] : [] );
+					$info =  $time_info[ $post_id ] ?? ( $time_info['global'] ?? [] );
 				}
 
 				return $info;
 			}
-
 			public static function update_dates( $post_id ): void {
 				if ( ! empty( $post_id ) ) {
 					if ( $post_id == 'global' ) {
@@ -578,7 +518,6 @@
 					set_transient( 'abprf_date_' . $post_id, json_encode( $all_dates ), HOUR_IN_SECONDS );
 				}
 			}
-
 			public static function repeated_date_list_modify( $start_date, $end_date, $date_infos ): array {
 				$all_dates = [];
 				if ( strtotime( $start_date ) <= strtotime( $end_date ) ) {
@@ -646,7 +585,6 @@
 
 				return $all_dates;
 			}
-
 			public static function update_time_slot( $post_id = '' ): void {
 				$all_slots    = ABPRF_Function::get_option( 'abprf_time_info' );
 				$all_js_slots = ABPRF_Function::get_option( 'abprf_time_info_js' );
@@ -683,7 +621,6 @@
 					update_option( 'abprf_time_info_js', $all_js_slots );
 				}
 			}
-
 			public static function get_time_slot( $date_infos ): array {
 				$all_slots            = [];
 				$date_type            = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
@@ -740,7 +677,6 @@
 
 				return $all_slots;
 			}
-
 			public static function generate_time_slot( $start_time, $end_time, $interval = 60 ): string {
 				$slots = [];
 				if ( ! empty( $start_time ) && ! empty( $end_time ) ) {
@@ -761,7 +697,6 @@
 
 				return implode( '##', $slots );
 			}
-
 			public static function date_format( $date, $format = '' ): string {
 				if ( ! empty( $date ) ) {
 					if ( empty( $format ) ) {
@@ -791,7 +726,6 @@
 
 				return $date;
 			}
-
 			public static function date_format_php(): string {
 				$formats = [
 					'yy/mm/dd' => 'Y/m/d',
@@ -809,11 +743,9 @@
 
 				return $formats[ ABPRF_JS_Date_Format ] ?? 'Y-m-d';
 			}
-
 			public static function date_format_js() {
 				return is_array( ABPRF_Dates ) && array_key_exists( 'date_format', ABPRF_Dates ) && ABPRF_Dates['date_format'] ? ABPRF_Dates['date_format'] : 'D d M , yy';
 			}
-
 			public static function date_separate_period( $start_date, $end_date, $repeat = 1 ): DatePeriod {
 				$repeat    = max( $repeat, 1 );
 				$_interval = "P" . $repeat . "D";
@@ -821,7 +753,6 @@
 
 				return new DatePeriod( new DateTime( $start_date ), new DateInterval( $_interval ), new DateTime( $end_date ) );
 			}
-
 			public static function check_time_exit_date( $date ): bool {
 				if ( $date ) {
 					$parse_date = date_parse( $date );
@@ -832,9 +763,7 @@
 
 				return false;
 			}
-
 			public static function sort_date( $a, $b ): int { return strtotime( $a ) - strtotime( $b ); }
-
 			public static function sort_date_array( $a, $b ): int {
 				$dateA = strtotime( $a['time'] );
 				$dateB = strtotime( $b['time'] );
@@ -846,7 +775,6 @@
 					return - 1;
 				}
 			}
-
 			public static function get_date_time_difference( $start_time, $end_time, $rent_rule ): array {
 				$text = '';
 				$info = [];
@@ -909,7 +837,6 @@
 
 				return $info;
 			}
-
 			public static function check_time_slot_exit( $main_slots, $input_slots ): bool {
 				if ( ! empty( $main_slots ) && ! empty( $input_slots ) ) {
 					$main_slots = explode( '-', $main_slots );
@@ -925,7 +852,6 @@
 
 				return false;
 			}
-
 			public static function time_duration( $abprf_infos = [], $price_info = [] ) {
 				$rent_rule = $abprf_infos['rent_rule'] ?? '';
 				$date_info = $abprf_infos['date_info'] ?? [];
@@ -956,7 +882,6 @@
 
 				return $dif_exit > 0 ? $dif : false;
 			}
-
 			public static function booking_buffer( $time, $end = '' ): string {
 				$date_infos = ABPRF_Dates;
 				if ( ! empty( $end ) ) {
@@ -971,7 +896,6 @@
 
 				return $time;
 			}
-
 			//=============Price Function================//
 			public static function tax_with_price( $post_id, $price ): string {
 				$num_of_decimal = get_option( 'woocommerce_price_num_decimals', 2 );
@@ -998,8 +922,7 @@
 				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				return apply_filters( 'woocommerce_get_price_to_display', $return_price, 1, $product );
 			}
-
-			public static function get_price( $abprf_infos = [], $property = [], $time_duration = '' ) {
+			public static function get_price( $abprf_infos = [], $property = [], $time_duration = '' ): int|string {
 				$price          = 0;
 				$post_id        = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : 0;
 				$rent_rule      = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : '';
@@ -1045,7 +968,6 @@
 
 				return $price > 0 ? self::tax_with_price( $post_id, $price ) : 0;
 			}
-
 			public static function get_deposit_price( $abprf_infos = [], $property = [] ) {
 				$price = 0;
 				if ( is_array( $abprf_infos ) && sizeof( $abprf_infos ) > 0 ) {
@@ -1075,7 +997,6 @@
 
 				return $price;
 			}
-
 			public static function get_additional_price( $post_id, $service_name, $abprf_infos = [] ): int|string {
 				$display                  = array_key_exists( 'display_additional_services', $abprf_infos ) ? $abprf_infos['display_additional_services'] : ABPRF_Function::get_post_info( $post_id, 'display_additional_services', 'on' );
 				$active_global_additional = array_key_exists( 'active_global_additional', $abprf_infos ) ? $abprf_infos['active_global_additional'] : ABPRF_Function::get_post_info( $post_id, 'active_global_additional', 'on' );
@@ -1096,7 +1017,6 @@
 
 				return $price > 0 ? self::tax_with_price( $post_id, $price ) : 0;
 			}
-
 			//=============================//
 			public static function update_global_data( $post_id = '' ): void {
 				if ( ! empty( $post_id ) ) {

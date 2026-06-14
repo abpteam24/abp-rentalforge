@@ -184,9 +184,11 @@
 				$price = 0;
 				if ( is_array( $services ) && sizeof( $services ) > 0 ) {
 					foreach ( $services as $service ) {
-						$ticket_price = array_key_exists( 'price', $service ) ? $service['price'] : 0;
-						$qty          = array_key_exists( 'qty', $service ) ? $service['qty'] : 0;
-						$price        = $price + $ticket_price * $qty;
+						$qty = $service['qty'] ?? '';
+						if ( ! empty( $qty ) && $qty > 0 ) {
+							$ticket_price = $service['price'] ?? 0;
+							$price        = $price + $ticket_price * $qty;
+						}
 					}
 				}
 

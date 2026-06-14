@@ -69,6 +69,9 @@
 				if ( ! defined( 'ABPRF_Min_Price' ) ) {
 					define( 'ABPRF_Min_Price', ABPRF_Function::get_option( 'abprf_min_price' ) );
 				}
+				if ( ! defined( 'ABPRF_On_Off' ) ) {
+					define( 'ABPRF_On_Off', ABPRF_Function::get_option( 'abprf_on_off' ) );
+				}
 				if ( ! defined( 'ABPRF_JS_Date_Format' ) ) {
 					define( 'ABPRF_JS_Date_Format', ABPRF_Function::date_format_js());
 				}

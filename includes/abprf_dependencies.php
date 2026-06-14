@@ -32,6 +32,7 @@
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce' => wp_create_nonce( 'abprf_admin_ajax_nonce' ),
 					'icon_url' => ABPRF_URL . '/assets/js/abprf_icons.json',
+					'feature_data' => json_encode( ABPRF_Function::get_option('abprf_feature_js') ),
 					'msg' => [
 						'confirm_delete' => __( 'Are you sure you want to delete this item?', 'abp-rentalforge' ),
 						'confirm_ok' => __( '1. Ok : To Remove Item .', 'abp-rentalforge' ),
@@ -56,6 +57,9 @@
 						'wc_installed_success' => __( 'Woocommerce Downloaded And Installed successfully ..... !! ', 'abp-rentalforge' ),
 						'wc_installed' => __( 'Woocommerce Installed successfully.... !  ', 'abp-rentalforge' ),
 						'create_post_page' => $label . ' ' . __( 'Page Creating ........!', 'abp-rentalforge' ),
+						'search_feature' =>  __( 'Search Feature ........', 'abp-rentalforge' ),
+						'no_feature' => __( 'No More Feature Found !', 'abp-rentalforge' ),
+						'no_feature_selected' => __( 'No feature selected !', 'abp-rentalforge' ),
 					],
 				] );
 				wp_enqueue_style( 'abprf_admin', ABPRF_URL . '/assets/css/abprf_admin.css', array(), time() );

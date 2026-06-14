@@ -165,6 +165,7 @@
 				$brand_icon    = ABPRF_Function::icon();
 				$configuration = apply_filters( 'abprf_configuration_after', array( array( 'id' => 'abprf_configuration', 'icon' => $brand_icon, 'menu' => $label ) ) );
 				$contact       = apply_filters( 'abprf_contact_after', array(
+					array( 'id' => 'abprf_on_off', 'icon' => 'fa-solid fa-toggle-on', 'menu' => __( 'ON/OFF', 'abp-rentalforge' ) ),
 					array( 'id' => 'abprf_slider', 'icon' => 'fas fa-photo-video', 'menu' => __( 'Slider', 'abp-rentalforge' ) ),
 					array( 'id' => 'abprf_contact', 'icon' => 'fas fa-id-card-alt', 'menu' => __( 'Contact Information', 'abp-rentalforge' ) ),
 					array( 'id' => 'abprf_css_var', 'icon' => 'fas fa-drafting-compass', 'menu' => __( 'CSS Property', 'abp-rentalforge' ) ),
@@ -240,7 +241,18 @@
 							'default' => 'category'
 						),
 					) ),
-					'abprf_contact' => apply_filters( 'abprf_contact_filter', array(
+					'abprf_on_off' => apply_filters( 'abprf_on_off_filter', array(
+						array(
+							'name' => 'rent_rule',
+							'label' => __( 'Rent Date Time Rule', 'abp-rentalforge' ),
+							'desc' => __( 'Rent Date Time Rules allow you to control rental booking availability based on specific date and time conditions. Select one or more rules to apply custom restrictions. If no rule is selected, all available rules will remain active by default.', 'abp-rentalforge' ),
+							'class' => 'span_2',
+							'type' => 'multi_check',
+							'default' =>ABPRF_Layout::rent_rules_string(),
+							'options' => ABPRF_Layout::rent_rules()
+						),
+					) ),
+                    'abprf_contact' =>array(
 						array(
 							'name' => 'name',
 							'label' => __( 'Company Name', 'abp-rentalforge' ),
@@ -272,7 +284,7 @@
 							'default' => '',
 							'placeholder' => __( 'support@example.com', 'abp-rentalforge' ),
 						),
-					) ),
+					),
 					'abprf_slider' => array(
 						array(
 							'name' => 'slider_style',
@@ -355,7 +367,7 @@
 							'collapse_data' => array( 'option' => 'abprf_slider', 'key' => 'visible_popup' ),
 						),
 					),
-					'abprf_css_var' => apply_filters( 'abprf_css_var_filter', array(
+					'abprf_css_var' =>array(
 						array(
 							'name' => 'color_theme',
 							'label' => __( 'Base Color', 'abp-rentalforge' ),
@@ -485,7 +497,7 @@
 							'type' => 'color',
 							'default' => '#FAFCFE'
 						),
-					) )
+					)
 				) );
 			}
 

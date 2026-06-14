@@ -611,7 +611,7 @@
 	.tab_content [data-tabs] { display: none;}
 	/*=============================*/
 	div.abprf_tabs.tab_top .tab_lists {white-space: nowrap;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
-	.tab_top .tab_lists [data-tabs-target] { border-right: 1px solid var(--rf_color_border); -webkit-justify-content: center; justify-content: center;-webkit-flex: 1; flex: 1; min-width: max-content; max-width: 200px;}
+	.tab_top .tab_lists [data-tabs-target] { padding: var(--rf_gap_xs);border-right: 1px solid var(--rf_color_border); -webkit-justify-content: center; justify-content: center;-webkit-flex: 1; flex: 1; min-width: max-content; max-width: 200px;}
 	.tab_top .tab_lists [data-tabs-target]:last-child { border-right: none; }
 	/*=============================*/
 	div.abprf_tabs.tab_left { display: -webkit-flex; display: flex; background-color: var(--rf_color_white);}

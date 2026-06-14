@@ -12,7 +12,6 @@
 				add_action( 'wp_ajax_abprf_reload_property_list', array( $this, 'reload_property_list' ) );
 				add_action( 'wp_ajax_abprf_property_delete', array( $this, 'property_delete' ) );
 			}
-
 			public function load_properties( $abprf_info ): void {
 				//$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
 				$post_ids               = isset( $abprf_info['post_ids'] ) && $abprf_info['post_ids'] ? $abprf_info['post_ids'] : [];
@@ -47,19 +46,19 @@
                 </div>
 				<?php
 			}
-
 			public function tab_content( $abprf_infos ): void {
-				$copy_post_id                = array_key_exists( 'copy_post_id', $abprf_infos ) ? $abprf_infos['copy_post_id'] : '';
-				$rent_rule                   = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : 'multi_day';
-				$day_time_start              = array_key_exists( 'day_time_start', $abprf_infos ) ? $abprf_infos['day_time_start'] : '';
-				$day_time_end                = array_key_exists( 'day_time_end', $abprf_infos ) ? $abprf_infos['day_time_end'] : '';
-				$hour_threshold              = array_key_exists( 'hour_threshold', $abprf_infos ) ? $abprf_infos['hour_threshold'] : 24;
-				$cut_off_date                = array_key_exists( 'cut_off_date', $abprf_infos ) ? $abprf_infos['cut_off_date'] : 10;
-				$day_threshold               = array_key_exists( 'day_threshold', $abprf_infos ) ? $abprf_infos['day_threshold'] : 30;
+				$rent_rules                  = ABPRF_Layout::rent_rules_options();
+				$post_id                     = $abprf_infos['post_id'] ?? '';
+				$copy_post_id                = $abprf_infos['copy_post_id'] ?? '';
+				$rent_rule                   = ( $abprf_infos['rent_rule'] ?? null ) ?: key( $rent_rules );
+				$day_time_start              = $abprf_infos['day_time_start'] ?? '';
+				$day_time_end                = $abprf_infos['day_time_end'] ?? '';
+				$hour_threshold              = ( $abprf_infos['hour_threshold'] ?? null ) ?: 24;
+				$cut_off_date                = ( $abprf_infos['cut_off_date'] ?? null ) ?: 10;
+				$day_threshold               = ( $abprf_infos['day_threshold'] ?? null ) ?: 30;
 				$filter_args['copy_post_id'] = $copy_post_id;
-				$post_id                     = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : '';
 				$filter_args['post_id']      = $post_id;
-				$rent_rules                  = ABPRF_Layout::rent_rules();
+				//echo '<pre>';print_r( ABPRF_Layout::rent_rules_options());					echo '</pre>';
 				?>
                 <div class="tab_item abprf_equipment_price" data-tabs="#abprf_equipment_price">
                     <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">🏠</span> <?php esc_html_e( 'Properties and Price Configuration', 'abp-rentalforge' ); ?></h4>
@@ -82,41 +81,49 @@
                             <div class="_divider_xs"></div>
 							<?php ABPRF_Layout::info_text( 'rent_rule' ); ?>
                         </div>
-                        <div class="setting_item <?php echo esc_attr( $rent_rule == 'daily' ? 'rf_active' : '' ); ?>" data-close="#daily">
-                            <div class="_f_wrap_fj_between_fa_center">
-                                <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Day time Start-End', 'abp-rentalforge' ); ?></span>
-                                <div class="_group_content">
-									<?php ABPRF_Layout::input_time( 'day_time_start', $day_time_start );
-										ABPRF_Layout::input_time( 'day_time_end', $day_time_end ); ?>
+						<?php if ( $rent_rules['daily'] ?? '' ) { ?>
+                            <div class="setting_item <?php echo esc_attr( $rent_rule == 'daily' ? 'rf_active' : '' ); ?>" data-close="#daily">
+                                <div class="_f_wrap_fj_between_fa_center">
+                                    <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Day time Start-End', 'abp-rentalforge' ); ?></span>
+                                    <div class="_group_content">
+										<?php ABPRF_Layout::input_time( 'day_time_start', $day_time_start );
+											ABPRF_Layout::input_time( 'day_time_end', $day_time_end ); ?>
+                                    </div>
                                 </div>
+                                <div class="_divider_xs"></div>
+								<?php ABPRF_Layout::info_text( 'day_time_start_end' ); ?>
                             </div>
-                            <div class="_divider_xs"></div>
-							<?php ABPRF_Layout::info_text( 'day_time_start_end' ); ?>
-                        </div>
-                        <div class="setting_item <?php echo esc_attr( $rent_rule == 'multi_day' ? 'rf_active' : '' ); ?>" data-close="#multi_day">
-                            <label class="_f_equal_f_wrap">
-                                <span class="_mar_r_xs"><?php esc_html_e( 'Hour Threshold', 'abp-rentalforge' ); ?></span>
-                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="hour_threshold" placeholder="Ex:30" value="<?php echo esc_attr( $hour_threshold ); ?>"/>
-                            </label>
-                            <div class="_divider_xs"></div>
-							<?php ABPRF_Layout::info_text( 'hour_threshold' ); ?>
-                        </div>
-                        <div class="setting_item <?php echo esc_attr( $rent_rule == 'monthly' ? 'rf_active' : '' ); ?>" data-close="#monthly">
-                            <label class="_f_equal_f_wrap">
-                                <span class="_mar_r_xs"><?php esc_html_e( 'Month Cut-Off Date', 'abp-rentalforge' ); ?></span>
-                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="cut_off_date" placeholder="Ex:10" value="<?php echo esc_attr( $cut_off_date ); ?>"/>
-                            </label>
-                            <div class="_divider_xs"></div>
-							<?php ABPRF_Layout::info_text( 'cut_off_date' ); ?>
-                        </div>
-                        <div class="setting_item <?php echo esc_attr( $rent_rule == 'multi_month' ? 'rf_active' : '' ); ?>" data-close="#multi_month">
-                            <label class="_f_equal_f_wrap">
-                                <span class="_mar_r_xs"><?php esc_html_e( 'Day Threshold', 'abp-rentalforge' ); ?></span>
-                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="day_threshold" placeholder="Ex:10" value="<?php echo esc_attr( $day_threshold ); ?>"/>
-                            </label>
-                            <div class="_divider_xs"></div>
-							<?php ABPRF_Layout::info_text( 'day_threshold' ); ?>
-                        </div>
+						<?php } ?>
+						<?php if ( $rent_rules['multi_day'] ?? '' ) { ?>
+                            <div class="setting_item span_2 <?php echo esc_attr( $rent_rule == 'multi_day' ? 'rf_active' : '' ); ?>" data-close="#multi_day">
+                                <label class="_f_equal_f_wrap">
+                                    <span class="_mar_r_xs"><?php esc_html_e( 'Hour Threshold', 'abp-rentalforge' ); ?></span>
+                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="hour_threshold" placeholder="Ex:30" value="<?php echo esc_attr( $hour_threshold ); ?>"/>
+                                </label>
+                                <div class="_divider_xs"></div>
+								<?php ABPRF_Layout::info_text( 'hour_threshold' ); ?>
+                            </div>
+						<?php } ?>
+						<?php if ( $rent_rules['monthly'] ?? '' ) { ?>
+                            <div class="setting_item span_2 <?php echo esc_attr( $rent_rule == 'monthly' ? 'rf_active' : '' ); ?>" data-close="#monthly">
+                                <label class="_f_equal_f_wrap">
+                                    <span class="_mar_r_xs"><?php esc_html_e( 'Month Cut-Off Date', 'abp-rentalforge' ); ?></span>
+                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="cut_off_date" placeholder="Ex:10" value="<?php echo esc_attr( $cut_off_date ); ?>"/>
+                                </label>
+                                <div class="_divider_xs"></div>
+								<?php ABPRF_Layout::info_text( 'cut_off_date' ); ?>
+                            </div>
+						<?php } ?>
+						<?php if ( $rent_rules['multi_month'] ?? '' ) { ?>
+                            <div class="setting_item <?php echo esc_attr( $rent_rule == 'multi_month' ? 'rf_active' : '' ); ?>" data-close="#multi_month">
+                                <label class="_f_equal_f_wrap">
+                                    <span class="_mar_r_xs"><?php esc_html_e( 'Day Threshold', 'abp-rentalforge' ); ?></span>
+                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="day_threshold" placeholder="Ex:10" value="<?php echo esc_attr( $day_threshold ); ?>"/>
+                                </label>
+                                <div class="_divider_xs"></div>
+								<?php ABPRF_Layout::info_text( 'day_threshold' ); ?>
+                            </div>
+						<?php } ?>
                     </div>
                     <div class="properties_list">
 						<?php $this->properties_table( $filter_args ); ?>
@@ -128,20 +135,18 @@
                 </div>
 				<?php
 			}
-
 			public function properties_table( $filter_args ): void {
-				$total_property = ABPRF_Query::get_property( $filter_args, true );
-				// echo '<pre>';print_r($filter_args);echo '</pre>';
-				$page_number           = array_key_exists( 'page_number', $filter_args ) && is_numeric( $filter_args['page_number'] ) ? (int) $filter_args['page_number'] : 1;
-				$limit                 = array_key_exists( 'page_item', $filter_args ) && is_numeric( $filter_args['page_item'] ) ? (int) $filter_args['page_item'] : ABPRF_Function::get_option( 'abprf_per_page_item', 20 );
+				$total_property        = ABPRF_Query::get_property( $filter_args, true );
+				$page_number           = is_numeric( $filter_args['page_number'] ?? null ) ? (int) $filter_args['page_number'] : 1;
+				$limit                 = is_numeric( $filter_args['page_item'] ?? null ) ? (int) $filter_args['page_item'] : ABPRF_Function::get_option( 'abprf_per_page_item', 20 );
 				$count                 = ( $page_number - 1 ) * $limit + 1;
 				$filter_args['limit']  = $limit;
 				$filter_args['offset'] = $count - 1;
 				$properties            = ABPRF_Query::get_property( $filter_args );
 				if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
-					$filter_post_id = array_key_exists( 'post_id', $filter_args ) ? $filter_args['post_id'] : '';
-					$copy_post_id   = array_key_exists( 'copy_post_id', $filter_args ) ? $filter_args['copy_post_id'] : '';
-					$rent_rules     = ABPRF_Layout::rent_rules();
+					$filter_post_id = $filter_args['post_id'] ?? '';
+					$copy_post_id   = $filter_args['copy_post_id'] ?? '';
+					$rent_rules     = ABPRF_Layout::rent_rules_options();
 					?>
                     <table class="_abprf">
                         <thead>
@@ -160,20 +165,18 @@
                         </thead>
                         <tbody>
 						<?php foreach ( $properties as $property ) {
-							$others             = array_key_exists( 'others', $property ) ? $property['others'] : '';
-							$others             = ! empty( $others ) ? json_decode( $others, true ) : [];
-							$icon               =$others['icon'] ?? '';
-							$name               =$property['name'] ?? '';
+							$others             = json_decode( $property['others'] ?? '', true ) ?: [];
+							$icon               = $others['icon'] ?? '';
+							$name               = $property['name'] ?? '';
 							$property_id        = $property['id'] ?? '';
 							$post_id            = $property['post_id'] ?? '';
 							$status             = $property['status'] ?? '';
 							$rent_continue      = $property['rent_continue'] ?? '';
 							$post_rent_continue = ABPRF_Function::get_post_info( $post_id, 'rent_continue', 'on' );
 							$post_status        = get_post_status( $post_id );
-							$rent_rule          = array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : '';
-							$price_qty_info     = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
-							$price_qty_info     = ! empty( $price_qty_info ) ? json_decode( $price_qty_info, true ) : [];
-							$_price_info        = array_key_exists( $rent_rule, $price_qty_info ) ? $price_qty_info[ $rent_rule ] : [];
+							$rent_rule          = $property['rent_rule'] ?? '';
+							$price_qty_info     = json_decode( $property['price_qty_info'] ?? '', true ) ?: [];
+							$_price_info        = $price_qty_info[ $rent_rule ] ?? [];
 							?>
                             <tr class="delete_area">
                                 <th><?php echo esc_html( $count ); ?>.</th>
@@ -208,14 +211,14 @@
 								<?php } ?>
                                 <th>
 									<?php foreach ( $rent_rules as $key => $label ) {
-										$price_info = array_key_exists( $key, $price_qty_info ) ? $price_qty_info[ $key ] : []; ?>
+										$price_info = $price_qty_info[ $key ] ?? []; ?>
                                         <div class="<?php echo esc_attr( $rent_rule == $key ? 'rf_active' : '' ); ?>" data-close="#<?php echo esc_attr( $key ); ?>">
 											<?php //echo '<pre>';				print_r( $price_info );				echo '</pre>';
-												$price = is_array( $price_info ) && array_key_exists( 'price', $price_info ) ? $price_info['price'] : '';
+												$price = $price_info['price'] ?? '';
 												if ( ! empty( $price ) ) {
 													echo wp_kses_post( wc_price( $price ) );
 													if ( $key == 'multi_day' || $key == 'multi_month' ) {
-														$price_multi = is_array( $price_info ) && array_key_exists( 'price_multi', $price_info ) ? $price_info['price_multi'] : '';
+														$price_multi = $price_info['price_multi'] ?? '';
 														if ( ! empty( $price_multi ) ) {
 															echo '-' . wp_kses_post( wc_price( $price_multi ) );
 														} else {
@@ -232,9 +235,9 @@
                                 </th>
                                 <th>
 									<?php
-										$deposit_info  = array_key_exists( 'deposit', $_price_info ) ? $_price_info['deposit'] : [];
-										$deposit_type  = is_array( $deposit_info ) && array_key_exists( 'type', $deposit_info ) ? $deposit_info['type'] : '';
-										$deposit_value = is_array( $deposit_info ) && array_key_exists( 'value', $deposit_info ) ? $deposit_info['value'] : '';
+										$deposit_info  = $_price_info['deposit'] ?? [];
+										$deposit_type  = $deposit_info['type'] ?? '';
+										$deposit_value = $deposit_info['value'] ?? '';
 										if ( ! empty( $deposit_type ) && ! empty( $deposit_value ) ) {
 											ABPRF_Layout::item_deposit( $_price_info );
 										} else {
@@ -242,7 +245,7 @@
 										}
 									?>
                                 </th>
-                                <th><?php echo esc_html( array_key_exists( 'qty', $_price_info ) ? $_price_info['qty'] : '' ); ?></th>
+                                <th><?php echo esc_html( $_price_info['qty'] ?? '' ); ?></th>
                                 <th>
 									<?php if ( empty( $copy_post_id ) ) { ?>
                                         <div class="_f_wrap">
@@ -267,10 +270,9 @@
 				}
 				//echo '<pre>';				print_r( $properties );				echo '</pre>';
 			}
-
 			public function post_rent_continue( $property = [], $post_ids = [], $_current_post_id = 0 ): void {
-				$current_post_id = array_key_exists( 'post_id', $property ) ? $property['post_id'] : $_current_post_id;
-				$rent_continue   = array_key_exists( 'rent_continue', $property ) ? $property['rent_continue'] : 'on';
+				$current_post_id = $property['post_id'] ?? $_current_post_id;
+				$rent_continue   = $property['rent_continue'] ?? 'on';
 				?>
                 <div class="setting_item">
                     <label class="_f_equal_f_wrap">
@@ -299,12 +301,10 @@
                 </div>
 				<?php
 			}
-
 			public function name_image_icon( $property = [] ): void {
-				$others = array_key_exists( 'others', $property ) ? $property['others'] : '';
-				$others = ! empty( $others ) ? json_decode( $others, true ) : [];
-				$icon   = array_key_exists( 'icon', $others ) ? $others['icon'] : '';
-				$name   = array_key_exists( 'name', $property ) ? $property['name'] : '';
+				$others = json_decode( $property['others'] ?? '', true ) ?: [];
+				$icon   = $others['icon'] ?? '';
+				$name   = $property['name'] ?? '';
 				?>
                 <div class="setting_item">
                     <label class="_f_equal_f_wrap">
@@ -324,12 +324,10 @@
                 </div>
 				<?php
 			}
-
 			public function brand_description( $property = [] ): void {
-				$others      = array_key_exists( 'others', $property ) ? $property['others'] : '';
-				$others      = ! empty( $others ) ? json_decode( $others, true ) : [];
-				$description = array_key_exists( 'description', $others ) ? $others['description'] : '';
-				$brand       = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
+				$others      = json_decode( $property['others'] ?? '', true ) ?: [];
+				$description = $others['description'] ?? '';
+				$brand       = $property['brand'] ?? ''
 				?>
                 <div class="setting_item">
                     <div class="_f_equal_f_wrap">
@@ -350,51 +348,21 @@
                 </div>
 				<?php
 			}
-
 			public function property_price_qty( $property = [], $current_post_id = '' ): void {
-				$price_info  = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
-				$rent_rule   = array_key_exists( 'rent_rule', $property ) && $property['rent_rule'] ? $property['rent_rule'] : 'multi_day';
+				$rent_rules  = ABPRF_Layout::rent_rules_options();
+				$rent_rule   = ( $property['rent_rule'] ?? null ) ?: key( $rent_rules );
 				$rent_rule   = ! empty( $current_post_id ) ? ABPRF_Function::get_post_info( $current_post_id, 'rent_rule', 'multi_day' ) : $rent_rule;
-				$price_info  = ! empty( $price_info ) ? json_decode( $price_info, true ) : [];
-				$_price_info = ! empty( $price_info ) && array_key_exists( $rent_rule, $price_info ) ? $price_info[ $rent_rule ] : [];
+				$price_info  = json_decode( $property['price_qty_info'] ?? '', true ) ?: [];
+				$_price_info = $price_info[ $rent_rule ] ?? [];
 				/**************************/
-				$qty         = array_key_exists( 'qty', $_price_info ) ? $_price_info['qty'] : '';
-				$qty_reserve = array_key_exists( 'reserve', $_price_info ) ? $_price_info['reserve'] : '';
-				$qty_min     = array_key_exists( 'qty_min', $_price_info ) ? $_price_info['qty_min'] : '';
-				$qty_max     = array_key_exists( 'qty_min', $_price_info ) ? $_price_info['qty_min'] : '';
+				$qty         = $_price_info['qty'] ?? '';
+				$qty_reserve = $_price_info['reserve'] ?? '';
+				$qty_min     = $_price_info['qty_min'] ?? '';
+				$qty_max     = $_price_info['qty_min'] ?? '';
 				/**************************/
-				$deposit_info  = array_key_exists( 'deposit', $_price_info ) ? $_price_info['deposit'] : [];
-				$deposit_type  = is_array( $deposit_info ) && array_key_exists( 'type', $deposit_info ) ? $deposit_info['type'] : '';
-				$deposit_value = is_array( $deposit_info ) && array_key_exists( 'value', $deposit_info ) ? $deposit_info['value'] : '';
-				/**************************/
-				$hourly_info  = array_key_exists( 'hourly', $price_info ) ? $price_info['hourly'] : [];
-				$price_hourly = is_array( $hourly_info ) && array_key_exists( 'price', $hourly_info ) ? $hourly_info['price'] : '';
-				$min_hourly   = is_array( $hourly_info ) && array_key_exists( 'min', $hourly_info ) ? $hourly_info['min'] : '';
-				$max_hourly   = is_array( $hourly_info ) && array_key_exists( 'max', $hourly_info ) ? $hourly_info['max'] : '';
-				/**************************/
-				$daily_info  = array_key_exists( 'daily', $price_info ) ? $price_info['daily'] : [];
-				$price_daily = is_array( $daily_info ) && array_key_exists( 'price', $daily_info ) ? $daily_info['price'] : '';
-				$min_daily   = is_array( $daily_info ) && array_key_exists( 'min', $daily_info ) ? $daily_info['min'] : '';
-				$max_daily   = is_array( $daily_info ) && array_key_exists( 'max', $daily_info ) ? $daily_info['max'] : '';
-				/**************************/
-				$multi_day_info       = array_key_exists( 'multi_day', $price_info ) ? $price_info['multi_day'] : [];
-				$price_multi_day      = is_array( $multi_day_info ) && array_key_exists( 'price', $multi_day_info ) ? $multi_day_info['price'] : '';
-				$price_multi_day_hour = is_array( $multi_day_info ) && array_key_exists( 'price_multi', $multi_day_info ) ? $multi_day_info['price_multi'] : '';
-				$min_multi_day        = is_array( $multi_day_info ) && array_key_exists( 'min', $multi_day_info ) ? $multi_day_info['min'] : '';
-				$max_multi_day        = is_array( $multi_day_info ) && array_key_exists( 'max', $multi_day_info ) ? $multi_day_info['max'] : '';
-				/**************************/
-				$monthly_info  = array_key_exists( 'monthly', $price_info ) ? $price_info['monthly'] : [];
-				$price_monthly = is_array( $monthly_info ) && array_key_exists( 'price', $monthly_info ) ? $monthly_info['price'] : '';
-				$min_monthly   = is_array( $monthly_info ) && array_key_exists( 'min', $monthly_info ) ? $monthly_info['min'] : '';
-				$max_monthly   = is_array( $monthly_info ) && array_key_exists( 'max', $monthly_info ) ? $monthly_info['max'] : '';
-				/**************************/
-				$multi_month_info      = array_key_exists( 'multi_month', $price_info ) ? $price_info['multi_month'] : [];
-				$price_multi_month_day = is_array( $multi_month_info ) && array_key_exists( 'price_multi', $multi_month_info ) ? $multi_month_info['price_multi'] : '';
-				$price_multi_month     = is_array( $multi_month_info ) && array_key_exists( 'price', $multi_month_info ) ? $multi_month_info['price'] : '';
-				$min_multi_month       = is_array( $multi_month_info ) && array_key_exists( 'min', $multi_month_info ) ? $multi_month_info['min'] : '';
-				$max_multi_month       = is_array( $multi_month_info ) && array_key_exists( 'max', $multi_month_info ) ? $multi_month_info['max'] : '';
-				/**************************/
-				$rent_rules = ABPRF_Layout::rent_rules();
+				$deposit_info  = $_price_info['deposit'] ?? [];
+				$deposit_type  = $deposit_info['type'] ?? '';
+				$deposit_value = $deposit_info['value'] ?? '';
 				?>
                 <div class="setting_item span_2">
                     <div class=" _fj_between">
@@ -431,43 +399,53 @@
                                     </div>
                                 </th>
                                 <th>
-                                    <div data-close="#hourly" class=" <?php echo esc_attr( $rent_rule == 'hourly' ? 'rf_active' : '' ); ?>">
-                                        <div class="_f_equal _fj_center">
-                                            <span><?php esc_html_e( 'Hourly Rate', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Min Hours ', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Max Hours', 'abp-rentalforge' ); ?></span>
+									<?php if ( $rent_rules['hourly'] ?? '' ) { ?>
+                                        <div data-close="#hourly" class=" <?php echo esc_attr( $rent_rule == 'hourly' ? 'rf_active' : '' ); ?>">
+                                            <div class="_f_equal _fj_center">
+                                                <span><?php esc_html_e( 'Hourly Rate', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Min Hours ', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Max Hours', 'abp-rentalforge' ); ?></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div data-close="#daily" class=" <?php echo esc_attr( $rent_rule == 'daily' ? 'rf_active' : '' ); ?>">
-                                        <div class="_f_equal _fj_center">
-                                            <span><?php esc_html_e( 'Daily Rate', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Min Days ', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Max Days', 'abp-rentalforge' ); ?></span>
+									<?php } ?>
+									<?php if ( $rent_rules['daily'] ?? '' ) { ?>
+                                        <div data-close="#daily" class=" <?php echo esc_attr( $rent_rule == 'daily' ? 'rf_active' : '' ); ?>">
+                                            <div class="_f_equal _fj_center">
+                                                <span><?php esc_html_e( 'Daily Rate', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Min Days ', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Max Days', 'abp-rentalforge' ); ?></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div data-close="#multi_day" class=" <?php echo esc_attr( $rent_rule == 'multi_day' ? 'rf_active' : '' ); ?>">
-                                        <div class="_f_equal _fj_center">
-                                            <span><?php esc_html_e( 'Daily Rate', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Hourly Rate', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Min Days ', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Max Days', 'abp-rentalforge' ); ?></span>
+									<?php } ?>
+									<?php if ( $rent_rules['multi_day'] ?? '' ) { ?>
+                                        <div data-close="#multi_day" class=" <?php echo esc_attr( $rent_rule == 'multi_day' ? 'rf_active' : '' ); ?>">
+                                            <div class="_f_equal _fj_center">
+                                                <span><?php esc_html_e( 'Daily Rate', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Hourly Rate', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Min Days ', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Max Days', 'abp-rentalforge' ); ?></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div data-close="#monthly" class="<?php echo esc_attr( $rent_rule == 'monthly' ? 'rf_active' : '' ); ?>">
-                                        <div class="_f_equal _fj_center">
-                                            <span><?php esc_html_e( 'Monthly Rate', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Min Months ', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Max Months', 'abp-rentalforge' ); ?></span>
+									<?php } ?>
+									<?php if ( $rent_rules['monthly'] ?? '' ) { ?>
+                                        <div data-close="#monthly" class="<?php echo esc_attr( $rent_rule == 'monthly' ? 'rf_active' : '' ); ?>">
+                                            <div class="_f_equal _fj_center">
+                                                <span><?php esc_html_e( 'Monthly Rate', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Min Months ', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Max Months', 'abp-rentalforge' ); ?></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div data-close="#multi_month" class="<?php echo esc_attr( $rent_rule == 'multi_month' ? 'rf_active' : '' ); ?>">
-                                        <div class="_f_equal _fj_center">
-                                            <span><?php esc_html_e( 'Monthly Rate', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Daily Rate', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Min Months ', 'abp-rentalforge' ); ?></span>
-                                            <span><?php esc_html_e( 'Max Months', 'abp-rentalforge' ); ?></span>
+									<?php } ?>
+									<?php if ( $rent_rules['multi_month'] ?? '' ) { ?>
+                                        <div data-close="#multi_month" class="<?php echo esc_attr( $rent_rule == 'multi_month' ? 'rf_active' : '' ); ?>">
+                                            <div class="_f_equal _fj_center">
+                                                <span><?php esc_html_e( 'Monthly Rate', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Daily Rate', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Min Months ', 'abp-rentalforge' ); ?></span>
+                                                <span><?php esc_html_e( 'Max Months', 'abp-rentalforge' ); ?></span>
+                                            </div>
                                         </div>
-                                    </div>
+									<?php } ?>
                                 </th>
                             </tr>
                             </thead>
@@ -509,73 +487,105 @@
 									<?php ABPRF_Layout::info_text( 'deposit_type' ); ?>
                                 </th>
                                 <th>
-                                    <div data-close="#hourly" class=" <?php echo esc_attr( $rent_rule == 'hourly' ? 'rf_active' : '' ); ?>">
-                                        <div class="_group_content">
-                                            <label><input type="text" class="_form_control validation_price" name="price_hourly" placeholder="Ex: 10" value="<?php echo esc_attr( $price_hourly ); ?>"/></label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_hourly" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_hourly ); ?>"/>
-                                            </label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_hourly" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_hourly ); ?>"/>
-                                            </label>
+									<?php if ( $rent_rules['hourly'] ?? '' ) {
+										$hourly_info  = $price_info['hourly'] ?? [];
+										$price_hourly = $hourly_info['price'] ?? '';
+										$min_hourly   = $hourly_info['min'] ?? '';
+										$max_hourly   = $hourly_info['max'] ?? ''; ?>
+                                        <div data-close="#hourly" class=" <?php echo esc_attr( $rent_rule == 'hourly' ? 'rf_active' : '' ); ?>">
+                                            <div class="_group_content">
+                                                <label><input type="text" class="_form_control validation_price" name="price_hourly" placeholder="Ex: 10" value="<?php echo esc_attr( $price_hourly ); ?>"/></label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_hourly" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_hourly ); ?>"/>
+                                                </label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_hourly" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_hourly ); ?>"/>
+                                                </label>
+                                            </div>
+                                            <div class="_divider_xxs"></div>
+											<?php ABPRF_Layout::info_text( 'hourly_min_max' ); ?>
                                         </div>
-                                        <div class="_divider_xxs"></div>
-										<?php ABPRF_Layout::info_text( 'hourly_min_max' ); ?>
-                                    </div>
-                                    <div data-close="#daily" class=" <?php echo esc_attr( $rent_rule == 'daily' ? 'rf_active' : '' ); ?>">
-                                        <div class="_group_content">
-                                            <label><input type="text" class="_form_control validation_price" name="price_daily" placeholder="Ex: 10" value="<?php echo esc_attr( $price_daily ); ?>"/></label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_daily" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_daily ); ?>"/>
-                                            </label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_daily" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_daily ); ?>"/>
-                                            </label>
+									<?php } ?>
+									<?php if ( $rent_rules['daily'] ?? '' ) {
+										$daily_info  = $price_info['daily'] ?? [];
+										$price_daily = $daily_info['price'] ?? '';
+										$min_daily   = $daily_info['min'] ?? '';
+										$max_daily   = $daily_info['max'] ?? ''; ?>
+                                        <div data-close="#daily" class=" <?php echo esc_attr( $rent_rule == 'daily' ? 'rf_active' : '' ); ?>">
+                                            <div class="_group_content">
+                                                <label><input type="text" class="_form_control validation_price" name="price_daily" placeholder="Ex: 10" value="<?php echo esc_attr( $price_daily ); ?>"/></label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_daily" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_daily ); ?>"/>
+                                                </label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_daily" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_daily ); ?>"/>
+                                                </label>
+                                            </div>
+                                            <div class="_divider_xxs"></div>
+											<?php ABPRF_Layout::info_text( 'daily_min_max' ); ?>
                                         </div>
-                                        <div class="_divider_xxs"></div>
-										<?php ABPRF_Layout::info_text( 'daily_min_max' ); ?>
-                                    </div>
-                                    <div data-close="#multi_day" class=" <?php echo esc_attr( $rent_rule == 'multi_day' ? 'rf_active' : '' ); ?>">
-                                        <div class="_group_content">
-                                            <label><input type="text" class="_form_control validation_price" name="price_multi_day" placeholder="Ex: 10" value="<?php echo esc_attr( $price_multi_day ); ?>"/></label>
-                                            <label><input type="text" class="_form_control validation_price" name="price_multi_day_price" placeholder="Ex: 10" value="<?php echo esc_attr( $price_multi_day_hour ); ?>"/></label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_multi_day" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_multi_day ); ?>"/>
-                                            </label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_multi_day" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_multi_day ); ?>"/>
-                                            </label>
+									<?php } ?>
+									<?php if ( $rent_rules['multi_day'] ?? '' ) {
+										$multi_day_info       = $price_info['multi_day'] ?? [];
+										$price_multi_day      = $multi_day_info['price'] ?? '';
+										$price_multi_day_hour = $multi_day_info['price_multi'] ?? '';
+										$min_multi_day        = $multi_day_info['min'] ?? '';
+										$max_multi_day        = $multi_day_info['max'] ?? ''; ?>
+                                        <div data-close="#multi_day" class=" <?php echo esc_attr( $rent_rule == 'multi_day' ? 'rf_active' : '' ); ?>">
+                                            <div class="_group_content">
+                                                <label><input type="text" class="_form_control validation_price" name="price_multi_day" placeholder="Ex: 10" value="<?php echo esc_attr( $price_multi_day ); ?>"/></label>
+                                                <label><input type="text" class="_form_control validation_price" name="price_multi_day_price" placeholder="Ex: 10" value="<?php echo esc_attr( $price_multi_day_hour ); ?>"/></label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_multi_day" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_multi_day ); ?>"/>
+                                                </label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_multi_day" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_multi_day ); ?>"/>
+                                                </label>
+                                            </div>
+                                            <div class="_divider_xxs"></div>
+											<?php ABPRF_Layout::info_text( 'daily_min_max' ); ?>
                                         </div>
-                                        <div class="_divider_xxs"></div>
-										<?php ABPRF_Layout::info_text( 'daily_min_max' ); ?>
-                                    </div>
-                                    <div data-close="#monthly" class=" <?php echo esc_attr( $rent_rule == 'monthly' ? 'rf_active' : '' ); ?>">
-                                        <div class="_group_content">
-                                            <label><input type="text" class="_form_control validation_price" name="price_monthly" placeholder="Ex: 10" value="<?php echo esc_attr( $price_monthly ); ?>"/></label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_monthly" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_monthly ); ?>"/>
-                                            </label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_monthly" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_monthly ); ?>"/>
-                                            </label>
+									<?php } ?>
+									<?php if ( $rent_rules['monthly'] ?? '' ) {
+										$monthly_info  = $price_info['monthly'] ?? [];
+										$price_monthly = $monthly_info['price'] ?? '';
+										$min_monthly   = $monthly_info['min'] ?? '';
+										$max_monthly   = $monthly_info['max'] ?? ''; ?>
+                                        <div data-close="#monthly" class=" <?php echo esc_attr( $rent_rule == 'monthly' ? 'rf_active' : '' ); ?>">
+                                            <div class="_group_content">
+                                                <label><input type="text" class="_form_control validation_price" name="price_monthly" placeholder="Ex: 10" value="<?php echo esc_attr( $price_monthly ); ?>"/></label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_monthly" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_monthly ); ?>"/>
+                                                </label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_monthly" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_monthly ); ?>"/>
+                                                </label>
+                                            </div>
+                                            <div class="_divider_xxs"></div>
+											<?php ABPRF_Layout::info_text( 'monthly_min_max' ); ?>
                                         </div>
-                                        <div class="_divider_xxs"></div>
-										<?php ABPRF_Layout::info_text( 'monthly_min_max' ); ?>
-                                    </div>
-                                    <div data-close="#multi_month" class=" <?php echo esc_attr( $rent_rule == 'multi_month' ? 'rf_active' : '' ); ?>">
-                                        <div class="_group_content">
-                                            <label><input type="text" class="_form_control validation_price" name="price_multi_month" placeholder="Ex: 10" value="<?php echo esc_attr( $price_multi_month ); ?>"/></label>
-                                            <label><input type="text" class="_form_control validation_price" name="price_multi_month_price" placeholder="Ex: 10" value="<?php echo esc_attr( $price_multi_month_day ); ?>"/></label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_multi_month" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_multi_month ); ?>"/>
-                                            </label>
-                                            <label>
-                                                <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_multi_month" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_multi_month ); ?>"/>
-                                            </label>
+									<?php } ?>
+									<?php if ( $rent_rules['multi_month'] ?? '' ) {
+										$multi_month_info      = $price_info['multi_month'] ?? [];
+										$price_multi_month_day = $multi_month_info['price_multi'] ?? '';
+										$price_multi_month     = $multi_month_info['price'] ?? '';
+										$min_multi_month       = $multi_month_info['min'] ?? '';
+										$max_multi_month       = $multi_month_info['max'] ?? ''; ?>
+                                        <div data-close="#multi_month" class=" <?php echo esc_attr( $rent_rule == 'multi_month' ? 'rf_active' : '' ); ?>">
+                                            <div class="_group_content">
+                                                <label><input type="text" class="_form_control validation_price" name="price_multi_month" placeholder="Ex: 10" value="<?php echo esc_attr( $price_multi_month ); ?>"/></label>
+                                                <label><input type="text" class="_form_control validation_price" name="price_multi_month_price" placeholder="Ex: 10" value="<?php echo esc_attr( $price_multi_month_day ); ?>"/></label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="min_multi_month" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $min_multi_month ); ?>"/>
+                                                </label>
+                                                <label>
+                                                    <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="max_multi_month" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_multi_month ); ?>"/>
+                                                </label>
+                                            </div>
+                                            <div class="_divider_xxs"></div>
+											<?php ABPRF_Layout::info_text( 'monthly_min_max' ); ?>
                                         </div>
-                                        <div class="_divider_xxs"></div>
-										<?php ABPRF_Layout::info_text( 'monthly_min_max' ); ?>
-                                    </div>
+									<?php } ?>
                                 </th>
                             </tr>
                             </tbody>
@@ -584,19 +594,44 @@
                 </div>
 				<?php
 			}
-
 			public function features( $property = [] ): void {
-				$features = array_key_exists( 'features', $property ) ? $property['features'] : '';
 				?>
-                <div class="setting_item span_2">
+                <div class="setting_item span_2 ">
                     <h5 class="_abprf_color_theme"><?php esc_html_e( 'Feature Configuration', 'abp-rentalforge' ); ?></h5>
 					<?php ABPRF_Layout::info_text( 'property_feature' ); ?>
                     <div class="_divider_xs"></div>
-                    <div class="feature_selection"><?php ABPRF_Feature::feature_selection( $features ); ?></div>
+                    <div class="feature_selection_area">
+                        <div class="feature_selected">
+                            <input type="hidden" name="feature" value="<?php echo esc_attr( $property['features'] ?? '' ); ?>"/>
+                            <div class="selected_list"></div>
+                        </div>
+                        <div class="feature_selection"></div>
+                    </div>
+                    <div class="configuration_content _mar_t_xs">
+                        <div class="form_area">
+                            <div class="hide_on_load">
+                                <table class="_abprf ">
+                                    <tbody class="insertable_area sortable_area">
+                                    </tbody>
+                                </table>
+                                <div class="_divider_xs"></div>
+                            </div>
+                            <div class="_fj_between">
+								<?php ABPRF_Layout::button_add_xs( __( 'Add New Feature', 'abp-rentalforge' ) ); ?>
+                                <button type="button" class="_btn_theme_xs hide_on_load save_feature"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
+                            </div>
+                        </div>
+                        <div class="abprf_d_none">
+                            <table class="_abprf">
+                                <tbody class="hidden_content">
+								<?php ABPRF_Feature::form_feature(); ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 				<?php
 			}
-
 			public function gallery( $property = [] ): void {
 				$sliders = array_key_exists( 'gallery', $property ) ? $property['gallery'] : '';
 				?>
@@ -608,7 +643,6 @@
                 </div>
 				<?php
 			}
-
 			//===========================//
 			public function save_property() {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
@@ -624,7 +658,7 @@
 				$rent_rule   = isset( $_POST['rent_rule'] ) ? sanitize_text_field( wp_unslash( $_POST['rent_rule'] ) ) : '';
 				$_rent_rule  = ! empty( $post_id ) ? ABPRF_Function::get_post_info( $post_id, 'rent_rule' ) : '';
 				$rent_rule   = ! empty( $_rent_rule ) ? $_rent_rule : $rent_rule;
-				$rent_rules  = ABPRF_Layout::rent_rules();
+				$rent_rules  = ABPRF_Layout::rent_rules_options();
 				if ( $name && $rent_rule ) {
 					$price_info    = [];
 					$rent_continue = isset( $_POST['rent_continue'] ) ? sanitize_text_field( wp_unslash( $_POST['rent_continue'] ) ) : 'on';
@@ -704,7 +738,6 @@
 				wp_send_json_success( [ 'html' => $html, 'msg' => $msg ] );
 				wp_die();
 			}
-
 			public function add_property() {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
@@ -754,7 +787,6 @@
 				$html = ob_get_clean();
 				wp_send_json_success( [ 'html' => $html, 'msg' => __( 'Property Form Loaded Successfully .....! ', 'abp-rentalforge' ) ] );
 			}
-
 			public function reload_property_list() {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
@@ -770,7 +802,6 @@
 				$table_html = ob_get_clean();
 				wp_send_json_success( [ 'html' => $table_html, 'msg' => __( 'Property List Loaded successfully...... !! ', 'abp-rentalforge' ) ] );
 			}
-
 			public function property_delete() {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );

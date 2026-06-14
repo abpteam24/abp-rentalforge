@@ -12,7 +12,6 @@
 				add_action( 'abprf_add_image_multiple', array( $this, 'add_image_multi' ), 10, 2 );
 				add_action( 'abprf_add_image_icon', array( $this, 'selection_icon_image' ), 10, 3 );
 			}
-
 			public function load_date_picker( $selector, $dates ): void {
 				if ( empty( $dates ) || ! is_array( $dates ) ) {
 					return;
@@ -26,7 +25,6 @@
                         ";
 				wp_add_inline_script( 'jquery-ui-datepicker', $inline_js );
 			}
-
 			public static function create_datepicker_array( $dates ): array {
 				$start_date  = current( $dates );
 				$start_year  = (int) gmdate( 'Y', strtotime( $start_date ) );
@@ -53,14 +51,12 @@
 					'txtUnavail' => esc_js( __( 'Unavailable', 'abp-rentalforge' ) )
 				];
 			}
-
 			//==============================//
 			public static function load_admin_globally(): void {
 				ABPRF_Layout::popup_empty( '#abprf_global_popup' );
 				ABPRF_Layout::icon_popup(); ?>
 				<?php
 			}
-
 			//==============================//
 			public static function button_add( $button_text, $class = '', $button_class = '', $icon_class = '', $change_input_name = '' ): void {
 				$class        = $class ?: 'add_new_hook';
@@ -72,7 +68,6 @@
                 </button>
 				<?php
 			}
-
 			public static function button_add_xs( $button_text, $class = '', $button_class = '' ): void {
 				$class        = $class ?: 'add_new_hook';
 				$button_class = $button_class ?: '_btn_default_xs';
@@ -82,7 +77,6 @@
                 </button>
 				<?php
 			}
-
 			public static function button_delete_sort_edit(): void {
 				?>
                 <div class="_all_center">
@@ -96,7 +90,6 @@
                 </div>
 				<?php
 			}
-
 			public static function button_delete_sort(): void {
 				?>
                 <div class="_all_center">
@@ -109,7 +102,6 @@
                 </div>
 				<?php
 			}
-
 			public static function button_edit( $class_edit = 'edit_hook' ): void {
 				?>
                 <button class="_btn_navy_blue_xs <?php echo esc_attr( $class_edit ); ?>" type="button" title="<?php esc_attr_e( 'Edit This Item', 'abp-rentalforge' ); ?>">
@@ -117,7 +109,6 @@
                 </button>
 				<?php
 			}
-
 			public static function button_delete( $class = 'delete_hook' ): void {
 				?>
                 <button class="_btn_danger_xs <?php echo esc_attr( $class ); ?>" type="button" title="<?php esc_attr_e( 'Delete This Item', 'abp-rentalforge' ); ?>">
@@ -125,7 +116,6 @@
                 </button>
 				<?php
 			}
-
 			public static function button_sort(): void {
 				?>
                 <div class="_btn_warning_xs sortable_handle" type="button" title="<?php esc_attr_e( 'Move This Item', 'abp-rentalforge' ); ?>">
@@ -133,20 +123,17 @@
                 </div>
 				<?php
 			}
-
 			//=============================//
 			public static function popup_button( $target_popup_id, $text ): void {
 				?>
                 <button type="button" class="_btn_default_bg_blue" data-target-popup="<?php echo esc_attr( $target_popup_id ); ?>"><span class="fas fa-plus-square"></span> <?php echo esc_html( $text ); ?></button>
 				<?php
 			}
-
 			public static function popup_button_xs( $target_popup_id, $text ): void {
 				?>
                 <button type="button" class="_btn_default_xs_bg_blue" data-target-popup="<?php echo esc_attr( $target_popup_id ); ?>"><span class="fas fa-plus-square"></span> <?php echo esc_html( $text ); ?></button>
 				<?php
 			}
-
 			public static function popup_empty( $target_popup_id, $class = '' ): void {
 				?>
                 <div class="abprf_popup <?php echo esc_attr( $class ); ?>" data-popup="<?php echo esc_attr( $target_popup_id ); ?>">
@@ -157,7 +144,6 @@
                 </div>
 				<?php
 			}
-
 			public static function icon_popup(): void {
 				?>
                 <div class="popup_icon abprf_popup" data-popup="#abprf_popup_icon">
@@ -180,7 +166,6 @@
                 </div>
 				<?php
 			}
-
 			//=============================//
 			public static function info_text( $key = '', $data = '' ): void {
 				$data = empty( $data ) ? ABPRF_Layout::array_info( $key ) : $data;
@@ -193,21 +178,18 @@
 					<?php
 				}
 			}
-
 			public static function layout_warning_info( $key ): void {
 				$data = ABPRF_Layout::array_info( $key );
 				if ( $data ) {
 					echo '<div class="_section_bg_warning_mar_zero"><h4 class="_abprf_text_center_color_white">' . esc_html( $data ) . '</h4></div>';
 				}
 			}
-
 			public static function layout_warning_info_xs( $key ): void {
 				$data = ABPRF_Layout::array_info( $key );
 				if ( $data ) {
 					echo '<div class="_abprf_text_center_color_white_bg_warning_padding_xxs_fs_label">' . esc_html( $data ) . '</div>';
 				}
 			}
-
 			public static function image( $post_id = '', $image_id = '', $url = '', $class = '' ): void {
 				$image_url = ( $post_id > 0 || $image_id ) ? ABPRF_Function::get_image_url( $post_id, $image_id ) : $url;
 				$post_url  = $post_id > 0 ? get_the_permalink( $post_id ) : '';
@@ -220,7 +202,6 @@
 					<?php
 				}
 			}
-
 			public static function image_icon( $icon_image, $class = '' ): void {
 				if ( ! empty( $icon_image ) ) {
 					$icon = $image = $emoji = '';
@@ -238,7 +219,6 @@
 					<?php }
 				}
 			}
-
 			public static function on(): bool|string {
 				ob_start();
 				?>
@@ -246,7 +226,6 @@
 				<?php
 				return ob_get_clean();
 			}
-
 			public static function off(): bool|string {
 				ob_start();
 				?>
@@ -254,7 +233,6 @@
 				<?php
 				return ob_get_clean();
 			}
-
 			//==============Input field===============//
 			public static function input_dropdown( $infos, $icon = '' ): void {
 				if ( is_array( $infos ) && sizeof( $infos ) > 0 ) {
@@ -270,7 +248,6 @@
 					<?php
 				}
 			}
-
 			public static function quantity_input( $input_info = [] ): void {
 				$name        = array_key_exists( 'name', $input_info ) ? $input_info['name'] : '';
 				$price       = array_key_exists( 'price', $input_info ) ? $input_info['price'] : 0;
@@ -299,7 +276,6 @@
 					}
 				}
 			}
-
 			public static function switch_checkbox( $name, $value = '' ): void {
 				$value = in_array( $value, [ 'on', 'off', '' ], true ) ? $value : '';
 				?>
@@ -308,7 +284,6 @@
                 </div>
 				<?php
 			}
-
 			public static function input_title( $label = '', $required = '' ): void {
 				if ( $label ) { ?>
                     <span class="_mar_b_xxs">
@@ -320,7 +295,6 @@
 					<?php
 				}
 			}
-
 			public static function input_date( $name, $date = '', $label = '', $required = '' ): void {
 				$date_format  = ABPRF_Function::date_format_php();
 				$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
@@ -335,7 +309,6 @@
                 </label>
 				<?php
 			}
-
 			public static function input_time( $name, $time = '', $label = '', $required = '' ): void {
 				?>
                 <label class="_input_item">
@@ -345,7 +318,6 @@
                 </label>
 				<?php
 			}
-
 			public static function textarea( $name, $value = '', $label = '', $required = '' ): void {
 				?>
                 <label class="abprf_textarea _input_item">
@@ -354,7 +326,6 @@
                 </label>
 				<?php
 			}
-
 			public static function select( $name, $value = '', $label = '', $required = '', $options = [] ): void {
 				if ( is_array( $options ) && sizeof( $options ) > 0 ) {
 					?>
@@ -370,7 +341,6 @@
 					<?php
 				}
 			}
-
 			public static function checkbox( $name, $value = '', $label = '', $required = '', $options = [] ): void {
 				if ( is_array( $options ) && sizeof( $options ) > 0 ) {
 					?>
@@ -390,7 +360,6 @@
 					<?php
 				}
 			}
-
 			public static function radio( $name, $value = '', $label = '', $required = '', $options = [] ): void {
 				if ( is_array( $options ) && sizeof( $options ) > 0 ) {
 					?>
@@ -410,7 +379,6 @@
 					<?php
 				}
 			}
-
 			//=============Add  Image / Icon================//
 			public function load_icon( $name, $value = '' ): void {
 				$button_active_class = $value ? '_d_none' : '';
@@ -434,7 +402,6 @@
                 </div>
 				<?php
 			}
-
 			public function add_single_image( $name, $image_id = '' ): void {
 				?>
                 <div class="add_image">
@@ -451,7 +418,6 @@
                 </div>
 				<?php
 			}
-
 			public function add_image_multi( $name, $images ): void {
 				$images = is_array( $images ) ? ABPRF_Function::array_to_string( $images ) : $images;
 				?>
@@ -477,7 +443,6 @@
                 </div>
 				<?php
 			}
-
 			public function selection_icon_image( $name, $value = '' ): void {
 				$icon = $image = $emoji = '';
 				if ( is_numeric( $value ) ) {
@@ -510,14 +475,12 @@
                 </div>
 				<?php
 			}
-
 			//=============static array================//
 			public static function status_text( $status ): string {
 				$status_array = wc_get_order_statuses();
 
 				return array_key_exists( $status, $status_array ) ? $status_array[ $status ] : '';
 			}
-
 			public static function book_status_text( $key ) {
 				$rules = [
 					'0' => __( 'Pending', 'abp-rentalforge' ),
@@ -531,19 +494,18 @@
 
 				return ! empty( $key ) && array_key_exists( $key, $rules ) ? $rules[ $key ] : $key;
 			}
-
 			public static function get_book_status( $order_id, $start_time, $end_time, $book_status ): int {
 				$now = current_time( 'Y-m-d H:i:s' );
 				if ( ! empty( $book_status ) && $book_status < 5 && $book_status > 0 ) {
 					$_book_status = 0;
-					if ( strtotime( $now ) < strtotime( $start_time )) {
+					if ( strtotime( $now ) < strtotime( $start_time ) ) {
 						$_book_status = $book_status;
 					} elseif ( strtotime( $now ) > strtotime( $start_time ) && strtotime( $now ) < strtotime( $end_time ) ) {
 						$_book_status = 2;
-					}elseif ( strtotime( $now ) > strtotime( $start_time ) && strtotime( $now )> strtotime( $end_time ) ) {
+					} elseif ( strtotime( $now ) > strtotime( $start_time ) && strtotime( $now ) > strtotime( $end_time ) ) {
 						$_book_status = 3;
 					}
-					if ( $_book_status > $book_status) {
+					if ( $_book_status > $book_status ) {
 						$book_status = $_book_status;
 						global $wpdb;
 						$table_name    = $wpdb->prefix . 'abprf_orders';
@@ -562,7 +524,6 @@
 
 				return $book_status;
 			}
-
 			public static function week_day(): array {
 				return [
 					'monday' => __( 'Monday', 'abp-rentalforge' ),
@@ -574,7 +535,6 @@
 					'sunday' => __( 'Sunday', 'abp-rentalforge' ),
 				];
 			}
-
 			public static function date_option_rules(): array {
 				$rules = [
 					'weekend' => __( 'Weekend', 'abp-rentalforge' ),
@@ -586,7 +546,18 @@
 
 				return apply_filters( 'abprf_filter_rent_rule', $rules );
 			}
+			public static function rent_rules_options(): array {
+				$options    = ( ABPRF_On_Off['rent_rule'] ?? null ) ?: self::rent_rules_string();
+				$options    = ! empty( $options ) ? explode( ',', $options ) : [];
+				$rent_rules = [];
+				foreach ( $options as $option ) {
+					if ( ! empty( $option ) ) {
+						$rent_rules[ $option ] = self::rent_rules( $option );
+					}
+				}
 
+				return $rent_rules;
+			}
 			public static function rent_rules( $key = '' ) {
 				$rules = [
 					'hourly' => __( 'Hourly Rate', 'abp-rentalforge' ),
@@ -599,7 +570,9 @@
 
 				return ! empty( $key ) && array_key_exists( $key, $rules ) ? $rules[ $key ] : $rules;
 			}
-
+			public static function rent_rules_string() {
+				return apply_filters( 'abprf_filter_rent_rule_string', 'hourly,daily,multi_day,monthly,multi_month' );
+			}
 			public static function per_rent_rules( $key = '' ) {
 				$rules = [
 					'hourly' => __( '/hr', 'abp-rentalforge' ),
@@ -612,7 +585,6 @@
 
 				return ! empty( $key ) && array_key_exists( $key, $rules ) ? $rules[ $key ] : $rules;
 			}
-
 			public static function rent_rules_sin_plu( $key = '' ) {
 				$rules = [
 					'hourly' => [ 'sin' => __( 'Hour', 'abp-rentalforge' ), 'plu' => __( 'Hours', 'abp-rentalforge' ) ],
@@ -625,7 +597,6 @@
 
 				return ! empty( $key ) && array_key_exists( $key, $rules ) ? $rules[ $key ] : $rules;
 			}
-
 			public static function array_date_format(): array {
 				$current_date = current_time( 'Y-m-d' );
 
@@ -644,7 +615,6 @@
 					'D M d , yy' => date_i18n( 'D M  j, Y', strtotime( $current_date ) ),
 				];
 			}
-
 			public static function array_info( $key ) {
 				$current_date = current_time( 'Y-m-d H:i' );
 				$des          = array(
@@ -755,7 +725,6 @@
 
 				return $des[ $key ];
 			}
-
 			public static function static_form( $key = '' ): array {
 				$form['pass_name']    = [ 'type' => 'text', 'required' => 'on', 'label' => __( 'First Name', 'abp-rentalforge' ) ];
 				$form['pass_name_2']  = [ 'type' => 'text', 'required' => 'on', 'label' => __( 'Last Name', 'abp-rentalforge' ) ];
@@ -767,7 +736,6 @@
 
 				return $key && array_key_exists( $key, $form ) ? $form[ $key ] : $form;
 			}
-
 			public static function static_additional(): array {
 				return [
 					'additional_service_1' => [ 'icon' => 'fas fa-helmet-un', 'name' => 'Helmet', 'qty' => 50, 'max_qty' => 1, 'price' => 0, 'returnable' => 'yes', 'description' => '1x Safety Helmet per order. Keep your head protected at no extra cost. Your safety is our priority!', ],
@@ -776,7 +744,6 @@
 					'additional_service_4' => [ 'icon' => 'fas fa-shoe-prints', 'name' => 'Shoes', 'qty' => 100, 'price' => 1.00, 'returnable' => 'yes', 'description' => 'Multiple Size available', ]
 				];
 			}
-
 			public static function static_feature(): array {
 				return [
 					'fec_id_1' => [ 'icon' => '⛽', 'label' => 'Fuel Type', 'value' => 'Electric' ],
@@ -795,7 +762,6 @@
 					'fec_id_14' => [ 'icon' => 'fas fa-suitcase', 'label' => 'Boot Space', 'value' => '400L' ]
 				];
 			}
-
 			//=============================//
 			public static function location_select( $post_id = '', $location = '' ): void {
 				$all_locations = ABPRF_Locations;
@@ -826,7 +792,6 @@
 					}
 				}
 			}
-
 			public static function rent_start_month( $all_dates ): void {
 				if ( sizeof( $all_dates ) > 0 ) {
 					?>
@@ -846,7 +811,6 @@
 					esc_html_e( 'Month Configuration not complete', 'abp-rentalforge' );
 				}
 			}
-
 			public static function rent_end_month( $post_id, $start_date ): void {
 				$all_dates = ABPRF_Function::get_end_month( $post_id, $start_date );
 				//echo '<pre>';print_r($all_dates);echo '</pre>';
@@ -868,7 +832,6 @@
 					esc_html_e( 'Month Configuration not complete', 'abp-rentalforge' );
 				}
 			}
-
 			public static function rent_start_date( $all_dates, $date = '', $post_id = '' ): void {
 				//echo '<pre>';print_r($all_dates);					echo '</pre>';
 				if ( sizeof( $all_dates ) > 0 ) {
@@ -905,7 +868,6 @@
 					}
 				}
 			}
-
 			public static function rent_end_date( $all_dates, $post_id = '' ): void {
 				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
@@ -941,7 +903,6 @@
 					}
 				}
 			}
-
 			public static function title( $post_id ): void {
 				$post_sku = ABPRF_Function::get_post_info( $post_id, 'post_sku' );
 				echo esc_html( get_the_title( $post_id ) ); ?>
@@ -952,7 +913,6 @@
                 </p>
 				<?php
 			}
-
 			public static function item_feature( $features = '' ): void {
 				$features      = ! empty( $features ) ? explode( ',', $features ) : [];
 				$abprf_feature = ABPRF_Features;
@@ -981,7 +941,6 @@
                     </div>
 				<?php }
 			}
-
 			public static function item_condition( $rent_rule, $price_info ): string {
 				$condition = '';
 				$min       = array_key_exists( 'min', $price_info ) ? $price_info['min'] : '';
@@ -1018,7 +977,6 @@
 
 				return $condition;
 			}
-
 			public static function item_deposit( $price_info ): void {
 				$deposit_info  = array_key_exists( 'deposit', $price_info ) ? $price_info['deposit'] : [];
 				$deposit_type  = is_array( $deposit_info ) && array_key_exists( 'type', $deposit_info ) ? $deposit_info['type'] : '';
@@ -1042,7 +1000,6 @@
 					?></div><?php
 				}
 			}
-
 			public static function item_price( $post_id, $rent_rule, $price_info ): void {
 				?>
                 <span class="price_label"><?php echo esc_html( ABPRF_Layout::rent_rules( $rent_rule ) ); ?></span>
@@ -1065,7 +1022,6 @@
                     </span>
 				<?php
 			}
-
 			public static function item_cost( $abprf_infos, $price_info, $total_price, $time_duration ): void {
 				$rent_rule = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : '';
 				$date_info = array_key_exists( 'date_info', $abprf_infos ) ? $abprf_infos['date_info'] : '';
@@ -1085,7 +1041,6 @@
                 </div>
 				<?php
 			}
-
 			public static function item_select_property( $abprf_infos, $price_info, $total_price = 0 ): void {
 				$post_id       = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : '';
 				$property_id   = array_key_exists( 'property_id', $abprf_infos ) ? $abprf_infos['property_id'] : '';
@@ -1132,7 +1087,6 @@
 					ABPRF_Layout::layout_warning_info_xs( 'property_not_available' );
 				}
 			}
-
 			public static function create_client_form( $form, $name ): void {
 				$type             = array_key_exists( 'type', $form ) ? $form['type'] : '';
 				$required         = array_key_exists( 'required', $form ) && $form['required'] == 'on' ? 'required' : '';
@@ -1171,7 +1125,6 @@
 					ABPRF_Layout::radio( $name, $d_value, $label, $required, $options );
 				}
 			}
-
 			//=============================//
 			public static function ticket_info( $ticket_infos ): void {
 				if ( ! empty( $ticket_infos ) && is_array( $ticket_infos ) ) { ?>
@@ -1192,7 +1145,6 @@
                     </ul>
 				<?php }
 			}
-
 			public static function additional_info( $additional_infos ): void {
 				if ( ! empty( $additional_infos ) && is_array( $additional_infos ) ) { ?>
                     <ul class=" _abprf">
@@ -1218,7 +1170,6 @@
                     </ul>
 				<?php }
 			}
-
 			public static function client_info( $passenger_infos ): void {
 				if ( ! empty( $passenger_infos ) && is_array( $passenger_infos ) ) { ?>
                     <ul class=" _abprf">
@@ -1237,7 +1188,6 @@
                     </ul>
 				<?php }
 			}
-
 			public static function billing_info( $booking_list ): void {
 				if ( ! empty( $booking_list ) ) {
 					$billing_name    = $booking_list['billing_name'] ?? '';
@@ -1262,7 +1212,6 @@
 					<?php
 				}
 			}
-
 			//=============================//
 			public static function filter_post_list( $post_id = 0 ): void {
 				$label        = ABPRF_Function::label();
@@ -1303,7 +1252,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_booking_date(): void {
 				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
@@ -1318,7 +1266,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_order_date(): void {
 				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
@@ -1333,7 +1280,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_booking_date_between(): void {
 				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
@@ -1355,7 +1301,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_order_date_between(): void {
 				$date_format = ABPRF_Function::date_format_php();
 				$now         = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
@@ -1377,7 +1322,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_user_id(): void {
 				$all_users = get_users( array(
 					'fields' => array( 'ID', 'display_name' ),
@@ -1403,7 +1347,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_order_id(): void {
 				?>
                 <div class="_input_item " data-collapse="#view_more_filter_option">
@@ -1414,7 +1357,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_bill_name(): void {
 				?>
                 <div class="_input_item " data-collapse="#view_more_filter_option">
@@ -1425,7 +1367,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_bill_email(): void {
 				?>
                 <div class="_input_item " data-collapse="#view_more_filter_option">
@@ -1436,7 +1377,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_bill_phone(): void {
 				?>
                 <div class="_input_item " data-collapse="#view_more_filter_option">
@@ -1447,7 +1387,6 @@
                 </div>
 				<?php
 			}
-
 			public static function filter_location(): void {
 				$all_locations = ABPRF_Locations;
 				if ( ! empty( $all_locations ) ) {
