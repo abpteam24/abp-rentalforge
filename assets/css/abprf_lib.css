@@ -220,6 +220,7 @@
 	div.abprf_area [class*="_fa_center"] { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; }
 	div.abprf_area [class*="_fa_baseline"] { display: -webkit-flex; display: flex; -webkit-align-items: baseline; align-items: baseline; }
 	div.abprf_area [class*="_fa_start"] { display: -webkit-flex; display: flex; -webkit-align-items: flex-start; align-items: flex-start; }
+	div.abprf_area [class*="_fa_end"] { display: -webkit-flex; display: flex; -webkit-align-items: flex-end; align-items: flex-end; }
 	div.abprf_area [class*="_ff_column"] { display: -webkit-flex; display: flex; -webkit-flex-flow: column; flex-flow: column; }
 	div.abprf_area [class*="_fd_column"] { display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; }
 	/*=============================*/
@@ -467,12 +468,12 @@
 	div.abprf_area label[class*="_fd_column"] { -webkit-align-items: flex-start; align-items: flex-start;}
 	div.abprf_area label span { white-space: nowrap }
 	div.abprf_area label[class*="_fd_column"] span {margin: 0 0 var(--rf_gap_xs) 0; }
-	div.abprf_area [class*="_form_control"]:focus {outline: 1px solid var(--rf_color_theme_88);}
+	div.abprf_area [class*="_form_control"]:focus {outline: 1px solid var(--rf_color_theme);}
 	div.abprf_area [class*="_form_control"][class*="_w_min_auto"] {min-width: auto;}
 	/*=============================*/
 	div.abprf_area [class*="_form_control"] {
 		width: 100%; height: auto; min-width: auto; max-width: inherit; min-height: 40px; border: 1px solid var(--rf_color_border);font-family: inherit; line-height: 1.5; margin: 0;-webkit-border-radius: var(--rf_br); border-radius: var(--rf_br);
-		padding: var(--rf_gap_xxs) var(--rf_gap_xs); font-size: var(--rf_fs); color: var(--rf_color_default); background-color: var(--rf_color_white);
+		padding: var(--rf_gap_xxs) var(--rf_gap_xs); font-size: var(--rf_fs); color: var(--rf_color_default); background-color: var(--rf_color_white);box-shadow: none;
 		display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-flex-wrap: nowrap; flex-wrap: nowrap;
 	}
 	div.abprf_area select[class*="_form_control"] { padding: var(--rf_gap_xxs) 35px var(--rf_gap_xxs) var(--rf_gap_xs); background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><text y='15' x='2' font-size='14'>▽</text></svg>");background-repeat: no-repeat;background-position: calc(100% - var(--rf_gap_xs));background-size: auto; -webkit-appearance: none; }
@@ -611,7 +612,8 @@
 	.tab_content [data-tabs] { display: none;}
 	/*=============================*/
 	div.abprf_tabs.tab_top .tab_lists {white-space: nowrap;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
-	.tab_top .tab_lists [data-tabs-target] { padding: var(--rf_gap_xs);border-right: 1px solid var(--rf_color_border); -webkit-justify-content: center; justify-content: center;-webkit-flex: 1; flex: 1; min-width: max-content; max-width: 200px;}
+	.tab_top .tab_lists>*{-webkit-justify-content: center; justify-content: center;-webkit-flex: 1; flex: 1; min-width: max-content; max-width: 200px;}
+	.tab_top .tab_lists [data-tabs-target] { padding: var(--rf_gap_xs);border-right: 1px solid var(--rf_color_border); }
 	.tab_top .tab_lists [data-tabs-target]:last-child { border-right: none; }
 	/*=============================*/
 	div.abprf_tabs.tab_left { display: -webkit-flex; display: flex; background-color: var(--rf_color_white);}
@@ -1006,9 +1008,10 @@
 	div.abprf_area [class*="_bg_danger"] { background-color: var(--rf_color_danger); }
 	/*=============================*/
 	div.abprf_area [class*="_btn_green_pale"],
+	div.abprf_area [class*="_btn_light_green_pale"].rf_active,
 	div.abprf_area [class*="_btn_light_green_pale"]:hover {color: var(--rf_color_white); background-color: var(--rf_color_green_pale);border-color: var(--rf_color_green_pale); }
 	div.abprf_area [class*="_btn_green_pale"].rf_active,
-	div.abprf_area [class*="_btn_danger"]:hover,
+	div.abprf_area [class*="_btn_green_pale"]:hover,
 	div.abprf_area [class*="_btn_light_green_pale"] { color: var(--rf_color_green_pale);background-color: var(--rf_color_white);border-color: var(--rf_color_green_pale);}
 	div.abprf_area [class*="_color_green_pale"] { color: var(--rf_color_green_pale); }
 	div.abprf_area [class*="_bg_green_pale"] { background-color: var(--rf_color_green_pale); }

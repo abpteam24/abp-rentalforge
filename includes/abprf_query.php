@@ -6,7 +6,6 @@
 		class ABPRF_Query {
 			public function __construct() {
 			}
-
 			public static function get_info() {
 				global $wpdb;
 				$cache_key  = 'abprf_info';
@@ -24,10 +23,9 @@
 				$total_property               = (int) $wpdb->get_var(
 					$wpdb->prepare( "SELECT COUNT(*) FROM %i", $property_table )
 				);
-				$cpt                          = ABPRF_Function::get_cpt();
 				$abprf_info                   = array();
 				$post_ids                     = self::get_post_id( [ 'status' => [ 'publish', 'draft', 'private', 'trash' ] ] );
-				$post_counts                  = wp_count_posts( $cpt );
+				$post_counts                  = wp_count_posts( ABPRF_Function::get_cpt() );
 				$total_publish                = $post_counts->publish ?? 0;
 				$total_draft                  = $post_counts->draft ?? 0;
 				$total_private                = $post_counts->private ?? 0;
@@ -40,12 +38,10 @@
 				$abprf_info['total_trash']    = $total_trash;
 				$abprf_info['total_property'] = $total_property;
 				$abprf_info['total_order']    = $total_order;
-				$abprf_info['new_post_url']   = admin_url( 'post-new.php?post_type=' . $cpt );
 				wp_cache_set( $cache_key, $abprf_info );
 
 				return $abprf_info;
 			}
-
 			public static function query_post_type( $post_type, $show = - 1, $page = 1 ): WP_Query {
 				$args = array(
 					'post_type' => $post_type,
@@ -56,19 +52,18 @@
 
 				return new WP_Query( $args );
 			}
-
 			public static function get_post_id( $filters = [] ): array {
-				$post_type = array_key_exists( 'cpt', $filters ) && ! empty( $filters['cpt'] ) ? $filters['cpt'] : ABPRF_Function::get_cpt();
-				$show      = array_key_exists( 'posts_per_page', $filters ) && ! empty( $filters['posts_per_page'] ) ? $filters['posts_per_page'] : - 1;
-				$page      = array_key_exists( 'paged', $filters ) && ! empty( $filters['paged'] ) ? $filters['paged'] : 1;
-				$status    = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? $filters['status'] : 'publish';
+				$post_type = ( $filters['cpt'] ?? null ) ?: ABPRF_Function::get_cpt();
+				$show      = ( $filters['posts_per_page'] ?? null ) ?: - 1;
+				$page      = ( $filters['paged'] ?? null ) ?: 1;
+				$status    = ( $filters['status'] ?? null ) ?: 'publish';
 				//=====================//
-				$cat_id    = array_key_exists( 'cat_id', $filters ) && ! empty( $filters['cat_id'] ) ? $filters['cat_id'] : null;
-				$loc_id    = array_key_exists( 'loc_id', $filters ) && ! empty( $filters['loc_id'] ) ? $filters['loc_id'] : null;
-				$rent_rule = array_key_exists( 'rent_rule', $filters ) && ! empty( $filters['rent_rule'] ) ? $filters['rent_rule'] : null;
-				$cat_query = ! empty( $cat_id ) ? array( 'key' => 'abprf_category', 'value' => $cat_id, 'compare' => '=' ) : '';
-				$loc_query = ! empty( $loc_id ) ? array( 'key' => 'abprf_location', 'value' => $loc_id, 'compare' => 'LIKE' ) : '';
-				$rent_rule = ! empty( $rent_rule ) ? array( 'key' => 'rent_rule', 'value' => $rent_rule, 'compare' => '=', 'type' => 'CHAR' ) : '';
+				$cat_id    = ( $filters['cat_id'] ?? null ) ?: null;
+				$loc_id    = ( $filters['loc_id'] ?? null ) ?: null;
+				$rent_rule = ( $filters['rent_rule'] ?? null ) ?: null;
+				$cat_query = ! empty( $cat_id ) ? [ 'key' => 'abprf_category', 'value' => $cat_id, 'compare' => '=' ] : '';
+				$loc_query = ! empty( $loc_id ) ? [ 'key' => 'abprf_location', 'value' => $loc_id, 'compare' => 'LIKE' ] : '';
+				$rent_rule = ! empty( $rent_rule ) ? [ 'key' => 'rent_rule', 'value' => $rent_rule, 'compare' => '=', 'type' => 'CHAR' ] : '';
 				$all_data  = get_posts( array(
 					'fields' => 'ids',
 					'post_type' => $post_type,
@@ -80,7 +75,6 @@
 
 				return array_unique( $all_data );
 			}
-
 			public static function get_property( $filters = array(), $count = false ) {
 				global $wpdb;
 				$table_name  = $wpdb->prefix . 'abprf_property';
@@ -93,7 +87,7 @@
 				$conditions = [];
 				$params     = [];
 				/***************/
-				$post_id = array_key_exists( 'post_id', $filters ) && ! empty( $filters['post_id'] ) ? $filters['post_id'] : null;
+				$post_id = $filters['post_id'] ?? null;
 				if ( ! empty( $post_id ) && $post_id !== 'all' ) {
 					if ( in_array( $post_id, [ 'on', 'off' ], true ) ) {
 						$conditions[] = "rent_continue = %s";
@@ -103,55 +97,37 @@
 						$params[]     = (int) $post_id;
 					}
 				}
-				/***************/
-				$property_id = array_key_exists( 'property_id', $filters ) && ! empty( $filters['property_id'] ) ? $filters['property_id'] : null;
-				if ( ! empty( $property_id ) ) {
+				if ( ! empty( $filters['property_id'] ) ) {
 					$conditions[] = "id = %d";
-					$params[]     = (int) $property_id;
+					$params[]     = (int) $filters['property_id'];
 				}
-				/***************/
-				$rent_continue = array_key_exists( 'rent_continue', $filters ) && ! empty( $filters['rent_continue'] ) ? $filters['rent_continue'] : null;
-				if ( ! empty( $rent_continue ) ) {
+				if ( ! empty( $filters['rent_continue'] ) ) {
 					$conditions[] = "rent_continue = %s";
-					$params[]     = $rent_continue;
+					$params[]     = $filters['rent_continue'];
 				}
-				/***************/
-				$rent_rule = array_key_exists( 'rent_rule', $filters ) && ! empty( $filters['rent_rule'] ) ? $filters['rent_rule'] : null;
-				if ( ! empty( $rent_rule ) ) {
+				if ( ! empty( $filters['rent_rule'] ) ) {
 					$conditions[] = "rent_rule = %s";
-					$params[]     = $rent_rule;
+					$params[]     = $filters['rent_rule'];
 				}
-				/***************/
-				$brand_id = array_key_exists( 'brand_id', $filters ) && ! empty( $filters['brand_id'] ) ? $filters['brand_id'] : null;
-				if ( ! empty( $brand_id ) ) {
+				if ( ! empty( $filters['brand_id'] ) ) {
 					$conditions[] = "brand = %s";
-					$params[]     = $brand_id;
+					$params[]     = $filters['brand_id'];
 				}
-				/***************/
-				$category = array_key_exists( 'category', $filters ) && ! empty( $filters['category'] ) ? $filters['category'] : null;
-				$cat_id   = array_key_exists( 'cat_id', $filters ) && ! empty( $filters['cat_id'] ) ? $filters['cat_id'] : null;
-				$category = empty( $cat_id ) ? $category : $cat_id;
+				$category = ( $filters['cat_id'] ?? null ) ?: ( $filters['category'] ?? null );
 				if ( ! empty( $category ) ) {
 					$conditions[] = "category = %s";
 					$params[]     = $category;
 				}
-				/***************/
-				$location = array_key_exists( 'location', $filters ) && ! empty( $filters['location'] ) ? $filters['location'] : null;
-				$loc_id   = array_key_exists( 'loc_id', $filters ) && ! empty( $filters['loc_id'] ) ? $filters['loc_id'] : null;
-				$location = empty( $loc_id ) ? $location : $loc_id;
+				$location = ( $filters['loc_id'] ?? null ) ?: ( $filters['location'] ?? null );
 				if ( ! empty( $location ) ) {
 					$conditions[] = "FIND_IN_SET(%s, location)";
 					$params[]     = $location;
 				}
-				/***************/
-				$status = array_key_exists( 'status', $filters ) && ! empty( $filters['status'] ) ? $filters['status'] : null;
-				if ( ! empty( $status ) ) {
+				if ( ! empty( $filters['status'] ) ) {
 					$conditions[] = "status = %s";
-					$params[]     = $status;
+					$params[]     = $filters['status'];
 				}
 				/***************/
-				$order_by   = sanitize_sql_orderby( $filters['order_by'] ?? 'created_at' );
-				$order_dir  = ( isset( $filters['order_dir'] ) && strtoupper( $filters['order_dir'] ) === 'ASC' ) ? 'ASC' : 'DESC';
 				$select     = $count ? "SELECT COUNT(*)" : "SELECT *";
 				$sql        = "$select FROM %i";
 				$query_args = [ $table_name ];
@@ -159,6 +135,10 @@
 					$sql        .= " WHERE " . implode( " AND ", $conditions );
 					$query_args = array_merge( $query_args, $params );
 				}
+				$allowed_columns = [ 'id', 'post_id', 'property_id', 'created_at' ];
+				$order_by        = sanitize_sql_orderby( $filters['order_by'] ?? 'created_at' );
+				$order_by        = in_array( $order_by, $allowed_columns, true ) ? $order_by : 'created_at';
+				$order_dir       = strtoupper( $filters['order_dir'] ?? 'ASC' ) === 'ASC' ? 'ASC' : 'DESC';
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$sql    .= " ORDER BY $order_by $order_dir";
 				$limit  = (int) ( $filters['limit'] ?? 0 );
@@ -186,7 +166,6 @@
 
 				return $results;
 			}
-
 			public static function get_booking_query( $filters = array(), $limit = 0, $offset = 0, $count = false ) {
 				global $wpdb;
 				$table_name  = $wpdb->prefix . 'abprf_orders';
@@ -225,26 +204,26 @@
 				}
 				if ( ! empty( $filters['property_id'] ) ) {
 					$conditions[] = "JSON_CONTAINS(property_id, %s)";
-					$params[]     = json_encode( intval( $filters['property_id'] ) );
+					$params[]     = wp_json_encode( intval( $filters['property_id'] ) );
 				}
 				if ( ! empty( $filters['ex_id'] ) ) {
 					$conditions[] = "JSON_CONTAINS(ex_id, %s)";
-					$params[]     = json_encode( sanitize_text_field( $filters['ex_id'] ) );
+					$params[]     = wp_json_encode( sanitize_text_field( $filters['ex_id'] ) );
 				}
 				if ( ! empty( $filters['location'] ) ) {
 					$conditions[] = "JSON_CONTAINS(location, %s)";
-					$params[]     = json_encode( intval( $filters['location'] ) );
+					$params[]     = wp_json_encode( intval( $filters['location'] ) );
 				}
-				$start_time        = array_key_exists( 'start_time', $filters ) && ! empty( $filters['start_time'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $filters['start_time'] ) ) : null;
-				$end_time          = array_key_exists( 'end_time', $filters ) && ! empty( $filters['end_time'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $filters['end_time'] ) ) : null;
-				$order_date        = array_key_exists( 'order_date', $filters ) && ! empty( $filters['order_date'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date'] ) ) : '';
-				$booking_time_from = array_key_exists( 'booking_time_from', $filters ) && ! empty( $filters['booking_time_from'] ) ? gmdate( 'Y-m-d', strtotime( $filters['booking_time_from'] ) ) : null;
-				$booking_time_to   = array_key_exists( 'booking_time_to', $filters ) && ! empty( $filters['booking_time_to'] ) ? gmdate( 'Y-m-d', strtotime( $filters['booking_time_to'] ) ) : null;
-				$order_time_from   = array_key_exists( 'order_date_from', $filters ) && ! empty( $filters['order_date_from'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date_from'] ) ) : null;
-				$order_time_to     = array_key_exists( 'order_date_to', $filters ) && ! empty( $filters['order_date_to'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date_to'] ) ) : null;
-				$billing_name      = array_key_exists( 'billing_name', $filters ) && ! empty( $filters['billing_name'] ) ? '%' . sanitize_text_field( $filters['billing_name'] ) . '%' : null;
-				$billing_email     = array_key_exists( 'billing_email', $filters ) && ! empty( $filters['billing_email'] ) ? '%' . sanitize_text_field( $filters['billing_email'] ) . '%' : null;
-				$billing_phone     = array_key_exists( 'billing_phone', $filters ) && ! empty( $filters['billing_phone'] ) ? '%' . sanitize_text_field( $filters['billing_phone'] ) . '%' : null;
+				$start_time        = ! empty( $filters['start_time'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $filters['start_time'] ) ) : null;
+				$end_time          = ! empty( $filters['end_time'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $filters['end_time'] ) ) : null;
+				$order_date        = ! empty( $filters['order_date'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date'] ) ) : null;
+				$booking_time_from = ! empty( $filters['booking_time_from'] ) ? gmdate( 'Y-m-d', strtotime( $filters['booking_time_from'] ) ) : null;
+				$booking_time_to   = ! empty( $filters['booking_time_to'] ) ? gmdate( 'Y-m-d', strtotime( $filters['booking_time_to'] ) ) : null;
+				$order_time_from   = ! empty( $filters['order_date_from'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date_from'] ) ) : null;
+				$order_time_to     = ! empty( $filters['order_date_to'] ) ? gmdate( 'Y-m-d', strtotime( $filters['order_date_to'] ) ) : null;
+				$billing_name      = ! empty( $filters['billing_name'] ) ? '%' . sanitize_text_field( $filters['billing_name'] ) . '%' : null;
+				$billing_email     = ! empty( $filters['billing_email'] ) ? '%' . sanitize_text_field( $filters['billing_email'] ) . '%' : null;
+				$billing_phone     = ! empty( $filters['billing_phone'] ) ? '%' . sanitize_text_field( $filters['billing_phone'] ) . '%' : null;
 				if ( ! empty( $start_time ) && ! empty( $end_time ) ) {
 					$conditions[] = "(book_from < %s AND book_to > %s)";
 					$params[]     = $end_time;
@@ -288,8 +267,10 @@
 					$sql        .= " WHERE " . implode( " AND ", $conditions );
 					$query_args = array_merge( $query_args, $params );
 				}
-				$order_by  = sanitize_sql_orderby( $filters['order_by'] ?? 'order_id' );
-				$order_dir = ( isset( $filters['order_dir'] ) && strtoupper( $filters['order_dir'] ) === 'ASC' ) ? 'ASC' : 'DESC';
+				$allowed_columns = [ 'id', 'post_id', 'order_id', 'status', 'created_at' ];
+				$order_by        = sanitize_sql_orderby( $filters['order_by'] ?? 'order_id' );
+				$order_by        = in_array( $order_by, $allowed_columns, true ) ? $order_by : 'order_id';
+				$order_dir       = strtoupper( $filters['order_dir'] ?? 'ASC' ) === 'ASC' ? 'ASC' : 'DESC';
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$sql .= " ORDER BY $order_by $order_dir";
 				if ( $limit > 0 ) {
@@ -316,62 +297,46 @@
 
 				return $results;
 			}
-
 			public static function get_sold_qty( $filters = [] ) {
 				$sold_qty      = 0;
 				$booking_lists = self::get_booking_query( $filters );
-				if ( ! empty( $booking_lists ) ) {
-					$id = array_key_exists( 'property_id', $filters ) ? $filters['property_id'] : '';
-					foreach ( $booking_lists as $booking_list ) {
-						$property_ids = array_key_exists( 'property_id', $booking_list ) ? $booking_list['property_id'] : '';
-						$property_ids = ! empty( $property_ids ) ? json_decode( $property_ids, true ) : [];
-						$ticket_infos = array_key_exists( 'property_info', $booking_list ) ? $booking_list['property_info'] : '';
-						$ticket_infos = ! empty( $ticket_infos ) ? json_decode( $ticket_infos, true ) : [];
-						if ( ! empty( $id ) ) {
-							if ( in_array( $id, $property_ids ) && array_key_exists( $id, $ticket_infos ) ) {
-								foreach ( $ticket_infos as $key => $ticket_info ) {
-									if ( $key == $id ) {
-										$qty      = array_key_exists( 'qty', $ticket_info ) ? $ticket_info['qty'] : 1;
-										$sold_qty = $sold_qty + $qty;
-									}
-								}
-							}
-						} else {
-							foreach ( $ticket_infos as $ticket_info ) {
-								$qty      = array_key_exists( 'qty', $ticket_info ) ? $ticket_info['qty'] : 1;
-								$sold_qty = $sold_qty + $qty;
-							}
+				if ( empty( $booking_lists ) ) {
+					return $sold_qty;
+				}
+				$id = $filters['property_id'] ?? '';
+				foreach ( $booking_lists as $booking_list ) {
+					$property_ids = json_decode( $booking_list['property_id'] ?? '', true ) ?: [];
+					$ticket_infos = json_decode( $booking_list['property_info'] ?? '', true ) ?: [];
+					if ( ! empty( $id ) ) {
+						if ( in_array( $id, $property_ids, true ) && isset( $ticket_infos[ $id ] ) ) {
+							$sold_qty += $ticket_infos[ $id ]['qty'] ?? 1;
+						}
+					} else {
+						foreach ( $ticket_infos as $ticket_info ) {
+							$sold_qty += $ticket_info['qty'] ?? 1;
 						}
 					}
 				}
 
 				return $sold_qty;
 			}
-
 			public static function get_sold_qty_ex( $filters = [] ) {
 				$sold_qty      = 0;
 				$booking_lists = self::get_booking_query( $filters );
-				if ( ! empty( $booking_lists ) ) {
-					$id = array_key_exists( 'ex_id', $filters ) ? $filters['ex_id'] : '';
-					foreach ( $booking_lists as $booking_list ) {
-						$ex_ids           = array_key_exists( 'ex_id', $booking_list ) ? $booking_list['ex_id'] : '';
-						$ex_ids           = ! empty( $ex_ids ) ? json_decode( $ex_ids, true ) : [];
-						$additional_infos = array_key_exists( 'ex_info', $booking_list ) ? $booking_list['ex_info'] : '';
-						$additional_infos = ! empty( $additional_infos ) ? json_decode( $additional_infos, true ) : [];
-						if ( ! empty( $id ) ) {
-							if ( in_array( $id, $ex_ids ) && array_key_exists( $id, $additional_infos ) ) {
-								foreach ( $additional_infos as $key => $additional_info ) {
-									if ( $key == $id ) {
-										$qty      = array_key_exists( 'qty', $additional_infos ) ? $additional_infos['qty'] : 1;
-										$sold_qty = $sold_qty + $qty;
-									}
-								}
-							}
-						} else {
-							foreach ( $additional_infos as $additional_info ) {
-								$qty      = array_key_exists( 'qty', $additional_info ) ? $additional_info['qty'] : 1;
-								$sold_qty = $sold_qty + $qty;
-							}
+				if ( empty( $booking_lists ) ) {
+					return $sold_qty;
+				}
+				$id = $filters['ex_id'] ?? '';
+				foreach ( $booking_lists as $booking_list ) {
+					$ex_ids           = json_decode( $booking_list['ex_id'] ?? '', true ) ?: [];
+					$additional_infos = json_decode( $booking_list['ex_info'] ?? '', true ) ?: [];
+					if ( ! empty( $id ) ) {
+						if ( in_array( $id, $ex_ids, true ) && isset( $additional_infos[ $id ] ) ) {
+							$sold_qty += $additional_infos[ $id ]['qty'] ?? 1;
+						}
+					} else {
+						foreach ( $additional_infos as $additional_info ) {
+							$sold_qty += $additional_info['qty'] ?? 1;
 						}
 					}
 				}

@@ -12,7 +12,6 @@
 				add_action( 'wp_head', [ $this, 'exclude_url_from_search_engine' ] );
 				add_filter( 'wpseo_exclude_from_sitemap_by_post_ids', [ $this, 'get_all_hidden_product_id' ] );
 			}
-
 			public function insert_wc_hidden_post( $post_id, $post ): void {
 				$cpt = ABPRF_Function::get_cpt();
 				if ( $post->post_type === $cpt && $post->post_status === 'publish' ) {
@@ -21,12 +20,11 @@
 					}
 				}
 			}
-
 			public function save_hidden_post( $post_id ): void {
 				if ( get_post_type( $post_id ) !== ABPRF_Function::get_cpt() ) {
 					return;
 				}
-				if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_post_nonce' ) ) {
+				if ( ! isset( $_POST['abprf_post_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['abprf_post_nonce'] ) ), 'abprf_post_nonce' ) ) {
 					return;
 				}
 				if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -64,7 +62,6 @@
 				] );
 				add_action( 'save_post', [ $this, 'save_hidden_post' ], 99 );
 			}
-
 			public function hide_hidden_post( $query ): void {
 				if ( ! is_admin() ) {
 					return;
@@ -72,7 +69,7 @@
 				global $pagenow;
 				$q_vars = &$query->query_vars;
 				if ( $pagenow === 'edit.php' && ( $q_vars['post_type'] ?? '' ) === 'product' ) {
-					$tax_query   = $query->get( 'tax_query' ) ?? [];
+					$tax_query   = ( $query->get( 'tax_query' ) ?? null ) ?: [];
 					$tax_query[] = [
 						'taxonomy' => 'product_visibility',
 						'field' => 'slug',
@@ -82,7 +79,6 @@
 					$query->set( 'tax_query', $tax_query );
 				}
 			}
-
 			public function hide_hidden_post_frontend(): void {
 				if ( is_admin() || ! is_product() ) {
 					return;
@@ -94,7 +90,7 @@
 				$visibility = get_the_terms( $post->ID, 'product_visibility' );
 				if ( is_array( $visibility ) && ! empty( $visibility ) ) {
 					if ( $visibility[0]->slug === 'exclude-from-catalog' || $visibility[0]->name === 'exclude-from-catalog' ) {
-						$check_event_hidden = (int) ABPRF_Function::get_post_info( $post->ID, 'link_abprf_id', 0 );
+						$check_event_hidden = (int) ABPRF_Function::get_post_info( $post->ID, 'abprf_link_id', 0 );
 						if ( $check_event_hidden > 0 ) {
 							$wp_query->set_404();
 							status_header( 404 );
@@ -104,7 +100,6 @@
 					}
 				}
 			}
-
 			public function create_wc_hidden_post( $post_id, $title ): void {
 				if ( ! class_exists( 'WC_Product_Simple' ) ) {
 					return;
@@ -118,23 +113,21 @@
 				$product->set_sold_individually( true );
 				$product->set_virtual( true );
 				$product->set_catalog_visibility( 'hidden' );
-				$product->update_meta_data( 'link_abprf_id', $post_id );
+				$product->update_meta_data( 'abprf_link_id', $post_id );
 				$pid = $product->save();
 				if ( $pid ) {
-					wp_set_object_terms( $pid, (int) $post_id, 'link_abprf_taxonomy' );
+					wp_set_object_terms( $pid, (int) $post_id, 'abprf_link_taxonomy' );
 					if ( get_post_meta( $post_id, 'link_wc_id', true ) !== (string) $pid ) {
 						update_post_meta( $post_id, 'link_wc_id', $pid );
 					}
 					update_post_meta( $post_id, 'exit_wc_hidden_post', true );
-					// ক্যাশ ক্লিয়ারিং ফিক্স
-					wp_cache_delete( 'count_hidden_post_' . $post_id, 'abprf_counts' );
-					delete_transient( 'count_hidden_post_' . $post_id );
+					wp_cache_delete( 'abprf_count_hidden_post_' . $post_id, 'abprf_counts' );
+					delete_transient( 'abprf_count_hidden_post_' . $post_id );
 				}
 			}
-
 			public function count_hidden_post( $post_id ): int {
 				$cache_group = 'abprf_counts';
-				$cache_key   = 'count_hidden_post_' . $post_id;
+				$cache_key   = 'abprf_count_hidden_post_' . $post_id;
 				$count       = wp_cache_get( $cache_key, $cache_group );
 				if ( false === $count ) {
 					$count = get_transient( $cache_key );
@@ -142,17 +135,16 @@
 						global $wpdb;
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 						$count = (int) $wpdb->get_var( $wpdb->prepare(
-							"SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_key = 'link_abprf_id' AND meta_value = %s",
+							"SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_key = 'abprf_link_id' AND meta_value = %s",
 							(string) $post_id
 						) );
-						set_transient( $cache_key, $count, HOUR_IN_SECONDS );
+						set_transient( $cache_key, $count, 0 );
 					}
 					wp_cache_set( $cache_key, $count, $cache_group );
 				}
 
 				return (int) $count;
 			}
-
 			public function exclude_url_from_search_engine(): void {
 				if ( ! is_single() || ! is_product() ) {
 					return;
@@ -165,14 +157,13 @@
 				$visibility = is_array( $visibility ) ? $visibility : [];
 				if ( ! empty( $visibility ) && is_object( $visibility[0] ) ) {
 					if ( $visibility[0]->slug === 'exclude-from-catalog' || $visibility[0]->name === 'exclude-from-catalog' ) {
-						$check_hidden = (int) ABPRF_Function::get_post_info( $post->ID, 'link_abprf_id', 0 );
+						$check_hidden = (int) ABPRF_Function::get_post_info( $post->ID, 'abprf_link_id', 0 );
 						if ( $check_hidden > 0 ) {
 							echo '<meta name="robots" content="noindex, nofollow">' . "\n";
 						}
 					}
 				}
 			}
-
 			public function get_all_hidden_product_id(): array {
 				$product_ids = [];
 				$query       = ABPRF_Query::query_post_type( ABPRF_Function::get_cpt() );

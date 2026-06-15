@@ -27,12 +27,12 @@
 				wp_enqueue_style( 'wp-codemirror' );
 				wp_enqueue_script( 'wp-codemirror' );
 				//=============================//
-				wp_enqueue_script( 'abprf_admin', ABPRF_URL . '/assets/js/abprf_admin.js', array( 'jquery' ), time(), true );
+				wp_enqueue_script( 'abprf_admin', ABPRF_URL . 'assets/js/abprf_admin.js', array( 'jquery' ), ABPRF_VERSION, true );
 				wp_localize_script( 'abprf_admin', 'abprf_admin_data', [
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce' => wp_create_nonce( 'abprf_admin_ajax_nonce' ),
-					'icon_url' => ABPRF_URL . '/assets/js/abprf_icons.json',
-					'feature_data' => json_encode( ABPRF_Function::get_option('abprf_feature_js') ),
+					'icon_url' => ABPRF_URL . 'assets/js/abprf_icons.json',
+					'feature_data' => wp_json_encode( ABPRF_Function::get_option('abprf_feature_js') ),
 					'msg' => [
 						'confirm_delete' => __( 'Are you sure you want to delete this item?', 'abp-rentalforge' ),
 						'confirm_ok' => __( '1. Ok : To Remove Item .', 'abp-rentalforge' ),
@@ -62,7 +62,7 @@
 						'no_feature_selected' => __( 'No feature selected !', 'abp-rentalforge' ),
 					],
 				] );
-				wp_enqueue_style( 'abprf_admin', ABPRF_URL . '/assets/css/abprf_admin.css', array(), time() );
+				wp_enqueue_style( 'abprf_admin', ABPRF_URL . 'assets/css/abprf_admin.css', ABPRF_VERSION, time() );
 				//=============================//
 				do_action( 'abprf_admin_enqueue' );
 			}
@@ -81,10 +81,10 @@
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'jquery-ui-core' );
 				wp_enqueue_script( 'jquery-ui-datepicker' );
-				wp_enqueue_style( 'abprf_jquery_ui', ABPRF_URL . '/assets/css/jquery-ui.min.css', array(), '1.13.2' );
-				wp_enqueue_style( 'abprf_font_awesome', ABPRF_URL . '/assets/css/font_awesome.min.css', array(), '5.15.4' );
-				wp_enqueue_style( 'abprf_lib', ABPRF_URL . '/assets/css/abprf_lib.css', array(), time() );
-				wp_enqueue_script( 'abprf_lib', ABPRF_URL . '/assets/js/abprf_lib.js', array( 'jquery' ), time(), true );
+				wp_enqueue_style( 'abprf_jquery_ui', ABPRF_URL . 'assets/css/jquery-ui.min.css', array(), '1.13.2' );
+				wp_enqueue_style( 'abprf_font_awesome', ABPRF_URL . 'assets/css/font_awesome.min.css', array(), '5.15.4' );
+				wp_enqueue_style( 'abprf_lib', ABPRF_URL . 'assets/css/abprf_lib.css', array(), ABPRF_VERSION);
+				wp_enqueue_script( 'abprf_lib', ABPRF_URL . 'assets/js/abprf_lib.js', array( 'jquery' ), ABPRF_VERSION, true );
 				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
 					wp_localize_script( 'abprf_lib', 'abprf_var', [
 						'currency_symbol' => get_woocommerce_currency_symbol(),
@@ -131,8 +131,8 @@
 				$button_fs       = isset( $abprf_css_var['fs_button'] ) && $abprf_css_var['fs_button'] ? $abprf_css_var['fs_button'] . 'px' : '14px';
 				$bg_button       = isset( $abprf_css_var['bg_button'] ) && $abprf_css_var['bg_button'] ? $abprf_css_var['bg_button'] : '#222';
 				$color_button    = isset( $abprf_css_var['color_button'] ) && $abprf_css_var['color_button'] ? $abprf_css_var['color_button'] : $alternate_color;
-				$off             = __( 'OFF', 'abp-rentalforge' );
-				$on              = __( 'ON', 'abp-rentalforge' );
+				$off             = esc_html__( 'OFF', 'abp-rentalforge' );
+				$on              = esc_html__( 'ON', 'abp-rentalforge' );
 				$abprf_var       =
 					":root {
 						--rf_br: {$default_br};						
@@ -160,14 +160,14 @@
 						--rf_color_theme_alter: {$alternate_color};
 						--rf_color_warning:{$color_warning};						
 					}";
-				wp_add_inline_style( 'abprf_lib', $abprf_var );
-				wp_enqueue_style( 'abprf', ABPRF_URL . '/assets/css/abprf.css', array(), time() );
+				wp_add_inline_style( 'abprf_lib', wp_kses_post($abprf_var) );
+				wp_enqueue_style( 'abprf', ABPRF_URL . 'assets/css/abprf.css', array(), ABPRF_VERSION );
 				$all_time = ABPRF_Function::get_time( get_the_id(), 'js' );
-				wp_enqueue_script( 'abprf_infos', ABPRF_URL . '/assets/js/abprf.js', array( 'jquery' ), time(), true );
+				wp_enqueue_script( 'abprf_infos', ABPRF_URL . 'assets/js/abprf.js', array( 'jquery' ), ABPRF_VERSION, true );
 				$rental_data = array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce' => wp_create_nonce( 'abprf_ajax_nonce' ),
-					'date_info' => json_encode( $all_time ),
+					'date_info' => wp_json_encode( $all_time ),
 					'now' => current_time( 'Y-m-d H:i' ),
 					'msg' => [
 						'end_date_loading' => __( 'End Date  Loading.............', 'abp-rentalforge' ),
@@ -186,33 +186,33 @@
 			}
 
 			private function load_file(): void {
-				require_once ABPRF_DIR . '/includes/abprf_function.php';
-				require_once ABPRF_DIR . '/includes/abprf_query.php';
-				require_once ABPRF_DIR . '/includes/abprf_layout.php';
+				require_once ABPRF_DIR . 'includes/abprf_function.php';
+				require_once ABPRF_DIR . 'includes/abprf_query.php';
+				require_once ABPRF_DIR . 'includes/abprf_layout.php';
 				if ( is_admin() ) {
-					require_once ABPRF_DIR . '/admin/abprf_admin.php';
-					require_once ABPRF_DIR . '/admin/abprf_post.php';
-					require_once ABPRF_DIR . '/admin/abprf_dashboard.php';
-					require_once ABPRF_DIR . '/admin/abprf_properties.php';
-					require_once ABPRF_DIR . '/admin/abprf_orders.php';
-					require_once ABPRF_DIR . '/admin/abprf_dates.php';
-					require_once ABPRF_DIR . '/admin/abprf_additional.php';
-					require_once ABPRF_DIR . '/admin/abprf_form.php';
-					require_once ABPRF_DIR . '/admin/abprf_faq_tc.php';
-					require_once ABPRF_DIR . '/admin/abprf_configuration.php';
-					require_once ABPRF_DIR . '/admin/abprf_status.php';
-					require_once ABPRF_DIR . '/admin/abprf_category.php';
-					require_once ABPRF_DIR . '/admin/abprf_location.php';
-					require_once ABPRF_DIR . '/admin/abprf_brand.php';
-					require_once ABPRF_DIR . '/admin/abprf_feature.php';
+					require_once ABPRF_DIR . 'admin/abprf_admin.php';
+					require_once ABPRF_DIR . 'admin/abprf_post.php';
+					require_once ABPRF_DIR . 'admin/abprf_dashboard.php';
+					require_once ABPRF_DIR . 'admin/abprf_properties.php';
+					require_once ABPRF_DIR . 'admin/abprf_orders.php';
+					require_once ABPRF_DIR . 'admin/abprf_dates.php';
+					require_once ABPRF_DIR . 'admin/abprf_additional.php';
+					require_once ABPRF_DIR . 'admin/abprf_form.php';
+					require_once ABPRF_DIR . 'admin/abprf_faq_tc.php';
+					require_once ABPRF_DIR . 'admin/abprf_configuration.php';
+					require_once ABPRF_DIR . 'admin/abprf_status.php';
+					require_once ABPRF_DIR . 'admin/abprf_category.php';
+					require_once ABPRF_DIR . 'admin/abprf_location.php';
+					require_once ABPRF_DIR . 'admin/abprf_brand.php';
+					require_once ABPRF_DIR . 'admin/abprf_feature.php';
 				}
 				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
-					require_once ABPRF_DIR . '/includes/abprf_hooks.php';
-					require_once ABPRF_DIR . '/includes/abprf_ajax.php';
-					require_once ABPRF_DIR . '/includes/abprf_frontend.php';
-					require_once ABPRF_DIR . '/includes/abprf_shortcodes.php';
-					require_once ABPRF_DIR . '/includes/abprf_woocommerce.php';
-					require_once ABPRF_DIR . '/admin/abprf_hidden_post.php';
+					require_once ABPRF_DIR . 'includes/abprf_hooks.php';
+					require_once ABPRF_DIR . 'includes/abprf_ajax.php';
+					require_once ABPRF_DIR . 'includes/abprf_frontend.php';
+					require_once ABPRF_DIR . 'includes/abprf_shortcodes.php';
+					require_once ABPRF_DIR . 'includes/abprf_woocommerce.php';
+					require_once ABPRF_DIR . 'admin/abprf_hidden_post.php';
 				}
 			}
 

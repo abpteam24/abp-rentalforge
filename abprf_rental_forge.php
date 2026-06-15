@@ -27,24 +27,26 @@
 				} );
 				$this->load_plugin();
 			}
-
 			private function load_plugin(): void {
+				if ( ! defined( 'ABPRF_PLUGIN_FILE' ) ) {
+					define( 'ABPRF_PLUGIN_FILE', __FILE__ );
+				}
+				if ( ! defined( 'ABPRF_VERSION' ) ) {
+					define( 'ABPRF_VERSION', '1.0.0');
+				}
 				if ( ! defined( 'ABPRF_DIR' ) ) {
-					define( 'ABPRF_DIR', dirname( __FILE__ ) );
+					define( 'ABPRF_DIR', plugin_dir_path( __FILE__ ) );
 				}
 				if ( ! defined( 'ABPRF_URL' ) ) {
-					define( 'ABPRF_URL', plugins_url() . '/' . plugin_basename( dirname( __FILE__ ) ) );
+					define( 'ABPRF_URL', plugin_dir_url( __FILE__ ) );
 				}
 				if ( ! defined( 'ABPRF_BASE' ) ) {
 					define( 'ABPRF_BASE', basename( __FILE__ ) );
 				}
 				if ( ! defined( 'ABPRF_BLANK_IMG_URL' ) ) {
-					define( 'ABPRF_BLANK_IMG_URL', ABPRF_URL . '/assets/images/blank_image.png' );
+					define( 'ABPRF_BLANK_IMG_URL', ABPRF_URL . 'assets/images/blank_image.png' );
 				}
-				if ( ! defined( 'ABPRF_PLUGIN_FILE' ) ) {
-					define( 'ABPRF_PLUGIN_FILE', __FILE__ );
-				}
-				require_once ABPRF_DIR . '/includes/abprf_dependencies.php';
+				require_once ABPRF_DIR . 'includes/abprf_dependencies.php';
 				if ( ! defined( 'ABPRF_WC' ) ) {
 					define( 'ABPRF_WC', ABPRF_Function::check_wc() );
 				}
@@ -73,10 +75,10 @@
 					define( 'ABPRF_On_Off', ABPRF_Function::get_option( 'abprf_on_off' ) );
 				}
 				if ( ! defined( 'ABPRF_JS_Date_Format' ) ) {
-					define( 'ABPRF_JS_Date_Format', ABPRF_Function::date_format_js());
+					define( 'ABPRF_JS_Date_Format', ABPRF_Function::date_format_js() );
 				}
 				if ( ! defined( 'ABPRF_Time_Format' ) ) {
-					define( 'ABPRF_Time_Format', is_array( ABPRF_Dates ) && array_key_exists( 'time_format', ABPRF_Dates ) ? ABPRF_Dates['time_format'] : get_option( 'time_format' ) );
+					define( 'ABPRF_Time_Format', ABPRF_Dates['time_format'] ?? get_option( 'time_format' ) );
 				}
 			}
 		}

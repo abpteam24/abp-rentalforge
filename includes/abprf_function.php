@@ -90,6 +90,11 @@
 			public static function location_label() { return ( ABPRF_Configuration['location_label'] ?? null ) ?: __( 'Location', 'abp-rentalforge' ); }
 			public static function location_slug() { return ( ABPRF_Configuration['location_slug'] ?? null ) ?: 'location'; }
 			public static function location_value( $id ) { return ( ABPRF_Locations[ $id ]['name'] ?? null ) ?: $id; }
+			public static function on_off( $key ): bool {
+				$value = ( ABPRF_On_Off[ $key ] ?? 'on' ) ?: 'on';
+
+				return $value !== 'off';
+			}
 			public static function array_to_string( $array ) {
 				$ids = '';
 				if ( sizeof( $array ) > 0 ) {
@@ -102,24 +107,15 @@
 
 				return $ids;
 			}
-			public static function serialize_array_convert( $form_data ): array {
-				$infos = [];
-				if ( sizeof( $form_data ) > 0 ) {
-					foreach ( $form_data as $data ) {
-						$_name = is_array( $data ) && array_key_exists( 'name', $data ) ? sanitize_text_field( $data['name'] ) : '';
-						$name  = explode( '[]', $_name )[0];
-						$value = is_array( $data ) && array_key_exists( 'value', $data ) ? sanitize_text_field( $data['value'] ) : '';
-						if ( $name ) {
-							if ( $_name !== $name ) {
-								$infos[ $name ][] = $value;
-							} else {
-								$infos[ $name ] = $value;
-							}
-						}
-					}
-				}
+			public static function build_url( string $value = '', array $extra_args = [] ): string {
+				$default_args = [
+					'page' => 'rental-forge',
+					'tab' => $value,
+				];
+				$final_args   = array_merge( $default_args, $extra_args );
+				$base_url = add_query_arg( $final_args, admin_url( 'admin.php' ) );
 
-				return $infos;
+				return wp_nonce_url( $base_url, 'abprf_url_action', '_abprf_nonce' );
 			}
 			public static function get_image_url( $post_id = '', $image_id = '', $size = 'full' ): bool|string {
 				$image_id = $post_id && $post_id > 0 ? get_post_thumbnail_id( $post_id ) : $image_id;
@@ -213,7 +209,7 @@
 				$post_id       = $post_id ?? get_the_id();
 				$template_name = self::get_post_info( $post_id, 'abprf_template', 'grid' );
 				$file_name     = 'details_theme/' . $template_name . '.php';
-				$dir           = ABPRF_DIR . '/rf_templates/' . $file_name;
+				$dir           = ABPRF_DIR . 'rf_templates/' . $file_name;
 				if ( ! file_exists( $dir ) ) {
 					$file_name = 'details_theme/grid.php';
 				}
@@ -222,7 +218,7 @@
 			}
 			public static function template_path( $file_name ): string {
 				$file_path   = wp_normalize_path( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '/rf_templates/' . $file_name );
-				$default_dir = wp_normalize_path( ABPRF_DIR . '/rf_templates/' . $file_name );
+				$default_dir = wp_normalize_path( ABPRF_DIR . 'rf_templates/' . $file_name );
 
 				return file_exists( $file_path ) ? $file_path : $default_dir;
 			}
@@ -464,7 +460,7 @@
 				$time_info   = ABPRF_Function::get_option( $option_name );
 				$info        = [];
 				if ( ! empty( $post_id ) ) {
-					$info =  $time_info[ $post_id ] ?? ( $time_info['global'] ?? [] );
+					$info = $time_info[ $post_id ] ?? ( $time_info['global'] ?? [] );
 				}
 
 				return $info;
@@ -515,7 +511,7 @@
 					}
 					$all_dates = sizeof( $all_dates ) > 1 ? array_unique( $all_dates ) : $all_dates;
 					usort( $all_dates, "ABPRF_Function::sort_date" );
-					set_transient( 'abprf_date_' . $post_id, json_encode( $all_dates ), HOUR_IN_SECONDS );
+					set_transient( 'abprf_date_' . $post_id, wp_json_encode( $all_dates ), HOUR_IN_SECONDS );
 				}
 			}
 			public static function repeated_date_list_modify( $start_date, $end_date, $date_infos ): array {

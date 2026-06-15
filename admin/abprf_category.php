@@ -110,7 +110,7 @@
                         <div class="_divider_xs"></div>
 						<?php ABPRF_Layout::info_text( 'cat_slug' ); ?>
                     </div>
-                    <div class="setting_item span_2">
+                    <div class="setting_item full_width">
                         <label class="_f_equal_f_wrap">
                             <span class="_mar_r_xs"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Description', 'abp-rentalforge' ); ?></span>
                             <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $des ); ?></textarea>

@@ -5,13 +5,12 @@
 	if ( ! class_exists( 'ABPRF_Additional' ) ) {
 		class ABPRF_Additional {
 			public function __construct() {
-				add_action( 'abprf_global_additional_service', array( $this, 'global_additional_service' ) );
+				add_action( 'abprf_global_additional', array( $this, 'global_additional' ) );
 				add_action( 'abprf_post_content', [ $this, 'post_additional_service' ] );
 				add_action( 'wp_ajax_abprf_save_additional_service', array( $this, 'save_global_additional_service' ) );
 				add_action( 'wp_ajax_abprf_import_additional', array( $this, 'import_additional' ) );
 			}
-
-			public function global_additional_service(): void {
+			public function global_additional(): void {
 				$additional_services = ABPRF_Function::get_option( 'abprf_additional', ABPRF_Layout::static_additional() );
 				?>
                 <form class=" save_additional_service" method="post" action="">
@@ -24,11 +23,10 @@
                 </form>
 				<?php
 			}
-
 			public function post_additional_service( $abprf_infos ): void {
-				$additional_services      = array_key_exists( 'additional_services', $abprf_infos ) ? $abprf_infos['additional_services'] : array();
-				$display                  = array_key_exists( 'display_additional_services', $abprf_infos ) ? $abprf_infos['display_additional_services'] : 'on';
-				$active_global_additional = array_key_exists( 'active_global_additional', $abprf_infos ) ? $abprf_infos['active_global_additional'] : 'on';
+				$additional_services      = $abprf_infos['additional_services'] ?? array();
+				$display                  = $abprf_infos['display_additional_services'] ?? 'on';
+				$active_global_additional = $abprf_infos['active_global_additional'] ?? 'on';
 				?>
                 <div class="tab_item additional_configuration" data-tabs="#abprf_additional_service">
                     <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">💰</span><?php esc_html_e( 'Additional services Configuration', 'abp-rentalforge' ); ?></h4>
@@ -66,7 +64,6 @@
                 </div>
 				<?php
 			}
-
 			public function additional_service( $services = [] ): void {
 				?>
                 <div class="configuration_content additional_service">
@@ -107,16 +104,15 @@
                 </div>
 				<?php
 			}
-
 			public function service_item( $key = '', $field = array() ): void {
-				$field       = $field ?: array();
-				$icon_image  = array_key_exists( 'icon', $field ) ? $field['icon'] : '';
-				$name        = array_key_exists( 'name', $field ) ? $field['name'] : '';
-				$qty         = array_key_exists( 'qty', $field ) ? $field['qty'] : '';
-				$max_ty      = array_key_exists( 'max_qty', $field ) ? $field['max_qty'] : '';
-				$price       = array_key_exists( 'price', $field ) ? $field['price'] : '';
-				$returnable  = array_key_exists( 'returnable', $field ) ? $field['returnable'] : 'no';
-				$description = array_key_exists( 'description', $field ) ? $field['description'] : '';
+				$field       = $field ?: [];
+				$icon_image  = $field['icon'] ?? '';
+				$name        = $field['name'] ?? '';
+				$qty         = $field['qty'] ?? '';
+				$max_qty     = $field['max_qty'] ?? '';
+				$price       = $field['price'] ?? '';
+				$returnable  = $field['returnable'] ?? 'no';
+				$description = $field['description'] ?? '';
 				?>
                 <tr class="delete_area ">
                     <td> <?php do_action( 'abprf_add_image_icon', 'additional_icon[]', $icon_image ); ?>  </td>
@@ -138,7 +134,7 @@
                     </td>
                     <td>
                         <label>
-                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="additional_max_qty[]" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_ty ); ?>"/>
+                            <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="additional_max_qty[]" placeholder="<?php esc_attr_e( 'EX: 15', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $max_qty ); ?>"/>
                         </label>
                     </td>
                     <td>
@@ -158,7 +154,6 @@
                 </tr>
 				<?php
 			}
-
 			public function save_global_additional_service(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
@@ -166,27 +161,28 @@
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
-				$additional_services    = [];
-				$additional_ids         = isset( $_POST['additional_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_id'] ) ) : [];
-				$additional_icon        = isset( $_POST['additional_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_icon'] ) ) : [];
-				$additional_name        = isset( $_POST['additional_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_name'] ) ) : [];
-				$additional_qty         = isset( $_POST['additional_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_qty'] ) ) : [];
-				$max_qty                = isset( $_POST['additional_max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_max_qty'] ) ) : [];
-				$returnable             = isset( $_POST['additional_returnable'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_returnable'] ) ) : [];
-				$additional_price       = isset( $_POST['additional_price'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_price'] ) ) : [];
-				$additional_description = isset( $_POST['additional_description'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['additional_description'] ) ) : [];
-				if ( sizeof( $additional_ids ) > 0 ) {
-					foreach ( $additional_ids as $key => $additional_id ) {
-						if ( $additional_name[ $key ] ) {
-							$additional_id                                        = array_key_exists( $additional_id, $additional_services ) ? uniqid() : $additional_id;
-							$additional_services[ $additional_id ]['icon']        = $additional_icon[ $key ] ?? '';
-							$additional_services[ $additional_id ]['name']        = $additional_name[ $key ];
-							$additional_services[ $additional_id ]['qty']         = $additional_qty[ $key ];
-							$additional_services[ $additional_id ]['max_qty']     = $max_qty[ $key ];
-							$additional_services[ $additional_id ]['price']       = $additional_price[ $key ];
-							$additional_services[ $additional_id ]['returnable']  = $returnable[ $key ];
-							$additional_services[ $additional_id ]['description'] = $additional_description[ $key ] ?? '';
-						}
+				$additional_ids      = isset( $_POST['additional_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_id'] ) ) : [];
+				$icon                = isset( $_POST['additional_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_icon'] ) ) : [];
+				$name                = isset( $_POST['additional_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_name'] ) ) : [];
+				$qty                 = isset( $_POST['additional_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_qty'] ) ) : [];
+				$max_qty             = isset( $_POST['additional_max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_max_qty'] ) ) : [];
+				$returnable          = isset( $_POST['additional_returnable'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_returnable'] ) ) : [];
+				$price               = isset( $_POST['additional_price'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['additional_price'] ) ) : [];
+				$description         = isset( $_POST['additional_description'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['additional_description'] ) ) : [];
+				$additional_services = [];
+				foreach ( $additional_ids as $key => $additional_id ) {
+					$service_name = $name[ $key ] ?? '';
+					if ( ! empty( $service_name ) ) {
+						$final_id                         = isset( $additional_services[ $additional_id ] ) ? uniqid() : $additional_id;
+						$additional_services[ $final_id ] = [
+							'icon' => $icon[ $key ] ?? '',
+							'name' => $service_name,
+							'qty' => $qty[ $key ] ?? '',
+							'max_qty' => $max_qty[ $key ] ?? '',
+							'price' => $price[ $key ] ?? '',
+							'returnable' => $returnable[ $key ] ?? '',
+							'description' => $description[ $key ] ?? '',
+						];
 					}
 				}
 				$additional_services = apply_filters( 'abprf_additional_services_filter', $additional_services );
@@ -196,7 +192,6 @@
 				}
 				wp_send_json_error( [ 'msg' => __( 'Additional services Configuration not Saved  ..... !! ', 'abp-rentalforge' ) ], 400 );
 			}
-
 			public function import_additional(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );

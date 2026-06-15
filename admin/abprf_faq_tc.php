@@ -76,7 +76,7 @@
                             <div class="_divider_xs"></div>
 							<?php ABPRF_Layout::info_text( 'active_global_tc' ); ?>
                         </div>
-                        <div class="setting_item span_2 <?php echo esc_attr( $active_global_tc == 'on' ? '' : 'rf_active' ); ?>" data-collapse="#active_global_tc">
+                        <div class="setting_item full_width <?php echo esc_attr( $active_global_tc == 'on' ? '' : 'rf_active' ); ?>" data-collapse="#active_global_tc">
                             <div class="tc_content">
 								<?php $this->tc( $abprf_tc ); ?>
                             </div>

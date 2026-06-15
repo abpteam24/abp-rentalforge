@@ -26,9 +26,9 @@
 			}
 
 			public function post_client_form( $abprf_infos ): void {
-				$client_forms       = array_key_exists( 'client_forms', $abprf_infos ) ? $abprf_infos['client_forms'] : [];
-				$display            = array_key_exists( 'display_client_form', $abprf_infos ) ? $abprf_infos['display_client_form'] : 'off';
-				$active_global_form = array_key_exists( 'active_global_form', $abprf_infos ) ? $abprf_infos['active_global_form'] : 'on';
+				$client_forms       = $abprf_infos['client_forms'] ?? [];
+				$display            = $abprf_infos['display_client_form'] ?? 'off';
+				$active_global_form =  $abprf_infos['active_global_form'] ?? 'on';
 				?>
                 <div class="tab_item abprf_client_form" data-tabs="#abprf_client_form">
                     <h4 class=" _abprf_color_theme"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Forms Configuration', 'abp-rentalforge' ); ?></h4>

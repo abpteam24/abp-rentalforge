@@ -9,8 +9,8 @@
             abprf_spinner($(this));
         });
         abprf_load_image();
-        if ($('div.abprf_area .toast_msg_area').length === 0) {
-            $('div.abprf_area').append('<div class="toast_msg_area"></div>');
+        if ($('.toast_msg_area').length === 0) {
+            $('div.abprf_area').first().append('<div class="toast_msg_area"></div>');
         }
         let toast_notices = $('body div.abprf_area ').find('.toast_notice');
         if (toast_notices.length > 0) {

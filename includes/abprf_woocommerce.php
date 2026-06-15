@@ -16,9 +16,8 @@
 				add_action( 'woocommerce_store_api_checkout_order_processed', array( $this, 'api_checkout_order_processed' ) );
 				add_filter( 'woocommerce_order_status_changed', array( $this, 'order_status_changed' ), 90, 4 );
 			}
-
 			public function add_cart_item_data( $cart_item, $product_id ) {
-				$linked_id = ABPRF_Function::get_post_info( $product_id, 'link_abprf_id', $product_id );
+				$linked_id = ABPRF_Function::get_post_info( $product_id, 'abprf_link_id', $product_id );
 				$post_id   = is_string( get_post_status( $linked_id ) ) ? $linked_id : $product_id;
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() && isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
 					$start_time                     = isset( $_POST['start_time'] ) ? sanitize_text_field( wp_unslash( $_POST['start_time'] ) ) : '';
@@ -60,12 +59,11 @@
 				//echo '<pre>';print_r( $cart_item);					echo '</pre>';die();
 				return $cart_item;
 			}
-
 			public function before_calculate_totals( $cart_object ): void {
 				foreach ( $cart_object->cart_contents as $value ) {
-					$post_id = array_key_exists( 'post_id', $value ) ? $value['post_id'] : 0;
+					$post_id = $value['post_id'] ?? 0;
 					if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
-						$total_price = $value['total_price'];
+						$total_price = $value['total_price'] ?? 0;
 						$value['data']->set_price( $total_price );
 						$value['data']->set_regular_price( $total_price );
 						$value['data']->set_sale_price( $total_price );
@@ -74,9 +72,8 @@
 					}
 				}
 			}
-
 			public function cart_item_thumbnail( $thumbnail, $cart_item, $item_key ) {
-				$post_id = array_key_exists( 'post_id', $cart_item ) ? $cart_item['post_id'] : 0;
+				$post_id = $cart_item['post_id'] ?? 0;
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
 					$url = ABPRF_Function::get_image_url( $post_id ) ?: ABPRF_BLANK_IMG_URL;
 					if ( ! empty( $url ) ) {
@@ -86,9 +83,8 @@
 
 				return $thumbnail;
 			}
-
 			public function get_item_data( $item_data, $cart_item ) {
-				$post_id = array_key_exists( 'post_id', $cart_item ) ? $cart_item['post_id'] : 0;
+				$post_id = $cart_item['post_id'] ?? 0;
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
 					global $post;
 					$is_block_cart     = false;
@@ -117,23 +113,22 @@
 
 				return $item_data;
 			}
-
 			public static function get_ticket_info( $abprf_infos = [] ) {
 				$booking_info = [];
 				if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
-					$post_id        = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : '';
-					$start_time     = array_key_exists( 'start_time', $abprf_infos ) ? $abprf_infos['start_time'] : '';
-					$end_time       = array_key_exists( 'end_time', $abprf_infos ) ? $abprf_infos['end_time'] : '';
-					$rent_rule      = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : '';
-					$date_info      = array_key_exists( 'date_info', $abprf_infos ) ? $abprf_infos['date_info'] : [];
+					$post_id        = $abprf_infos['post_id'] ?? '';
+					$start_time     = $abprf_infos['start_time'] ?? '';
+					$end_time       = $abprf_infos['end_time'] ?? '';
+					$rent_rule      = $abprf_infos['rent_rule'] ?? '';
+					$date_info      = $abprf_infos['date_info'] ?? [];
 					$property_ids   = isset( $_POST['property_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['property_id'] ) ) : [];
 					$property_check = isset( $_POST['property_check'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['property_check'] ) ) : [];
 					$property_qty   = isset( $_POST['property_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['property_qty'] ) ) : [];
 					if ( ! empty( $start_time ) && ! empty( $end_time ) && ! empty( $rent_rule ) && ! empty( $date_info ) && sizeof( $date_info ) > 0 && ! empty( $property_ids ) && ! empty( $property_check ) && ! empty( $property_qty ) && ! empty( $post_id ) ) {
 						if ( sizeof( $property_check ) > 0 ) {
 							foreach ( $property_check as $key => $check ) {
-								$property_id = array_key_exists( $key, $property_ids ) ? $property_ids[ $key ] : '';
-								$qty         = array_key_exists( $key, $property_qty ) ? $property_qty[ $key ] : '';
+								$property_id = $property_ids[ $key ] ?? '';
+								$qty         = $property_qty[ $key ] ?? '';
 								if ( ! empty( $check ) && ! empty( $property_id ) && ! empty( $qty ) ) {
 									$property = current( ABPRF_Query::get_property( [ 'property_id' => $property_id ] ) );
 									if ( ! empty( $property ) ) {
@@ -141,11 +136,11 @@
 										$abprf_infos['qty']                      = $qty;
 										$price                                   = ABPRF_Function::get_price( $abprf_infos, $property );
 										$abprf_infos['price']                    = $price;
-										$booking_info[ $property_id ]['name']    = array_key_exists( 'name', $property ) ? $property['name'] : '';
+										$booking_info[ $property_id ]['name']    = $property['name'] ?? '';
 										$booking_info[ $property_id ]['price']   = $price;
 										$booking_info[ $property_id ]['deposit'] = ABPRF_Function::get_deposit_price( $abprf_infos, $property );
 										$booking_info[ $property_id ]['qty']     = $qty;
-										$booking_info[ $property_id ]['brand']   = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
+										$booking_info[ $property_id ]['brand']   = $property['brand'] ?? '';
 									}
 								}
 							}
@@ -155,31 +150,28 @@
 
 				return apply_filters( 'abprf_cart_booking_info_filter', $booking_info );
 			}
-
 			public static function get_price( $ticket_infos ) {
 				$price = 0;
 				if ( is_array( $ticket_infos ) && sizeof( $ticket_infos ) > 0 ) {
 					foreach ( $ticket_infos as $ticket_info ) {
-						$ticket_price = array_key_exists( 'price', $ticket_info ) ? $ticket_info['price'] : 0;
+						$ticket_price = $ticket_info['price'] ?? 0;
 						$price        = $price + $ticket_price;
 					}
 				}
 
 				return $price;
 			}
-
 			public static function get_deposit_price( $ticket_infos ) {
 				$price = 0;
 				if ( is_array( $ticket_infos ) && sizeof( $ticket_infos ) > 0 ) {
 					foreach ( $ticket_infos as $ticket_info ) {
-						$ticket_price = array_key_exists( 'deposit', $ticket_info ) ? $ticket_info['deposit'] : 0;
+						$ticket_price = $ticket_info['deposit'] ?? 0;
 						$price        = $price + $ticket_price;
 					}
 				}
 
 				return $price;
 			}
-
 			public static function get_additional_price( $services ) {
 				$price = 0;
 				if ( is_array( $services ) && sizeof( $services ) > 0 ) {
@@ -194,7 +186,6 @@
 
 				return $price;
 			}
-
 			public static function get_additional_info( $post_id ): array {
 				$infos = array();
 				if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
@@ -216,8 +207,8 @@
 								$infos[ $id ]['name']       = $name;
 								$infos[ $id ]['qty']        = $quantity;
 								$infos[ $id ]['price']      = ABPRF_Function::get_additional_price( $post_id, $name, $abprf_infos );
-								$infos[ $id ]['icon']       = array_key_exists( 'icon', $service ) ? $service['icon'] : '';
-								$infos[ $id ]['returnable'] = array_key_exists( 'returnable', $service ) ? $service['returnable'] : 'no';
+								$infos[ $id ]['icon']       = $service['icon'] ?? '';
+								$infos[ $id ]['returnable'] = $service['returnable'] ?? 'no';
 							}
 						}
 					}
@@ -225,7 +216,6 @@
 
 				return $infos;
 			}
-
 			public static function get_passenger_info( $post_id ): array {
 				$pass_info = [];
 				if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
@@ -239,7 +229,7 @@
 					if ( $display == 'on' && sizeof( $forms ) > 0 ) {
 						foreach ( $forms as $id => $form ) {
 							$info                      = isset( $_POST[ $id ] ) ? sanitize_text_field( wp_unslash( $_POST[ $id ] ) ) : '';
-							$pass_info[ $id ]['label'] = array_key_exists( 'label', $form ) ? $form['label'] : '';
+							$pass_info[ $id ]['label'] = $form['label'] ?? '';
 							$pass_info[ $id ]['value'] = $info;
 						}
 					}
@@ -247,7 +237,6 @@
 
 				return $pass_info;
 			}
-
 			public function display_cart_item_block( $cart_item ): array {
 				$start_time      = $cart_item['start_time'] ?? '';
 				$end_time        = $cart_item['end_time'] ?? '';
@@ -269,14 +258,14 @@
 					foreach ( $ticket_infos as $key => $ticket_info ) {
 						$item_data[] = array( 'name' => __( 'Name', 'abp-rentalforge' ), 'value' => $ticket_info['name'] . '<br />' );
 						$item_data[] = array( 'name' => __( 'Quantity', 'abp-rentalforge' ), 'value' => $ticket_info['qty'] . '<br />' );
-						$price       = array_key_exists( 'price', $ticket_info ) ? $ticket_info['price'] : 0;
+						$price       = $ticket_info['price'] ?? 0;
 						$price       = $price > 0 ? wc_price( $price ) : __( 'FREE', 'abp-rentalforge' );
 						$item_data[] = array( 'name' => __( 'Rent', 'abp-rentalforge' ), 'value' => $price . '<br />' );
-						$deposit     = array_key_exists( 'deposit', $ticket_info ) ? $ticket_info['deposit'] : '';
+						$deposit     = $ticket_info['deposit'] ?? '';
 						if ( ! empty( $deposit ) ) {
 							$item_data[] = array( 'name' => __( 'Deposit', 'abp-rentalforge' ), 'value' => wc_price( $deposit ) . '<br />' );
 						}
-						$brand = array_key_exists( 'brand', $ticket_info ) ? $ticket_info['brand'] : '';
+						$brand = $ticket_info['brand'] ?? '';
 						if ( ! empty( $brand ) ) {
 							$item_data[] = array( 'name' => ABPRF_Function::brand_label(), 'value' => ABPRF_Function::brand_value( $brand ) . '<br />' );
 						}
@@ -286,19 +275,19 @@
 						$item_data[] = array( 'name' => __( 'Additional Information', 'abp-rentalforge' ), 'value' => '<br />' );
 						foreach ( $additional_info as $additional ) {
 							if ( is_array( $additional ) ) {
-								$qty         = array_key_exists( 'qty', $additional ) ? $additional['qty'] : 1;
-								$price       = array_key_exists( 'price', $additional ) ? $additional['price'] : 0;
+								$qty         = $additional['qty'] ?? 1;
+								$price       = $additional['price'] ?? 0;
 								$price_text  = $price > 0 ? wc_price( $price ) : __( 'FREE', 'abp-rentalforge' );
 								$ex_price    = $price > 0 ? wc_price( $price * $qty ) : __( 'FREE', 'abp-rentalforge' );
-								$item_data[] = array( 'name' => array_key_exists( 'name', $additional ) && $additional['name'] ? $additional['name'] : '', 'value' => $price_text . ' X ' . $qty . '  = ' . $ex_price . '<br />' );
+								$item_data[] = array( 'name' => $additional['name'] ?? '', 'value' => $price_text . ' X ' . $qty . '  = ' . $ex_price . '<br />' );
 							}
 						}
 					}
 					if ( ! empty( $attendee_infos ) && sizeof( $attendee_infos ) > 0 ) {
 						$item_data[] = array( 'name' => __( 'Client Information', 'abp-rentalforge' ), 'value' => '<br />' );
 						foreach ( $attendee_infos as $attendee_info ) {
-							$label = array_key_exists( 'label', $attendee_info ) ? $attendee_info['label'] : '';
-							$value = array_key_exists( 'value', $attendee_info ) ? $attendee_info['value'] : '';
+							$label = $attendee_info['label'] ?? '';
+							$value = $attendee_info['value'] ?? '';
 							if ( $label && $value ) {
 								$item_data[] = array( 'name' => $label, 'value' => $value . '<br />' );
 							}
@@ -308,13 +297,12 @@
 
 				return $item_data;
 			}
-
 			//=============================//
 			public function after_checkout_validation(): void {
 				global $woocommerce;
 				$cart_items = $woocommerce->cart->get_cart();
 				foreach ( $cart_items as $cart_item ) {
-					$post_id = array_key_exists( 'post_id', $cart_item ) ? $cart_item['post_id'] : 0;
+					$post_id = $cart_item['post_id'] ?? 0;
 					if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
 						$location                  = $cart_item['location'] ?? '';
 						$rent_rule                 = $cart_item['rent_rule'] ?? '';
@@ -331,14 +319,13 @@
 									$abprf_infos['property_id'] = $id;
 									$sold_qty                   = ABPRF_Query::get_sold_qty( $abprf_infos );
 									$property                   = current( ABPRF_Query::get_property( [ 'property_id' => $id ] ) );
-									$price_qty_info             = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
-									$price_qty_info             = ! empty( $price_qty_info ) ? json_decode( $price_qty_info, true ) : [];
-									$price_qty_info             = ! empty( $price_qty_info ) && ! empty( $location ) && array_key_exists( $location, $price_qty_info ) ? $price_qty_info[ $location ] : $price_qty_info;
-									$price_info                 = array_key_exists( $rent_rule, $price_qty_info ) ? $price_qty_info[ $rent_rule ] : [];
-									$total_qty                  = array_key_exists( 'qty', $price_info ) ? $price_info['qty'] : 0;
-									$reserve_qty                = array_key_exists( 'reserve', $price_info ) ? $price_info['reserve'] : 0;
-									$min_qty                    = array_key_exists( 'min_qty', $price_info ) && $price_info['min_qty'] > 0 ? $price_info['min_qty'] : 1;
-									$max_qty                    = array_key_exists( 'max_qty', $price_info ) && $price_info['max_qty'] > 0 ? $price_info['max_qty'] : 0;
+									$price_qty_info             = json_decode( $property['price_qty_info'] ?? '', true ) ?: [];
+									$price_qty_info             = ( ! empty( $location ) && isset( $price_qty_info[ $location ] ) ) ? $price_qty_info[ $location ] : $price_qty_info;
+									$price_info                 = $price_qty_info[ $rent_rule ] ?? [];
+									$total_qty                  = $price_info['qty'] ?? 0;
+									$reserve_qty                = $price_info['reserve'] ?? 0;
+									$min_qty                    = ( ( $price_info['min_qty'] ?? 0 ) > 0 ) ? $price_info['min_qty'] : 1;
+									$max_qty                    = ( ( $price_info['max_qty'] ?? 0 ) > 0 ) ? $price_info['max_qty'] : 0;
 									$available_qty              = $total_qty - $reserve_qty - $sold_qty;
 									$available_qty              = $max_qty > 0 ? min( $max_qty, $available_qty ) : $available_qty;
 									if ( $qty < $min_qty || $qty > $available_qty ) {
@@ -354,7 +341,6 @@
 					}
 				}
 			}
-
 			public function checkout_create_order_line_item( $item, $key, $cart_item ): void {
 				$post_id = $cart_item['post_id'] ?? 0;
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
@@ -445,7 +431,6 @@
 					}
 				}
 			}
-
 			public static function save_custom_data( $order_id ): void {
 				if ( $order_id ) {
 					$order               = wc_get_order( $order_id );
@@ -453,12 +438,12 @@
 					$order_meta          = get_post_meta( $order_id );
 					$payment_method      = $order_meta['_payment_method_title'][0] ?? '';
 					$user_id             = $order_meta['_customer_user'][0] ?? '';
-					$_billing_first_name = array_key_exists( '_billing_first_name', $order_meta ) ? $order_meta['_billing_first_name'][0] : '';
-					$_billing_last_name  = array_key_exists( '_billing_last_name', $order_meta ) ? $order_meta['_billing_last_name'][0] : '';
-					$billing_email       = array_key_exists( '_billing_email', $order_meta ) ? $order_meta['_billing_email'][0] : '';
-					$billing_phone       = array_key_exists( '_billing_phone', $order_meta ) ? $order_meta['_billing_phone'][0] : '';
-					$_billing_address_1  = array_key_exists( '_billing_address_1', $order_meta ) ? $order_meta['_billing_address_1'][0] : '';
-					$_billing_address_2  = array_key_exists( '_billing_address_2', $order_meta ) ? $order_meta['_billing_address_2'][0] : '';
+					$_billing_first_name = $order_meta['_billing_first_name'][0] ?? '';
+					$_billing_last_name  = $order_meta['_billing_last_name'][0] ?? '';
+					$billing_email       = $order_meta['_billing_email'][0] ?? '';
+					$billing_phone       = $order_meta['_billing_phone'][0] ?? '';
+					$_billing_address_1  = $order_meta['_billing_address_1'][0] ?? '';
+					$_billing_address_2  = $order_meta['_billing_address_2'][0] ?? '';
 					$billing_name        = $_billing_first_name . ' ' . $_billing_last_name;
 					$billing_address     = $_billing_address_1 . ' ' . $_billing_address_2;
 					$booked_status       = ABPRF_Function::booking_status();
@@ -501,8 +486,8 @@
 												'item_id' => intval( $item_id ),
 												'post_id' => intval( $post_id ),
 												'user_id' => intval( $user_id ),
-												'property_id' => json_encode( $property_id ),
-												'ex_id' => json_encode( $ex_id ),
+												'property_id' => wp_json_encode( $property_id ),
+												'ex_id' => wp_json_encode( $ex_id ),
 												'pick_up' => sanitize_text_field( $item_info['pick_up'] ?? '' ),
 												'start_time' => sanitize_text_field( $start_time ),
 												'drop_off' => sanitize_text_field( $item_info['drop_off'] ?? '' ),
@@ -512,10 +497,10 @@
 												'category' => sanitize_text_field( get_post_meta( $post_id, 'category', true ) ),
 												'location' => sanitize_text_field( $item_info['location'] ?? '' ),
 												'brand' => sanitize_text_field( $item_info['brand'] ?? '' ),
-												'price_info' => json_encode( $price_info ),
-												'property_info' => json_encode( $ticket_infos ),
-												'ex_info' => json_encode( $additional_info ),
-												'pass_info' => json_encode( $item_info['pass_info'] ?? [] ),
+												'price_info' => wp_json_encode( $price_info ),
+												'property_info' => wp_json_encode( $ticket_infos ),
+												'ex_info' => wp_json_encode( $additional_info ),
+												'pass_info' => wp_json_encode( $item_info['pass_info'] ?? [] ),
 												'delivery_option' => 0,
 												'book_status' => in_array( $order_status, $booked_status ) ? 1 : 0,
 												'order_status' => sanitize_text_field( $order_status ),
@@ -524,7 +509,7 @@
 												'billing_email' => sanitize_text_field( $billing_email ),
 												'billing_phone' => sanitize_text_field( $billing_phone ),
 												'billing_address' => sanitize_text_field( $billing_address ),
-												'others' => json_encode( $others ),
+												'others' => wp_json_encode( $others ),
 												'created_at' => current_time( 'Y-m-d H:i' ),
 												'updated_at' => current_time( 'Y-m-d H:i' )
 											];
@@ -538,15 +523,12 @@
 					}
 				}
 			}
-
 			public function checkout_order_processed( $order_id ): void {
 				self::save_custom_data( $order_id );
 			}
-
 			public function api_checkout_order_processed( $order ): void {
 				$this->checkout_order_processed( $order->get_id() );
 			}
-
 			public function order_status_changed( $order_id ): void {
 				if ( ! empty( $order_id ) && $order_id > 0 ) {
 					global $wpdb;
@@ -558,13 +540,13 @@
 							$order_infos = ABPRF_Query::get_booking_query( [ 'item_id' => $item_id ] );
 							if ( ! empty( $order_infos ) && sizeof( $order_infos ) > 0 ) {
 								$order_info = current( $order_infos );
-								$others     = array_key_exists( 'others', $order_info ) ? $order_info['others'] : '';
+								$others     = $order_info['others'] ?? '';
 								if ( ! empty( $others ) ) {
 									$others               = json_decode( $others, true );
 									$user_id              = get_current_user_id();
 									$others['updated_by'] = $user_id;
 									$data                 = [
-										'others' => json_encode( $others ),
+										'others' => wp_json_encode( $others ),
 										'order_status' => 'wc-' . $order_status,
 										'updated_at' => current_time( 'Y-m-d H:i' )
 									];

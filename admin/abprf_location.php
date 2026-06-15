@@ -11,19 +11,19 @@
 				add_action( 'wp_ajax_abprf_delete_location', [ $this, 'delete_location' ] );
 				add_action( 'wp_ajax_abprf_add_location', [ $this, 'add_location' ] );
 			}
-
 			public function global_location(): void {
-				?>
-                <div class="location_list _ov_auto">
-					<?php $this->location_list(); ?>
-                </div>
-                <div class="_divider_xs"></div>
-                <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="location">
-                    <span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?>
-                </button>
-				<?php
+				if ( ABPRF_Function::on_off( 'location' ) ) {
+					?>
+                    <div class="location_list _ov_auto">
+						<?php $this->location_list(); ?>
+                    </div>
+                    <div class="_divider_xs"></div>
+                    <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="location">
+                        <span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?>
+                    </button>
+					<?php
+				}
 			}
-
 			public function update_location( $options = [], $id = '' ): void {
 				$taxonomies   = ABPRF_Function::get_taxonomy( 'abprf_location' );
 				$taxonomies   = is_array( $taxonomies ) ? $taxonomies : [];
@@ -50,7 +50,6 @@
 				ksort( $location );
 				update_option( 'abprf_location', $location );
 			}
-
 			public function location_list(): void {
 				$all_locations = ABPRF_Function::get_option( 'abprf_location' );
 				$all_locations = is_array( $all_locations ) ? $all_locations : [];
@@ -115,7 +114,6 @@
 					ABPRF_Layout::layout_warning_info( 'no_location' );
 				}
 			}
-
 			public function form( $location = '', $loc_id = '' ): void {
 				$name           = $location['name'] ?? '';
 				$des            = $location['description'] ?? '';
@@ -143,7 +141,7 @@
                         <div class="_divider_xs"></div>
 						<?php ABPRF_Layout::info_text( 'loc_slug' ); ?>
                     </div>
-                    <div class="setting_item span_2">
+                    <div class="setting_item full_width">
                         <label class="_f_equal_f_wrap">
                             <span class="_mar_r_xs"><?php esc_html_e( 'Location Full Address', 'abp-rentalforge' ); ?></span>
                             <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'Address', 'abp-rentalforge' ); ?>"><?php echo esc_html( $des ); ?></textarea>
@@ -159,7 +157,7 @@
                             </div>
                             <div data-collapse="#display_pickup" class="configuration_content <?php echo esc_attr( $display_pickup === 'on' ? 'rf_active' : '' ); ?>">
                                 <div class="insertable_area sortable_area _fd_column">
-									<?php if ( count( $pick_infos ) > 0 ) {
+									<?php if (!empty($pick_infos) ) {
 										foreach ( $pick_infos as $key => $pick_info ) {
 											self::pickup_form( $pick_info, $key );
 										}
@@ -184,7 +182,7 @@
                             </div>
                             <div data-collapse="#display_drop" class="configuration_content <?php echo esc_attr( $display_drop === 'on' ? 'rf_active' : '' ); ?>">
                                 <div class="insertable_area sortable_area _fd_column">
-									<?php if ( count( $drop_infos ) > 0 ) {
+									<?php if ( !empty($drop_infos)) {
 										foreach ( $drop_infos as $key => $drop_info ) {
 											self::drop_form( $drop_info, $key );
 										}
@@ -206,7 +204,6 @@
                 <button type="button" class="_btn_theme save_location"><span class="_mar_r_xxs">💾</span><?php echo( ! empty( $loc_id ) ? esc_html__( 'Update Location', 'abp-rentalforge' ) : esc_html__( 'Save Location', 'abp-rentalforge' ) ); ?></button>
 				<?php
 			}
-
 			public static function pickup_form( $point = '', $key = '' ): void {
 				?>
                 <div class="delete_area _group_content _mar_b_xxs">
@@ -218,7 +215,6 @@
                 </div>
 				<?php
 			}
-
 			public static function drop_form( $point = '', $key = '' ): void {
 				?>
                 <div class="delete_area _group_content _mar_b_xxs">
@@ -230,7 +226,6 @@
                 </div>
 				<?php
 			}
-
 			public static function location_selection( $_location = '' ): void {
 				$all_location   = ABPRF_Function::get_option( 'abprf_location' );
 				$all_location   = is_array( $all_location ) ? $all_location : [];
@@ -254,7 +249,6 @@
 					<?php
 				}
 			}
-
 			public function add_location(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
@@ -271,7 +265,6 @@
 				$html = ob_get_clean();
 				wp_send_json_success( [ 'html' => $html, 'msg' => __( 'Location Form Loaded Successfully .....! ', 'abp-rentalforge' ) ] );
 			}
-
 			public function save_location(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
@@ -368,7 +361,6 @@
 				$html = ob_get_clean();
 				wp_send_json_success( [ 'html' => $html, 'msg' => $msg ] );
 			}
-
 			public function delete_location(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );

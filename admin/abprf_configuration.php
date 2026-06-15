@@ -17,26 +17,23 @@
 				add_filter( 'pre_update_option_abprf_pdf_list', array( $this, 'update_sanitize' ), 10, 3 );
 				add_filter( 'pre_update_option_abprf_csv', array( $this, 'update_sanitize' ), 10, 3 );
 			}
-
 			public function admin_init(): void {
 				foreach ( $this->configuration_section() as $section ) {
 					register_setting( $section['id'], $section['id'], array( $this, 'sanitize_options' ) );
 				}
 			}
-
 			public function permalink_flush(): void {
 				flush_rewrite_rules();
 			}
-
 			public function update_sanitize( $new, $old, $option ) {
 				$all_fields  = $this->configuration_data();
-				$field_infos = array_key_exists( $option, $all_fields ) ? $all_fields[ $option ] : array();
+				$field_infos =  $all_fields[ $option ] ?? [];
 				$remove_name = [ 'collapse_start', 'collapse_end' ];
 				if ( sizeof( $field_infos ) > 0 && is_array( $new ) ) {
 					foreach ( $field_infos as $field_info ) {
-						$name = array_key_exists( 'name', $field_info ) ? $field_info['name'] : '';
+						$name = $field_info['name'] ?? '';
 						if ( ! in_array( $name, $remove_name ) ) {
-							$type = array_key_exists( 'type', $field_info ) ? $field_info['type'] : '';
+							$type = $field_info['type'] ?? '';
 							if ( $type == 'wp_editor' ) {
 								$new[ $name ] = sanitize_text_field( htmlentities( $new[ $name ] ) );
 							} else {
@@ -48,16 +45,15 @@
 
 				return sizeof( $new ) > 0 ? $new : $old;
 			}
-
 			public function load_configuration(): void {
 				?>
-                <div class="abprf_area" id="abprf_configuration">
+                <div id="abprf_configuration">
                     <div class="_abp_panel_max_1200_mar_auto">
                         <div class="abprf_tabs tab_top">
                             <div class="_panel_head">
                                 <ul class="_abprf tab_lists">
 									<?php foreach ( $this->configuration_section() as $tab ) { ?>
-                                        <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><span class="<?php echo esc_attr( array_key_exists( 'icon', $tab ) ? $tab['icon'] : '' ); ?>"></span><?php echo esc_html( $tab['menu'] ); ?></li>
+                                        <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><span class="<?php echo esc_attr( $tab['icon'] ?? '' ); ?>"></span><?php echo esc_html( $tab['menu']??'' ); ?></li>
 									<?php } ?>
                                 </ul>
                             </div>
@@ -72,13 +68,12 @@
                 </div>
 				<?php
 			}
-
 			public function show_tab_content(): void {
 				$plugin_label = ABPRF_Function::label();
 				$all_fields   = $this->configuration_data();
 				foreach ( $this->configuration_section() as $form ) {
 					$section_id = $form['id'];
-					$fields     = array_key_exists( $section_id, $all_fields ) ? $all_fields[ $section_id ] : array();
+					$fields     = $all_fields[ $section_id ] ?? [];
 					if ( sizeof( $fields ) > 0 ) {
 						?>
                         <div class="tab_item <?php echo esc_attr( $section_id ); ?>" data-tabs="#<?php echo esc_attr( $section_id ); ?>">
@@ -90,44 +85,48 @@
 										settings_fields( $section_id );
 										$options = ABPRF_Function::get_option( $section_id );
 										foreach ( $fields as $option ) {
-											$name  = $option['name'] ?? '';
-											$type  = $option['type'] ?? '';
-											$label = $option['label'] ?? '';
-											if ( $name && $type && $label ) {
-												$value          = isset( $options[ $name ] ) && $options[ $name ] ? $options[ $name ] : ( $option['default'] ?? '' );
-												$collapse       = $option['collapse_data'] ?? [];
-												$add_class      = $option['class'] ?? '';
-												$section_target = '';
-												if ( ! empty( $collapse ) ) {
-													$section        = $collapse['option'] ?? '';
-													$section_key    = $collapse['key'] ?? '';
-													$option_value   = $this->get_option_value( $section, $section_key );
-													$add_class      = $option_value == 'on' ? $add_class . ' ' . 'rf_active' : $add_class;
-													$section_target = $section . '[' . $section_key . ']';
-												}
-												$collapse_radio = $option['collapse_radio'] ?? [];
-												$radio_pass     = 0;
-												if ( ! empty( $collapse_radio ) ) {
-													$span_class         = $option['class'] ?? '';
-													$radio_section      = $collapse_radio['option'] ?? '';
-													$radio_key          = $collapse_radio['key'] ?? '';
-													$radio_value        = $collapse_radio['value'] ?? '';
-													$radio_option_value = ABPRF_Function::get_options( $radio_section, $radio_key, $value );
-													$radio_id           = $radio_section . '_' . $radio_key . '_' . $radio_value;
-													if ( ! empty( $radio_id ) ) {
-														$radio_pass ++;
-														?><div class="<?php echo esc_attr( $radio_option_value == $radio_value ? $span_class . '  ' . 'rf_active' : $span_class ); ?>" data-close="<?php echo esc_attr( '#' . $radio_id ); ?>"><?php
+											$on_off_key = $option['on_off_key'] ?? '';
+											$display    = empty( $on_off_key ) || ABPRF_Function::on_off( $on_off_key );
+											if ( $display ) {
+												$name  = $option['name'] ?? '';
+												$type  = $option['type'] ?? '';
+												$label = $option['label'] ?? '';
+												if ( $name && $type && $label ) {
+													$value          = isset( $options[ $name ] ) && $options[ $name ] ? $options[ $name ] : ( $option['default'] ?? '' );
+													$collapse       = $option['collapse_data'] ?? [];
+													$add_class      = $option['class'] ?? '';
+													$section_target = '';
+													if ( ! empty( $collapse ) ) {
+														$section        = $collapse['option'] ?? '';
+														$section_key    = $collapse['key'] ?? '';
+														$option_value   = $this->get_option_value( $section, $section_key );
+														$add_class      = $option_value == 'on' ? $add_class . ' ' . 'rf_active' : $add_class;
+														$section_target = $section . '[' . $section_key . ']';
 													}
-												}
-												$option['collapse_target'] = $section_target;
-												$option['class']           = $add_class;
-												$option['section']         = $section_id;
-												$option['key_name']        = $name;
-												$option['name']            = $section_id . '[' . $name . ']';
-												$option['value']           = $value;
-												$this->$type( $option );
-												if ( ! empty( $collapse_radio ) && $radio_pass > 0 ) {
-													?></div><?php
+													$collapse_radio = $option['collapse_radio'] ?? [];
+													$radio_pass     = 0;
+													if ( ! empty( $collapse_radio ) ) {
+														$span_class         = $option['class'] ?? '';
+														$radio_section      = $collapse_radio['option'] ?? '';
+														$radio_key          = $collapse_radio['key'] ?? '';
+														$radio_value        = $collapse_radio['value'] ?? '';
+														$radio_option_value = ABPRF_Function::get_options( $radio_section, $radio_key, $value );
+														$radio_id           = $radio_section . '_' . $radio_key . '_' . $radio_value;
+														if ( ! empty( $radio_id ) ) {
+															$radio_pass ++;
+															?><div class="<?php echo esc_attr( $radio_option_value == $radio_value ? $span_class . '  ' . 'rf_active' : $span_class ); ?>" data-close="<?php echo esc_attr( '#' . $radio_id ); ?>"><?php
+														}
+													}
+													$option['collapse_target'] = $section_target;
+													$option['class']           = $add_class;
+													$option['section']         = $section_id;
+													$option['key_name']        = $name;
+													$option['name']            = $section_id . '[' . $name . ']';
+													$option['value']           = $value;
+													$this->$type( $option );
+													if ( ! empty( $collapse_radio ) && $radio_pass > 0 ) {
+														?></div><?php
+													}
 												}
 											}
 										}
@@ -141,7 +140,6 @@
 					}
 				}
 			}
-
 			public function get_option_value( $section, $section_key ) {
 				$option_value = ABPRF_Function::get_options( $section, $section_key );
 				if ( empty( $option_value ) ) {
@@ -159,7 +157,6 @@
 
 				return $option_value;
 			}
-
 			public function configuration_section(): array {
 				$label         = ABPRF_Function::label();
 				$brand_icon    = ABPRF_Function::icon();
@@ -173,7 +170,6 @@
 
 				return array_merge( $configuration, $contact );
 			}
-
 			public function configuration_data() {
 				return apply_filters( 'abprf_configuration_data_filter', array(
 					'abprf_configuration' => apply_filters( 'abprf_configuration_filter', array(
@@ -181,7 +177,7 @@
 							'name' => 'booked_status',
 							'label' => __( 'Booked Status', 'abp-rentalforge' ),
 							'desc' => __( 'Select the specific order statuses that will automatically trigger inventory deduction or reserve a seat.', 'abp-rentalforge' ),
-							'class' => 'span_2',
+							'class' => 'full_width',
 							'type' => 'multi_check',
 							'default' => 'wc-processing,wc-completed',
 							'options' => in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ? wc_get_order_statuses() : []
@@ -246,13 +242,20 @@
 							'name' => 'rent_rule',
 							'label' => __( 'Rent Date Time Rule', 'abp-rentalforge' ),
 							'desc' => __( 'Rent Date Time Rules allow you to control rental booking availability based on specific date and time conditions. Select one or more rules to apply custom restrictions. If no rule is selected, all available rules will remain active by default.', 'abp-rentalforge' ),
-							'class' => 'span_2',
+							'class' => 'full_width',
 							'type' => 'multi_check',
-							'default' =>ABPRF_Layout::rent_rules_string(),
+							'default' => ABPRF_Layout::rent_rules_string(),
 							'options' => ABPRF_Layout::rent_rules()
 						),
+						array(
+							'name' => 'location',
+							'label' => ABPRF_Function::location_label(),
+							'desc' => __( 'Turn this option off to disable all location-based functionality across your website. If location management is not required, you can safely disable it. When enabled, the system will automatically use the Default Location settings.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
 					) ),
-                    'abprf_contact' =>array(
+					'abprf_contact' => array(
 						array(
 							'name' => 'name',
 							'label' => __( 'Company Name', 'abp-rentalforge' ),
@@ -335,7 +338,7 @@
 								'bottom' => __( 'Bottom', 'abp-rentalforge' ),
 								'left' => __( 'Left', 'abp-rentalforge' )
 							),
-							'class' => 'span_2',
+							'class' => 'full_width',
 							'collapse_radio' => array( 'option' => 'abprf_slider', 'key' => 'slider_style', 'value' => 'slider' ),
 							'collapse_data' => array( 'option' => 'abprf_slider', 'key' => 'indicator_visible' ),
 						),
@@ -367,7 +370,7 @@
 							'collapse_data' => array( 'option' => 'abprf_slider', 'key' => 'visible_popup' ),
 						),
 					),
-					'abprf_css_var' =>array(
+					'abprf_css_var' => array(
 						array(
 							'name' => 'color_theme',
 							'label' => __( 'Base Color', 'abp-rentalforge' ),
@@ -500,7 +503,6 @@
 					)
 				) );
 			}
-
 			public static function description( $option ): void {
 				$desc = $option['desc'] ?? '';
 				if ( $desc ) { ?>
@@ -509,7 +511,6 @@
 					ABPRF_Layout::info_text( '', $desc );
 				}
 			}
-
 			public function text( $option ): void {
 				$section_target = $option['collapse_target'] ?? [];
 				?>
@@ -522,11 +523,9 @@
                 </div>
 				<?php
 			}
-
 			public function url( $option ): void {
 				$this->text( $option );
 			}
-
 			public function number( $option ): void {
 				$section_target = $option['collapse_target'] ?? [];
 				?>
@@ -542,7 +541,6 @@
                 </div>
 				<?php
 			}
-
 			public function password( $option ): void {
 				$section_target = $option['collapse_target'] ?? [];
 				?>
@@ -555,7 +553,6 @@
                 </div>
 				<?php
 			}
-
 			public function file( $option ): void {
 				$value          = $option['value'] ?? '';
 				$name           = $option['name'] ?? '';
@@ -570,7 +567,6 @@
                 </div>
 				<?php
 			}
-
 			public function dashicons( $option ): void {
 				$value          = $option['value'] ?? '';
 				$name           = $option['name'] ?? '';
@@ -587,7 +583,6 @@
                 </div>
 				<?php
 			}
-
 			public function fontawesome( $option ): void {
 				$value          = $option['value'] ?? '';
 				$name           = $option['name'] ?? '';
@@ -602,7 +597,6 @@
                 </div>
 				<?php
 			}
-
 			public function datepicker( $option ): void {
 				$value          = $option['value'] ?? '';
 				$name           = $option['name'] ?? '';
@@ -617,7 +611,6 @@
                 </div>
 				<?php
 			}
-
 			public function textarea( $option ): void {
 				$section_target = $option['collapse_target'] ?? [];
 				?>
@@ -630,7 +623,6 @@
                 </div>
 				<?php
 			}
-
 			public function select( $option ): void {
 				$value          = $option['value'] ?? '';
 				$option_data    = $option['options'] ?? [];
@@ -649,7 +641,6 @@
                 </div>
 				<?php
 			}
-
 			public function radio( $option ): void {
 				$value          = $option['value'] ?? '';
 				$name           = $option['name'] ?? '';
@@ -680,7 +671,6 @@
                 </div>
 				<?php
 			}
-
 			public function checkbox( $option ): void {
 				$value          = $option['value'] ?? '';
 				$checked        = checked( $value, 'on', false );
@@ -698,7 +688,6 @@
                 </div>
 				<?php
 			}
-
 			public function button_switch( $option ): void {
 				$value          = $option['value'] ?? '';
 				$name           = $option['name'] ?? '';
@@ -710,7 +699,6 @@
                 </div>
 				<?php
 			}
-
 			public function multi_check( $option ): void {
 				$value          = $option['value'] ?? '';
 				$option_data    = $option['options'] ?? [];
@@ -735,7 +723,6 @@
                 </div>
 				<?php
 			}
-
 			public function color( $option ): void {
 				$section_target = $option['collapse_target'] ?? [];
 				?>
@@ -750,7 +737,6 @@
                 </div>
 				<?php
 			}
-
 			public function wp_role( $option ): void {
 				global $wp_roles;
 				$value          = $option['value'] ?? '';
@@ -776,7 +762,6 @@
                 </div>
 				<?php
 			}
-
 			public function wp_editor( $option ): void {
 				$name           = $option['name'] ?? '';
 				$value          = $option['value'] ?? '';
@@ -805,7 +790,6 @@
                 </div>
 				<?php
 			}
-
 			public function pages( $option ): void {
 				$name           = $option['name'] ?? '';
 				$value          = $option['value'] ?? '';
@@ -836,7 +820,6 @@
                 </div>
 				<?php
 			}
-
 			public function sanitize_options( $options ) {
 				if ( ! $options ) {
 					return $options;
@@ -850,7 +833,6 @@
 
 				return $options;
 			}
-
 			public function get_sanitize_callback( $slug = '' ): callable|bool {
 				if ( empty( $slug ) ) {
 					return false;

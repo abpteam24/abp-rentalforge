@@ -256,6 +256,7 @@ function abprf_property_filter_arg($this) {
                 abprf_spinner_remove(parent);
                 target.html(response.data.html);
                 abprf_toast_msg(response.data.msg, 'success');
+                abprf_load_more();
             }
         });
     });
@@ -1091,7 +1092,39 @@ jQuery(document).ready(function ($) {
         }
     });
 });
-//============================//
+//=========== Feature selection start=================//
+document.addEventListener('focusin', function (e) {
+    if (e.target.matches('.feature_search')) {
+        let parentSelection = e.target.closest('.feature_selection');
+        if (parentSelection) {
+            let featureList = parentSelection.querySelector('.feature_list');
+            if (featureList) {
+                featureList.classList.add('active');
+            }
+        }
+    }
+});
+document.addEventListener('click', function (e) {
+    if (e.target.matches('.feature_search')) {
+        let parentSelection = e.target.closest('.feature_selection');
+        if (parentSelection) {
+            let featureList = parentSelection.querySelector('.feature_list');
+            if (featureList) {
+                featureList.classList.add('active');
+            }
+        }
+    }
+    if (!e.target.closest('.feature_selection_area')) {
+        document.querySelectorAll('.feature_list').forEach(function (list) {
+            list.classList.remove('active');
+        });
+    }
+});
+document.addEventListener('input', function (e) {
+    if (e.target.matches('.feature_search')) {
+        abprf_feature_render();
+    }
+});
 function abprf_feature_selection_init() {
     let hiddenVal = document.querySelector('div.abprf_admin .feature_selection_area input[name="feature"]').value;
     let preIds = hiddenVal ? hiddenVal.split(',').map(function (s) {
@@ -1112,8 +1145,10 @@ function abprf_feature_selection_init() {
             selList.appendChild(div);
         });
     }
-    document.querySelector('div.feature_selection_area .feature_selection').innerHTML = '<label><input class="_form_control feature_search" type="text"  placeholder="' + abprf_admin_data.msg.search_feature + '" /></label><div class="feature_list"></div>';
-    document.querySelector('div.feature_selection_area .feature_search').addEventListener('input', abprf_feature_render);
+    // HTML ইনসার্ট করা হচ্ছে (এখানে আর কোনো inline event listener যোগ করার দরকার নেই)
+    document.querySelector('div.feature_selection_area .feature_selection').innerHTML =
+        '<label><input class="_form_control feature_search" type="text" placeholder="' + abprf_admin_data.msg.search_feature + '" /></label>' +
+        '<div class="feature_list"></div>';
     abprf_feature_render();
 }
 function abprf_feature_selected_id() {
@@ -1159,7 +1194,7 @@ function abprf_feature_select(id) {
 }
 function abprf_feature_inner_html(f) {
     let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<i class="' + f.icon + ' _mar_r_xxs"></i>';
-    return '<div>' + icon_text + f.label + ' - ' + f.value + '</div><span class="remove_feature" onclick="abprf_feature_remove(\'' + f.id + '\')">❌</span>';
+    return '<div class="_fa_center">' + icon_text + f.label + ' - ' + f.value + '</div><span class="remove_feature" onclick="abprf_feature_remove(\'' + f.id + '\')">❌</span>';
 }
 function abprf_feature_remove(id) {
     let item = document.querySelector('.selected_list .selected_item[data-id="' + id + '"]');
@@ -1175,4 +1210,4 @@ function abprf_feature_update_hidden() {
     let ids = abprf_feature_selected_id();
     document.querySelector('div.abprf_admin .feature_selection_area input[name="feature"]').value = ids.join(',');
 }
-
+//=========== Feature selection end=================//

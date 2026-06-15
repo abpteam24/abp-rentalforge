@@ -17,12 +17,9 @@
 					return;
 				}
 				$picker_data    = self::create_datepicker_array( $dates );
-				$clean_selector = esc_js( $selector );
-				$json_data      = json_encode( $picker_data );
-				$inline_js      = "
-                            window.abprf_picker_data = window.abprf_picker_data || {};
-                            window.abprf_picker_data['{$clean_selector}'] = {$json_data};
-                        ";
+				$json_selector = wp_json_encode( sanitize_text_field( $selector ) );
+				$json_data     = wp_json_encode( $picker_data );
+				$inline_js = "window.abprf_picker_data = window.abprf_picker_data || {}; window.abprf_picker_data[{$json_selector}] = {$json_data};";
 				wp_add_inline_script( 'jquery-ui-datepicker', $inline_js );
 			}
 			public static function create_datepicker_array( $dates ): array {
@@ -173,7 +170,7 @@
 					?>
                     <div class="info_text load_more">
                         <span class="load_more_content">ℹ️ &nbsp;<?php echo wp_kses_post( $data ); ?></span>
-                        <span class="load_more_action" data-less="<?php esc_html_e( '....Show Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '....Load More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '....Load More', 'abp-rentalforge' ); ?></span>
+                        <span class="load_more_action" data-less="<?php esc_html_e( '.... Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '.... More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '.... More', 'abp-rentalforge' ); ?></span>
                     </div>
 					<?php
 				}
@@ -759,34 +756,113 @@
 					'fec_id_11' => [ 'icon' => '🧭', 'label' => 'Navigation', 'value' => 'Smart GPS & route optimization' ],
 					'fec_id_12' => [ 'icon' => 'fas fa-users', 'label' => 'Capacity', 'value' => '4 Persons' ],
 					'fec_id_13' => [ 'icon' => 'fas fa-users', 'label' => 'Capacity', 'value' => '5 Seater' ],
-					'fec_id_14' => [ 'icon' => 'fas fa-suitcase', 'label' => 'Boot Space', 'value' => '400L' ]
+					'fec_id_14' => [ 'icon' => 'fas fa-suitcase', 'label' => 'Boot Space', 'value' => '400L' ],
+					'fec_id_15' => [ 'icon' => '📸', 'label' => 'Sensor Quality', 'value' => 'Full-frame / APS-C high resolution sensors' ],
+					'fec_id_16' => [ 'icon' => '🎥', 'label' => 'Resolution', 'value' => '4K / 8K cinematic recording' ],
+					'fec_id_17' => [ 'icon' => '🎥', 'label' => 'Resolution', 'value' => '24 MP' ],
+					'fec_id_18' => [ 'icon' => '🎥', 'label' => 'Resolution', 'value' => '4K UHD' ],
+					'fec_id_19' => [ 'icon' => '🔍', 'label' => 'Lens System', 'value' => 'Interchangeable professional lenses' ],
+					'fec_id_20' => [ 'icon' => '⚙️', 'label' => 'Autofocus', 'value' => 'Fast AI-based tracking focus system' ],
+					'fec_id_21' => [ 'icon' => '🔋', 'label' => 'Battery Life', 'value' => 'Long-lasting rechargeable battery system' ],
+					'fec_id_22' => [ 'icon' => 'fas fa-search-plus', 'label' => 'Zoom', 'value' => '30x Optical' ],
+					'fec_id_23' => [ 'icon' => 'fas fa-battery-full', 'label' => 'Battery Life', 'value' => '500 Shots' ],
+					'fec_id_24' => [ 'icon' => 'fas fa-wifi', 'label' => 'Connectivity', 'value' => 'Built-in Wi-Fi/NFC' ],
+					'fec_id_25' => [ 'icon' => '🔊', 'label' => 'Sound', 'value' => 'High-power bass boosted speakers' ],
+					'fec_id_26' => [ 'icon' => '🔊', 'label' => 'Sound', 'value' => '1000W' ],
+					'fec_id_27' => [ 'icon' => '🎚️', 'label' => 'DJ Control', 'value' => 'Professional mixers & controllers support' ],
+					'fec_id_28' => [ 'icon' => '💡', 'label' => 'Lighting', 'value' => 'RGB LED & stage lighting systems' ],
+					'fec_id_29' => [ 'icon' => '💡', 'label' => 'Lighting', 'value' => 'LED RGB' ],
+					'fec_id_30' => [ 'icon' => '📡', 'label' => 'Connectivity', 'value' => 'Bluetooth / USB / AUX / Wireless sync' ],
+					'fec_id_31' => [ 'icon' => '🔌', 'label' => 'Power Efficiency', 'value' => 'Energy-efficient high-output systems' ],
+					'fec_id_32' => [ 'icon' => 'fas fa-battery-full', 'label' => 'Battery Life', 'value' => 'Up to 12 Hours' ],
+					'fec_id_33' => [ 'icon' => 'fas fa-microphone', 'label' => 'Input', 'value' => 'Wireless Mic Support' ],
+					'fec_id_34' => [ 'icon' => 'fas fa-water', 'label' => 'Durability', 'value' => 'Splash Proof (IPX4)' ],
+					'fec_id_35' => [ 'icon' => '🚁', 'label' => 'Flight Stability', 'value' => 'GPS-based stable hovering system' ],
+					'fec_id_36' => [ 'icon' => '🧠', 'label' => 'AI Features', 'value' => 'Smart tracking & auto flight modes' ],
+					'fec_id_37' => [ 'icon' => '🔋', 'label' => 'Battery Range', 'value' => 'Extended flight time with fast charging' ],
+					'fec_id_38' => [ 'icon' => '📡', 'label' => 'Range', 'value' => '15KM' ],
+					'fec_id_39' => [ 'icon' => 'fas fa-clock', 'label' => 'Flight Time', 'value' => '30 Minutes' ],
+					'fec_id_40' => [ 'icon' => '📡', 'label' => 'Range', 'value' => '5 km' ],
+					'fec_id_41' => [ 'icon' => 'fas fa-camera', 'label' => 'Camera', 'value' => '4K / 12MP' ],
+					'fec_id_42' => [ 'icon' => 'fas fa-wind', 'label' => 'Wind Resistance', 'value' => 'Level 5' ],
+					'fec_id_43' => [ 'icon' => 'fas fa-weight-hanging', 'label' => 'Max Payload', 'value' => '500g' ],
+					'fec_id_44' => [ 'icon' => 'fas fa-clock', 'label' => 'Flight Time', 'value' => '30-40 Mins' ],
+					'fec_id_45' => [ 'icon' => 'fas fa-tachometer-alt', 'label' => 'Max Speed', 'value' => '70 KM/H' ],
+					'fec_id_46' => [ 'icon' => 'fas fa-eye', 'label' => 'Obstacle Avoidance', 'value' => 'Omnidirectional' ],
+					'fec_id_47' => [ 'icon' => 'fas fa-weight-hanging', 'label' => 'Takeoff Weight', 'value' => '249g' ],
+					'fec_id_48' => [ 'icon' => '🏝️', 'label' => 'Location', 'value' => 'Beachfront / Mountain / Island premium spots' ],
+					'fec_id_49' => [ 'icon' => '🏨', 'label' => 'Luxury Level', 'value' => '5-star ultra luxury hospitality service' ],
+					'fec_id_50' => [ 'icon' => '🍽️', 'label' => 'Dining', 'value' => 'International gourmet food experience' ],
+					'fec_id_51' => [ 'icon' => '🧖', 'label' => 'Facilities', 'value' => 'Spa, pool, gym, wellness center' ],
+					'fec_id_52' => [ 'icon' => '🌅', 'label' => 'Experience', 'value' => 'Scenic views & premium relaxation environment' ],
+					'fec_id_53' => [ 'icon' => 'fas fa-bed', 'label' => 'Room Type', 'value' => 'Deluxe Suite' ],
+					'fec_id_54' => [ 'icon' => 'fas fa-swimming-pool', 'label' => 'Pool', 'value' => 'Infinity Pool' ],
+					'fec_id_55' => [ 'icon' => 'fas fa-utensils', 'label' => 'Meals', 'value' => 'All Inclusive' ],
+					'fec_id_56' => [ 'icon' => 'fas fa-wifi', 'label' => 'WiFi', 'value' => 'Free / High Speed' ],
+					'fec_id_57' => [ 'icon' => 'fas fa-concierge-bell', 'label' => 'Service', 'value' => '24/7 Concierge' ],
+					'fec_id_58' => [ 'icon' => 'fas fa-swimming-pool', 'label' => 'Pool', 'value' => 'Private Infinity Pool' ],
+					'fec_id_59' => [ 'icon' => 'fas fa-utensils', 'label' => 'Dining', 'value' => 'Fine Dining Included' ],
+					'fec_id_60' => [ 'icon' => 'fas fa-spa', 'label' => 'Wellness', 'value' => 'Luxury Spa & Sauna' ],
+					'fec_id_61' => [ 'icon' => 'fas fa-mountain', 'label' => 'View', 'value' => 'Ocean Front' ],
+					'fec_id_62' => [ 'icon' => '🧳', 'label' => 'Durability', 'value' => 'Shock-resistant strong build quality' ],
+					'fec_id_63' => [ 'icon' => '🎒', 'label' => 'Portability', 'value' => 'Lightweight and easy carry design' ],
+					'fec_id_64' => [ 'icon' => '🔒', 'label' => 'Security', 'value' => 'TSA lock & anti-theft protection' ],
+					'fec_id_65' => [ 'icon' => '💼', 'label' => 'Storage Capacity', 'value' => 'Expandable smart packing space' ],
+					'fec_id_66' => [ 'icon' => '⚙️', 'label' => 'Build Material', 'value' => 'Polycarbonate / premium fabric construction' ],
+					'fec_id_67' => [ 'icon' => 'fas fa-weight', 'label' => 'Weight', 'value' => '2.5 kg' ],
+					'fec_id_68' => [ 'icon' => 'fas fa-box', 'label' => 'Storage Capacity', 'value' => '60 Liters' ],
+					'fec_id_69' => [ 'icon' => 'fas fa-tint-slash', 'label' => 'Waterproof', 'value' => 'IPX6 Rated' ],
+					'fec_id_70' => [ 'icon' => 'fas fa-expand-arrows-alt', 'label' => 'Dimensions', 'value' => '70×35×25 cm' ],
+					'fec_id_71' => [ 'icon' => 'fas fa-lock', 'label' => 'Security Lock', 'value' => 'TSA Approved' ],
+					'fec_id_72' => [ 'icon' => 'fas fa-feather', 'label' => 'Weight', 'value' => 'Ultra Lightweight' ],
+					'fec_id_73' => [ 'icon' => 'fas fa-shield-virus', 'label' => 'Material', 'value' => 'Waterproof Carbon Fiber' ],
+					'fec_id_74' => [ 'icon' => 'fas fa-lock', 'label' => 'Security', 'value' => 'TSA Approved Lock' ],
+					'fec_id_75' => [ 'icon' => 'fas fa-expand', 'label' => 'Space', 'value' => 'Expandable Capacity' ],
+					'fec_id_76' => [ 'icon' => 'fas fa-compass', 'label' => 'Utility', 'value' => 'Smart Tracking GPS' ],
+					'fec_id_77' => [ 'icon' => '🏅', 'label' => 'Performance', 'value' => 'Professional-grade sports efficiency' ],
+					'fec_id_78' => [ 'icon' => '⚽', 'label' => 'Multi-sport Use', 'value' => 'Suitable for multiple sports categories' ],
+					'fec_id_79' => [ 'icon' => '🛡️', 'label' => 'Safety', 'value' => 'Injury protection & ergonomic design' ],
+					'fec_id_80' => [ 'icon' => '🏋️', 'label' => 'Strength Build', 'value' => 'High durability & impact resistance' ],
+					'fec_id_81' => [ 'icon' => '🎯', 'label' => 'Precision', 'value' => 'Accurate control & performance tuning' ],
+					'fec_id_82' => [ 'icon' => 'fas fa-dumbbell', 'label' => 'Equipment Type', 'value' => 'Multi-Use' ],
+					'fec_id_83' => [ 'icon' => 'fas fa-weight-hanging', 'label' => 'Max Load', 'value' => '150 kg' ],
+					'fec_id_84' => [ 'icon' => 'fas fa-ruler', 'label' => 'Size', 'value' => 'Adjustable' ],
+					'fec_id_85' => [ 'icon' => 'fas fa-tools', 'label' => 'Material', 'value' => 'Steel Alloy' ],
+					'fec_id_86' => [ 'icon' => '🏅', 'label' => 'Skill Level', 'value' => 'All Levels' ],
+					'fec_id_87' => [ 'icon' => 'fas fa-running', 'label' => 'Performance', 'value' => 'Pro-Grade Grip' ],
+					'fec_id_88' => [ 'icon' => 'fas fa-heartbeat', 'label' => 'Tracking', 'value' => 'Built-in Heart Sensors' ],
+					'fec_id_89' => [ 'icon' => 'fas fa-dumbbell', 'label' => 'Strength', 'value' => 'Heavy-Duty Build' ],
+					'fec_id_90' => [ 'icon' => 'fas fa-wind', 'label' => 'Aerodynamics', 'value' => 'High Speed Optimized' ],
+					'fec_id_91' => [ 'icon' => 'fas fa-check-circle', 'label' => 'Certification', 'value' => 'FIFA/Olympic Standard' ],
 				];
 			}
 			//=============================//
 			public static function location_select( $post_id = '', $location = '' ): void {
-				$all_locations = ABPRF_Locations;
-				if ( ! empty( $all_locations ) ) {
-					if ( ! empty( $post_id ) ) {
-						$location_array = ! empty( $location ) ? explode( ',', $location ) : [];
-						if ( ! empty( $location_array ) ) {
-							if ( sizeof( $location_array ) > 1 ) {
-								?>
-                                <div class="_input_item">
-                                    <label>
-                                        <span><i class="fas fa-location _mar_r_xxs"></i><?php esc_html_e( 'Location', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
-                                        <select class="_form_control" name="location">
-											<?php foreach ( $location_array as $loc_id ) {
-												if ( in_array( $loc_id, $location_array ) ) {
-													?>
-                                                    <option value="<?php echo esc_attr( $loc_id ); ?>"><?php echo esc_html( array_key_exists( $loc_id, $all_locations ) && array_key_exists( 'name', $all_locations[ $loc_id ] ) ? $all_locations[ $loc_id ]['name'] : '' ); ?></option>
-												<?php }
-											} ?>
-                                        </select>
-                                    </label>
-                                </div>
-								<?php
-							} else {
-								?><input type="hidden" name="location" value="<?php echo esc_attr( $location ); ?>" /><?php
+				if ( ABPRF_Function::on_off( 'location' ) ) {
+					$all_locations = ABPRF_Locations;
+					if ( ! empty( $all_locations ) ) {
+						if ( ! empty( $post_id ) ) {
+							$location_array = ! empty( $location ) ? explode( ',', $location ) : [];
+							if ( ! empty( $location_array ) ) {
+								if ( sizeof( $location_array ) > 1 ) {
+									?>
+                                    <div class="_input_item">
+                                        <label>
+                                            <span><i class="fas fa-location _mar_r_xxs"></i><?php esc_html_e( 'Location', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                                            <select class="_form_control" name="location">
+												<?php foreach ( $location_array as $loc_id ) {
+													if ( in_array( $loc_id, $location_array ) ) {
+														?>
+                                                        <option value="<?php echo esc_attr( $loc_id ); ?>"><?php echo esc_html( array_key_exists( $loc_id, $all_locations ) && array_key_exists( 'name', $all_locations[ $loc_id ] ) ? $all_locations[ $loc_id ]['name'] : '' ); ?></option>
+													<?php }
+												} ?>
+                                            </select>
+                                        </label>
+                                    </div>
+									<?php
+								} else {
+									?><input type="hidden" name="location" value="<?php echo esc_attr( $location ); ?>" /><?php
+								}
 							}
 						}
 					}
