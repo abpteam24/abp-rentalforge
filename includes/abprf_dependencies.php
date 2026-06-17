@@ -62,7 +62,7 @@
 						'no_feature_selected' => __( 'No feature selected !', 'abp-rentalforge' ),
 					],
 				] );
-				wp_enqueue_style( 'abprf_admin', ABPRF_URL . 'assets/css/abprf_admin.css', ABPRF_VERSION, time() );
+				wp_enqueue_style( 'abprf_admin', ABPRF_URL . 'assets/css/abprf_admin.css', array(), ABPRF_VERSION );
 				//=============================//
 				do_action( 'abprf_admin_enqueue' );
 			}
@@ -83,7 +83,7 @@
 				wp_enqueue_script( 'jquery-ui-datepicker' );
 				wp_enqueue_style( 'abprf_jquery_ui', ABPRF_URL . 'assets/css/jquery-ui.min.css', array(), '1.13.2' );
 				wp_enqueue_style( 'abprf_font_awesome', ABPRF_URL . 'assets/css/font_awesome.min.css', array(), '5.15.4' );
-				wp_enqueue_style( 'abprf_lib', ABPRF_URL . 'assets/css/abprf_lib.css', array(), ABPRF_VERSION);
+				wp_enqueue_style( 'abprf_lib', ABPRF_URL . 'assets/css/abprf_lib.css', array(), ABPRF_VERSION );
 				wp_enqueue_script( 'abprf_lib', ABPRF_URL . 'assets/js/abprf_lib.js', array( 'jquery' ), ABPRF_VERSION, true );
 				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
 					wp_localize_script( 'abprf_lib', 'abprf_var', [
@@ -161,7 +161,7 @@
 						--rf_color_warning:{$color_warning};						
 					}";
 				wp_add_inline_style( 'abprf_lib', wp_kses_post($abprf_var) );
-				wp_enqueue_style( 'abprf', ABPRF_URL . 'assets/css/abprf.css', array(), ABPRF_VERSION );
+				wp_enqueue_style( 'abprf', ABPRF_URL . 'assets/css/abprf.css', array(), ABPRF_VERSION  );
 				$all_time = ABPRF_Function::get_time( get_the_id(), 'js' );
 				wp_enqueue_script( 'abprf_infos', ABPRF_URL . 'assets/js/abprf.js', array( 'jquery' ), ABPRF_VERSION, true );
 				$rental_data = array(

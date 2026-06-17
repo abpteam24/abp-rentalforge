@@ -349,11 +349,10 @@
 				<?php
 			}
 			public function property_price_qty( $property = [], $current_post_id = '' ): void {
-				$rent_rules  = ABPRF_Layout::rent_rules_options();
-				$rent_rule   = ( $property['rent_rule'] ?? null ) ?: key( $rent_rules );
-				$rent_rule   = ! empty( $current_post_id ) ? ABPRF_Function::get_post_info( $current_post_id, 'rent_rule', 'multi_day' ) : $rent_rule;
-				$price_info  = json_decode( $property['price_qty_info'] ?? '', true ) ?: [];
-				$_price_info = $price_info[ $rent_rule ] ?? [];
+				$rent_rules = ABPRF_Layout::rent_rules_options();
+				$rent_rule  = ( $property['rent_rule'] ?? null ) ?: key( $rent_rules );
+				$rent_rule  = ! empty( $current_post_id ) ? ABPRF_Function::get_post_info( $current_post_id, 'rent_rule', 'multi_day' ) : $rent_rule;
+				$price_info = json_decode( $property['price_qty_info'] ?? '', true ) ?: [];
 				?>
                 <div class="setting_item full_width property_price_settings">
                     <div class=" _fj_between">
@@ -372,13 +371,15 @@
 					<?php ABPRF_Layout::info_text( 'price_rule' ); ?>
                     <div class="_divider_xs"></div>
                     <div class=" _ov_auto">
-						<?php self::price_qty( $_price_info, $rent_rule ); ?>
+						<?php self::price_qty( $price_info, $rent_rule ); ?>
                     </div>
+					<?php do_action( 'abprf_property_discount', $price_info, $rent_rule, $current_post_id ); ?>
                 </div>
 				<?php
 			}
-			public static function price_qty( $_price_info, $rent_rule ): void {
-				$rent_rules = ABPRF_Layout::rent_rules_options();
+			public static function price_qty( $price_info, $rent_rule ): void {
+				$rent_rules  = ABPRF_Layout::rent_rules_options();
+				$_price_info = ( $price_info[ $rent_rule ] ?? null ) ?: [];
 				?>
                 <table class="_abprf_fixed">
                     <thead>

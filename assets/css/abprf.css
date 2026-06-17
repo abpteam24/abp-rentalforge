@@ -23,7 +23,7 @@
 /******************************************************************** List Grid Property item ************************************************/
 @media only screen and (min-width: 10px) {
 	.abprf_area .post_top_filter {display: -webkit-flex;display: flex;flex-wrap: wrap;-webkit-justify-content: space-between;justify-content: space-between; -webkit-align-items: center;align-items: center; margin: var(--rf_gap) 0;padding: var(--rf_gap_xs); background: var(--rf_color_4);}
-	.abprf_area .abprf_global_registration .post_top_filter { margin: 0 0 var(--rf_gap) 0; }
+	.abprf_area .abprf_global_registration .post_top_filter { margin: var(--rf_gap) 0; }
 	/*********************************/
 	.abprf_area .item_head {background: var(--rf_color_4); padding: var(--rf_gap_xs); text-align: center; position: relative;width: 100%;min-height: auto;display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;line-height: 1;}
 	.abprf_area .item_head i {font-size: 75px;padding: var(--rf_gap);min-height: 150px;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;}
@@ -56,6 +56,7 @@
 	div.abprf_area .abprf_grid .item_head {padding: 0;height: auto;}
 	div.abprf_area .abprf_grid .item_body {-webkit-justify-content: space-between;justify-content: space-between;height: 100%;}
 	div.abprf_area .abprf_grid .list_title {padding: 0;color: var(--rf_color_rose_dusty);font-size: var(--rf_fs_h4);}
+	div.abprf_area .abprf_grid .item_body .price_value {font-size: var(--rf_fs_h6); font-weight: 500;}
 	/**************************************/
 	div.abprf_area .abprf_lists {position: relative;display: -webkit-flex;display: flex; -webkit-flex-direction: column;flex-direction: column;width: 100%;}
 	div.abprf_area .abprf_lists .item_box_1 {position: relative;display: -webkit-flex;display: flex; width: 100%;margin: 0 0 var(--rf_gap) 0;overflow: hidden;}

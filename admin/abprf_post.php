@@ -442,7 +442,7 @@
 					//=============================//
 					$old_rent_continue = ABPRF_Function::get_post_info( $post_id, 'rent_continue', 'on' );
 					//=============================//
-					$meta_info = apply_filters( 'abprf_meta_info_update', $meta_info );
+					$meta_info = apply_filters( 'abprf_meta_info_update', $meta_info,$post_id );
 					if ( sizeof( $meta_info ) > 0 ) {
 						foreach ( $meta_info as $key => $value ) {
 							update_post_meta( $post_id, sanitize_key( $key ), $value );

@@ -132,7 +132,7 @@
 					}
 				}
 				update_option( 'abprf_feature', $old_features );
-				$this->update_feature_js();
+				self::update_feature_js();
 				ob_start();
 				if ( ! empty( $property_add ) && (int) $property_add > 0 ) {
 					echo '';
@@ -159,7 +159,7 @@
 				if ( ! empty( $fec_id ) && array_key_exists( $fec_id, $features ) ) {
 					unset( $features[ $fec_id ] );
 					update_option( 'abprf_feature', $features );
-					$this->update_feature_js();
+					self::update_feature_js();
 				}
 				ob_start();
 				$this->feature_list();
@@ -188,7 +188,7 @@
 					'msg' => __( 'Feature Ready to Edit...... !', 'abp-rentalforge' ),
 				] );
 			}
-			public function update_feature_js(): void {
+			public static function update_feature_js(): void {
 				$features   = ABPRF_Function::get_option( 'abprf_feature' );
 				$features   = is_array( $features ) ? $features : [];
 				$feature_js = [];

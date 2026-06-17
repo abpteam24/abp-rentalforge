@@ -359,8 +359,8 @@ function abprf_property_filter_arg($this) {
                 abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
-                abprf_spinner_remove(target);
                 abprf_toast_msg(response.data.msg, 'success');
+                window.location.reload();
             }
         });
     });
@@ -379,8 +379,8 @@ function abprf_property_filter_arg($this) {
                 abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
-                abprf_spinner_remove(target);
                 abprf_toast_msg(response.data.msg, 'success');
+                window.location.reload();
             }
         });
     });
@@ -418,8 +418,8 @@ function abprf_property_filter_arg($this) {
                 abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
-                abprf_spinner_remove(target);
                 abprf_toast_msg(response.data.msg, 'success');
+                window.location.reload();
             }
         });
     });

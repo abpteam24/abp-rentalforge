@@ -10,7 +10,6 @@
 				add_action( 'wp_ajax_abprf_save_client_form', array( $this, 'save_global_client_form' ) );
 				add_action( 'wp_ajax_abprf_import_global_form', array( $this, 'import_global_form' ) );
 			}
-
 			public function global_client_form(): void {
 				$abprf_forms = ABPRF_Function::get_option( 'abprf_forms', ABPRF_Layout::static_form() );
 				?>
@@ -24,11 +23,10 @@
                 </form>
 				<?php
 			}
-
 			public function post_client_form( $abprf_infos ): void {
 				$client_forms       = $abprf_infos['client_forms'] ?? [];
 				$display            = $abprf_infos['display_client_form'] ?? 'off';
-				$active_global_form =  $abprf_infos['active_global_form'] ?? 'on';
+				$active_global_form = $abprf_infos['active_global_form'] ?? 'on';
 				?>
                 <div class="tab_item abprf_client_form" data-tabs="#abprf_client_form">
                     <h4 class=" _abprf_color_theme"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Forms Configuration', 'abp-rentalforge' ); ?></h4>
@@ -66,7 +64,6 @@
                 </div>
 				<?php
 			}
-
 			public function passenger_form_settings( $passenger_forms ): void {
 				?>
                 <div class="configuration_content">
@@ -111,7 +108,6 @@
                 </div>
 				<?php
 			}
-
 			public function form_item( $form = [], $id = '' ): void {
 				$form         = $form ?: array();
 				$type         = array_key_exists( 'type', $form ) ? $form['type'] : 'text';
@@ -183,7 +179,6 @@
                 </tr>
 				<?php
 			}
-
 			//=============================//
 			public function save_global_client_form(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
@@ -220,7 +215,6 @@
 				update_option( 'abprf_forms', $form_infos );
 				wp_send_json_success( [ 'msg' => __( 'Client Form Configuration Saved Successfully..... !! ', 'abp-rentalforge' ) ] );
 			}
-
 			public function import_global_form(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );

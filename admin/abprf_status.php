@@ -356,6 +356,7 @@
 							update_option( $option, $dummy_option );
 						}
 					}
+                    ABPRF_Feature::update_feature_js();
 				}
 				if ( array_key_exists( 'custom_post', $dummy_infos ) ) {
 					$abprf_location = ABPRF_Function::get_option( 'abprf_location' );
