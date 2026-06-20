@@ -113,7 +113,7 @@
 					'tab' => $value,
 				];
 				$final_args   = array_merge( $default_args, $extra_args );
-				$base_url = add_query_arg( $final_args, admin_url( 'admin.php' ) );
+				$base_url     = add_query_arg( $final_args, admin_url( 'admin.php' ) );
 
 				return wp_nonce_url( $base_url, 'abprf_url_action', '_abprf_nonce' );
 			}
@@ -918,95 +918,107 @@
 				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				return apply_filters( 'woocommerce_get_price_to_display', $return_price, 1, $product );
 			}
-			public static function get_price( $abprf_infos = [], $property = [], $time_duration = '' ): int|string {
-				$price          = 0;
-				$post_id        = array_key_exists( 'post_id', $abprf_infos ) ? $abprf_infos['post_id'] : 0;
-				$rent_rule      = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : '';
-				$qty            = array_key_exists( 'qty', $abprf_infos ) ? $abprf_infos['qty'] : 1;
-				$property_id    = array_key_exists( 'property_id', $abprf_infos ) ? $abprf_infos['property_id'] : 0;
-				$property       = is_array( $property ) && sizeof( $property ) > 0 ? $property : current( ABPRF_Query::get_property( [ 'property_id' => $property_id ] ) );
-				$price_qty_info = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
+			public static function get_price( $abprf_infos = [],  $property = [], $time_duration = '' ): int|string {
+				$price       = 0;
+				$post_id     = $abprf_infos['post_id'] ?? 0;
+				$rent_rule   = $abprf_infos['rent_rule'] ?? '';
+				$qty         = $abprf_infos['qty'] ?? 1;
+				$property_id = $abprf_infos['property_id'] ?? 0;
+				if ( empty( $property ) ) {
+					$db_property = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+					$property    = is_array( $db_property ) ? current( $db_property ) : [];
+				}
+				$property       = is_array( $property ) ? $property : [];
+				$price_qty_info = $property['price_qty_info'] ?? '';
 				$price_qty_info = ! empty( $price_qty_info ) ? json_decode( $price_qty_info, true ) : [];
-				$location       = array_key_exists( 'location', $abprf_infos ) ? $abprf_infos['location'] : '';
-				$price_qty_info = ! empty( $price_qty_info ) && ! empty( $location ) && array_key_exists( $location, $price_qty_info ) ? $price_qty_info[ $location ] : $price_qty_info;
-				$price_info     = array_key_exists( $rent_rule, $price_qty_info ) ? $price_qty_info[ $rent_rule ] : [];
+				$location       = $abprf_infos['location'] ?? '';
+				$price_qty_info = ( ! empty( $price_qty_info ) && ! empty( $location ) && isset( $price_qty_info[ $location ] ) ) ? $price_qty_info[ $location ] : $price_qty_info;
+				$price_info     = $price_qty_info[ $rent_rule ] ?? [];
 				$time_duration  = ! empty( $time_duration ) ? $time_duration : self::time_duration( $abprf_infos, $price_info );
 				if ( ! empty( $rent_rule ) && ! empty( $time_duration ) && ! empty( $price_info ) ) {
-					$rate = is_array( $price_info ) && array_key_exists( 'price', $price_info ) && ! empty( $price_info['price'] ) ? $price_info['price'] : 0;
-					$rate = apply_filters( 'abprf_filter_property_price', $rate, $abprf_infos, $property );
-					if ( $rent_rule == 'hourly' || $rent_rule == 'daily' || $rent_rule == 'monthly' ) {
+					$price_info = apply_filters( 'abprf_filter_discount_price_info', $price_info, $abprf_infos );
+					$rate          = ( is_array( $price_info ) ? ( $price_info['price'] ?? 0 ) : 0 ) ?: 0;
+					if ( in_array( $rent_rule, [ 'hourly', 'daily', 'monthly' ], true ) ) {
 						$price = $rate * $time_duration * $qty;
 					}
-					if ( $rent_rule == 'multi_day' ) {
-						$price_multi = is_array( $price_info ) && array_key_exists( 'price_multi', $price_info ) && ! empty( $price_info['price_multi'] ) ? $price_info['price_multi'] : 0;
+					if ( $rent_rule === 'multi_day' ) {
+						$price_multi = $price_info['price_multi'] ?? 0;
 						$threshold   = ABPRF_Function::get_post_info( $post_id, 'hour_threshold', 24 );
 						$days        = floor( $time_duration );
 						$hours       = ( $time_duration - $days ) * 24;
 						if ( ! empty( $threshold ) && $threshold <= $hours ) {
-							$days  = $days + 1;
-							$hours = $hours - $threshold;
+							$days ++;
+							$hours -= $threshold;
 						}
-						$price = $rate * $days * $qty + $price_multi * $hours * $qty;
+						$price = ( $rate * $days * $qty ) + ( $price_multi * $hours * $qty );
 					}
-					if ( $rent_rule == 'multi_month' ) {
-						$price_multi = is_array( $price_info ) && array_key_exists( 'price_multi', $price_info ) && ! empty( $price_info['price_multi'] ) ? $price_info['price_multi'] : 0;
+					if ( $rent_rule === 'multi_month' ) {
+						$price_multi = $price_info['price_multi'] ?? 0;
 						$threshold   = ABPRF_Function::get_post_info( $post_id, 'day_threshold', 30 );
-						$parts       = explode( '.', $time_duration );
+						$parts       = explode( '.', (string) $time_duration );
 						$month_num   = (int) $parts[0];
 						$day_num     = isset( $parts[1] ) ? (int) $parts[1] : 0;
 						if ( ! empty( $threshold ) && $threshold <= $day_num ) {
-							$month_num = $month_num + 1;
-							$day_num   = $day_num - $threshold;
+							$month_num ++;
+							$day_num -= $threshold;
 						}
-						$price = $rate * $month_num * $qty + $price_multi * $day_num * $qty;
+						$price = ( $rate * $month_num * $qty ) + ( $price_multi * $day_num * $qty );
 					}
+					$discount=( is_array( $price_info ) ? ( $price_info['discount'] ?? 0 ) : 0 ) ?: 0;
+					$price=$price-($price*$discount/100);
 				}
 
 				return $price > 0 ? self::tax_with_price( $post_id, $price ) : 0;
 			}
-			public static function get_deposit_price( $abprf_infos = [], $property = [] ) {
+			public static function get_deposit_price( array $abprf_infos = [], array $property = [] ): int|float {
 				$price = 0;
-				if ( is_array( $abprf_infos ) && sizeof( $abprf_infos ) > 0 ) {
-					$property_id    = array_key_exists( 'property_id', $abprf_infos ) ? $abprf_infos['property_id'] : 0;
-					$rent_rule      = array_key_exists( 'rent_rule', $abprf_infos ) ? $abprf_infos['rent_rule'] : '';
-					$qty            = array_key_exists( 'qty', $abprf_infos ) ? $abprf_infos['qty'] : 0;
-					$property       = is_array( $property ) && sizeof( $property ) > 0 ? $property : current( ABPRF_Query::get_property( [ 'property_id' => $property_id ] ) );
-					$price_qty_info = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
-					$price_qty_info = ! empty( $price_qty_info ) ? json_decode( $price_qty_info, true ) : [];
-					$location       = array_key_exists( 'location', $abprf_infos ) ? $abprf_infos['location'] : '';
-					$price_qty_info = ! empty( $price_qty_info ) && ! empty( $location ) && array_key_exists( $location, $price_qty_info ) ? $price_qty_info[ $location ] : $price_qty_info;
-					$price_info     = ! empty( $rent_rule ) && array_key_exists( $rent_rule, $price_qty_info ) ? $price_qty_info[ $rent_rule ] : [];
-					$deposit_info   = array_key_exists( 'deposit', $price_info ) ? $price_info['deposit'] : [];
-					$deposit_type   = is_array( $deposit_info ) && array_key_exists( 'type', $deposit_info ) ? $deposit_info['type'] : '';
-					$deposit_value  = is_array( $deposit_info ) && array_key_exists( 'value', $deposit_info ) ? $deposit_info['value'] : '';
-					if ( ! empty( $deposit_type ) && ! empty( $deposit_value ) && $qty > 0 && ! empty( $property ) ) {
-						if ( $deposit_type == 'fixed' ) {
-							$price = $deposit_value;
-						} elseif ( $deposit_type == 'percent' ) {
-							$price = array_key_exists( 'price', $abprf_infos ) ? $abprf_infos['price'] : 0;
-							$price = $price * $deposit_value / 100;
-						} else {
-							$price = $qty * $deposit_value;
-						}
+				if ( empty( $abprf_infos ) ) {
+					return $price;
+				}
+				$property_id = $abprf_infos['property_id'] ?? 0;
+				$rent_rule   = $abprf_infos['rent_rule'] ?? '';
+				$qty         = $abprf_infos['qty'] ?? 0;
+				if ( empty( $property ) ) {
+					$db_property = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+					$property    = is_array( $db_property ) ? current( $db_property ) : [];
+				}
+				$property       = is_array( $property ) ? $property : [];
+				$price_qty_info = $property['price_qty_info'] ?? '';
+				$price_qty_info = ! empty( $price_qty_info ) ? json_decode( $price_qty_info, true ) : [];
+				$location       = $abprf_infos['location'] ?? '';
+				$price_qty_info = ( ! empty( $price_qty_info ) && ! empty( $location ) && isset( $price_qty_info[ $location ] ) ) ? $price_qty_info[ $location ] : $price_qty_info;
+				$price_info     = ( ! empty( $rent_rule ) && is_array( $price_qty_info ) ) ? ( $price_qty_info[ $rent_rule ] ?? [] ) : [];
+				$deposit_info   = $price_info['deposit'] ?? [];
+				$deposit_type   = $deposit_info['type'] ?? '';
+				$deposit_value  = $deposit_info['value'] ?? '';
+				if ( ! empty( $deposit_type ) && ! empty( $deposit_value ) && $qty > 0 && ! empty( $property ) ) {
+					if ( $deposit_type === 'fixed' ) {
+						$price = $deposit_value;
+					} elseif ( $deposit_type === 'percent' ) {
+						$base_price = $abprf_infos['price'] ?? 0;
+						$price      = ( $base_price * $deposit_value ) / 100;
+					} else {
+						$price = $qty * $deposit_value;
 					}
 				}
 
 				return $price;
 			}
-			public static function get_additional_price( $post_id, $service_name, $abprf_infos = [] ): int|string {
-				$display                  = array_key_exists( 'display_additional_services', $abprf_infos ) ? $abprf_infos['display_additional_services'] : ABPRF_Function::get_post_info( $post_id, 'display_additional_services', 'on' );
-				$active_global_additional = array_key_exists( 'active_global_additional', $abprf_infos ) ? $abprf_infos['active_global_additional'] : ABPRF_Function::get_post_info( $post_id, 'active_global_additional', 'on' );
-				if ( $active_global_additional == 'on' ) {
+			public static function get_additional_price( int|string $post_id, string $service_name, array $abprf_infos = [] ): int|string {
+				$display = $abprf_infos['display_additional_services'] ?? ABPRF_Function::get_post_info( $post_id, 'display_additional_services', 'on' );
+				$active_global_additional = $abprf_infos['active_global_additional'] ?? ABPRF_Function::get_post_info( $post_id, 'active_global_additional', 'on' );
+				if ( $active_global_additional === 'on' ) {
 					$services = ABPRF_Function::get_option( 'abprf_additional' );
 				} else {
-					$services = array_key_exists( 'abprf_additional', $abprf_infos ) ? $abprf_infos['abprf_additional'] : ABPRF_Function::get_post_info( $post_id, 'abprf_additional', [] );
+					$services = $abprf_infos['abprf_additional'] ?? ABPRF_Function::get_post_info( $post_id, 'abprf_additional', [] );
 				}
 				$price = 0;
-				if ( $display == 'on' && sizeof( $services ) > 0 ) {
+				if ( $display === 'on' && ! empty( $services ) && is_array( $services ) ) {
 					foreach ( $services as $service ) {
-						$ex_name = array_key_exists( 'name', $service ) ? $service['name'] : '';
-						if ( $ex_name == $service_name ) {
-							$price = array_key_exists( 'price', $service ) ? $service['price'] : 0;
+						$ex_name = $service['name'] ?? '';
+						if ( $ex_name === $service_name ) {
+							$price = $service['price'] ?? 0;
+							break;
 						}
 					}
 				}

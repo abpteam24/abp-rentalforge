@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABP RentalForge\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-15 10:24+0000\n"
+"POT-Creation-Date: 2026-06-20 10:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Domain: abp-rentalforge"
 
 #. %s = Days
-#: includes/abprf_function.php:799
+#: includes/abprf_function.php:809
 #, php-format
 msgid " %s Day"
 msgid_plural " %s Days"
@@ -25,7 +25,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. %s = Hours
-#: includes/abprf_function.php:805
+#: includes/abprf_function.php:815
 #, php-format
 msgid " %s Hour"
 msgid_plural " %s Hours"
@@ -33,7 +33,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. %s = Minutes
-#: includes/abprf_function.php:811
+#: includes/abprf_function.php:821
 #, php-format
 msgid " %s Minute"
 msgid_plural " %s Minutes"
@@ -41,7 +41,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. %s = Months
-#: includes/abprf_function.php:792
+#: includes/abprf_function.php:802
 #, php-format
 msgid " %s Month"
 msgid_plural " %s Months"
@@ -49,7 +49,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. %s = Seconds
-#: includes/abprf_function.php:817
+#: includes/abprf_function.php:827
 #, php-format
 msgid " %s Second"
 msgid_plural " %s Seconds"
@@ -57,14 +57,14 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. %s =Years
-#: includes/abprf_function.php:786
+#: includes/abprf_function.php:796
 #, php-format
 msgid " %s Year"
 msgid_plural " %s Years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/abprf_layout.php:1019
+#: includes/abprf_layout.php:1093
 msgid " & "
 msgstr ""
 
@@ -75,18 +75,18 @@ msgid " : "
 msgstr ""
 
 #. %s: Custom rental item type label (e.g., Vehicle, Equipment, Property)
-#: admin/abprf_status.php:312
+#: admin/abprf_status.php:303
 #, php-format
 msgid "%s Page Created successfully....."
 msgstr ""
 
-#: includes/abprf_layout.php:176
+#: includes/abprf_layout.php:173
 msgid ".... Less "
 msgstr ""
 
 #: admin/abprf_orders.php:207 admin/abprf_orders.php:214
-#: admin/abprf_orders.php:214 includes/abprf_layout.php:176
-#: includes/abprf_layout.php:176
+#: admin/abprf_orders.php:214 includes/abprf_layout.php:173
+#: includes/abprf_layout.php:173
 msgid ".... More"
 msgstr ""
 
@@ -98,23 +98,23 @@ msgstr ""
 msgid "....More"
 msgstr ""
 
-#: includes/abprf_layout.php:579 includes/abprf_layout.php:580
+#: includes/abprf_layout.php:576 includes/abprf_layout.php:577
 msgid "/day"
 msgstr ""
 
-#: includes/abprf_layout.php:578
+#: includes/abprf_layout.php:575
 msgid "/hr"
 msgstr ""
 
-#: includes/abprf_layout.php:581 includes/abprf_layout.php:582
+#: includes/abprf_layout.php:578 includes/abprf_layout.php:579
 msgid "/month"
 msgstr ""
 
-#: includes/abprf_dependencies.php:38
+#: includes/abprf_dependencies.php:37
 msgid "1. Ok : To Remove Item ."
 msgstr ""
 
-#: includes/abprf_dependencies.php:39
+#: includes/abprf_dependencies.php:38
 msgid "2. Cancel : To Cancel ."
 msgstr ""
 
@@ -128,18 +128,18 @@ msgstr ""
 
 #: admin/abprf_additional.php:81 admin/abprf_brand.php:32
 #: admin/abprf_brand.php:93 admin/abprf_category.php:52
-#: admin/abprf_feature.php:29 admin/abprf_form.php:86
+#: admin/abprf_feature.php:29 admin/abprf_form.php:83
 #: admin/abprf_location.php:69 admin/abprf_orders.php:115
 msgid "Action"
 msgstr ""
 
-#: admin/abprf_post.php:82 admin/abprf_properties.php:163
+#: admin/abprf_post.php:84 admin/abprf_properties.php:163
 msgid "Actions"
 msgstr ""
 
-#: admin/abprf_status.php:101 admin/abprf_status.php:148
-#: admin/abprf_status.php:157 admin/abprf_status.php:166
-#: admin/abprf_status.php:175
+#: admin/abprf_status.php:96 admin/abprf_status.php:142
+#: admin/abprf_status.php:151 admin/abprf_status.php:160
+#: admin/abprf_status.php:169
 msgid "Activated"
 msgstr ""
 
@@ -147,7 +147,7 @@ msgstr ""
 msgid "Active Additional services ?"
 msgstr ""
 
-#: admin/abprf_form.php:41
+#: admin/abprf_form.php:39
 msgid "Active Client Form ?"
 msgstr ""
 
@@ -155,7 +155,7 @@ msgstr ""
 msgid "Active FAQs ?"
 msgstr ""
 
-#: admin/abprf_status.php:29 admin/abprf_status.php:103
+#: admin/abprf_status.php:28 admin/abprf_status.php:98
 msgid "Active Now"
 msgstr ""
 
@@ -163,15 +163,15 @@ msgstr ""
 msgid "Active Term & Conditions ?"
 msgstr ""
 
-#: includes/abprf_layout.php:442
+#: includes/abprf_layout.php:439
 msgid "Add  Image"
 msgstr ""
 
-#: admin/abprf_status.php:177
+#: admin/abprf_status.php:171
 msgid "Add Gallery Page"
 msgstr ""
 
-#: admin/abprf_admin.php:49 admin/abprf_category.php:22
+#: admin/abprf_admin.php:51 admin/abprf_category.php:22
 #: admin/abprf_category.php:140 admin/abprf_category.php:144
 msgid "Add New"
 msgstr ""
@@ -188,7 +188,7 @@ msgstr ""
 msgid "Add New Drop Point"
 msgstr ""
 
-#: admin/abprf_status.php:201
+#: admin/abprf_status.php:195
 msgid "Add New Dummy Post"
 msgstr ""
 
@@ -196,15 +196,15 @@ msgstr ""
 msgid "Add New FAQ Item"
 msgstr ""
 
-#: admin/abprf_feature.php:38 admin/abprf_properties.php:625
+#: admin/abprf_feature.php:38 admin/abprf_properties.php:630
 msgid "Add New Feature"
 msgstr ""
 
-#: admin/abprf_form.php:102
+#: admin/abprf_form.php:99
 msgid "Add New Form"
 msgstr ""
 
-#: admin/abprf_admin.php:51 admin/abprf_location.php:22
+#: admin/abprf_admin.php:53 admin/abprf_location.php:22
 #: admin/abprf_location.php:244 admin/abprf_location.php:248
 msgid "Add New Location"
 msgstr ""
@@ -213,11 +213,11 @@ msgstr ""
 msgid "Add New Pickup Point"
 msgstr ""
 
-#: admin/abprf_admin.php:47 admin/abprf_post.php:39
+#: admin/abprf_admin.php:49 admin/abprf_post.php:41
 msgid "Add New Post"
 msgstr ""
 
-#: admin/abprf_admin.php:48 admin/abprf_properties.php:41
+#: admin/abprf_admin.php:50 admin/abprf_properties.php:41
 #: admin/abprf_properties.php:133
 msgid "Add New Property"
 msgstr ""
@@ -226,20 +226,20 @@ msgstr ""
 msgid "Add Off Date Range"
 msgstr ""
 
-#: includes/abprf_dependencies.php:233 includes/abprf_dependencies.php:234
-#: includes/abprf_dependencies.php:235
+#: includes/abprf_dependencies.php:230 includes/abprf_dependencies.php:231
+#: includes/abprf_dependencies.php:232
 msgid "Add Post"
 msgstr ""
 
-#: admin/abprf_status.php:168
+#: admin/abprf_status.php:162
 msgid "Add Property List Page"
 msgstr ""
 
-#: admin/abprf_status.php:150
+#: admin/abprf_status.php:144
 msgid "Add RentalForge Booking Page"
 msgstr ""
 
-#: admin/abprf_status.php:159
+#: admin/abprf_status.php:153
 msgid "Add RentalForge List Page"
 msgstr ""
 
@@ -255,7 +255,7 @@ msgstr ""
 msgid "Add Specific Off Date"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:57
+#: includes/abprf_woocommerce.php:56
 msgid "Add to cart successfully!"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgstr ""
 msgid "Additional Info"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:286 includes/abprf_woocommerce.php:400
+#: includes/abprf_woocommerce.php:275 includes/abprf_woocommerce.php:387
 msgid "Additional Information"
 msgstr ""
 
@@ -283,7 +283,7 @@ msgstr ""
 msgid "Additional Information : "
 msgstr ""
 
-#: admin/abprf_admin.php:88 admin/abprf_post.php:166
+#: admin/abprf_admin.php:93 admin/abprf_post.php:168
 msgid "Additional services"
 msgstr ""
 
@@ -308,11 +308,11 @@ msgid "Additional services ImportedSuccessfully ..... !! "
 msgstr ""
 
 #: admin/abprf_configuration.php:269 admin/abprf_location.php:147
-#: includes/abprf_layout.php:735
+#: includes/abprf_layout.php:732
 msgid "Address"
 msgstr ""
 
-#: includes/abprf_layout.php:1211
+#: includes/abprf_layout.php:1285
 msgid "Address :"
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr ""
 msgid "After Buffer time in MIN (Optional)"
 msgstr ""
 
-#: admin/abprf_post.php:33
+#: admin/abprf_post.php:35
 msgid "All"
 msgstr ""
 
@@ -346,19 +346,19 @@ msgstr ""
 msgid "Alternate Color"
 msgstr ""
 
-#: admin/abprf_status.php:338
+#: admin/abprf_status.php:328
 msgid "An error occurred during data import."
 msgstr ""
 
-#: includes/abprf_dependencies.php:47
+#: includes/abprf_dependencies.php:46
 msgid "An error occurred. Please try again."
 msgstr ""
 
-#: includes/abprf_dependencies.php:37
+#: includes/abprf_dependencies.php:36
 msgid "Are you sure you want to delete this item?"
 msgstr ""
 
-#: includes/abprf_layout.php:50
+#: includes/abprf_layout.php:47
 msgid "Available"
 msgstr ""
 
@@ -371,7 +371,7 @@ msgstr ""
 msgid "Available Property"
 msgstr ""
 
-#: admin/abprf_properties.php:388
+#: admin/abprf_properties.php:391
 msgid "Available Qty"
 msgstr ""
 
@@ -383,7 +383,7 @@ msgstr ""
 msgid "Before Buffer time in MIN (Optional)"
 msgstr ""
 
-#: includes/abprf_layout.php:1376 includes/abprf_layout.php:1377
+#: includes/abprf_layout.php:1450 includes/abprf_layout.php:1451
 msgid "Billing Email"
 msgstr ""
 
@@ -391,11 +391,11 @@ msgstr ""
 msgid "Billing Info"
 msgstr ""
 
-#: includes/abprf_layout.php:1366 includes/abprf_layout.php:1367
+#: includes/abprf_layout.php:1440 includes/abprf_layout.php:1441
 msgid "Billing Name"
 msgstr ""
 
-#: includes/abprf_layout.php:1386 includes/abprf_layout.php:1387
+#: includes/abprf_layout.php:1460 includes/abprf_layout.php:1461
 msgid "Billing phone"
 msgstr ""
 
@@ -408,7 +408,7 @@ msgstr ""
 msgid "Booked Status"
 msgstr ""
 
-#: admin/abprf_status.php:285
+#: admin/abprf_status.php:276
 msgid "Booking"
 msgstr ""
 
@@ -416,19 +416,19 @@ msgstr ""
 msgid "Booking Completed"
 msgstr ""
 
-#: includes/abprf_layout.php:1263
+#: includes/abprf_layout.php:1337
 msgid "Booking Date"
 msgstr ""
 
-#: includes/abprf_layout.php:1290
+#: includes/abprf_layout.php:1364
 msgid "Booking Date Between"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:111
+#: includes/abprf_woocommerce.php:107
 msgid "Booking Details"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:261 includes/abprf_woocommerce.php:374
+#: includes/abprf_woocommerce.php:250 includes/abprf_woocommerce.php:361
 msgid "Booking Information"
 msgstr ""
 
@@ -436,11 +436,11 @@ msgstr ""
 msgid "Booking Information : "
 msgstr ""
 
-#: admin/abprf_status.php:146
+#: admin/abprf_status.php:140
 msgid "Booking Page"
 msgstr ""
 
-#: includes/abprf_layout.php:695
+#: includes/abprf_layout.php:692
 msgid ""
 "Both the Title and Description fields are required. If either field is left "
 "empty, this FAQ item will not be displayed on the frontend."
@@ -450,7 +450,7 @@ msgstr ""
 msgid "Bottom"
 msgstr ""
 
-#: admin/abprf_admin.php:97 includes/abprf_function.php:84
+#: includes/abprf_function.php:84
 msgid "Brand"
 msgstr ""
 
@@ -490,15 +490,15 @@ msgstr ""
 msgid "Button Text Color"
 msgstr ""
 
-#: admin/abprf_status.php:195
+#: admin/abprf_status.php:189
 msgid "Can Not Find Any Property"
 msgstr ""
 
-#: admin/abprf_status.php:186
+#: admin/abprf_status.php:180
 msgid "Can Not Find Post"
 msgstr ""
 
-#: includes/abprf_layout.php:491
+#: includes/abprf_layout.php:488
 msgid "Canceled"
 msgstr ""
 
@@ -522,7 +522,7 @@ msgstr ""
 msgid "Category Label"
 msgstr ""
 
-#: includes/abprf_dependencies.php:250
+#: includes/abprf_dependencies.php:247
 msgid "Category list navigation"
 msgstr ""
 
@@ -546,7 +546,7 @@ msgstr ""
 msgid "Check Availability"
 msgstr ""
 
-#: admin/abprf_form.php:153
+#: admin/abprf_form.php:149
 msgid "Checkbox"
 msgstr ""
 
@@ -564,28 +564,28 @@ msgid ""
 "dot interface elements."
 msgstr ""
 
-#: admin/abprf_form.php:175 includes/abprf_layout.php:308
-#: includes/abprf_layout.php:851 includes/abprf_layout.php:867
-#: includes/abprf_layout.php:886 includes/abprf_layout.php:902
-#: includes/abprf_layout.php:1266 includes/abprf_layout.php:1280
-#: includes/abprf_layout.php:1295 includes/abprf_layout.php:1300
-#: includes/abprf_layout.php:1316 includes/abprf_layout.php:1321
+#: admin/abprf_form.php:171 includes/abprf_layout.php:305
+#: includes/abprf_layout.php:925 includes/abprf_layout.php:941
+#: includes/abprf_layout.php:960 includes/abprf_layout.php:976
+#: includes/abprf_layout.php:1340 includes/abprf_layout.php:1354
+#: includes/abprf_layout.php:1369 includes/abprf_layout.php:1374
+#: includes/abprf_layout.php:1390 includes/abprf_layout.php:1395
 msgid "Clear Date"
 msgstr ""
 
-#: includes/abprf_layout.php:317
+#: includes/abprf_layout.php:314
 msgid "Clear Time"
 msgstr ""
 
-#: admin/abprf_admin.php:89 admin/abprf_post.php:167
+#: admin/abprf_admin.php:94 admin/abprf_post.php:169
 msgid "Client Form"
 msgstr ""
 
-#: admin/abprf_form.php:221
+#: admin/abprf_form.php:216
 msgid "Client Form Configuration Saved Successfully..... !! "
 msgstr ""
 
-#: admin/abprf_form.php:34
+#: admin/abprf_form.php:32
 msgid "Client Forms Configuration"
 msgstr ""
 
@@ -597,7 +597,7 @@ msgstr ""
 msgid "Client Info : "
 msgstr ""
 
-#: includes/abprf_woocommerce.php:298 includes/abprf_woocommerce.php:413
+#: includes/abprf_woocommerce.php:287 includes/abprf_woocommerce.php:400
 msgid "Client Information"
 msgstr ""
 
@@ -613,13 +613,13 @@ msgstr ""
 msgid "Company Name"
 msgstr ""
 
-#: includes/abprf_layout.php:489
+#: includes/abprf_layout.php:486
 msgid "Completed"
 msgstr ""
 
-#: admin/abprf_admin.php:64 admin/abprf_configuration.php:80
-#: admin/abprf_configuration.php:136 admin/abprf_post.php:50
-#: includes/abprf_dependencies.php:428
+#: admin/abprf_admin.php:66 admin/abprf_configuration.php:80
+#: admin/abprf_configuration.php:136 admin/abprf_post.php:52
+#: includes/abprf_dependencies.php:421
 msgid "Configuration"
 msgstr ""
 
@@ -649,11 +649,11 @@ msgid ""
 "container view. Toggle %1$s to hide or %2$s to reveal. (Default: %3$s)"
 msgstr ""
 
-#: admin/abprf_properties.php:768
+#: admin/abprf_properties.php:776
 msgid "Copy Property Configuration"
 msgstr ""
 
-#: admin/abprf_post.php:118 admin/abprf_properties.php:253
+#: admin/abprf_post.php:120 admin/abprf_properties.php:253
 msgid "Copy/Clone : "
 msgstr ""
 
@@ -667,12 +667,12 @@ msgid ""
 "side navigation."
 msgstr ""
 
-#: includes/abprf_layout.php:565
+#: includes/abprf_layout.php:562
 msgid "Daily & Hourly Rate"
 msgstr ""
 
-#: admin/abprf_properties.php:413 admin/abprf_properties.php:422
-#: admin/abprf_properties.php:442 includes/abprf_layout.php:564
+#: admin/abprf_properties.php:416 admin/abprf_properties.php:425
+#: admin/abprf_properties.php:445 includes/abprf_layout.php:561
 msgid "Daily Rate"
 msgstr ""
 
@@ -680,7 +680,7 @@ msgstr ""
 msgid "Dashboard Menu Icon"
 msgstr ""
 
-#: admin/abprf_form.php:156 admin/abprf_post.php:165
+#: admin/abprf_form.php:152 admin/abprf_post.php:167
 msgid "Date"
 msgstr ""
 
@@ -696,15 +696,15 @@ msgstr ""
 msgid "Date Format"
 msgstr ""
 
-#: includes/abprf_layout.php:734
+#: includes/abprf_layout.php:731
 msgid "Date of Birth"
 msgstr ""
 
-#: admin/abprf_admin.php:87
+#: admin/abprf_admin.php:92
 msgid "Dates"
 msgstr ""
 
-#: includes/abprf_layout.php:591 includes/abprf_layout.php:592
+#: includes/abprf_layout.php:588 includes/abprf_layout.php:589
 msgid "Day"
 msgstr ""
 
@@ -716,7 +716,7 @@ msgstr ""
 msgid "Day time Start-End"
 msgstr ""
 
-#: includes/abprf_layout.php:591 includes/abprf_layout.php:592
+#: includes/abprf_layout.php:588 includes/abprf_layout.php:589
 msgid "Days"
 msgstr ""
 
@@ -740,7 +740,7 @@ msgstr ""
 msgid "Default Font Size"
 msgstr ""
 
-#: admin/abprf_form.php:84 admin/abprf_form.php:168
+#: admin/abprf_form.php:81 admin/abprf_form.php:164
 msgid "Default Value"
 msgstr ""
 
@@ -772,15 +772,15 @@ msgid ""
 " alerts, or pending notices."
 msgstr ""
 
-#: includes/abprf_layout.php:490
+#: includes/abprf_layout.php:487
 msgid "Delay"
 msgstr ""
 
-#: includes/abprf_dependencies.php:49
+#: includes/abprf_dependencies.php:48
 msgid "Delete Successfully............."
 msgstr ""
 
-#: includes/abprf_layout.php:114
+#: includes/abprf_layout.php:111
 msgid "Delete This Item"
 msgstr ""
 
@@ -788,16 +788,16 @@ msgstr ""
 msgid "Deleted Successfully !"
 msgstr ""
 
-#: admin/abprf_properties.php:833
+#: admin/abprf_properties.php:841
 msgid "Deleted Successfully............. ! "
 msgstr ""
 
-#: includes/abprf_dependencies.php:48
+#: includes/abprf_dependencies.php:47
 msgid "Deleting............."
 msgstr ""
 
-#: admin/abprf_properties.php:161 includes/abprf_woocommerce.php:277
-#: includes/abprf_woocommerce.php:391
+#: admin/abprf_properties.php:161 includes/abprf_woocommerce.php:266
+#: includes/abprf_woocommerce.php:378
 msgid "Deposit"
 msgstr ""
 
@@ -811,31 +811,31 @@ msgid "Deposit : "
 msgstr ""
 
 #. %s = deposit label'
-#: includes/abprf_layout.php:992
+#: includes/abprf_layout.php:1066
 #, php-format
 msgctxt "deposit label"
 msgid "• Deposit: %s Fixed"
 msgstr ""
 
 #. %s = deposit label'
-#: includes/abprf_layout.php:996
+#: includes/abprf_layout.php:1070
 #, php-format
 msgctxt "deposit label"
 msgid "• Deposit: %s of Total Price"
 msgstr ""
 
 #. %s = deposit label'
-#: includes/abprf_layout.php:1000
+#: includes/abprf_layout.php:1074
 #, php-format
 msgctxt "deposit label"
 msgid "• Deposit: %s Per Item"
 msgstr ""
 
-#: admin/abprf_properties.php:396
+#: admin/abprf_properties.php:399
 msgid "Deposit Type"
 msgstr ""
 
-#: admin/abprf_properties.php:397
+#: admin/abprf_properties.php:400
 msgid "Deposit Value"
 msgstr ""
 
@@ -852,15 +852,15 @@ msgid ""
 "layout wrapper segment panels."
 msgstr ""
 
-#: admin/abprf_post.php:36
+#: admin/abprf_post.php:38
 msgid "Draft"
 msgstr ""
 
-#: includes/abprf_layout.php:883 includes/abprf_layout.php:899
+#: includes/abprf_layout.php:957 includes/abprf_layout.php:973
 msgid "Drop-Off Date"
 msgstr ""
 
-#: includes/abprf_layout.php:822
+#: includes/abprf_layout.php:896
 msgid "Drop-Off Month"
 msgstr ""
 
@@ -872,15 +872,15 @@ msgstr ""
 msgid "Drop-off Time"
 msgstr ""
 
-#: admin/abprf_status.php:334
+#: admin/abprf_status.php:324
 msgid "Dummy data imported successfully!"
 msgstr ""
 
-#: admin/abprf_status.php:200
+#: admin/abprf_status.php:194
 msgid "Dummy Import"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:264 includes/abprf_woocommerce.php:377
+#: includes/abprf_woocommerce.php:253 includes/abprf_woocommerce.php:364
 msgid "Duration"
 msgstr ""
 
@@ -888,12 +888,12 @@ msgstr ""
 msgid "Duration : "
 msgstr ""
 
-#: admin/abprf_configuration.php:284 admin/abprf_form.php:150
-#: includes/abprf_layout.php:731
+#: admin/abprf_configuration.php:284 admin/abprf_form.php:146
+#: includes/abprf_layout.php:728
 msgid "E-Mail"
 msgstr ""
 
-#: includes/abprf_layout.php:1205
+#: includes/abprf_layout.php:1279
 msgid "E-Mail :"
 msgstr ""
 
@@ -911,23 +911,23 @@ msgstr ""
 
 #: admin/abprf_brand.php:110 admin/abprf_category.php:69
 #: admin/abprf_feature.php:63 admin/abprf_location.php:104
-#: admin/abprf_post.php:123 admin/abprf_properties.php:252
+#: admin/abprf_post.php:125 admin/abprf_properties.php:252
 msgid "Edit : "
 msgstr ""
 
-#: includes/abprf_dependencies.php:236
+#: includes/abprf_dependencies.php:233
 msgid "Edit Post"
 msgstr ""
 
-#: includes/abprf_layout.php:107
+#: includes/abprf_layout.php:104
 msgid "Edit This Item"
 msgstr ""
 
-#: admin/abprf_status.php:128
+#: admin/abprf_status.php:123
 msgid "Email Address"
 msgstr ""
 
-#: includes/abprf_layout.php:697
+#: includes/abprf_layout.php:694
 msgid ""
 "Enable this switch to apply the global FAQ to this post. If you want to add "
 "custom FAQs specifically for this post, turn the switch OFF and add your "
@@ -935,7 +935,7 @@ msgid ""
 " which you can then edit or delete based on your needs."
 msgstr ""
 
-#: includes/abprf_layout.php:692
+#: includes/abprf_layout.php:689
 msgid ""
 "Enable this switch to apply the global Term & Condition to this post. If you "
 "want to add custom Term & Condition specifically for this post, turn the "
@@ -944,7 +944,7 @@ msgid ""
 "or delete based on your needs."
 msgstr ""
 
-#: includes/abprf_dependencies.php:173
+#: includes/abprf_dependencies.php:172
 msgid "End Date  Loading............."
 msgstr ""
 
@@ -995,14 +995,14 @@ msgid ""
 msgstr ""
 
 #: admin/abprf_additional.php:127 admin/abprf_additional.php:132
-#: admin/abprf_additional.php:137 admin/abprf_properties.php:461
-#: admin/abprf_properties.php:464 admin/abprf_properties.php:467
-#: admin/abprf_properties.php:470 admin/abprf_properties.php:506
-#: admin/abprf_properties.php:509 admin/abprf_properties.php:525
-#: admin/abprf_properties.php:528 admin/abprf_properties.php:546
-#: admin/abprf_properties.php:549 admin/abprf_properties.php:565
-#: admin/abprf_properties.php:568 admin/abprf_properties.php:586
-#: admin/abprf_properties.php:589
+#: admin/abprf_additional.php:137 admin/abprf_properties.php:464
+#: admin/abprf_properties.php:467 admin/abprf_properties.php:470
+#: admin/abprf_properties.php:473 admin/abprf_properties.php:509
+#: admin/abprf_properties.php:512 admin/abprf_properties.php:528
+#: admin/abprf_properties.php:531 admin/abprf_properties.php:549
+#: admin/abprf_properties.php:552 admin/abprf_properties.php:568
+#: admin/abprf_properties.php:571 admin/abprf_properties.php:589
+#: admin/abprf_properties.php:592
 msgid "EX: 15"
 msgstr ""
 
@@ -1034,7 +1034,7 @@ msgstr ""
 msgid "EX: What is the check-in time?"
 msgstr ""
 
-#: admin/abprf_status.php:308
+#: admin/abprf_status.php:299
 msgid "Failed to create page."
 msgstr ""
 
@@ -1042,7 +1042,7 @@ msgstr ""
 msgid "Failed to resolve location context."
 msgstr ""
 
-#: admin/abprf_admin.php:92
+#: admin/abprf_admin.php:97
 msgid "FAQ"
 msgstr ""
 
@@ -1054,7 +1054,7 @@ msgstr ""
 msgid "FAQ Title"
 msgstr ""
 
-#: admin/abprf_post.php:170
+#: admin/abprf_post.php:172
 msgid "FAQs"
 msgstr ""
 
@@ -1066,11 +1066,11 @@ msgstr ""
 msgid "FAQs Configuration Saved Successfully..... !! "
 msgstr ""
 
-#: admin/abprf_admin.php:98
+#: admin/abprf_admin.php:103
 msgid "Feature"
 msgstr ""
 
-#: admin/abprf_properties.php:605
+#: admin/abprf_properties.php:610
 msgid "Feature Configuration"
 msgstr ""
 
@@ -1086,19 +1086,19 @@ msgstr ""
 msgid "Feature Saved Successfully..........!!"
 msgstr ""
 
-#: includes/abprf_dependencies.php:251
+#: includes/abprf_dependencies.php:248
 msgid "Filter Post List"
 msgstr ""
 
-#: includes/abprf_layout.php:729
+#: includes/abprf_layout.php:726
 msgid "First Name"
 msgstr ""
 
-#: admin/abprf_properties.php:484
+#: admin/abprf_properties.php:487
 msgid "Fixed Amount"
 msgstr ""
 
-#: admin/abprf_properties.php:486
+#: admin/abprf_properties.php:489
 msgid "Fixed Amount per Quantity"
 msgstr ""
 
@@ -1126,11 +1126,11 @@ msgstr ""
 msgid "Font Size H6"
 msgstr ""
 
-#: admin/abprf_form.php:77
+#: admin/abprf_form.php:74
 msgid "Form Title"
 msgstr ""
 
-#: admin/abprf_form.php:79
+#: admin/abprf_form.php:76
 msgid "Form Type"
 msgstr ""
 
@@ -1138,24 +1138,24 @@ msgstr ""
 #: admin/abprf_orders.php:192 admin/abprf_orders.php:193
 #: admin/abprf_orders.php:225 admin/abprf_orders.php:226
 #: admin/abprf_orders.php:227 admin/abprf_orders.php:228
-#: includes/abprf_dependencies.php:180 includes/abprf_layout.php:1142
-#: includes/abprf_layout.php:1162 includes/abprf_woocommerce.php:273
-#: includes/abprf_woocommerce.php:291 includes/abprf_woocommerce.php:292
-#: includes/abprf_woocommerce.php:387 includes/abprf_woocommerce.php:405
-#: includes/abprf_woocommerce.php:407
+#: includes/abprf_dependencies.php:179 includes/abprf_layout.php:1216
+#: includes/abprf_layout.php:1236 includes/abprf_woocommerce.php:262
+#: includes/abprf_woocommerce.php:280 includes/abprf_woocommerce.php:281
+#: includes/abprf_woocommerce.php:374 includes/abprf_woocommerce.php:392
+#: includes/abprf_woocommerce.php:394
 #: rf_templates/layout/display_cart_item.php:34
 #: rf_templates/layout/display_cart_item.php:62
 #: rf_templates/layout/display_cart_item.php:63
 msgid "FREE"
 msgstr ""
 
-#: includes/abprf_layout.php:1013 includes/abprf_layout.php:1020
+#: includes/abprf_layout.php:1087 includes/abprf_layout.php:1094
 #: rf_templates/layout/additional_services.php:62
 #: rf_templates/list/default.php:51
 msgid "Free"
 msgstr ""
 
-#: includes/abprf_layout.php:1036
+#: includes/abprf_layout.php:1110
 msgid "Free "
 msgstr ""
 
@@ -1163,11 +1163,11 @@ msgstr ""
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: includes/abprf_layout.php:533
+#: includes/abprf_layout.php:530
 msgid "Friday"
 msgstr ""
 
-#: admin/abprf_status.php:296 rf_templates/layout/gallery.php:13
+#: admin/abprf_status.php:287 rf_templates/layout/gallery.php:17
 msgid "Gallery"
 msgstr ""
 
@@ -1175,23 +1175,23 @@ msgstr ""
 msgid "Gallery / Masonry"
 msgstr ""
 
-#: admin/abprf_properties.php:644
+#: admin/abprf_properties.php:649
 msgid "Gallery Configuration"
 msgstr ""
 
-#: admin/abprf_status.php:173
+#: admin/abprf_status.php:167
 msgid "Gallery Page"
 msgstr ""
 
-#: includes/abprf_layout.php:733
+#: includes/abprf_layout.php:730
 msgid "Gender"
 msgstr ""
 
-#: admin/abprf_post.php:163
+#: admin/abprf_post.php:165
 msgid "General"
 msgstr ""
 
-#: admin/abprf_post.php:201
+#: admin/abprf_post.php:202
 msgid "General Configuration"
 msgstr ""
 
@@ -1199,15 +1199,15 @@ msgstr ""
 msgid "Global Additional services Configuration"
 msgstr ""
 
-#: admin/abprf_form.php:18
+#: admin/abprf_form.php:17
 msgid "Global Client Form Configuration"
 msgstr ""
 
-#: admin/abprf_form.php:237
+#: admin/abprf_form.php:231
 msgid "Global Client Form Imported Successfully ..... !! "
 msgstr ""
 
-#: admin/abprf_admin.php:63
+#: admin/abprf_admin.php:65
 msgid "Global Data"
 msgstr ""
 
@@ -1223,27 +1223,27 @@ msgstr ""
 msgid "Global Term & Conditions Configuration"
 msgstr ""
 
-#: admin/abprf_post.php:217
+#: admin/abprf_post.php:218
 msgid "Grid/List Template"
 msgstr ""
 
-#: admin/abprf_post.php:218
+#: admin/abprf_post.php:219
 msgid "Group Template"
 msgstr ""
 
-#: includes/abprf_layout.php:715
+#: includes/abprf_layout.php:712
 msgid ""
 "Here you can set Multiple Drop-off Point . If you want visible Multiple Drop-"
 "off point select option  , please switch on. default Drop-off point off"
 msgstr ""
 
-#: includes/abprf_layout.php:714
+#: includes/abprf_layout.php:711
 msgid ""
 "Here you can set Multiple Pickup Point . If you want visible Multiple Pickup "
 "point select option  , please switch on. default pickup point off"
 msgstr ""
 
-#: includes/abprf_layout.php:590
+#: includes/abprf_layout.php:587
 msgid "Hour"
 msgstr ""
 
@@ -1251,12 +1251,12 @@ msgstr ""
 msgid "Hour Threshold"
 msgstr ""
 
-#: admin/abprf_properties.php:404 admin/abprf_properties.php:423
-#: includes/abprf_layout.php:563
+#: admin/abprf_properties.php:407 admin/abprf_properties.php:426
+#: includes/abprf_layout.php:560
 msgid "Hourly Rate"
 msgstr ""
 
-#: includes/abprf_layout.php:590
+#: includes/abprf_layout.php:587
 msgid "Hours"
 msgstr ""
 
@@ -1277,11 +1277,11 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
-#: admin/abprf_post.php:105
+#: admin/abprf_post.php:107
 msgid "ID : "
 msgstr ""
 
-#: admin/abprf_post.php:77 includes/abprf_layout.php:416
+#: admin/abprf_post.php:79 includes/abprf_layout.php:413
 msgid "Image"
 msgstr ""
 
@@ -1301,7 +1301,7 @@ msgstr ""
 msgid "Import Additional Service"
 msgstr ""
 
-#: admin/abprf_form.php:54
+#: admin/abprf_form.php:52
 msgid "Import Global Client Form"
 msgstr ""
 
@@ -1313,15 +1313,15 @@ msgstr ""
 msgid "Import Global Term & Conditions"
 msgstr ""
 
-#: includes/abprf_dependencies.php:43
+#: includes/abprf_dependencies.php:42
 msgid "Imported Successfully............. !"
 msgstr ""
 
-#: includes/abprf_dependencies.php:42
+#: includes/abprf_dependencies.php:41
 msgid "Importing........"
 msgstr ""
 
-#: includes/abprf_layout.php:488
+#: includes/abprf_layout.php:485
 msgid "In Rent"
 msgstr ""
 
@@ -1335,11 +1335,11 @@ msgid ""
 "support correspondence."
 msgstr ""
 
-#: includes/abprf_dependencies.php:247
+#: includes/abprf_dependencies.php:244
 msgid "Insert  Post"
 msgstr ""
 
-#: admin/abprf_status.php:31 admin/abprf_status.php:105
+#: admin/abprf_status.php:30 admin/abprf_status.php:100
 msgid "Install & Active Now"
 msgstr ""
 
@@ -1351,15 +1351,15 @@ msgstr ""
 #: admin/abprf_faq_tc.php:240 admin/abprf_faq_tc.php:262
 #: admin/abprf_faq_tc.php:276 admin/abprf_feature.php:100
 #: admin/abprf_feature.php:154 admin/abprf_feature.php:177
-#: admin/abprf_form.php:193 admin/abprf_form.php:229
+#: admin/abprf_form.php:188 admin/abprf_form.php:223
 #: admin/abprf_location.php:257 admin/abprf_location.php:273
 #: admin/abprf_location.php:369 admin/abprf_orders.php:245
-#: admin/abprf_orders.php:264 admin/abprf_post.php:506 admin/abprf_post.php:528
-#: admin/abprf_post.php:553 admin/abprf_post.php:583
-#: admin/abprf_properties.php:657 admin/abprf_properties.php:751
-#: admin/abprf_properties.php:800 admin/abprf_properties.php:815
-#: admin/abprf_status.php:213 admin/abprf_status.php:260
-#: admin/abprf_status.php:277 admin/abprf_status.php:327
+#: admin/abprf_orders.php:264 admin/abprf_post.php:510 admin/abprf_post.php:532
+#: admin/abprf_post.php:557 admin/abprf_post.php:587
+#: admin/abprf_properties.php:662 admin/abprf_properties.php:759
+#: admin/abprf_properties.php:808 admin/abprf_properties.php:823
+#: admin/abprf_status.php:206 admin/abprf_status.php:252
+#: admin/abprf_status.php:268 admin/abprf_status.php:317
 msgid "Insufficient permissions."
 msgstr ""
 
@@ -1367,7 +1367,7 @@ msgstr ""
 msgid "Invalid Category ID."
 msgstr ""
 
-#: admin/abprf_post.php:521 admin/abprf_post.php:546 admin/abprf_post.php:576
+#: admin/abprf_post.php:525 admin/abprf_post.php:550 admin/abprf_post.php:580
 msgid "Invalid Post ID ..... !! "
 msgstr ""
 
@@ -1379,15 +1379,15 @@ msgstr ""
 #: admin/abprf_faq_tc.php:237 admin/abprf_faq_tc.php:259
 #: admin/abprf_faq_tc.php:273 admin/abprf_feature.php:97
 #: admin/abprf_feature.php:151 admin/abprf_feature.php:174
-#: admin/abprf_form.php:190 admin/abprf_form.php:226
+#: admin/abprf_form.php:185 admin/abprf_form.php:220
 #: admin/abprf_location.php:254 admin/abprf_location.php:270
 #: admin/abprf_location.php:366 admin/abprf_orders.php:242
-#: admin/abprf_orders.php:261 admin/abprf_post.php:503 admin/abprf_post.php:525
-#: admin/abprf_post.php:550 admin/abprf_post.php:580
-#: admin/abprf_properties.php:654 admin/abprf_properties.php:748
-#: admin/abprf_properties.php:797 admin/abprf_properties.php:812
-#: admin/abprf_status.php:210 admin/abprf_status.php:257
-#: admin/abprf_status.php:274 admin/abprf_status.php:324
+#: admin/abprf_orders.php:261 admin/abprf_post.php:507 admin/abprf_post.php:529
+#: admin/abprf_post.php:554 admin/abprf_post.php:584
+#: admin/abprf_properties.php:659 admin/abprf_properties.php:756
+#: admin/abprf_properties.php:805 admin/abprf_properties.php:820
+#: admin/abprf_status.php:203 admin/abprf_status.php:249
+#: admin/abprf_status.php:265 admin/abprf_status.php:314
 msgid "Invalid security token."
 msgstr ""
 
@@ -1399,7 +1399,7 @@ msgstr ""
 msgid "Label Font Size"
 msgstr ""
 
-#: includes/abprf_layout.php:730
+#: includes/abprf_layout.php:727
 msgid "Last Name"
 msgstr ""
 
@@ -1407,7 +1407,7 @@ msgstr ""
 msgid "Left"
 msgstr ""
 
-#: includes/abprf_layout.php:939
+#: includes/abprf_layout.php:1013
 msgid "Less"
 msgstr ""
 
@@ -1415,22 +1415,21 @@ msgstr ""
 msgid "Loaded Successfully.....! "
 msgstr ""
 
-#: includes/abprf_dependencies.php:45
+#: includes/abprf_dependencies.php:44
 msgid "Loaded Successfully............. !"
 msgstr ""
 
-#: includes/abprf_dependencies.php:44
+#: includes/abprf_dependencies.php:43
 msgid "Loading........"
 msgstr ""
 
-#: includes/abprf_dependencies.php:181
+#: includes/abprf_dependencies.php:180
 msgid "Loading..............!"
 msgstr ""
 
-#: admin/abprf_admin.php:95 admin/abprf_post.php:270
-#: includes/abprf_function.php:90 includes/abprf_layout.php:777
-#: includes/abprf_layout.php:1398 includes/abprf_layout.php:1400
-#: includes/abprf_woocommerce.php:266
+#: includes/abprf_function.php:90 includes/abprf_layout.php:851
+#: includes/abprf_layout.php:1472 includes/abprf_layout.php:1474
+#: includes/abprf_woocommerce.php:255
 msgid "Location"
 msgstr ""
 
@@ -1471,7 +1470,7 @@ msgstr ""
 msgid "Location Title"
 msgstr ""
 
-#: includes/abprf_dependencies.php:291
+#: includes/abprf_dependencies.php:288
 msgid "Locations"
 msgstr ""
 
@@ -1483,19 +1482,19 @@ msgid ""
 "to hide or %2$s to display. (Default: %3$s)"
 msgstr ""
 
-#: admin/abprf_properties.php:415 admin/abprf_properties.php:425
+#: admin/abprf_properties.php:418 admin/abprf_properties.php:428
 msgid "Max Days"
 msgstr ""
 
-#: admin/abprf_properties.php:406
+#: admin/abprf_properties.php:409
 msgid "Max Hours"
 msgstr ""
 
-#: admin/abprf_properties.php:434 admin/abprf_properties.php:444
+#: admin/abprf_properties.php:437 admin/abprf_properties.php:447
 msgid "Max Months"
 msgstr ""
 
-#: admin/abprf_properties.php:391
+#: admin/abprf_properties.php:394
 msgid "Max Qty"
 msgstr ""
 
@@ -1504,24 +1503,24 @@ msgid "Max qty"
 msgstr ""
 
 #. 1: The minimum number, 2: The unit text (e.g., "Hours").
-#: includes/abprf_layout.php:971
+#: includes/abprf_layout.php:1045
 #, php-format
 msgid "Max. %1$s %2$s"
 msgstr ""
 
-#: admin/abprf_properties.php:414 admin/abprf_properties.php:424
+#: admin/abprf_properties.php:417 admin/abprf_properties.php:427
 msgid "Min Days "
 msgstr ""
 
-#: admin/abprf_properties.php:405
+#: admin/abprf_properties.php:408
 msgid "Min Hours "
 msgstr ""
 
-#: admin/abprf_properties.php:433 admin/abprf_properties.php:443
+#: admin/abprf_properties.php:436 admin/abprf_properties.php:446
 msgid "Min Months "
 msgstr ""
 
-#: admin/abprf_properties.php:390
+#: admin/abprf_properties.php:393
 msgid "Min Qty"
 msgstr ""
 
@@ -1530,20 +1529,20 @@ msgid "Min Rent :"
 msgstr ""
 
 #. 1: The minimum number, 2: The unit text (e.g., "Hours").
-#: includes/abprf_layout.php:966
+#: includes/abprf_layout.php:1040
 #, php-format
 msgid "Min. %1$s %2$s"
 msgstr ""
 
-#: includes/abprf_layout.php:529
+#: includes/abprf_layout.php:526
 msgid "Monday"
 msgstr ""
 
-#: includes/abprf_layout.php:593 includes/abprf_layout.php:594
+#: includes/abprf_layout.php:590 includes/abprf_layout.php:591
 msgid "Month"
 msgstr ""
 
-#: includes/abprf_layout.php:813 includes/abprf_layout.php:834
+#: includes/abprf_layout.php:887 includes/abprf_layout.php:908
 msgid "Month Configuration not complete"
 msgstr ""
 
@@ -1551,20 +1550,20 @@ msgstr ""
 msgid "Month Cut-Off Date"
 msgstr ""
 
-#: includes/abprf_layout.php:567
+#: includes/abprf_layout.php:564
 msgid "Monthly & Daily Rate"
 msgstr ""
 
-#: admin/abprf_properties.php:432 admin/abprf_properties.php:441
-#: includes/abprf_layout.php:566
+#: admin/abprf_properties.php:435 admin/abprf_properties.php:444
+#: includes/abprf_layout.php:563
 msgid "Monthly Rate"
 msgstr ""
 
-#: includes/abprf_layout.php:593 includes/abprf_layout.php:594
+#: includes/abprf_layout.php:590 includes/abprf_layout.php:591
 msgid "Months"
 msgstr ""
 
-#: includes/abprf_layout.php:939 includes/abprf_layout.php:940
+#: includes/abprf_layout.php:1013 includes/abprf_layout.php:1014
 msgid "More"
 msgstr ""
 
@@ -1573,11 +1572,11 @@ msgstr ""
 msgid "More Options"
 msgstr ""
 
-#: includes/abprf_layout.php:121
+#: includes/abprf_layout.php:118
 msgid "Move This Item"
 msgstr ""
 
-#: admin/abprf_post.php:125
+#: admin/abprf_post.php:127
 msgid "Move to Trash : "
 msgstr ""
 
@@ -1591,13 +1590,13 @@ msgstr ""
 
 #: admin/abprf_additional.php:75 admin/abprf_brand.php:152
 #: admin/abprf_brand.php:198 admin/abprf_category.php:99
-#: admin/abprf_category.php:100 admin/abprf_form.php:134
-#: admin/abprf_location.php:131 admin/abprf_status.php:121
-#: includes/abprf_woocommerce.php:270
+#: admin/abprf_category.php:100 admin/abprf_form.php:130
+#: admin/abprf_location.php:131 admin/abprf_status.php:116
+#: includes/abprf_woocommerce.php:259
 msgid "Name"
 msgstr ""
 
-#: includes/abprf_layout.php:1202
+#: includes/abprf_layout.php:1276
 msgid "Name :"
 msgstr ""
 
@@ -1617,39 +1616,39 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: includes/abprf_layout.php:707
+#: includes/abprf_layout.php:704
 msgid "No Brand Found ! Please add Brand to use Brand feature"
 msgstr ""
 
-#: includes/abprf_layout.php:706
+#: includes/abprf_layout.php:703
 msgid "No Category Found ! Please add Category to use Category feature"
 msgstr ""
 
-#: includes/abprf_layout.php:701
+#: includes/abprf_layout.php:698
 msgid "No Dates Found !"
 msgstr ""
 
-#: includes/abprf_layout.php:709
+#: includes/abprf_layout.php:706
 msgid "No Feature Found ! Please add Feature to use Feature"
 msgstr ""
 
-#: includes/abprf_dependencies.php:62
+#: includes/abprf_dependencies.php:61
 msgid "No feature selected !"
 msgstr ""
 
-#: includes/abprf_layout.php:708
+#: includes/abprf_layout.php:705
 msgid "No Location Found ! Please add Location to use Location feature"
 msgstr ""
 
-#: includes/abprf_dependencies.php:61
+#: includes/abprf_dependencies.php:60
 msgid "No More Feature Found !"
 msgstr ""
 
-#: includes/abprf_layout.php:703 includes/abprf_layout.php:704
+#: includes/abprf_layout.php:700 includes/abprf_layout.php:701
 msgid "No Post Found !"
 msgstr ""
 
-#: includes/abprf_layout.php:705
+#: includes/abprf_layout.php:702
 msgid "No Property Found !"
 msgstr ""
 
@@ -1657,11 +1656,11 @@ msgstr ""
 msgid "No property Selected ! Please Select property"
 msgstr ""
 
-#: includes/abprf_layout.php:702
+#: includes/abprf_layout.php:699
 msgid "No Results Found !"
 msgstr ""
 
-#: admin/abprf_post.php:301
+#: admin/abprf_post.php:302
 msgid "None"
 msgstr ""
 
@@ -1673,82 +1672,76 @@ msgstr ""
 msgid "Not Available !"
 msgstr ""
 
-#: includes/abprf_layout.php:626
+#: includes/abprf_layout.php:623
 msgid ""
 "Note : Enable or disable store locations on the frontend using this switch. "
 "If multiple locations are selected, property stock will be managed "
 "separately for each location."
 msgstr ""
 
-#: includes/abprf_layout.php:638
+#: includes/abprf_layout.php:635
 msgid ""
 "Note : If you want to change the Time Format, simply choose a different "
 "format. The default Time Format is: "
 msgstr ""
 
-#: includes/abprf_layout.php:625
+#: includes/abprf_layout.php:622
 msgid ""
 "Note : This switch indicate Post/Property Category . You can also show or "
 "hide it on the frontend by turning the switch On or Off."
 msgstr ""
 
-#: includes/abprf_layout.php:637
+#: includes/abprf_layout.php:634
 msgid ""
 "Note:  If you want to change the Date  Format, simply choose a different "
 "format. The default date is: "
 msgstr ""
 
-#: includes/abprf_layout.php:665
+#: includes/abprf_layout.php:662
 msgid ""
 "Note: Add a brand name to enable the property sub-tile. Leave this blank if "
 "you dont want to show any brand information for this item."
 msgstr ""
 
-#: includes/abprf_layout.php:621
+#: includes/abprf_layout.php:618
 msgid ""
 "Note: Add a Sub-title to enable the Post sub-tile. Leave this blank if you "
 "dont want to show any Sub-title information for this Post."
 msgstr ""
 
-#: includes/abprf_layout.php:681
+#: includes/abprf_layout.php:678
 msgid ""
 "Note: Add extra services for products/equipment with your property—import or "
 "set per Post (also usable globally); stock applies per Post, empty quantity "
 "= unlimited, empty max qty = no limit, empty/Zero price = free."
 msgstr ""
 
-#: includes/abprf_layout.php:666
+#: includes/abprf_layout.php:663
 msgid ""
 "Note: Add short description about this property. Leave this blank if you "
 "dont want to show any property description for this item."
 msgstr ""
 
-#: includes/abprf_layout.php:667
-msgid ""
-"Note: At least one option must be selected — otherwise the data will not be "
-"saved. The price will be calculated based on the time selected by the client."
-msgstr ""
-
-#: includes/abprf_layout.php:629
+#: includes/abprf_layout.php:626
 msgid ""
 "Note: Category description is optional — you can add details to better "
 "explain this category. "
 msgstr ""
 
-#: includes/abprf_layout.php:628
+#: includes/abprf_layout.php:625
 msgid ""
 "Note: Category slug is optional — leave it blank to auto-generate from the "
 "name. "
 msgstr ""
 
-#: includes/abprf_layout.php:652
+#: includes/abprf_layout.php:649
 msgid ""
 "Note: Day-wise operation time will apply only if the date does not fall "
 "within any Special On Date range. If the time field is left empty in Special "
 "On Dates, then the day-wise operation time will be applied for that date."
 msgstr ""
 
-#: includes/abprf_layout.php:649
+#: includes/abprf_layout.php:646
 msgid ""
 "Note: Enable this checkbox to configure special on/off date and time "
 "settings. This option is optional. If you set a date/time in the special "
@@ -1756,7 +1749,7 @@ msgid ""
 "date range or on weekends."
 msgstr ""
 
-#: includes/abprf_layout.php:662
+#: includes/abprf_layout.php:659
 msgid ""
 "Note: Enter the daily rental rate to enable daily booking for this property. "
 " You can also set minimum and maximum rental days for customers. The minimum "
@@ -1765,7 +1758,7 @@ msgid ""
 "disabled."
 msgstr ""
 
-#: includes/abprf_layout.php:661
+#: includes/abprf_layout.php:658
 msgid ""
 "Note: Enter the hourly rental rate to enable hourly booking for this "
 "property. You can also set minimum and maximum rental hours for customers. "
@@ -1773,7 +1766,7 @@ msgid ""
 "slots if left empty."
 msgstr ""
 
-#: includes/abprf_layout.php:663
+#: includes/abprf_layout.php:660
 msgid ""
 "Note: Enter the monthly rental rate to enable monthly booking for this "
 "property. This rate will apply only for the Monthly rent rule. You can also "
@@ -1781,191 +1774,198 @@ msgid ""
 "the maximum depends on available booking months."
 msgstr ""
 
-#: includes/abprf_layout.php:640
+#: includes/abprf_layout.php:637
 msgid ""
 "Note: Enter the time in minutes to close  rent after current time. If not "
 "specified, it will default to 0 (e.g. 1 hour equals 60 minutes)."
 msgstr ""
 
-#: includes/abprf_layout.php:639
+#: includes/abprf_layout.php:636
 msgid ""
 "Note: Enter the time in minutes to close  rent before current time. If not "
 "specified, it will default to 0 (e.g. 1 hour equals 60 minutes)."
 msgstr ""
 
-#: includes/abprf_layout.php:634
+#: includes/abprf_layout.php:631
 msgid ""
 "Note: Feature slug is optional — leave it blank to auto-generate from the "
 "name. "
 msgstr ""
 
-#: includes/abprf_layout.php:623
+#: includes/abprf_layout.php:620
 msgid ""
 "Note: Here you can add an SKU for this post. You can also show or hide it on "
 "the frontend by turning the switch On or Off."
 msgstr ""
 
-#: includes/abprf_layout.php:624
+#: includes/abprf_layout.php:621
 msgid "Note: Here You can change your details page template."
 msgstr ""
 
-#: includes/abprf_layout.php:659
+#: includes/abprf_layout.php:656
 msgid ""
 "Note: Here You can set an image, icon, or emoji for each property directly"
 msgstr ""
 
-#: includes/abprf_layout.php:650
+#: includes/abprf_layout.php:647
 msgid ""
 "Note: If you add any date and time in Special On Dates, it will always "
 "remain active—even if that date falls within an off date range or on "
 "weekends."
 msgstr ""
 
-#: includes/abprf_layout.php:654
+#: includes/abprf_layout.php:651
 msgid ""
 "Note: If you have off days between two dates which can add here.(optional)"
 msgstr ""
 
-#: includes/abprf_layout.php:680
+#: includes/abprf_layout.php:677
 msgid ""
 "Note: If you want sale/rent additional product/equipment with regular "
 "property then active this button and add additional service. Additional item "
 "not depends on  operation time."
 msgstr ""
 
-#: includes/abprf_layout.php:669
+#: includes/abprf_layout.php:666
 msgid ""
 "Note: If you want to add an image gallery for this property, you can upload "
 "images below. These images will be merged with all properties under the same "
 "category. You may leave this section empty if you do not want to add images. "
 msgstr ""
 
-#: includes/abprf_layout.php:677
+#: includes/abprf_layout.php:674
 msgid ""
 "Note: If you want to add any new tax class , Please go to WooCommerce ->"
 "configuration->Tax Area"
 msgstr ""
 
-#: includes/abprf_layout.php:668
+#: includes/abprf_layout.php:665
 msgid ""
 "Note: If you want to add feature for this property, you can add Here. These "
 "feature will be show with this properties . You may leave this section empty "
 "if you do not want to show frontend. "
 msgstr ""
 
-#: includes/abprf_layout.php:685
+#: includes/abprf_layout.php:682
 msgid ""
 "Note: If you want to get Client information then active this button and add "
 "form/import global form or use global form as a client form"
 msgstr ""
 
-#: includes/abprf_layout.php:682
+#: includes/abprf_layout.php:679
 msgid ""
 "Note: Keep this switch ON to apply the global additional settings.Switch it "
 "OFF if you want to set special additional rules for this property.additional "
 "configuration options will open when turned OFF. "
 msgstr ""
 
-#: includes/abprf_layout.php:686
+#: includes/abprf_layout.php:683
 msgid ""
 "Note: Keep this switch ON to apply the global Client Form settings.Switch it "
 "OFF if you want to set special  Client Form rules for this property. Client "
 "Form configuration options will open when turned OFF. "
 msgstr ""
 
-#: includes/abprf_layout.php:642
+#: includes/abprf_layout.php:639
 msgid ""
 "Note: Keep this switch ON to apply the global date settings.Switch it OFF if "
 "you want to set special date rules for this property.Date configuration "
 "options will open when turned OFF. "
 msgstr ""
 
-#: includes/abprf_layout.php:641
+#: includes/abprf_layout.php:638
 msgid ""
 "Note: Kindly provide the number of days in advance for booking. By default, "
 "the advance booking period is set to 28 days.(optional) "
 msgstr ""
 
-#: includes/abprf_layout.php:632
+#: includes/abprf_layout.php:629
 msgid ""
 "Note: Location Address is optional — you can add details to better explain "
 "this Location Full  Address. "
 msgstr ""
 
-#: includes/abprf_layout.php:631
+#: includes/abprf_layout.php:628
 msgid ""
 "Note: Location slug is optional — leave it blank to auto-generate from the "
 "name. "
 msgstr ""
 
-#: includes/abprf_layout.php:648
+#: includes/abprf_layout.php:645
 msgid ""
 "Note: Please add your periodically after days. if  your property rent "
 "operation day everyday this will be one(1).(optional)"
 msgstr ""
 
-#: includes/abprf_layout.php:644
+#: includes/abprf_layout.php:641
 msgid ""
 "Note: Please add your property operational Specific Date lists and Operation "
 "time length(optional). If operation time empty that means it will be default "
 "operation time."
 msgstr ""
 
-#: includes/abprf_layout.php:645
+#: includes/abprf_layout.php:642
 msgid ""
 "Note: Please add your property rent  Operation time length(optional). If "
 "operation time empty that means it will be 24 hours(optional)"
 msgstr ""
 
-#: includes/abprf_layout.php:646
+#: includes/abprf_layout.php:643
 msgid ""
 "Note: Please add your property rent Launching Date otherwise it will be "
 "start today "
 msgstr ""
 
-#: includes/abprf_layout.php:647
+#: includes/abprf_layout.php:644
 msgid ""
 "Note: Please add your property rent Terminate  Date otherwise it will be "
 "Continuously running periodically"
 msgstr ""
 
-#: includes/abprf_layout.php:653
+#: includes/abprf_layout.php:650
 msgid "Note: please add your specific Operation off dates.(optional)"
 msgstr ""
 
-#: includes/abprf_layout.php:627
+#: includes/abprf_layout.php:624
 msgid "Note: Please enter a category name — the field cannot be empty. "
 msgstr ""
 
-#: includes/abprf_layout.php:633
+#: includes/abprf_layout.php:630
 msgid "Note: Please enter a Feature Label — the field cannot be empty. "
 msgstr ""
 
-#: includes/abprf_layout.php:635
+#: includes/abprf_layout.php:632
 msgid "Note: Please enter a Feature Value  — the field cannot be empty. "
 msgstr ""
 
-#: includes/abprf_layout.php:630
+#: includes/abprf_layout.php:627
 msgid "Note: Please enter a Location name — the field cannot be empty. "
 msgstr ""
 
-#: includes/abprf_layout.php:643
+#: includes/abprf_layout.php:640
 msgid ""
 "Note: Please Select your property operational date type. Default operational "
 "date will be Periodic"
 msgstr ""
 
-#: includes/abprf_layout.php:651
+#: includes/abprf_layout.php:648
 msgid "Note: Please select your weekend.Default all days open(optional)"
 msgstr ""
 
-#: includes/abprf_layout.php:655
+#: includes/abprf_layout.php:664
+msgid ""
+"Note: Select the Property Date & Time Rule that matches this post. If an "
+"incorrect rule is chosen, the system will automatically update and apply the "
+"post Date & Time Rule to the property upon publishing."
+msgstr ""
+
+#: includes/abprf_layout.php:652
 msgid ""
 "Note: Set a global date configuration for your property rentals that can be "
 "reused across all posts, with options to import and customize anytime."
 msgstr ""
 
-#: includes/abprf_layout.php:660
+#: includes/abprf_layout.php:657
 msgid ""
 "Note: Set the total stock quantity available for rent. This field is "
 "required to save the property. You can also set reserve, minimum, and "
@@ -1974,14 +1974,14 @@ msgid ""
 "quantity will follow the available stock if left empty."
 msgstr ""
 
-#: includes/abprf_layout.php:675
+#: includes/abprf_layout.php:672
 msgid ""
 "Note: The items displayed are filtered by your selected Rent Time Rules. "
 "Properties not matching these rules are still available via the main "
 "Property List."
 msgstr ""
 
-#: includes/abprf_layout.php:664
+#: includes/abprf_layout.php:661
 msgid ""
 "Note: There are three(3) types of deposit options: Fixed Amount (a set "
 "deposit regardless of quantity), Percentage of Total Price (calculated based "
@@ -1989,34 +1989,34 @@ msgid ""
 "item rented)."
 msgstr ""
 
-#: includes/abprf_layout.php:687
+#: includes/abprf_layout.php:684
 msgid ""
 "Note: This is a flexibility global form system. Once you design the "
 "structure here, it serves as a global form. You can effortlessly import this "
 "form into any property or use this setting at any property,"
 msgstr ""
 
-#: includes/abprf_layout.php:622
+#: includes/abprf_layout.php:619
 msgid ""
 "Note: This switch indicate property rent close/continue . You can  rent "
 "close/continue  by this switch. By default rent will be  continue"
 msgstr ""
 
-#: includes/abprf_layout.php:674
+#: includes/abprf_layout.php:671
 msgid ""
 "Note: You can define how many days will be counted as one full month here. "
 "By default, it is set to 30 days. Adjust this value to control when a "
 "booking duration should be considered as a full month."
 msgstr ""
 
-#: includes/abprf_layout.php:672
+#: includes/abprf_layout.php:669
 msgid ""
 "Note: You can define how many hours will be counted as one full day here. By "
 "default, it is set to 24 hours. Adjust this value to control when a booking "
 "duration should be considered as a full day."
 msgstr ""
 
-#: includes/abprf_layout.php:671
+#: includes/abprf_layout.php:668
 msgid ""
 "Note: You can define the start and end time of a rental day here. By default,"
 " a rental day runs from 10:00 AM to 10:00 AM the next day. The first time "
@@ -2025,7 +2025,7 @@ msgid ""
 "exceed 24 hours."
 msgstr ""
 
-#: includes/abprf_layout.php:670
+#: includes/abprf_layout.php:667
 msgid ""
 "Note: You can define the time slot interval for frontend time selection here."
 " This controls how frequently time options will appear for users. By default,"
@@ -2033,33 +2033,33 @@ msgid ""
 "intervals."
 msgstr ""
 
-#: includes/abprf_layout.php:673
+#: includes/abprf_layout.php:670
 msgid ""
 "Note: You can set the cutoff date for allowing bookings in the next month. "
 "By default, users can make bookings for the current month up to the 10th. "
 "After this date, next month’s rental slots will become available for booking."
 msgstr ""
 
-#: includes/abprf_layout.php:658
+#: includes/abprf_layout.php:655
 msgid ""
 "Note: You must enter the property name in the field above. This field is "
 "required — the data will not be saved if the property name is not provided."
 msgstr ""
 
-#: includes/abprf_layout.php:657
+#: includes/abprf_layout.php:654
 msgid ""
 "Note: You must select the Post under which this property belongs here. "
 "Selecting a Post is required — the data will not be saved if no Post is "
 "selected."
 msgstr ""
 
-#: includes/abprf_layout.php:678
+#: includes/abprf_layout.php:675
 msgid ""
 "Note: Your Woo-commerce Tax setting already disable. If you want to enable "
 "tax please enable woo-commerce tax."
 msgstr ""
 
-#: admin/abprf_form.php:151
+#: admin/abprf_form.php:147
 msgid "Number"
 msgstr ""
 
@@ -2067,15 +2067,15 @@ msgstr ""
 msgid "Number of advance booking date"
 msgstr ""
 
-#: admin/abprf_status.php:182
+#: admin/abprf_status.php:176
 msgid "Number of Post"
 msgstr ""
 
-#: admin/abprf_status.php:191
+#: admin/abprf_status.php:185
 msgid "Number of Property"
 msgstr ""
 
-#: includes/abprf_dependencies.php:134 includes/abprf_layout.php:232
+#: includes/abprf_dependencies.php:132 includes/abprf_layout.php:229
 msgid "OFF"
 msgstr ""
 
@@ -2083,21 +2083,21 @@ msgstr ""
 msgid "Off Date Range(optional)"
 msgstr ""
 
-#: includes/abprf_layout.php:542
+#: includes/abprf_layout.php:539
 msgid "Off Dates Range"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:351
+#: includes/abprf_woocommerce.php:339
 msgid "Oh ! We are Sorry, Something Wrong. please Try another Time."
 msgstr ""
 
-#: includes/abprf_woocommerce.php:345
+#: includes/abprf_woocommerce.php:333
 msgid ""
 "Oh ! We are Sorry, Your Selected Item Already Booked by another . please Try "
 "another Item."
 msgstr ""
 
-#: includes/abprf_dependencies.php:135 includes/abprf_layout.php:225
+#: includes/abprf_dependencies.php:133 includes/abprf_layout.php:222
 msgid "ON"
 msgstr ""
 
@@ -2105,7 +2105,7 @@ msgstr ""
 msgid "ON/OFF"
 msgstr ""
 
-#: includes/abprf_layout.php:544
+#: includes/abprf_layout.php:541
 msgid "Operation Time day Wise"
 msgstr ""
 
@@ -2121,11 +2121,11 @@ msgstr ""
 msgid "Operational Date Type"
 msgstr ""
 
-#: includes/abprf_layout.php:1277
+#: includes/abprf_layout.php:1351
 msgid "Order Date"
 msgstr ""
 
-#: includes/abprf_layout.php:1311
+#: includes/abprf_layout.php:1385
 msgid "Order Date Between"
 msgstr ""
 
@@ -2133,7 +2133,7 @@ msgstr ""
 msgid "Order Filter"
 msgstr ""
 
-#: includes/abprf_layout.php:1356 includes/abprf_layout.php:1357
+#: includes/abprf_layout.php:1430 includes/abprf_layout.php:1431
 msgid "Order ID"
 msgstr ""
 
@@ -2145,19 +2145,19 @@ msgstr ""
 msgid "Order Loaded Successfully !"
 msgstr ""
 
-#: includes/abprf_dependencies.php:46
+#: includes/abprf_dependencies.php:45
 msgid "Order Loading........ !"
 msgstr ""
 
-#: admin/abprf_admin.php:61
+#: admin/abprf_admin.php:63
 msgid "Orders"
 msgstr ""
 
-#: admin/abprf_status.php:316
+#: admin/abprf_status.php:307
 msgid "Page already exists."
 msgstr ""
 
-#: includes/abprf_dependencies.php:59
+#: includes/abprf_dependencies.php:58
 msgid "Page Creating ........!"
 msgstr ""
 
@@ -2165,11 +2165,11 @@ msgstr ""
 msgid "Payment Method"
 msgstr ""
 
-#: includes/abprf_layout.php:486
+#: includes/abprf_layout.php:483
 msgid "Pending"
 msgstr ""
 
-#: admin/abprf_properties.php:485
+#: admin/abprf_properties.php:488
 msgid "Percentage(%) of Total Price"
 msgstr ""
 
@@ -2181,19 +2181,19 @@ msgstr ""
 msgid "Periodic Dates"
 msgstr ""
 
-#: admin/abprf_post.php:121
+#: admin/abprf_post.php:123
 msgid "Permanent Remove : "
 msgstr ""
 
-#: includes/abprf_layout.php:732
+#: includes/abprf_layout.php:729
 msgid "Phone"
 msgstr ""
 
-#: includes/abprf_layout.php:1208
+#: includes/abprf_layout.php:1282
 msgid "Phone :"
 msgstr ""
 
-#: admin/abprf_status.php:80
+#: admin/abprf_status.php:76
 msgid "Php Version"
 msgstr ""
 
@@ -2209,11 +2209,11 @@ msgid ""
 "and buttons."
 msgstr ""
 
-#: includes/abprf_layout.php:848 includes/abprf_layout.php:864
+#: includes/abprf_layout.php:922 includes/abprf_layout.php:938
 msgid "Pickup Date"
 msgstr ""
 
-#: includes/abprf_layout.php:801
+#: includes/abprf_layout.php:875
 msgid "Pickup Month"
 msgstr ""
 
@@ -2225,14 +2225,14 @@ msgstr ""
 msgid "Pickup Time"
 msgstr ""
 
-#: includes/abprf_layout.php:717
+#: includes/abprf_layout.php:714
 msgid "Please Login your account to Download/View ticket !"
 msgstr ""
 
-#: admin/abprf_configuration.php:807 admin/abprf_post.php:216
-#: admin/abprf_post.php:298 admin/abprf_post.php:309
-#: admin/abprf_properties.php:281 includes/abprf_dependencies.php:175
-#: includes/abprf_layout.php:335
+#: admin/abprf_configuration.php:807 admin/abprf_post.php:217
+#: admin/abprf_post.php:299 admin/abprf_post.php:310
+#: admin/abprf_properties.php:281 includes/abprf_dependencies.php:174
+#: includes/abprf_layout.php:332
 msgid "Please Select"
 msgstr ""
 
@@ -2240,31 +2240,31 @@ msgstr ""
 msgid "Please Select Brand"
 msgstr ""
 
-#: admin/abprf_properties.php:483
+#: admin/abprf_properties.php:486
 msgid "Please Select Deposit Type"
 msgstr ""
 
-#: includes/abprf_layout.php:885
+#: includes/abprf_layout.php:959
 msgid "Please Select Drop-Off  Date"
 msgstr ""
 
-#: includes/abprf_layout.php:850
+#: includes/abprf_layout.php:924
 msgid "Please Select Pickup Date"
 msgstr ""
 
-#: includes/abprf_dependencies.php:177
+#: includes/abprf_dependencies.php:176
 msgid "Please Select rent End Date"
 msgstr ""
 
-#: includes/abprf_dependencies.php:179
+#: includes/abprf_dependencies.php:178
 msgid "Please Select rent End Time"
 msgstr ""
 
-#: includes/abprf_dependencies.php:176
+#: includes/abprf_dependencies.php:175
 msgid "Please Select rent Start Date"
 msgstr ""
 
-#: includes/abprf_dependencies.php:178
+#: includes/abprf_dependencies.php:177
 msgid "Please Select rent Start Time"
 msgstr ""
 
@@ -2272,8 +2272,8 @@ msgstr ""
 msgid "Popup Image Indicator"
 msgstr ""
 
-#: admin/abprf_dashboard.php:21 admin/abprf_post.php:78
-#: includes/abprf_dependencies.php:232
+#: admin/abprf_dashboard.php:21 admin/abprf_post.php:80
+#: includes/abprf_dependencies.php:229
 msgid "Post"
 msgstr ""
 
@@ -2281,7 +2281,7 @@ msgstr ""
 msgid "Post Id : "
 msgstr ""
 
-#: includes/abprf_dependencies.php:243 includes/abprf_dependencies.php:244
+#: includes/abprf_dependencies.php:240 includes/abprf_dependencies.php:241
 msgid "Post Image"
 msgstr ""
 
@@ -2289,12 +2289,12 @@ msgstr ""
 msgid "Post Information"
 msgstr ""
 
-#: includes/abprf_dependencies.php:231
+#: includes/abprf_dependencies.php:228
 msgid "Post Item:"
 msgstr ""
 
-#: includes/abprf_dependencies.php:229 includes/abprf_dependencies.php:230
-#: includes/abprf_dependencies.php:249
+#: includes/abprf_dependencies.php:226 includes/abprf_dependencies.php:227
+#: includes/abprf_dependencies.php:246
 msgid "Post List"
 msgstr ""
 
@@ -2302,55 +2302,55 @@ msgstr ""
 msgid "Post List Loaded Successfully.....! "
 msgstr ""
 
-#: admin/abprf_post.php:592
+#: admin/abprf_post.php:596
 msgid "Post List Loaded successfully...... !! "
 msgstr ""
 
-#: includes/abprf_dependencies.php:51
+#: includes/abprf_dependencies.php:50
 msgid "Post List Loading............."
 msgstr ""
 
-#: admin/abprf_status.php:155
+#: admin/abprf_status.php:149
 msgid "Post List Page"
 msgstr ""
 
-#: admin/abprf_admin.php:59 admin/abprf_post.php:30
+#: admin/abprf_admin.php:61 admin/abprf_post.php:32
 msgid "Post Lists"
 msgstr ""
 
-#: includes/abprf_dependencies.php:53
+#: includes/abprf_dependencies.php:52
 msgid "Post move to Trashing.........!"
 msgstr ""
 
-#: admin/abprf_post.php:544
+#: admin/abprf_post.php:548
 msgid "Post moved to trash successfully...... !! "
 msgstr ""
 
-#: includes/abprf_dependencies.php:241
+#: includes/abprf_dependencies.php:238
 msgid "Post Not Found"
 msgstr ""
 
-#: includes/abprf_dependencies.php:242
+#: includes/abprf_dependencies.php:239
 msgid "Post Not found in Trash"
 msgstr ""
 
-#: includes/abprf_dependencies.php:52
+#: includes/abprf_dependencies.php:51
 msgid "Post Permanent Deleting.........!"
 msgstr ""
 
-#: admin/abprf_post.php:519
+#: admin/abprf_post.php:523
 msgid "Post permanently removed. ..... !! "
 msgstr ""
 
-#: includes/abprf_dependencies.php:54
+#: includes/abprf_dependencies.php:53
 msgid "Post Restoring.........!"
 msgstr ""
 
-#: admin/abprf_post.php:231
+#: admin/abprf_post.php:232
 msgid "Post SKU"
 msgstr ""
 
-#: admin/abprf_post.php:245
+#: admin/abprf_post.php:246
 msgid "Post Sub Title"
 msgstr ""
 
@@ -2362,20 +2362,20 @@ msgstr ""
 msgid "Price"
 msgstr ""
 
-#: admin/abprf_properties.php:360
+#: admin/abprf_properties.php:359
 msgid "Pricing and Quantity Configuration"
 msgstr ""
 
-#: admin/abprf_post.php:35
+#: admin/abprf_post.php:37
 msgid "Private"
 msgstr ""
 
-#: admin/abprf_admin.php:60 admin/abprf_dashboard.php:30
+#: admin/abprf_admin.php:62 admin/abprf_dashboard.php:30
 #: admin/abprf_properties.php:22
 msgid "Properties"
 msgstr ""
 
-#: admin/abprf_post.php:164
+#: admin/abprf_post.php:166
 msgid "Properties and Price"
 msgstr ""
 
@@ -2383,8 +2383,8 @@ msgstr ""
 msgid "Properties and Price Configuration"
 msgstr ""
 
-#: admin/abprf_post.php:80 admin/abprf_properties.php:156
-#: admin/abprf_status.php:292
+#: admin/abprf_post.php:82 admin/abprf_properties.php:156
+#: admin/abprf_status.php:283
 msgid "Property"
 msgstr ""
 
@@ -2392,7 +2392,7 @@ msgstr ""
 msgid "Property Brand"
 msgstr ""
 
-#: admin/abprf_properties.php:793
+#: admin/abprf_properties.php:801
 msgid "Property Form Loaded Successfully .....! "
 msgstr ""
 
@@ -2408,7 +2408,7 @@ msgstr ""
 msgid "Property Info"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:268 includes/abprf_woocommerce.php:381
+#: includes/abprf_woocommerce.php:257 includes/abprf_woocommerce.php:368
 msgid "Property Information"
 msgstr ""
 
@@ -2420,28 +2420,28 @@ msgstr ""
 msgid "Property List already Loaded !"
 msgstr ""
 
-#: admin/abprf_properties.php:808
+#: admin/abprf_properties.php:816
 msgid "Property List Loaded successfully...... !! "
 msgstr ""
 
-#: includes/abprf_dependencies.php:50 includes/abprf_dependencies.php:174
+#: includes/abprf_dependencies.php:49 includes/abprf_dependencies.php:173
 msgid "Property List Loading............."
 msgstr ""
 
-#: admin/abprf_status.php:164
+#: admin/abprf_status.php:158
 msgid "Property List Page"
 msgstr ""
 
-#: admin/abprf_properties.php:311 includes/abprf_woocommerce.php:384
+#: admin/abprf_properties.php:311 includes/abprf_woocommerce.php:371
 msgid "Property Name"
 msgstr ""
 
-#: admin/abprf_properties.php:738
+#: admin/abprf_properties.php:746
 msgid ""
 "Property name , Rent rule  Can not be Blank . Property not Saved ..... !! "
 msgstr ""
 
-#: includes/abprf_layout.php:720
+#: includes/abprf_layout.php:717
 msgid "Property not found or  rent close shortly"
 msgstr ""
 
@@ -2457,11 +2457,11 @@ msgstr ""
 msgid "Property Rent To (Optional)"
 msgstr ""
 
-#: admin/abprf_post.php:574
+#: admin/abprf_post.php:578
 msgid "Property restored successfully...... !! "
 msgstr ""
 
-#: admin/abprf_properties.php:734
+#: admin/abprf_properties.php:742
 msgid "Property Saved Successfully.... !! "
 msgstr ""
 
@@ -2469,7 +2469,7 @@ msgstr ""
 msgid "Property Short Description"
 msgstr ""
 
-#: admin/abprf_properties.php:730
+#: admin/abprf_properties.php:738
 msgid "Property Updated Successfully...... !! "
 msgstr ""
 
@@ -2485,12 +2485,12 @@ msgid ""
 "booking logs."
 msgstr ""
 
-#: admin/abprf_post.php:34
+#: admin/abprf_post.php:36
 msgid "Published"
 msgstr ""
 
-#: admin/abprf_additional.php:76 includes/abprf_woocommerce.php:271
-#: includes/abprf_woocommerce.php:385
+#: admin/abprf_additional.php:76 includes/abprf_woocommerce.php:260
+#: includes/abprf_woocommerce.php:372
 msgid "Quantity"
 msgstr ""
 
@@ -2498,23 +2498,23 @@ msgstr ""
 msgid "Quantity : "
 msgstr ""
 
-#: admin/abprf_form.php:154
+#: admin/abprf_form.php:150
 msgid "Radio"
 msgstr ""
 
-#: includes/abprf_layout.php:397 includes/abprf_layout.php:463
+#: includes/abprf_layout.php:394 includes/abprf_layout.php:460
 msgid "Remove Icon"
 msgstr ""
 
-#: includes/abprf_layout.php:467
+#: includes/abprf_layout.php:464
 msgid "Remove Image"
 msgstr ""
 
-#: includes/abprf_dependencies.php:245
+#: includes/abprf_dependencies.php:242
 msgid "Remove Post Image"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:274 includes/abprf_woocommerce.php:388
+#: includes/abprf_woocommerce.php:263 includes/abprf_woocommerce.php:375
 msgid "Rent"
 msgstr ""
 
@@ -2534,7 +2534,7 @@ msgstr ""
 msgid "Rent Cancel"
 msgstr ""
 
-#: admin/abprf_post.php:207 admin/abprf_properties.php:297
+#: admin/abprf_post.php:208 admin/abprf_properties.php:297
 msgid "Rent continue?"
 msgstr ""
 
@@ -2558,7 +2558,7 @@ msgstr ""
 msgid "Rent De-active"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:263 includes/abprf_woocommerce.php:376
+#: includes/abprf_woocommerce.php:252 includes/abprf_woocommerce.php:363
 msgid "Rent End"
 msgstr ""
 
@@ -2570,21 +2570,21 @@ msgstr ""
 msgid "Rent End Date Loaded successfully."
 msgstr ""
 
-#: admin/abprf_post.php:106 admin/abprf_properties.php:193
+#: admin/abprf_post.php:108 admin/abprf_properties.php:193
 #: admin/abprf_properties.php:204
 msgid "Rent Off"
 msgstr ""
 
-#: admin/abprf_post.php:106 admin/abprf_properties.php:193
+#: admin/abprf_post.php:108 admin/abprf_properties.php:193
 #: admin/abprf_properties.php:204
 msgid "Rent On"
 msgstr ""
 
-#: admin/abprf_post.php:79
+#: admin/abprf_post.php:81
 msgid "Rent Rule"
 msgstr ""
 
-#: includes/abprf_woocommerce.php:262 includes/abprf_woocommerce.php:375
+#: includes/abprf_woocommerce.php:251 includes/abprf_woocommerce.php:362
 msgid "Rent Start"
 msgstr ""
 
@@ -2597,13 +2597,13 @@ msgid "Rent Time"
 msgstr ""
 
 #. 1: minimum number, 2: time unit (e.g. hours)
-#: includes/abprf_layout.php:958
+#: includes/abprf_layout.php:1032
 #, php-format
 msgid "Rental is available for %1$s %2$s Only"
 msgstr ""
 
 #. %s is the user role or restriction text .
-#: includes/abprf_layout.php:977
+#: includes/abprf_layout.php:1051
 #, php-format
 msgid "Rental is available for %s  only"
 msgstr ""
@@ -2623,30 +2623,30 @@ msgid ""
 "dashboard."
 msgstr ""
 
-#: includes/abprf_layout.php:712
+#: includes/abprf_layout.php:709
 msgid ""
 "RentalForge is entirely dependent on the WooCommerce plugin. Please install "
 "and activate the WooCommerce plugin otherwise the plugin will not work. "
 "Installing this tool may take some time"
 msgstr ""
 
-#: admin/abprf_status.php:52
+#: admin/abprf_status.php:50
 msgid "RentalForge Version"
 msgstr ""
 
-#: admin/abprf_form.php:85
+#: admin/abprf_form.php:82
 msgid "Required"
 msgstr ""
 
-#: admin/abprf_properties.php:389
+#: admin/abprf_properties.php:392
 msgid "Reserve Qty"
 msgstr ""
 
-#: admin/abprf_post.php:120
+#: admin/abprf_post.php:122
 msgid "Restore : "
 msgstr ""
 
-#: includes/abprf_layout.php:1165
+#: includes/abprf_layout.php:1239
 #: rf_templates/layout/additional_services.php:65
 msgid "Returnable"
 msgstr ""
@@ -2659,7 +2659,7 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: includes/abprf_layout.php:534
+#: includes/abprf_layout.php:531
 msgid "Saturday"
 msgstr ""
 
@@ -2679,7 +2679,7 @@ msgstr ""
 msgid "Save FAQs Configuration"
 msgstr ""
 
-#: admin/abprf_feature.php:39 admin/abprf_properties.php:626
+#: admin/abprf_feature.php:39 admin/abprf_properties.php:631
 msgid "Save Feature"
 msgstr ""
 
@@ -2687,7 +2687,7 @@ msgstr ""
 msgid "Save Global Additional services Configuration"
 msgstr ""
 
-#: admin/abprf_form.php:23
+#: admin/abprf_form.php:22
 msgid "Save Global Client Form Configuration"
 msgstr ""
 
@@ -2695,7 +2695,7 @@ msgstr ""
 msgid "Save Location"
 msgstr ""
 
-#: admin/abprf_properties.php:758
+#: admin/abprf_properties.php:766
 msgid "Save Property Configuration"
 msgstr ""
 
@@ -2703,11 +2703,11 @@ msgstr ""
 msgid "Save Term & Conditions Configuration"
 msgstr ""
 
-#: includes/abprf_dependencies.php:41
+#: includes/abprf_dependencies.php:40
 msgid "Saved...............!"
 msgstr ""
 
-#: includes/abprf_dependencies.php:40
+#: includes/abprf_dependencies.php:39
 msgid "Saving.............!"
 msgstr ""
 
@@ -2715,7 +2715,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/abprf_layout.php:155
+#: includes/abprf_layout.php:152
 msgid "Search  icon"
 msgstr ""
 
@@ -2723,11 +2723,11 @@ msgstr ""
 msgid "Search  Post"
 msgstr ""
 
-#: includes/abprf_dependencies.php:60
+#: includes/abprf_dependencies.php:59
 msgid "Search Feature ........"
 msgstr ""
 
-#: includes/abprf_dependencies.php:240
+#: includes/abprf_dependencies.php:237
 msgid "Search Post"
 msgstr ""
 
@@ -2735,11 +2735,11 @@ msgstr ""
 msgid "Section Background Color"
 msgstr ""
 
-#: admin/abprf_form.php:152
+#: admin/abprf_form.php:148
 msgid "Select"
 msgstr ""
 
-#: includes/abprf_layout.php:1072
+#: includes/abprf_layout.php:1146
 msgid "Select "
 msgstr ""
 
@@ -2749,11 +2749,11 @@ msgid ""
 "identity throughout the plugin panels."
 msgstr ""
 
-#: includes/abprf_layout.php:824
+#: includes/abprf_layout.php:898
 msgid "Select Drop-Off Month"
 msgstr ""
 
-#: includes/abprf_layout.php:803
+#: includes/abprf_layout.php:877
 msgid "Select Pickup Month"
 msgstr ""
 
@@ -2798,11 +2798,11 @@ msgstr ""
 msgid "Settings → Permalinks"
 msgstr ""
 
-#: admin/abprf_post.php:300
+#: admin/abprf_post.php:301
 msgid "Shipping only"
 msgstr ""
 
-#: admin/abprf_post.php:81
+#: admin/abprf_post.php:83
 msgid "Shortcode"
 msgstr ""
 
@@ -2820,16 +2820,16 @@ msgid "Showing Item"
 msgstr ""
 
 #: admin/abprf_brand.php:88 admin/abprf_category.php:46
-#: admin/abprf_location.php:61 admin/abprf_post.php:76
+#: admin/abprf_location.php:61 admin/abprf_post.php:78
 #: admin/abprf_properties.php:154
 msgid "SI"
 msgstr ""
 
-#: admin/abprf_post.php:228
+#: admin/abprf_post.php:229
 msgid "SKU"
 msgstr ""
 
-#: includes/abprf_layout.php:913
+#: includes/abprf_layout.php:987
 msgid "SKU : "
 msgstr ""
 
@@ -2855,19 +2855,19 @@ msgstr ""
 msgid "Something Error Occurred !"
 msgstr ""
 
-#: admin/abprf_status.php:318
+#: admin/abprf_status.php:309
 msgid "Something Wrong...!"
 msgstr ""
 
-#: includes/abprf_layout.php:699
+#: includes/abprf_layout.php:696
 msgid "Somethings went Wrong ! Please Try again"
 msgstr ""
 
-#: includes/abprf_layout.php:721
+#: includes/abprf_layout.php:718
 msgid "Sorry ! We can not find any Order in your criteria."
 msgstr ""
 
-#: includes/abprf_layout.php:543
+#: includes/abprf_layout.php:540
 msgid "Special On Dates"
 msgstr ""
 
@@ -2887,7 +2887,7 @@ msgstr ""
 msgid "Specific Dates & Operation Times"
 msgstr ""
 
-#: includes/abprf_layout.php:541
+#: includes/abprf_layout.php:538
 msgid "Specific Off Dates"
 msgstr ""
 
@@ -2919,15 +2919,15 @@ msgid ""
 "horizontal grid line row layout."
 msgstr ""
 
-#: admin/abprf_post.php:310
+#: admin/abprf_post.php:311
 msgid "Standard"
 msgstr ""
 
-#: admin/abprf_admin.php:65 admin/abprf_orders.php:133
+#: admin/abprf_admin.php:67 admin/abprf_orders.php:133
 msgid "Status"
 msgstr ""
 
-#: admin/abprf_status.php:22
+#: admin/abprf_status.php:21
 msgid "Status  & Information"
 msgstr ""
 
@@ -2935,11 +2935,11 @@ msgstr ""
 msgid "Stock"
 msgstr ""
 
-#: admin/abprf_post.php:241
+#: admin/abprf_post.php:242
 msgid "Sub Title"
 msgstr ""
 
-#: includes/abprf_layout.php:535
+#: includes/abprf_layout.php:532
 msgid "Sunday"
 msgstr ""
 
@@ -2947,35 +2947,35 @@ msgstr ""
 msgid "support@example.com"
 msgstr ""
 
-#: admin/abprf_admin.php:91
+#: admin/abprf_admin.php:96
 msgid "T & C"
 msgstr ""
 
-#: admin/abprf_post.php:171
+#: admin/abprf_post.php:173
 msgid "Tax"
 msgstr ""
 
-#: admin/abprf_post.php:307
+#: admin/abprf_post.php:308
 msgid "Tax Class"
 msgstr ""
 
-#: admin/abprf_post.php:290
+#: admin/abprf_post.php:291
 msgid "Tax Configuration"
 msgstr ""
 
-#: admin/abprf_post.php:296
+#: admin/abprf_post.php:297
 msgid "Tax Status"
 msgstr ""
 
-#: admin/abprf_post.php:299
+#: admin/abprf_post.php:300
 msgid "Taxable"
 msgstr ""
 
-#: admin/abprf_post.php:214
+#: admin/abprf_post.php:215
 msgid "Template"
 msgstr ""
 
-#: admin/abprf_faq_tc.php:53 admin/abprf_post.php:169
+#: admin/abprf_faq_tc.php:53 admin/abprf_post.php:171
 #: rf_templates/layout/term_condition.php:20
 msgid "Term & Conditions"
 msgstr ""
@@ -2992,25 +2992,25 @@ msgstr ""
 msgid "Term & Conditions Content"
 msgstr ""
 
-#: admin/abprf_form.php:149
+#: admin/abprf_form.php:145
 msgid "Text"
 msgstr ""
 
-#: admin/abprf_form.php:155
+#: admin/abprf_form.php:151
 msgid "Textarea"
 msgstr ""
 
-#: includes/abprf_layout.php:710
+#: includes/abprf_layout.php:707
 msgid ""
 "The property is not available for the selected date and time. Please choose "
 "a different schedule."
 msgstr ""
 
-#: includes/abprf_layout.php:700
+#: includes/abprf_layout.php:697
 msgid "This Property rent close shortly. please try another Property."
 msgstr ""
 
-#: includes/abprf_layout.php:532
+#: includes/abprf_layout.php:529
 msgid "Thursday"
 msgstr ""
 
@@ -3034,7 +3034,7 @@ msgstr ""
 msgid "Total : "
 msgstr ""
 
-#: includes/abprf_layout.php:1034
+#: includes/abprf_layout.php:1108
 msgid "Total for "
 msgstr ""
 
@@ -3046,7 +3046,7 @@ msgstr ""
 msgid "Total Summary"
 msgstr ""
 
-#: admin/abprf_post.php:37
+#: admin/abprf_post.php:39
 msgid "Trash"
 msgstr ""
 
@@ -3056,7 +3056,7 @@ msgstr ""
 msgid "Trash : "
 msgstr ""
 
-#: includes/abprf_layout.php:530
+#: includes/abprf_layout.php:527
 msgid "Tuesday"
 msgstr ""
 
@@ -3068,11 +3068,11 @@ msgid ""
 "settings."
 msgstr ""
 
-#: includes/abprf_layout.php:51
+#: includes/abprf_layout.php:48
 msgid "Unavailable"
 msgstr ""
 
-#: admin/abprf_form.php:78 admin/abprf_form.php:142
+#: admin/abprf_form.php:75 admin/abprf_form.php:138
 msgid "Unique ID"
 msgstr ""
 
@@ -3084,19 +3084,19 @@ msgstr ""
 msgid "Update Location"
 msgstr ""
 
-#: includes/abprf_dependencies.php:237
+#: includes/abprf_dependencies.php:234
 msgid "Update Post"
 msgstr ""
 
-#: admin/abprf_properties.php:764
+#: admin/abprf_properties.php:772
 msgid "Update Property Configuration"
 msgstr ""
 
-#: includes/abprf_dependencies.php:248
+#: includes/abprf_dependencies.php:245
 msgid "Uploaded  Post"
 msgstr ""
 
-#: includes/abprf_layout.php:684
+#: includes/abprf_layout.php:681
 msgid "Use comma( , ) to separate option."
 msgstr ""
 
@@ -3104,7 +3104,7 @@ msgstr ""
 msgid "Use Global Additional Service ?"
 msgstr ""
 
-#: admin/abprf_form.php:51
+#: admin/abprf_form.php:49
 msgid "Use Global Client Form ?"
 msgstr ""
 
@@ -3120,32 +3120,32 @@ msgstr ""
 msgid "Use Global Term & Conditions ?"
 msgstr ""
 
-#: includes/abprf_dependencies.php:246
+#: includes/abprf_dependencies.php:243
 msgid "Use image Post as featured image"
 msgstr ""
 
-#: includes/abprf_layout.php:690
+#: includes/abprf_layout.php:687
 msgid ""
 "Use the editor to customize and design your Terms & Conditions as you prefer."
 " The content and formatting you create here will be displayed the same way "
 "on the frontend."
 msgstr ""
 
-#: includes/abprf_layout.php:696
+#: includes/abprf_layout.php:693
 msgid ""
 "Use this switch to control whether the FAQ is displayed on the frontend. "
 "Turn the switch ON to show the FAQ, and OFF to hide it. By default, this "
 "option is set to ON."
 msgstr ""
 
-#: includes/abprf_layout.php:691
+#: includes/abprf_layout.php:688
 msgid ""
 "Use this switch to control whether the Term & Condition is displayed on the "
 "frontend. Turn the switch ON to show the Term & Condition, and OFF to hide "
 "it. By default, this option is set to ON."
 msgstr ""
 
-#: includes/abprf_layout.php:1334 includes/abprf_layout.php:1336
+#: includes/abprf_layout.php:1408 includes/abprf_layout.php:1410
 msgid "User Name"
 msgstr ""
 
@@ -3153,11 +3153,11 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: admin/abprf_form.php:81 admin/abprf_form.php:162
+#: admin/abprf_form.php:78 admin/abprf_form.php:158
 msgid "Value Option"
 msgstr ""
 
-#: admin/abprf_post.php:124
+#: admin/abprf_post.php:126
 msgid "View : "
 msgstr ""
 
@@ -3165,7 +3165,7 @@ msgstr ""
 msgid "View More"
 msgstr ""
 
-#: includes/abprf_dependencies.php:238 includes/abprf_dependencies.php:239
+#: includes/abprf_dependencies.php:235 includes/abprf_dependencies.php:236
 msgid "View Post"
 msgstr ""
 
@@ -3173,7 +3173,7 @@ msgstr ""
 msgid "Visible Popup?"
 msgstr ""
 
-#: includes/abprf_layout.php:487
+#: includes/abprf_layout.php:484
 msgid "Waiting"
 msgstr ""
 
@@ -3181,15 +3181,15 @@ msgstr ""
 msgid "Warning Color"
 msgstr ""
 
-#: includes/abprf_layout.php:719
+#: includes/abprf_layout.php:716
 msgid "We see, this id are not valid !"
 msgstr ""
 
-#: includes/abprf_layout.php:531
+#: includes/abprf_layout.php:528
 msgid "Wednesday"
 msgstr ""
 
-#: includes/abprf_layout.php:540
+#: includes/abprf_layout.php:537
 msgid "Weekend"
 msgstr ""
 
@@ -3197,47 +3197,47 @@ msgstr ""
 msgid "Weekend(optional)"
 msgstr ""
 
-#: includes/abprf_dependencies.php:56
+#: includes/abprf_dependencies.php:55
 msgid "Woocommerce  Installing.........!"
 msgstr ""
 
-#: admin/abprf_status.php:267
+#: admin/abprf_status.php:259
 msgid "WooCommerce activated successfully!"
 msgstr ""
 
-#: admin/abprf_status.php:93
+#: admin/abprf_status.php:88
 msgid "Woocommerce already installed but  not  activated"
 msgstr ""
 
-#: includes/abprf_dependencies.php:57
+#: includes/abprf_dependencies.php:56
 msgid "Woocommerce Downloaded And Installed successfully ..... !! "
 msgstr ""
 
-#: includes/abprf_dependencies.php:55
+#: includes/abprf_dependencies.php:54
 msgid "Woocommerce Downloading And Installing.........!"
 msgstr ""
 
-#: admin/abprf_status.php:252
+#: admin/abprf_status.php:245
 msgid "WooCommerce installed and activated successfully!"
 msgstr ""
 
-#: includes/abprf_dependencies.php:58
+#: includes/abprf_dependencies.php:57
 msgid "Woocommerce Installed successfully.... !  "
 msgstr ""
 
-#: admin/abprf_status.php:269
+#: admin/abprf_status.php:261
 msgid "WooCommerce is either not installed or already active."
 msgstr ""
 
-#: admin/abprf_status.php:92
+#: admin/abprf_status.php:87
 msgid "Woocommerce need to install and active"
 msgstr ""
 
-#: admin/abprf_status.php:92
+#: admin/abprf_status.php:87
 msgid "Woocommerce Plugin"
 msgstr ""
 
-#: admin/abprf_status.php:111
+#: admin/abprf_status.php:106
 msgid "Woocommerce Version"
 msgstr ""
 
@@ -3245,7 +3245,7 @@ msgstr ""
 msgid "WordPress Dashicons Library"
 msgstr ""
 
-#: admin/abprf_status.php:64
+#: admin/abprf_status.php:61
 msgid "WordPress Version"
 msgstr ""
 
@@ -3253,18 +3253,18 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: includes/abprf_layout.php:718
+#: includes/abprf_layout.php:715
 msgid "You are not permitted to Download/View this ticket !"
 msgstr ""
 
-#: includes/abprf_layout.php:694
+#: includes/abprf_layout.php:691
 msgid ""
 "You can set all rental-related FAQs here and use them globally across all "
 "properties. You can also import these FAQs into any individual property and "
 "customize them as needed."
 msgstr ""
 
-#: includes/abprf_layout.php:689
+#: includes/abprf_layout.php:686
 msgid ""
 "You can set all rental-related Term & Condition here and use them globally "
 "across all properties. You can also import these Term & Condition into any "

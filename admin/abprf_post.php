@@ -193,7 +193,6 @@
 				$display_sku       = $abprf_infos['display_sku'] ?? 'off';
 				$display_sub_title = $abprf_infos['display_sub_title'] ?? 'off';
 				$post_sku          = $abprf_infos['post_sku'] ?? '';
-				$category_label    = ABPRF_Function::category_label();
 				$category          = $abprf_infos['abprf_category'] ?? '';
 				$display_category  = $abprf_infos['display_category'] ?? 'on';
 				$location          = $abprf_infos['abprf_location'] ?? '';
@@ -255,7 +254,7 @@
                             <div class="_fj_between_fa_start">
                                 <div class="_fa_center">
 									<?php ABPRF_Layout::switch_checkbox( 'display_category', $display_category ); ?>
-                                    <span class="_fs_label_mar_lr_xs"><?php echo esc_html( $category_label ); ?></span>
+                                    <span class="_fs_label_mar_lr_xs"><?php echo esc_html( ABPRF_Function::category_label() ); ?></span>
                                 </div>
                                 <div class="category_selection">
 									<?php ABPRF_Category::category_selection( $category ); ?>
@@ -269,7 +268,7 @@
                                 <div class="_fj_between">
                                     <div class="_fa_center">
 										<?php ABPRF_Layout::switch_checkbox( 'display_location', $display_location ); ?>
-                                        <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Location', 'abp-rentalforge' ); ?></span>
+                                        <span class="_fs_label_mar_lr_xs"><?php echo esc_html(ABPRF_Function::location_label()); ?></span>
                                     </div>
                                     <div class="location_selection">
 										<?php ABPRF_Location::location_selection( $location ); ?>
@@ -339,6 +338,9 @@
 					return;
 				}
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
+//					$post_val    = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+//					$post_array  = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
+//					$format_date = fn( $date ) => $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
 					$meta_info                      = [];
 					$meta_info['rent_continue']     = isset( $_POST['rent_continue'] ) ? sanitize_text_field( wp_unslash( $_POST['rent_continue'] ) ) : 'on';
 					$meta_info['sub_title']         = isset( $_POST['sub_title'] ) ? sanitize_text_field( wp_unslash( $_POST['sub_title'] ) ) : '';
@@ -461,20 +463,20 @@
 									$properties = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
 									if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
 										$property = current( $properties );
-										$data     = [
-											'post_id' => intval( $post_id ),
-											'rent_continue' => array_key_exists( 'rent_continue', $property ) ? $property['rent_continue'] : '',
-											'name' => array_key_exists( 'name', $property ) ? $property['name'] : '',
-											'brand' => array_key_exists( 'brand', $property ) ? $property['brand'] : '',
-											'category' => array_key_exists( 'category', $property ) ? $property['category'] : '',
-											'location' => array_key_exists( 'location', $property ) ? $property['location'] : '',
-											'features' => array_key_exists( 'features', $property ) ? $property['features'] : '',
-											'rent_rule' => array_key_exists( 'rent_rule', $property ) ? $property['rent_rule'] : '',
-											'price_qty_info' => array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '',
-											'gallery' => array_key_exists( 'gallery', $property ) ? $property['gallery'] : '',
-											'status' => get_post_status( $post_id ),
-											'others' => array_key_exists( 'others', $property ) ? $property['others'] : '',
-											'updated_at' => current_time( 'Y-m-d H:i' )
+										$data = [
+											'post_id'        => intval( $post_id ),
+											'rent_continue'  => $property['rent_continue'] ?? '',
+											'name'           => $property['name'] ?? '',
+											'brand'          => $property['brand'] ?? '',
+											'category'       => $property['category'] ?? '',
+											'location'       => $property['location'] ?? '',
+											'features'       => $property['features'] ?? '',
+											'rent_rule'      => $property['rent_rule'] ?? '',
+											'price_qty_info' => $property['price_qty_info'] ?? '',
+											'gallery'        => $property['gallery'] ?? '',
+											'status'         => get_post_status( $post_id ),
+											'others'         => $property['others'] ?? '',
+											'updated_at'     => current_time( 'Y-m-d H:i' )
 										];
 										// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 										$wpdb->insert( $table_name, $data );

@@ -2,6 +2,7 @@
 @media only screen and (min-width: 10px) {
 	:root {
 		--rf_br: --rf_br;
+		--rf_br_xl: --rf_br_xl;
 		--rf_fs: --rf_fs;
 		--rf_fs_label: --rf_fs_label;
 		--rf_fs_h6: --rf_fs_h6;
@@ -35,7 +36,6 @@
 		--rf_gap_xxs: 5px;
 		--rf_gap_xxs_neg: -5px;
 		--rf_gap_xs_neg: -10px;
-		--rf_br_xl: 10px;
 		--rf_button_height: 40px;
 		--rf_button_height_xs: 30px;
 		--rf_button_width: 120px;
@@ -170,24 +170,6 @@
 	/*=============================*/
 	div.abprf_area [class*="_transition"] { -webkit-transition: var(--rf_transition); transition: var(--rf_transition); }
 }
-/******************************************************************** Shadow content ************************************************/
-@media only screen and (min-width: 10px) {
-	div.abprf_area [class*="_reflex"] { -webkit-box-shadow: var(--rf_shadow); box-shadow: var(--rf_shadow); }
-	div.abprf_area [class*="_reflex_1"] { -webkit-box-shadow: var(--rf_shadow_1); box-shadow: var(--rf_shadow_1); }
-	div.abprf_area [class*="_reflex_2"] { -webkit-box-shadow: var(--rf_shadow_2); box-shadow: var(--rf_shadow_2); }
-	div.abprf_area [class*="_reflex_3"] { -webkit-box-shadow: var(--rf_shadow_3); box-shadow: var(--rf_shadow_3);}
-	div.abprf_area [class*="_reflex_4"] { -webkit-box-shadow: var(--rf_shadow_4); box-shadow: var(--rf_shadow_4);}
-	div.abprf_area [class*="_reflex_5"] { -webkit-box-shadow: var(--rf_shadow_5); box-shadow: var(--rf_shadow_5);}
-	div.abprf_area [class*="_reflex_6"] { -webkit-box-shadow: var(--rf_shadow_6); box-shadow: var(--rf_shadow_6);}
-	div.abprf_area [class*="_reflex_7"] { -webkit-box-shadow: var(--rf_shadow_7); box-shadow: var(--rf_shadow_7);}
-	div.abprf_area [class*="_reflex_8"] { -webkit-box-shadow: var(--rf_shadow_8); box-shadow: var(--rf_shadow_8);}
-	div.abprf_area [class*="_reflex_9"] { -webkit-box-shadow: var(--rf_shadow_9); box-shadow: var(--rf_shadow_9);}
-	div.abprf_area [class*="_reflex_10"] { -webkit-box-shadow: var(--rf_shadow_10); box-shadow: var(--rf_shadow_10);}
-	div.abprf_area [class*="_reflex_11"] { -webkit-box-shadow: var(--rf_shadow_11); box-shadow: var(--rf_shadow_11);}
-	div.abprf_area [class*="_reflex_12"] { -webkit-box-shadow: var(--rf_shadow_12); box-shadow: var(--rf_shadow_12);}
-	div.abprf_area [class*="_reflex_13"] { -webkit-box-shadow: var(--rf_shadow_13); box-shadow: var(--rf_shadow_13);}
-	div.abprf_area [class*="_reflex_no"] { -webkit-box-shadow: none; box-shadow: none; }
-}
 /******************************************************************** Font Size & Font weight ************************************************/
 @media only screen and (min-width: 10px) {
 	.abprf_area h1[class*="_abprf"], .abprf_area [class*="_fs_h1"] { font-size: var(--rf_fs_h1); font-weight: var(--rf_fw-bold); text-transform: capitalize;margin: 0; padding: 0; line-height: 1.4;color: inherit;}
@@ -262,6 +244,7 @@
 	div.abprf_area [data-href] { cursor: pointer; }
 	/**************** ABP Gallery **********************************************/
 	div.abprf_gallery { position: relative; width: 100%; height: auto;max-height: 400px; overflow: hidden auto; padding: var(--rf_gap_xs); scrollbar-width: thin; }
+	div.global_slider  div.abprf_gallery{max-height: inherit;}
 	div.abprf_gallery .gallery_area { border-radius: var(--rf_br_xl); display: block;column-gap: var(--rf_gap_xs); }
 	div.abprf_gallery .gallery_item { break-inside: avoid; width: 100%; position: relative; background: #0D0A06; cursor: pointer; display: inline-block; margin-bottom: var(--rf_gap_xs); border-radius: var(--rf_br); overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
 	div.abprf_gallery .gallery_item img { display: block; width: 100%; height: auto; opacity: 0; transition: opacity 0.35s ease, transform 0.3s ease; }
@@ -318,10 +301,10 @@
 	div.abprf_slider [data-rf-slider].bottom .slide_counter {bottom: initial; left: initial; right: var(--rf_gap_xs); top: var(--rf_gap_xs); }
 	div.abprf_slider [data-rf-slider].left .slide_counter {bottom: var(--rf_gap_xs); left: initial; right: var(--rf_gap_xs); top: initial; }
 	/********Image Indicator**************/
-	div.abprf_slider .image_indicator { display: flex;justify-content: center; gap: 10px; z-index: 111; position: absolute; bottom: var(--rf_gap); left: var(--rf_gap); right: var(--rf_gap); top: initial; overflow: auto; opacity: 0;-webkit-transition: var(--rf_transition);transition: var(--rf_transition);}
+	div.abprf_slider .image_indicator { display: flex;justify-content: safe center; gap: 10px; z-index: 111; position: absolute; bottom: var(--rf_gap); left: var(--rf_gap); right: var(--rf_gap); top: initial; overflow: auto; opacity: 0;-webkit-transition: var(--rf_transition);transition: var(--rf_transition);}
 	div.abprf_slider:hover .image_indicator {opacity: 1; }
-	div.abprf_slider .image_indicator .thumb_item { border-radius: var(--rf_br_xl);  cursor: pointer; border: 2px solid transparent; transition: all 0.35s ease;line-height: 1; }
-	div.abprf_slider .image_indicator .thumb_item img {height: 60px;width: auto; opacity: 0.55; transition: opacity 0.35s;min-width: max-content; }
+	div.abprf_slider .image_indicator .thumb_item { border-radius: var(--rf_br);  cursor: pointer; border: 2px solid transparent; transition: all 0.35s ease;line-height: 1;}
+	div.abprf_slider .image_indicator .thumb_item img {height: 60px;width: auto; opacity: 0.55; transition: opacity 0.35s;min-width: max-content;display: block; }
 	div.abprf_slider [data-rf-slider].right .image_indicator .thumb_item img,
 	div.abprf_slider [data-rf-slider].left .image_indicator .thumb_item img {height: auto;width: 100px;}
 	div.abprf_slider .image_indicator .thumb_item.active { border-color: var(--rf_color_theme); box-shadow: 0 0 18px rgba(124, 106, 255, 0.4); }
@@ -1118,7 +1101,7 @@
 	div.abprf_area.documentation {max-width: 100%;font-size: 14px;}
 	div.abprf_area.documentation p {margin: var(--rf_gap) 0;}
 	div.abprf_area.documentation code { font-size: 87.5%; color: #E83E8C; word-wrap: break-word; }
-	div.abprf_area.documentation [class*="_img_control"] {width: auto;margin: var(--rf_gap) auto;}
+	div.abprf_area.documentation [class*="_img_control"] {width: auto;margin: var(--rf_gap) auto;box-shadow: var(--rf_shadow_6);}
 	div.abprf_area .documentation [class*="_img_control"]:hover {-ms-transform: scale(1.001); transform: scale(1.001);}
 	div.abprf_area .documentation label {color: var(--rf_color_7);font-style: italic;}
 }

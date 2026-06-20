@@ -123,10 +123,12 @@
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
 				$post_id  = array_key_exists( 'post_id', $params ) && $params['post_id'] ? $params['post_id'] : '';
+				$column            = array_key_exists( 'column', $params ) ? $params['column'] : 3;
+				$show_post         = array_key_exists( 'show', $params ) && $params['show'] ? $params['show'] : $column * 3;
 				ob_start();
 				?>
                 <div class="abprf_area">
-                    <div class="abprf_container">
+                    <div class="abprf_container global_slider rf_pagination">
 						<?php
 							if ( ! empty( $post_id ) ) {
 								$img_infos = ABPRF_Function::get_post_info( $post_id, 'abprf_sliders', [] );
@@ -142,6 +144,7 @@
 									do_action( 'abprf_slider', $img_infos, $params );
 								}
 							}
+
 						?>
                     </div>
                 </div>
@@ -157,6 +160,7 @@
 					"brand_id" => '',
 					"rent_rule" => '',
 					"style" => 'grid',
+					"slider_style" => 'gallery',
 					"show" => '',
 					"column" => 3,
 					'sort' => 'ASC',

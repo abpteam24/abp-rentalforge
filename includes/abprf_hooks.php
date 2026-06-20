@@ -120,16 +120,17 @@
 
 			public function slider( $img_infos = [], $params = []): void {
 				if ( ! empty( $img_infos ) ) {
-					$style    = array_key_exists( 'style', $params ) && $params['style'] ? $params['style'] : 'gallery';
-					$image_column    = array_key_exists( 'column', $params ) && $params['column'] ? $params['column'] : '';
+					$style    =  $params['slider_style'] ?? '';
+					$image_column    =  $params['column'] ?? '';
 					$abprf_slider = ABPRF_Function::get_option( 'abprf_slider' );
 					if(!empty($image_column)){
 						$abprf_slider['image_column'] = $image_column;
+						$abprf_slider['show_item'] =($params['show']??null)? : $image_column * 3;
 					}
 					if ( ! empty( $style ) ) {
 						$slider_style = $style == 'gallery' ? 'gallery' : 'slider';
 					} else {
-						$slider_style = isset( $abprf_slider['slider_style'] ) && $abprf_slider['slider_style'] ? $abprf_slider['slider_style'] : 'slider';
+						$slider_style = ($abprf_slider['slider_style']??null)? : 'gallery';
 					}
 					include_once ABPRF_Function::template_path( 'layout/' . $slider_style . '.php' );
 					do_action( 'abprf_' . $slider_style . '_template', $img_infos, $abprf_slider );

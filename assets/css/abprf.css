@@ -75,14 +75,14 @@
 	div.abprf_area .group_property .item_head i {font-size: 50px;padding: var(--rf_gap_xs);min-height: auto;}
 	div.abprf_area .group_property .property_details {padding: 0 0 0 var(--rf_gap_xs);border-left: 2px solid var(--rf_color_border);width: 100%;max-width: 100%;}
 	div.abprf_area .group_property .property_title_price { display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between; }
-	div.abprf_area .group_property .item_condition { padding: 0;margin: 0;}
-	div.abprf_area .group_property .pricing_box {background: transparent; padding: 0;}
-	div.abprf_area .group_property .price_row {-webkit-flex-direction: column;flex-direction: column;-webkit-justify-content: center;justify-content: center;}
+	div.abprf_area .group_property .item_condition { padding: 0  0 var(--rf_gap_xxs) 0;margin: 0;}
+	div.abprf_area .group_property .pricing_box {margin: var(--rf_gap_xxs) var(--rf_gap_xs) var(--rf_gap_xxs) 0;}
+	div.abprf_area .group_property .price_row {-webkit-flex-direction: column;flex-direction: column;-webkit-justify-content: center;justify-content: center;min-width: max-content;}
 	div.abprf_area .group_property .price_value {font-weight: bold;}
-	div.abprf_area .group_property .item_spec { margin: var(--rf_gap_xxs) var(--rf_gap_xxs) 0 0;}
+	div.abprf_area .group_property .item_spec { margin: 0 0 var(--rf_gap_xxs) 0;}
 	div.abprf_area .group_property .select_property { margin: 0;padding: var(--rf_gap_xxs); }
 	div.abprf_area .group_property .property_item_bottom {display: -webkit-flex;display: flex;flex-wrap: wrap;-webkit-justify-content: space-between;justify-content: space-between; width: 100%;max-width: 100%;-webkit-align-items: flex-end;align-items: flex-end;}
-	div.abprf_area .group_property .calculated_cost { margin: 0 var(--rf_gap_xs);display: -webkit-flex;display: flex;padding: var(--rf_gap_xxs);}
+	div.abprf_area .group_property .calculated_cost { margin: 0;display: -webkit-flex;display: flex;padding: var(--rf_gap_xxs);}
 	div.abprf_area .group_property .cost_label,
 	div.abprf_area .group_property .cost_value { margin: 0 var(--rf_gap_xxs);font-size: var(--rf_fs);}
 	@media only screen and (max-width: 1000px) {

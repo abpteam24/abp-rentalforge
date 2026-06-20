@@ -336,6 +336,7 @@ function abprf_property_filter_arg($this) {
                     target.html(response.data.html).promise().done(function () {
                         abprf_toast_msg(response.data.msg, 'success');
                         abprf_load_more();
+                        abprf_load_datepicker(target);
                         if (type === 'property') {
                             abprf_feature_selection_init();
                         }
@@ -1191,6 +1192,12 @@ function abprf_feature_select(id) {
     selList.appendChild(div);
     abprf_feature_update_hidden();
     abprf_feature_render();
+    setTimeout(function () {
+        let featureList = document.querySelector('.feature_selection_area .feature_list');
+        if (featureList) {
+            featureList.classList.add('active');
+        }
+    }, 0);
 }
 function abprf_feature_inner_html(f) {
     let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<i class="' + f.icon + ' _mar_r_xxs"></i>';
@@ -1211,3 +1218,4 @@ function abprf_feature_update_hidden() {
     document.querySelector('div.abprf_admin .feature_selection_area input[name="feature"]').value = ids.join(',');
 }
 //=========== Feature selection end=================//
+

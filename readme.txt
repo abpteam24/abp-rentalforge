@@ -90,11 +90,11 @@ You can easily configure booking rules, set minimum and maximum rental durations
 - Fully editable Terms & Conditions system
 
 ###  Support and Suggestions:
-If you need any further assistance or support, do contact us at this [🎫 support form](https://abp-team.com/submit-ticket/). We are very open to your suggestions. So do feel free to tell us if there is anything we can do to improve the plugin.
+If you need any further assistance or support, do contact us at this [🎫 support form](https://abp-team.com/support-desk/). We are very open to your suggestions. So do feel free to tell us if there is anything we can do to improve the plugin.
 Need help or have suggestions?
 
-🌐 [Live Demo](https://demo-rf.abp-team.com/)
-📖 [Documentation](https://www.demo-rf.abp-team.com/documentation/)
+🌐 [Live Demo](https://rentalforge.abp-team.com/)
+📖 [Documentation](https://rentalforge.abp-team.com/documentation/)
 💬 [Support Forum](https://wordpress.org/support/plugin/abp-rentalforge/)
 🐛 [Bug Reports](https://github.com/abpteam24/abp-rentalforge/issues)
 📧 Email: support@abp-team.com

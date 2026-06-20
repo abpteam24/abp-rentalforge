@@ -661,7 +661,7 @@
 					'deposit_type' => __( 'Note: There are three(3) types of deposit options: Fixed Amount (a set deposit regardless of quantity), Percentage of Total Price (calculated based on the total rental cost), and Fixed Amount per Quantity (applied for each item rented).', 'abp-rentalforge' ),
 					'brand' => __( 'Note: Add a brand name to enable the property sub-tile. Leave this blank if you dont want to show any brand information for this item.', 'abp-rentalforge' ),
 					'description' => __( 'Note: Add short description about this property. Leave this blank if you dont want to show any property description for this item.', 'abp-rentalforge' ),
-					'price_rule' => __( 'Note: At least one option must be selected — otherwise the data will not be saved. The price will be calculated based on the time selected by the client.', 'abp-rentalforge' ),
+					'price_rule' => __( 'Note: Select the Property Date & Time Rule that matches this post. If an incorrect rule is chosen, the system will automatically update and apply the post Date & Time Rule to the property upon publishing.', 'abp-rentalforge' ),
 					'property_feature' => __( 'Note: If you want to add feature for this property, you can add Here. These feature will be show with this properties . You may leave this section empty if you do not want to show frontend. ', 'abp-rentalforge' ),
 					'abprf_sliders' => __( 'Note: If you want to add an image gallery for this property, you can upload images below. These images will be merged with all properties under the same category. You may leave this section empty if you do not want to add images. ', 'abp-rentalforge' ),
 					'time_slot_length' => __( 'Note: You can define the time slot interval for frontend time selection here. This controls how frequently time options will appear for users. By default, it is set to 60 minutes, meaning time slots will be available in 1-hour intervals.', 'abp-rentalforge' ),
@@ -720,7 +720,7 @@
 				);
 				$des          = apply_filters( 'abprf_info_array_filter', $des );
 
-				return $des[ $key ];
+				return $des[ $key ]??'';
 			}
 			public static function static_form( $key = '' ): array {
 				$form['pass_name']    = [ 'type' => 'text', 'required' => 'on', 'label' => __( 'First Name', 'abp-rentalforge' ) ];
