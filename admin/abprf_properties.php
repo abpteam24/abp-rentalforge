@@ -329,7 +329,7 @@
                 </div>
                 <div class="setting_item">
                     <divl class="_f_equal_f_wrap">
-                        <span class="_fs_label_mar_r_xs"><?php esc_html_e( 'Property Icon/Image', 'abp-rentalforge' ); ?></span>
+                        <span class="_abp_label"><?php esc_html_e( 'Property Icon/Image', 'abp-rentalforge' ); ?></span>
 						<?php do_action( 'abprf_add_image_icon', 'icon', $icon ); ?>
                     </divl>
                     <div class="_divider_xs"></div>

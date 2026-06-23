@@ -78,7 +78,7 @@
 				<?php
 			}
 			public function load_global( $abprf_info ): void {
-				$allowed_tabs = [ 'dates', 'additional', 'client_form', 'tc', 'faq', 'category', 'location', 'feature', 'brand', 'discount' ];
+				$allowed_tabs = [ 'dates', 'additional', 'client_form', 'resource', 'category', 'location', 'feature', 'brand', 'discount' ];
 				$active_tab   = 'dates';
 				if ( isset( $_GET['_abprf_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_abprf_nonce'] ) ), 'abprf_url_action' ) ) {
 					$active_tab = isset( $_GET['global'] ) ? sanitize_text_field( wp_unslash( $_GET['global'] ) ) : 'dates';
@@ -99,11 +99,8 @@
                                     <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'client_form' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'client_form' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Form', 'abp-rentalforge' ); ?></a>
 								<?php } ?>
 								<?php do_action( 'abprf_add_admin_global_tab', $active_tab ); ?>
-								<?php if ( ABPRF_Function::on_off( 'tc' ) ) { ?>
-                                    <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'tc' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'tc' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e( 'T & C', 'abp-rentalforge' ); ?></a>
-								<?php } ?>
-								<?php if ( ABPRF_Function::on_off( 'faq' ) ) { ?>
-                                    <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'faq' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'faq' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">❓</span> <?php esc_html_e( 'FAQ', 'abp-rentalforge' ); ?></a>
+								<?php if ( ABPRF_Function::on_off( 'tc' ) || ABPRF_Function::on_off( 'faq' ) ) { ?>
+                                    <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'resource' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'resource' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">📚</span><?php esc_html_e( 'Resources', 'abp-rentalforge' ); ?></a>
 								<?php } ?>
 								<?php if ( ABPRF_Function::on_off( 'category' ) ) { ?>
                                     <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'category' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'category' ? 'rf_active' : '' ); ?>"><span class="_mar_r_xxs">🏘️</span><?php echo esc_html( ABPRF_Function::category_label() ); ?></a>

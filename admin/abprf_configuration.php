@@ -658,7 +658,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <div><?php do_action( 'abprf_add_image', $name, $value ); ?></div>
                     </div>
 					<?php self::description( $option ); ?>
@@ -750,7 +750,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <div class="custom_radio">
                             <input type="hidden" class="_form_control" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $option_data as $key => $data ) { ?>
@@ -776,7 +776,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <label>
                             <input type="hidden" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="off"/>
                             <input type="checkbox" class="checkbox" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="on" <?php echo esc_attr( $checked ); ?> />
@@ -805,7 +805,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <div class="custom_checkbox">
                             <input type="hidden" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $option_data as $key => $label ) { ?>
@@ -826,7 +826,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <label>
                             <input type="text" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" disabled class="_form_control abprf_color_picker" value="<?php echo esc_attr( $option['value'] ?? '' ); ?>" data-default-color="<?php echo esc_html( $option['default'] ?? '' ); ?>"/>
                         </label>
@@ -843,7 +843,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_fs_label_mar_r_xs"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <div class="custom_checkbox">
                             <input type="hidden" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="<?php echo esc_attr( $option['value'] ?? '' ); ?>"/>
 							<?php foreach ( $wp_roles->roles as $key => $label ) { ?>

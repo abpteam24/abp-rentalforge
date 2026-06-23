@@ -25,7 +25,7 @@
 	div.abprf_admin [class*="_form_control"] {max-width: 250px;min-width: 250px;}
 	div.abprf_admin [class*="_form_control"][class*="_w_full"] {max-width: 100%;min-width: 100%;}
 	div.abprf_admin textarea[class*="_form_control"] {max-width: 100%;}
-	div.abprf_admin input[class*="_form_control"][type="time"] {max-width: 125px;text-align: center;min-width: 125px;}
+	div.abprf_admin input[class*="_form_control"][type="time"] {max-width: 100px;text-align: center;min-width: 100px;}
 	div.abprf_admin [class*="_form_control"].abprf_color_picker {min-width: 80px; height: 40px;padding: var(--rf_gap_xxs) var(--rf_gap_xs);}
 	div.abprf_admin [class*="_form_control"][class*="_min_150"] {min-width: 150px;max-width: 100%;}
 	div.abprf_admin .abp_dropdown [class*="_form_control"] {max-width: 100%;}

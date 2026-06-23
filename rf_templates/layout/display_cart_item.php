@@ -106,7 +106,7 @@
 									$value = $attendee_info['value'] ?? '';
 									if ( ! empty( $label ) && ! empty( $value ) ) { ?>
                                         <li>
-                                            <span class="_fs_label_mar_r_xs"><?php echo esc_html( $label . __( ' : ', 'abp-rentalforge' ) ); ?></span>
+                                            <span class="_abp_label"><?php echo esc_html( $label . __( ' : ', 'abp-rentalforge' ) ); ?></span>
 											<?php echo esc_html( $value ); ?>
                                         </li>
 										<?php

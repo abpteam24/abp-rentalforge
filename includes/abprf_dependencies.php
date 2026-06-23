@@ -198,7 +198,7 @@
 					require_once ABPRF_DIR . 'admin/abprf_dates.php';
 					require_once ABPRF_DIR . 'admin/abprf_additional.php';
 					require_once ABPRF_DIR . 'admin/abprf_form.php';
-					require_once ABPRF_DIR . 'admin/abprf_faq_tc.php';
+					require_once ABPRF_DIR . 'admin/abprf_resource.php';
 					require_once ABPRF_DIR . 'admin/abprf_configuration.php';
 					require_once ABPRF_DIR . 'admin/abprf_status.php';
 					require_once ABPRF_DIR . 'admin/abprf_category.php';

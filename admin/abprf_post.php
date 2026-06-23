@@ -182,19 +182,12 @@
                                         <li data-tabs-target="#abprf_client_form"><span>📋</span><?php esc_html_e( 'Client Form', 'abp-rentalforge' ); ?></li>
 									<?php } ?>
 									<?php do_action( 'abprf_post_tab_menu', $abprf_infos ); ?>
-									<?php if ( ABPRF_Function::on_off( 'tc' ) ) { ?>
-                                        <li data-tabs-target="#abprf_tc"><span>🤝</span><?php esc_html_e( 'Term & Conditions', 'abp-rentalforge' ); ?></li>
-									<?php } ?>
-									<?php if ( ABPRF_Function::on_off( 'faq' ) ) { ?>
-                                        <li data-tabs-target="#abprf_faqs"><span>❓</span><?php esc_html_e( 'FAQs', 'abp-rentalforge' ); ?></li>
-									<?php } ?>
-                                    <li data-tabs-target="#abprf_tax"><span>🧾</span><?php esc_html_e( 'Tax', 'abp-rentalforge' ); ?></li>
+                                        <li data-tabs-target="#abprf_resource"><span>📚</span><?php esc_html_e( 'Resources', 'abp-rentalforge' ); ?></li>
                                 </ul>
                             </div>
                             <div class="tab_content _panel_body">
 								<?php
 									$this->general_configuration( $abprf_infos );
-									$this->tax_configuration( $abprf_infos );
 									do_action( 'abprf_post_content', $abprf_infos );
 								?>
                             </div>
@@ -267,7 +260,7 @@
 						<?php if ( ABPRF_Function::on_off( 'post_icon' ) ) { ?>
                             <div class="setting_item">
                                 <divl class="_fj_between">
-                                    <span class="_fs_label_mar_r_xs"><?php esc_html_e( 'Post Icon', 'abp-rentalforge' ); ?></span>
+                                    <span class="_abp_label"><?php esc_html_e( 'Post Icon', 'abp-rentalforge' ); ?></span>
 									<?php do_action( 'abprf_add_icon', 'post_icon', ( $abprf_infos['post_icon'] ?? '' ) ); ?>
                                 </divl>
                                 <div class="_divider_xs"></div>
@@ -334,50 +327,6 @@
                             </div>
 						<?php } ?>
                     </div>
-                </div>
-				<?php
-			}
-			public function tax_configuration( $abprf_infos ): void {
-				$tax_status  = $abprf_infos['_tax_status'] ?? '';
-				$tax_classes = WC_Tax::get_tax_rate_classes();
-				$tax_class   = $abprf_infos['_tax_class'] ?? '';
-				?>
-                <div class="tab_item" data-tabs="#abprf_tax">
-                    <h4 class="_abprf_color_theme"><span class="_mar_r_xs">🧾</span> <?php esc_html_e( 'Tax Configuration', 'abp-rentalforge' ); ?></h4>
-                    <div class="_divider_xs"></div>
-					<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) { ?>
-                        <div class="group_setting">
-                            <div class="setting_item">
-                                <label class="_f_equal_f_wrap">
-                                    <span class="_mar_r_xs"><?php esc_html_e( 'Tax Status', 'abp-rentalforge' ); ?></span>
-                                    <select class="_form_control" name="_tax_status">
-                                        <option disabled selected><?php esc_html_e( 'Please Select', 'abp-rentalforge' ); ?></option>
-                                        <option value="taxable" <?php echo esc_attr( $tax_status == 'taxable' ? 'selected' : '' ); ?>><?php esc_html_e( 'Taxable', 'abp-rentalforge' ); ?></option>
-                                        <option value="shipping" <?php echo esc_attr( $tax_status == 'shipping' ? 'selected' : '' ); ?>><?php esc_html_e( 'Shipping only', 'abp-rentalforge' ); ?></option>
-                                        <option value="none" <?php echo esc_attr( $tax_status == 'none' ? 'selected' : '' ); ?>><?php esc_html_e( 'None', 'abp-rentalforge' ); ?></option>
-                                    </select>
-                                </label>
-                            </div>
-                            <div class="setting_item">
-                                <label class="_f_equal_f_wrap">
-                                    <span class="_mar_r_xs"><?php esc_html_e( 'Tax Class', 'abp-rentalforge' ); ?></span>
-                                    <select class="_form_control" name="_tax_class">
-                                        <option disabled selected><?php esc_html_e( 'Please Select', 'abp-rentalforge' ); ?></option>
-                                        <option value="standard" <?php echo esc_attr( $tax_class == 'standard' ? 'selected' : '' ); ?>><?php esc_html_e( 'Standard', 'abp-rentalforge' ); ?></option>
-										<?php if ( sizeof( $tax_classes ) > 0 ) { ?>
-											<?php foreach ( $tax_classes as $class ) { ?>
-                                                <option value="<?php echo esc_attr( $class->slug ); ?>" <?php echo esc_attr( $tax_class == $class->slug ? 'selected' : '' ); ?>> <?php echo esc_html( $class->name ); ?> </option>
-											<?php } ?>
-										<?php } ?>
-                                    </select>
-                                </label>
-                                <div class="_divider_xs"></div>
-								<?php ABPRF_Layout::info_text( '_tax_class' ); ?>
-                            </div>
-                        </div>
-					<?php } else { ?>
-						<?php ABPRF_Layout::layout_warning_info( 'enable_tax_msg' ); ?>
-					<?php } ?>
                 </div>
 				<?php
 			}

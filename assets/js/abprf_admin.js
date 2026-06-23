@@ -598,8 +598,7 @@ function abprf_property_filter_arg($this) {
     //==========Faq configuration=================//
     $(document).on('submit', 'div.abprf_admin form.save_faq', function (e) {
         e.preventDefault();
-        let parent = $(this).closest('.abprf_admin');
-        let target = parent.find('.dashboard_content');
+        let target = $(this);
         let formData = new FormData(this);
         formData.append('action', 'abprf_save_faqs');
         formData.append('nonce', abprf_admin_data.nonce);
@@ -612,7 +611,6 @@ function abprf_property_filter_arg($this) {
             success: function (response) {
                 abprf_spinner_remove(target);
                 abprf_toast_msg(response.data.msg, 'success');
-                window.location.reload();
             }
         });
     });
@@ -625,23 +623,22 @@ function abprf_property_filter_arg($this) {
             }, beforeSend: function () {
                 abprf_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.importing);
-            }, success: function (data) {
-                target.html(data).promise().done(function () {
+            }, success: function (response) {
+                target.html(response.data.html).promise().done(function () {
                     target.find('.sortable_area').sortable({
                         handle: jQuery(this).find('.sortable_handle')
                     });
                     target.find('.insertable_area .edit_area').each(function () {
                         abprf_wp_editor_init($(this));
                     });
-                    abprf_toast_msg(abprf_admin_data.msg.imported, 'success');
+                    abprf_toast_msg(response.data.msg, 'success');
                 });
             }
         });
     });
     $(document).on('submit', 'div.abprf_admin form.save_tc', function (e) {
         e.preventDefault();
-        let parent = $(this).closest('.abprf_admin');
-        let target = parent.find('.dashboard_content');
+        let target = $(this);
         let formData = new FormData(this);
         formData.append('action', 'abprf_save_tc');
         formData.append('nonce', abprf_admin_data.nonce);
@@ -654,7 +651,6 @@ function abprf_property_filter_arg($this) {
             success: function (response) {
                 abprf_spinner_remove(target);
                 abprf_toast_msg(response.data.msg, 'success');
-                window.location.reload();
             }
         });
     });

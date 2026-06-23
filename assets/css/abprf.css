@@ -32,7 +32,7 @@
 	/*********************************************/
 	.abprf_area .item_body {padding: var(--rf_gap_xs);display: -webkit-flex;display: flex; -webkit-flex-direction: column;flex-direction: column;}
 	.abprf_area .item_spec {display: flex; flex-wrap: wrap; gap: var(--rf_gap_xxs); margin: var(--rf_gap_xs) 0;}
-	.abprf_area .spec_badge {background: var(--rf_color_4); padding: var(--rf_gap_xxs) var(--rf_gap_xs); border-radius: var(--rf_br); font-size: var(--rf_fs_small); font-weight: normal; color: var(--rf_color_muted);line-height: 1;min-width: 60px;text-align: center; }
+	.abprf_area .spec_badge {background: var(--rf_color_4); padding: var(--rf_gap_xxs) var(--rf_gap_xs); border-radius: var(--rf_br); font-size: var(--rf_fs_small); font-weight: normal; color: var(--rf_color_muted);line-height: 1;min-width: 60px; }
 	.abprf_area .pricing_box { background: var(--rf_color_light); padding: var(--rf_gap_xs); border-radius: var(--rf_br)}
 	.abprf_area .price_row {display: flex; justify-content: space-between; align-items: center; font-size: var(--rf_fs_h6); color: #6B7280;}
 	.abprf_area .price_value {font-weight: 500; color: var(--rf_color_theme); }
