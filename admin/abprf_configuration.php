@@ -27,7 +27,7 @@
 			}
 			public function update_sanitize( $new, $old, $option ) {
 				$all_fields  = $this->configuration_data();
-				$field_infos =  $all_fields[ $option ] ?? [];
+				$field_infos = $all_fields[ $option ] ?? [];
 				$remove_name = [ 'collapse_start', 'collapse_end' ];
 				if ( sizeof( $field_infos ) > 0 && is_array( $new ) ) {
 					foreach ( $field_infos as $field_info ) {
@@ -53,7 +53,7 @@
                             <div class="_panel_head">
                                 <ul class="_abprf tab_lists">
 									<?php foreach ( $this->configuration_section() as $tab ) { ?>
-                                        <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><span class="<?php echo esc_attr( $tab['icon'] ?? '' ); ?>"></span><?php echo esc_html( $tab['menu']??'' ); ?></li>
+                                        <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><span class="<?php echo esc_attr( $tab['icon'] ?? '' ); ?>"></span><?php echo esc_html( $tab['menu'] ?? '' ); ?></li>
 									<?php } ?>
                                 </ul>
                             </div>
@@ -246,6 +246,104 @@
 							'type' => 'multi_check',
 							'default' => ABPRF_Layout::rent_rules_string(),
 							'options' => ABPRF_Layout::rent_rules()
+						),
+						array(
+							'name' => 'sku',
+							'label' => __( 'Post SKU', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use the Post SKU ID feature, simply turn this switch OFF. Once disabled, the Post SKU field and related SKU options will be completely removed from the site, and no SKU ID will be required or generated for posts.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'sub_title',
+							'label' => __( 'Post Sub Title', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use the Post Sub Title , simply turn this switch OFF. Once disabled, the Post Sub Title field and related  options will be completely removed from the site.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'post_icon',
+							'label' => __( 'Post Icon', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use Post Icon simply turn this switch OFF. This will completely disable the Post Icon across the entire website, including all related , settings, and functionality. You can re-enable it at any time by turning the switch back ON.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'post_des',
+							'label' => __( 'Post Description', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use Post Description simply turn this switch OFF. This will completely disable the Post Description across the entire website, including all related , settings, and functionality. You can re-enable it at any time by turning the switch back ON.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'related',
+							'label' => __( 'Related Post', 'abp-rentalforge' ),
+							'desc' => __( 'Turn this switch OFF to completely disable the Related Posts feature. Once disabled, Related Post items will no longer be displayed on any details page throughout the website. Turn it back ON at any time to show related content again.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'brand',
+							'label' => ABPRF_Function::brand_label(),
+							'desc' => __( 'If you do not want to use the Brand Feature, simply turn this switch OFF. Once disabled, the Brand Feature field and related Brand Feature options will be completely removed from the site.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'property_des',
+							'label' => __( 'Property Description', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use Property Description simply turn this switch OFF. This will completely disable the Property Description across the entire website, including all related , settings, and functionality. You can re-enable it at any time by turning the switch back ON.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'deposit',
+							'label' => __( 'Deposit', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use Deposit Feature simply turn this switch OFF. This will completely disable the Deposit feature across the entire website, including all related , settings, and functionality. You can re-enable it at any time by turning the switch back ON.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'deposit',
+							'label' => __( 'Deposit', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use Deposit Feature simply turn this switch OFF. This will completely disable the Deposit feature across the entire website, including all related , settings, and functionality. You can re-enable it at any time by turning the switch back ON.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'feature',
+							'label' => __( 'Features', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use Features, simply turn this switch OFF. This will completely disable the Features across the entire website, including all related , settings, and functionality. You can re-enable it at any time by turning the switch back ON.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'additional_info',
+							'label' => __( 'Additional services', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use Additional services, simply turn this switch OFF. This will completely disable the Additional services feature across the entire website, including all related , settings, and functionality. You can re-enable it at any time by turning the switch back ON.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'tc',
+							'label' => __( 'Term & Conditions', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use the Term & Conditions Feature, simply turn this switch OFF. Once disabled, the Term & Conditions Feature field and related Term & Conditions Feature options will be completely removed from the site.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'faq',
+							'label' => __( 'FAQ', 'abp-rentalforge' ),
+							'desc' => __( 'If you do not want to use the FAQs Feature, simply turn this switch OFF. Once disabled, the FAQ Feature field and related FAQ Feature options will be completely removed from the site.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'category',
+							'label' => ABPRF_Function::category_label(),
+							'desc' => __( 'If you do not want to use Category , simply turn this switch OFF. Once disabled, Category Title field and related Category options will be completely removed from the site.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
 						),
 						array(
 							'name' => 'location',

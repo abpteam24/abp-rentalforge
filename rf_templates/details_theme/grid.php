@@ -5,8 +5,7 @@
 	add_action( 'abprf_details_grid_template', function ( $post_id ) {
 		if ( $post_id > 0 ) {
 			$abprf_infos         = ABPRF_Function::get_all_meta( $post_id );
-			$rent_continue       = array_key_exists( 'rent_continue', $abprf_infos ) ? $abprf_infos['rent_continue'] : 'on';
-			$img_infos           = array_key_exists( 'abprf_sliders', $abprf_infos ) ? $abprf_infos['abprf_sliders'] : [];
+			$rent_continue       = $abprf_infos['rent_continue'] ?? 'on';
 			$abprf_infos['form'] = 'inline';
 			//echo '<pre>';print_r($abprf_infos);echo '</pre>';
 			?>
@@ -38,13 +37,16 @@
                         </div>
                     </div>
                     <div class="_abprf_row">
-                        <div class="_col_12_mar_t"> <?php do_action( 'abprf_slider', $img_infos ); ?></div>
+                        <div class="_col_12_mar_t"> <?php do_action( 'abprf_slider', ( $abprf_infos['abprf_sliders'] ?? [] ) ); ?></div>
                     </div>
                     <div class="_abprf_row">
                         <div class="_col_12_mar_t"> <?php do_action( 'abprf_faq', $abprf_infos ); ?></div>
                     </div>
                     <div class="_abprf_row">
                         <div class="_col_12_mar_t"> <?php do_action( 'abprf_term_condition', $abprf_infos ); ?></div>
+                    </div>
+                    <div class="_abprf_row">
+                        <div class="_col_12_mar_t"> <?php do_action( 'abprf_related_item', ( $abprf_infos['related_item'] ?? '' ) ); ?></div>
                     </div>
                 </div>
             </div>

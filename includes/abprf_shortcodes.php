@@ -10,7 +10,6 @@
 				add_shortcode( 'abprf-property', array( $this, 'property_list' ) );
 				add_shortcode( 'abprf-gallery', array( $this, 'gallery' ) );
 			}
-
 			public function booking( $attribute ): bool|string {
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
@@ -21,7 +20,7 @@
 				} else {
 					$params['all_post']     = ABPRF_Query::get_post_id( $params );
 					$params['global_order'] = 'yes';
-					$style                  = array_key_exists( 'style', $params ) && $params['style'] ? $params['style'] : 'grid';
+					$style                  = ( $params['style'] ?? 'grid' ) ?: 'grid';
 					$file                   = ABPRF_Function::template_path( 'list/' . $style . '.php' );
 					?>
                     <div class="abprf_area">
@@ -48,7 +47,6 @@
 
 				return ob_get_clean();
 			}
-
 			public function post_list( $attribute ): bool|string {
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
@@ -59,7 +57,7 @@
 					do_action( 'abprf_load_details_template', $post_id );
 				} else {
 					$params['all_post'] = ABPRF_Query::get_post_id( $params );
-					$style              = array_key_exists( 'style', $params ) && $params['style'] ? $params['style'] : 'grid';
+					$style              = ( $params['style'] ?? 'grid' ) ?: 'grid';
 					$file               = ABPRF_Function::template_path( 'list/' . $style . '.php' );
 					?>
                     <div class="abprf_area">
@@ -83,7 +81,6 @@
 
 				return ob_get_clean();
 			}
-
 			public function property_list( $attribute ): bool|string {
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
@@ -94,7 +91,7 @@
 				} else {
 					$params['all_property'] = ABPRF_Query::get_property( $params );
 					$params['all_post']     = ABPRF_Query::get_post_id( $params );
-					$style                  = array_key_exists( 'style', $params ) && $params['style'] ? $params['style'] : 'grid';
+					$style                  = ( $params['style'] ?? 'grid' ) ?: 'grid';
 					$file                   = ABPRF_Function::template_path( 'list/property_' . $style . '.php' );
 					?>
                     <div class="abprf_area">
@@ -118,13 +115,10 @@
 
 				return ob_get_clean();
 			}
-
 			public function gallery( $attribute ): bool|string {
 				$defaults = $this->default_attribute();
 				$params   = shortcode_atts( $defaults, $attribute );
-				$post_id  = array_key_exists( 'post_id', $params ) && $params['post_id'] ? $params['post_id'] : '';
-				$column            = array_key_exists( 'column', $params ) ? $params['column'] : 3;
-				$show_post         = array_key_exists( 'show', $params ) && $params['show'] ? $params['show'] : $column * 3;
+				$post_id  = $params['post_id'] ?? '';
 				ob_start();
 				?>
                 <div class="abprf_area">
@@ -144,14 +138,12 @@
 									do_action( 'abprf_slider', $img_infos, $params );
 								}
 							}
-
 						?>
                     </div>
                 </div>
 				<?php
 				return ob_get_clean();
 			}
-
 			public function default_attribute(): array {
 				return array(
 					"post_id" => '',

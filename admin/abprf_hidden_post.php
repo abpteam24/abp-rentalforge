@@ -41,15 +41,14 @@
 				if ( ! $product_id ) {
 					return;
 				}
+				$post_val     = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
 				$thumbnail_id = get_post_thumbnail_id( $post_id );
 				if ( $thumbnail_id ) {
 					set_post_thumbnail( $product_id, $thumbnail_id );
 				}
 				wp_publish_post( $product_id );
-				$_tax_status = isset( $_POST['_tax_status'] ) ? sanitize_text_field( wp_unslash( $_POST['_tax_status'] ) ) : 'none';
-				$_tax_class  = isset( $_POST['_tax_class'] ) ? sanitize_text_field( wp_unslash( $_POST['_tax_class'] ) ) : '';
-				update_post_meta( $product_id, '_tax_status', $_tax_status );
-				update_post_meta( $product_id, '_tax_class', $_tax_class );
+				update_post_meta( $product_id, '_tax_status', $post_val( '_tax_status', 'none' ) );
+				update_post_meta( $product_id, '_tax_class', $post_val( '_tax_class' ) );
 				update_post_meta( $product_id, '_stock_status', 'instock' );
 				update_post_meta( $product_id, '_manage_stock', 'no' );
 				update_post_meta( $product_id, '_virtual', 'yes' );

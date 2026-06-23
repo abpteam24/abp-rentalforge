@@ -267,7 +267,8 @@
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( [ 'info_type' => 'warn', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
-				$page_type = isset( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : '';
+				$post_val  = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$page_type = $post_val( 'type' );
 				if ( ! empty( $page_type ) ) {
 					if ( ! ABPRF_Function::get_page_by_slug( $page_type ) ) {
 						$label      = ABPRF_Function::label();
@@ -333,7 +334,7 @@
 				global $wpdb;
 				$table_name  = $wpdb->prefix . 'abprf_property';
 				$dummy_infos = self::dummy_data();
-				if ( array_key_exists( 'taxonomy', $dummy_infos ) ) {
+				if ( isset( $dummy_infos['taxonomy'] ) ) {
 					foreach ( $dummy_infos['taxonomy'] as $tax => $taxonomy_option ) {
 						if ( taxonomy_exists( $tax ) ) {
 							$check_terms = get_terms( array( 'taxonomy' => $tax, 'hide_empty' => false ) );
@@ -349,16 +350,16 @@
 					do_action( 'abprf_location_update' );
 					do_action( 'abprf_brand_update' );
 				}
-				if ( array_key_exists( 'options', $dummy_infos ) ) {
+				if ( isset( $dummy_infos['options'] ) ) {
 					foreach ( $dummy_infos['options'] as $option => $dummy_option ) {
 						$option_data = get_option( $option );
 						if ( ! $option_data || sizeof( $option_data ) == 0 ) {
 							update_option( $option, $dummy_option );
 						}
 					}
-                    ABPRF_Feature::update_feature_js();
+					ABPRF_Feature::update_feature_js();
 				}
-				if ( array_key_exists( 'custom_post', $dummy_infos ) ) {
+				if ( isset( $dummy_infos['custom_post'] ) ) {
 					$abprf_location = ABPRF_Function::get_option( 'abprf_location' );
 					$abprf_brand    = ABPRF_Function::get_option( 'abprf_brand' );
 					$abprf_category = ABPRF_Function::get_option( 'abprf_category' );

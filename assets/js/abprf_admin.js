@@ -1,4 +1,5 @@
 let abprf_feature_data = JSON.parse(abprf_admin_data.feature_data);
+let abprf_related_info = JSON.parse(abprf_admin_data.related_info);
 function abprf_save_data(form_area, target, action) {
     let body = jQuery('body .rf_post_config');
     let formData = new FormData();
@@ -1084,6 +1085,7 @@ function abprf_emoji_check(str) {
     return !(/^fa[bsrld]\s/.test(str));
 }
 jQuery(document).ready(function ($) {
+    abprf_related_selection_init();
     $('#publish, .editor-post-publish-button').on('click', function (e) {
         let title = $('#title').val() || $('.editor-post-title__input').val();
         if (!title || title.trim().length === 0) {
@@ -1146,7 +1148,6 @@ function abprf_feature_selection_init() {
             selList.appendChild(div);
         });
     }
-    // HTML ইনসার্ট করা হচ্ছে (এখানে আর কোনো inline event listener যোগ করার দরকার নেই)
     document.querySelector('div.feature_selection_area .feature_selection').innerHTML =
         '<label><input class="_form_control feature_search" type="text" placeholder="' + abprf_admin_data.msg.search_feature + '" /></label>' +
         '<div class="feature_list"></div>';
@@ -1218,4 +1219,128 @@ function abprf_feature_update_hidden() {
     document.querySelector('div.abprf_admin .feature_selection_area input[name="feature"]').value = ids.join(',');
 }
 //=========== Feature selection end=================//
+//=========== Related selection start=================//
+document.addEventListener('focusin', function (e) {
+    if (e.target.matches('.related_search')) {
+        let parentSelection = e.target.closest('.related_selection');
+        if (parentSelection) {
+            let featureList = parentSelection.querySelector('.feature_list');
+            if (featureList) {
+                featureList.classList.add('active');
+            }
+        }
+    }
+});
+document.addEventListener('click', function (e) {
+    if (e.target.matches('.related_search')) {
+        let parentSelection = e.target.closest('.related_selection');
+        if (parentSelection) {
+            let featureList = parentSelection.querySelector('.feature_list');
+            if (featureList) {
+                featureList.classList.add('active');
+            }
+        }
+    }
+    if (!e.target.closest('.related_selection_area')) {
+        document.querySelectorAll('.feature_list').forEach(function (list) {
+            list.classList.remove('active');
+        });
+    }
+});
+document.addEventListener('input', function (e) {
+    if (e.target.matches('.related_search')) {
+        abprf_feature_render();
+    }
+});
+function abprf_related_selection_init() {
+    let hiddenVal = document.querySelector('div.abprf_admin .related_selection_area input[name="related_item"]').value;
+    let preIds = hiddenVal ? hiddenVal.split(',').map(function (s) {
+        return s.trim();
+    }).filter(Boolean) : [];
+    if (preIds.length > 0) {
+        let selList = document.querySelector('div.abprf_admin .related_selection_area .related_selected_list');
+        selList.innerHTML = '';
+        preIds.forEach(function (id) {
+            let f = abprf_related_info.find(function (x) {
+                return String(x.id) === String(id);
+            });
+            if (!f) return;
+            let div = document.createElement('div');
+            div.className = 'selected_item';
+            div.setAttribute('data-id', f.id);
+            div.innerHTML = abprf_related_inner_html(f);
+            selList.appendChild(div);
+        });
+    }
+    document.querySelector('div.related_selection_area .related_selection').innerHTML =
+        '<label><input class="_form_control related_search" type="text" placeholder="' + abprf_admin_data.msg.search_related + '" /></label>' +
+        '<div class="feature_list"></div>';
+    abprf_related_render();
+}
+function abprf_related_selected_id() {
+    let ids = [];
+    document.querySelectorAll('div.related_selection_area .selected_item').forEach(function (el) {
+        let id = el.getAttribute('data-id');
+        if (id) ids.push(id);
+    });
+    return ids;
+}
+function abprf_related_render() {
+    let q = '';
+    let searchEl = document.querySelector('div.related_selection_area .feature_search');
+    if (searchEl) q = searchEl.value.toLowerCase();
+    let selectedIds = abprf_related_selected_id();
+    let available = abprf_related_info.filter(function (f) {
+        return selectedIds.indexOf(String(f.id)) === -1 && f.label.toLowerCase().indexOf(q) !== -1;
+    });
+    let el = document.querySelector('div.related_selection_area .feature_list')
+    if (!el) return;
+    el.innerHTML = available.length === 0
+        ? '<div class="feature_empty">' + abprf_admin_data.msg.no_post + '</div>'
+        : available.map(function (f) {
+            let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<span class="' + f.icon + ' _mar_r_xxs"></span>';
+            return '<div class="feature_item" data-id="' + f.id + '" onclick="abprf_related_select(\'' + f.id + '\')"><div>' + icon_text + f.label + '</div><span class="fa-solid fa-plus fs-add"></span></div>';
+        }).join('');
+}
+function abprf_related_select(id) {
+    let f = abprf_related_info.find(function (x) {
+        return String(x.id) === String(id);
+    });
+    if (!f) return;
+    let selList = document.querySelector('div.abprf_admin .related_selection_area .related_selected_list');
+    let placeholder = selList.querySelector('.feature_empty');
+    if (placeholder) placeholder.remove();
+    let div = document.createElement('div');
+    div.className = 'selected_item';
+    div.setAttribute('data-id', f.id);
+    div.innerHTML = abprf_related_inner_html(f);
+    selList.appendChild(div);
+    abprf_related_update_hidden();
+    abprf_related_render();
+    setTimeout(function () {
+        let featureList = document.querySelector('.related_selection_area .feature_list');
+        if (featureList) {
+            featureList.classList.add('active');
+        }
+    }, 0);
+}
+function abprf_related_inner_html(f) {
+    let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<i class="' + f.icon + ' _mar_r_xxs"></i>';
+    return '<div class="_fa_center">' + icon_text + f.label + '</div><span class="remove_feature" onclick="abprf_related_remove(\'' + f.id + '\')">❌</span>';
+}
+function abprf_related_remove(id) {
+    let item = document.querySelector('.related_selected_list .selected_item[data-id="' + id + '"]');
+    if (item) item.remove();
+    let selList = document.querySelector('div.abprf_admin .related_selection_area .related_selected_list');
+    if (!selList.querySelector('.selected_item')) {
+        selList.innerHTML = '<div class="feature_empty">' + abprf_admin_data.msg.no_post_selected + '</div>';
+    }
+    abprf_related_update_hidden();
+    abprf_related_render();
+}
+function abprf_related_update_hidden() {
+    let ids = abprf_related_selected_id();
+    document.querySelector('div.abprf_admin .related_selection_area input[name="related_item"]').value = ids.join(',');
+}
+//=========== Related selection end=================//
 

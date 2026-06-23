@@ -11,8 +11,8 @@
 				add_action( 'wp_ajax_abprf_delete_category', array( $this, 'delete_category' ) );
 				add_action( 'wp_ajax_abprf_add_category', array( $this, 'add_category' ) );
 			}
-
 			public function global_category(): void {
+				if ( ABPRF_Function::on_off( 'category' ) ) {
 				$category_label = ABPRF_Function::category_label();
 				?>
                 <div class="category_list _ov_auto">
@@ -21,8 +21,8 @@
                 <div class="_divider_xs"></div>
                 <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( $category_label ); ?></button>
 				<?php
+				}
 			}
-
 			public function update_category(): void {
 				$taxonomies = ABPRF_Function::get_taxonomy( 'abprf_category' );
 				$category   = [];
@@ -35,7 +35,6 @@
 				ksort( $category );
 				update_option( 'abprf_category', $category );
 			}
-
 			public function category_list(): void {
 				$all_categories = ABPRF_Function::get_option( 'abprf_category' );
 				$count          = 1;
@@ -54,8 +53,8 @@
                         </thead>
                         <tbody>
 						<?php foreach ( $all_categories as $term_id => $category ) {
-							$name        = is_array( $category ) && array_key_exists( 'name', $category ) ? $category['name'] : '';
-							$description = is_array( $category ) && array_key_exists( 'description', $category ) ? $category['description'] : '';
+							$name        =$category['name'] ?? '';
+							$description =  $category['description'] ?? '';
 							?>
                             <tr>
                                 <th><?php echo esc_html( $count ); ?>.</th>
@@ -79,7 +78,6 @@
 					ABPRF_Layout::layout_warning_info( 'no_category' );
 				}
 			}
-
 			public function form( $term_id = '' ): void {
 				$name           = $slug = $des = '';
 				$category_label = ABPRF_Function::category_label();
@@ -123,14 +121,13 @@
                 <button type="button" class="_btn_theme save_category"><span class="_mar_r_xxs">💾</span><?php echo ( ! empty( $term_id ) ? esc_html__( 'Update', 'abp-rentalforge' ) : esc_html__( 'Save', 'abp-rentalforge' ) ) . ' ' . esc_html( $category_label ); ?></button>
 				<?php
 			}
-
 			public static function category_selection( $_category = '' ): void {
 				$all_categories = ABPRF_Function::get_option( 'abprf_category' );
 				if ( ! empty( $all_categories ) && is_array( $all_categories ) && sizeof( $all_categories ) > 0 ) { ?>
                     <div class="custom_radio _fj_end">
                         <input type="hidden" name="abprf_category" value="<?php echo esc_attr( $_category ); ?>"/>
 						<?php foreach ( $all_categories as $key => $category ) {
-							$name = is_array( $category ) && array_key_exists( 'name', $category ) ? $category['name'] : ''; ?>
+							$name =$category['name'] ?? ''; ?>
                             <div class="radio_item">
                                 <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $_category == $key ? 'rf_active' : '' ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
                                     <span data-icon class="_mar_r_xs <?php echo esc_attr( $_category == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><span class="_text_left_fs_label"><?php echo esc_html( $name ); ?></span>
@@ -145,7 +142,6 @@
 					<?php
 				}
 			}
-
 			public function save_category(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
@@ -153,11 +149,15 @@
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
-				$cat_term_id   = isset( $_POST['cat_term_id'] ) ? absint( wp_unslash( $_POST['cat_term_id'] ) ) : 0;
-				$name          = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
-				$slug          = isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '';
-				$description   = isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '';
-				$abprf_post_id = isset( $_POST['abprf_post_id'] ) ? absint( wp_unslash( $_POST['abprf_post_id'] ) ) : 0;
+				$post_int      = fn( $key, $default = 0 ) => isset( $_POST[ $key ] ) ? absint( $_POST[ $key ] ) : $default;
+				$post_val      = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$post_textarea = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$post_slug     = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_title( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$cat_term_id   = $post_int( 'cat_term_id' );
+				$name          = $post_val( 'name' );
+				$slug          = $post_slug( 'slug' );
+				$description   = $post_textarea( 'description' );
+				$abprf_post_id = $post_int( 'abprf_post_id' );
 				if ( empty( $name ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Category Name cannot be blank!', 'abp-rentalforge' ) ], 400 );
 				}
@@ -187,7 +187,6 @@
 				}
 				wp_send_json_success( [ 'html' => $html, 'msg' => __( 'Category Saved Successfully !', 'abp-rentalforge' ) ] );
 			}
-
 			public function delete_category(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
@@ -228,7 +227,6 @@
 				}
 				wp_send_json_success( [ 'html' => $html, 'msg' => __( 'Category Delete Successfully !', 'abp-rentalforge' ) ] );
 			}
-
 			public function add_category(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );

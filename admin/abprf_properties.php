@@ -30,11 +30,14 @@
                                     <li data-value="all" data-text="<?php esc_attr_e( 'All Post', 'abp-rentalforge' ); ?>"><?php esc_html_e( 'All Post', 'abp-rentalforge' ); ?></li>
                                     <li data-value="on" data-text="<?php esc_attr_e( 'Rent Active', 'abp-rentalforge' ); ?>"><?php esc_html_e( 'Rent Active', 'abp-rentalforge' ); ?></li>
                                     <li data-value="off" data-text="<?php esc_attr_e( 'Rent De-active', 'abp-rentalforge' ); ?>"><?php esc_html_e( 'Rent De-active', 'abp-rentalforge' ); ?></li>
-									<?php if ( ! empty( $post_ids ) && is_array( $post_ids ) && sizeof( $post_ids ) > 0 ) { ?>
-										<?php foreach ( $post_ids as $post_id ) { ?>
-                                            <li data-value="<?php echo esc_attr( $post_id ); ?>" data-text="<?php echo esc_attr( get_the_title( $post_id ) ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></li>
-										<?php } ?>
-									<?php } ?>
+									<?php if ( ! empty( $post_ids ) && is_array( $post_ids ) && sizeof( $post_ids ) > 0 ) {
+										foreach ( $post_ids as $post_id ) {
+											$title = get_the_title( $post_id );
+											if ( ! empty( $title ) ) { ?>
+                                                <li data-value="<?php echo esc_attr( $post_id ); ?>" data-text="<?php echo esc_attr( $title ); ?>"><?php echo esc_html( $title ); ?></li>
+											<?php }
+										}
+									} ?>
                                 </ul>
                             </div>
                         </div>
@@ -136,6 +139,7 @@
 				<?php
 			}
 			public function properties_table( $filter_args ): void {
+				//echo '<pre>';				print_r( $filter_args );				echo '</pre>';
 				$total_property        = ABPRF_Query::get_property( $filter_args, true );
 				$page_number           = is_numeric( $filter_args['page_number'] ?? null ) ? (int) $filter_args['page_number'] : 1;
 				$limit                 = is_numeric( $filter_args['page_item'] ?? null ) ? (int) $filter_args['page_item'] : ABPRF_Function::get_option( 'abprf_per_page_item', 20 );
@@ -158,7 +162,9 @@
                                 <th><?php esc_html_e( 'Post Information', 'abp-rentalforge' ); ?></th>
 							<?php } ?>
                             <th><?php esc_html_e( 'Price', 'abp-rentalforge' ); ?></th>
-                            <th><?php esc_html_e( 'Deposit', 'abp-rentalforge' ); ?></th>
+							<?php if ( ABPRF_Function::on_off( 'deposit' ) ) { ?>
+                                <th><?php esc_html_e( 'Deposit', 'abp-rentalforge' ); ?></th>
+							<?php } ?>
                             <th><?php esc_html_e( 'Stock', 'abp-rentalforge' ); ?></th>
                             <th><?php esc_html_e( 'Actions', 'abp-rentalforge' ); ?></th>
                         </tr>
@@ -180,7 +186,7 @@
 							?>
                             <tr class="delete_area">
                                 <th><?php echo esc_html( $count ); ?>.</th>
-                                <th class="_fs_h2"><?php ABPRF_Layout::image_icon( $icon ); ?></th>
+                                <th class="_fs_h2"><?php ABPRF_Layout::image_icon( $icon,'' ); ?></th>
                                 <td>
                                     <div class="_fd_column">
                                         <h5 class="_abprf_color_theme"><?php echo esc_html( $name ); ?></h5>
@@ -198,7 +204,12 @@
 								<?php if ( ( empty( $filter_post_id ) || is_string( $filter_post_id ) ) && empty( $copy_post_id ) ) { ?>
                                     <td>
 										<?php if ( ! empty( $post_id ) ) { ?>
-                                            <a href="<?php echo esc_url( get_edit_post_link( $post_id ) ); ?>" class="_abprf_fs_h5 _color_theme"><?php echo esc_html( get_the_title( $post_id ) ); ?></a>
+                                            <a href="<?php echo esc_url( get_edit_post_link( $post_id ) ); ?>" class="_abprf_fs_h5 _color_theme">
+												<?php if ( ABPRF_Function::on_off( 'post_icon' ) ) {
+													ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ));
+												}
+													echo esc_html( get_the_title( $post_id ) ); ?>
+                                            </a>
                                             <div class="_d_flex">
                                                 <span class="_mar_r_xxs publish"><?php echo esc_html( __( 'Post Id : ', 'abp-rentalforge' ) . ' ' . $post_id ); ?></span>
                                                 <span class="_mar_r_xxs <?php echo esc_attr( $post_rent_continue == 'on' ? 'publish' : 'trash' ); ?>"><?php echo esc_html( $post_rent_continue == 'on' ? __( 'Rent On', 'abp-rentalforge' ) : __( 'Rent Off', 'abp-rentalforge' ) ); ?></span>
@@ -233,18 +244,20 @@
                                         </div>
 									<?php } ?>
                                 </th>
-                                <th>
-									<?php
-										$deposit_info  = $_price_info['deposit'] ?? [];
-										$deposit_type  = $deposit_info['type'] ?? '';
-										$deposit_value = $deposit_info['value'] ?? '';
-										if ( ! empty( $deposit_type ) && ! empty( $deposit_value ) ) {
-											ABPRF_Layout::item_deposit( $_price_info );
-										} else {
-											echo esc_html( '❌' );
-										}
-									?>
-                                </th>
+								<?php if ( ABPRF_Function::on_off( 'deposit' ) ) { ?>
+                                    <th>
+										<?php
+											$deposit_info  = $_price_info['deposit'] ?? [];
+											$deposit_type  = $deposit_info['type'] ?? '';
+											$deposit_value = $deposit_info['value'] ?? '';
+											if ( ! empty( $deposit_type ) && ! empty( $deposit_value ) ) {
+												ABPRF_Layout::item_deposit( $_price_info );
+											} else {
+												echo esc_html( '❌' );
+											}
+										?>
+                                    </th>
+								<?php } ?>
                                 <th><?php echo esc_html( $_price_info['qty'] ?? '' ); ?></th>
                                 <th>
 									<?php if ( empty( $copy_post_id ) ) { ?>
@@ -327,26 +340,30 @@
 			public function brand_description( $property = [] ): void {
 				$others      = json_decode( $property['others'] ?? '', true ) ?: [];
 				$description = $others['description'] ?? '';
-				$brand       = $property['brand'] ?? ''
-				?>
-                <div class="setting_item">
-                    <div class="_f_equal_f_wrap">
-                        <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Property Brand', 'abp-rentalforge' ); ?></span>
-                        <div class="brand_selection"><?php ABPRF_Brand::brand_selection( $brand ); ?></div>
+				$brand       = $property['brand'] ?? '';
+				if ( ABPRF_Function::on_off( 'brand' ) ) {
+					?>
+                    <div class="setting_item">
+                        <div class="_f_equal_f_wrap">
+                            <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Property Brand', 'abp-rentalforge' ); ?></span>
+                            <div class="brand_selection"><?php ABPRF_Brand::brand_selection( $brand ); ?></div>
+                        </div>
+						<?php ABPRF_Brand::brand_selection_form(); ?>
+                        <div class="_divider_xs"></div>
+						<?php ABPRF_Layout::info_text( 'brand' ); ?>
                     </div>
-					<?php ABPRF_Brand::brand_selection_form(); ?>
-                    <div class="_divider_xs"></div>
-					<?php ABPRF_Layout::info_text( 'brand' ); ?>
-                </div>
-                <div class="setting_item">
-                    <label class="_f_equal_f_wrap">
-                        <span class="_mar_r_xs"><?php esc_html_e( 'Property Short Description', 'abp-rentalforge' ); ?></span>
-                        <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'EX: Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
-                    </label>
-                    <div class="_divider_xs"></div>
-					<?php ABPRF_Layout::info_text( 'description' ); ?>
-                </div>
-				<?php
+				<?php }
+				if ( ABPRF_Function::on_off( 'property_des' ) ) { ?>
+                    <div class="setting_item">
+                        <label class="_f_equal_f_wrap">
+                            <span class="_mar_r_xs"><?php esc_html_e( 'Property Short Description', 'abp-rentalforge' ); ?></span>
+                            <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'EX: Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
+                        </label>
+                        <div class="_divider_xs"></div>
+						<?php ABPRF_Layout::info_text( 'description' ); ?>
+                    </div>
+					<?php
+				}
 			}
 			public function property_price_qty( $property = [], $current_post_id = '' ): void {
 				$rent_rules = ABPRF_Layout::rent_rules_options();
@@ -376,8 +393,8 @@
 				do_action( 'abprf_location_stock', $price_info, $rent_rule, $current_post_id );
 			}
 			public static function price_qty( $price_info, $rent_rule, $current_post_id, $loc_id = '' ): void {
-				$rent_rules  = ABPRF_Layout::rent_rules_options();
-				if ( ! empty( $loc_id )) {
+				$rent_rules = ABPRF_Layout::rent_rules_options();
+				if ( ! empty( $loc_id ) ) {
 					$price_info = ( $price_info[ $loc_id ] ?? null ) ?: [];
 				}
 				$_price_info = ( $price_info[ $rent_rule ] ?? null ) ?: [];
@@ -394,12 +411,14 @@
                                     <span><?php esc_html_e( 'Max Qty', 'abp-rentalforge' ); ?></span>
                                 </div>
                             </th>
-                            <th>
-                                <div class="_f_equal _fj_center">
-                                    <span><?php esc_html_e( 'Deposit Type', 'abp-rentalforge' ); ?></span>
-                                    <span><?php esc_html_e( 'Deposit Value', 'abp-rentalforge' ); ?></span>
-                                </div>
-                            </th>
+							<?php if ( ABPRF_Function::on_off( 'deposit' ) ) { ?>
+                                <th>
+                                    <div class="_f_equal _fj_center">
+                                        <span><?php esc_html_e( 'Deposit Type', 'abp-rentalforge' ); ?></span>
+                                        <span><?php esc_html_e( 'Deposit Value', 'abp-rentalforge' ); ?></span>
+                                    </div>
+                                </th>
+							<?php } ?>
                             <th>
 								<?php if ( $rent_rules['hourly'] ?? '' ) { ?>
                                     <div data-close="#hourly" class=" <?php echo esc_attr( $rent_rule == 'hourly' ? 'rf_active' : '' ); ?>">
@@ -476,26 +495,28 @@
                                 <div class="_divider_xxs"></div>
 								<?php ABPRF_Layout::info_text( 'qty_reserve_min_max' ); ?>
                             </th>
-                            <th>
-								<?php $deposit_info = $_price_info['deposit'] ?? [];
-									$deposit_type   = $deposit_info['type'] ?? '';
-									$deposit_value  = $deposit_info['value'] ?? ''; ?>
-                                <div class="_group_content">
-                                    <label>
-                                        <select class="_form_control " name="deposit_type<?php echo esc_attr( ! empty( $loc_id ) ? '_' . $loc_id : '' ); ?>">
-                                            <option disabled selected><?php esc_html_e( 'Please Select Deposit Type', 'abp-rentalforge' ); ?></option>
-                                            <option value="fixed" <?php echo esc_attr( $deposit_type == 'fixed' ? 'selected' : '' ); ?>><?php esc_html_e( 'Fixed Amount', 'abp-rentalforge' ); ?></option>
-                                            <option value="percent" <?php echo esc_attr( $deposit_type == 'percent' ? 'selected' : '' ); ?>><?php esc_html_e( 'Percentage(%) of Total Price', 'abp-rentalforge' ); ?></option>
-                                            <option value="qty" <?php echo esc_attr( $deposit_type == 'qty' ? 'selected' : '' ); ?>><?php esc_html_e( 'Fixed Amount per Quantity', 'abp-rentalforge' ); ?></option>
-                                        </select>
-                                    </label>
-                                    <label>
-                                        <input type="text" class="_form_control validation_price" name="deposit_value<?php echo esc_attr( ! empty( $loc_id ) ? '_' . $loc_id : '' ); ?>" placeholder="Ex: 10" value="<?php echo esc_attr( $deposit_value ); ?>"/>
-                                    </label>
-                                </div>
-                                <div class="_divider_xxs"></div>
-								<?php ABPRF_Layout::info_text( 'deposit_type' ); ?>
-                            </th>
+							<?php if ( ABPRF_Function::on_off( 'deposit' ) ) { ?>
+                                <th>
+									<?php $deposit_info = $_price_info['deposit'] ?? [];
+										$deposit_type   = $deposit_info['type'] ?? '';
+										$deposit_value  = $deposit_info['value'] ?? ''; ?>
+                                    <div class="_group_content">
+                                        <label>
+                                            <select class="_form_control " name="deposit_type<?php echo esc_attr( ! empty( $loc_id ) ? '_' . $loc_id : '' ); ?>">
+                                                <option disabled selected><?php esc_html_e( 'Please Select Deposit Type', 'abp-rentalforge' ); ?></option>
+                                                <option value="fixed" <?php echo esc_attr( $deposit_type == 'fixed' ? 'selected' : '' ); ?>><?php esc_html_e( 'Fixed Amount', 'abp-rentalforge' ); ?></option>
+                                                <option value="percent" <?php echo esc_attr( $deposit_type == 'percent' ? 'selected' : '' ); ?>><?php esc_html_e( 'Percentage(%) of Total Price', 'abp-rentalforge' ); ?></option>
+                                                <option value="qty" <?php echo esc_attr( $deposit_type == 'qty' ? 'selected' : '' ); ?>><?php esc_html_e( 'Fixed Amount per Quantity', 'abp-rentalforge' ); ?></option>
+                                            </select>
+                                        </label>
+                                        <label>
+                                            <input type="text" class="_form_control validation_price" name="deposit_value<?php echo esc_attr( ! empty( $loc_id ) ? '_' . $loc_id : '' ); ?>" placeholder="Ex: 10" value="<?php echo esc_attr( $deposit_value ); ?>"/>
+                                        </label>
+                                    </div>
+                                    <div class="_divider_xxs"></div>
+									<?php ABPRF_Layout::info_text( 'deposit_type' ); ?>
+                                </th>
+							<?php } ?>
                             <th>
 								<?php if ( $rent_rules['hourly'] ?? '' ) {
 									$hourly_info  = $price_info['hourly'] ?? [];
@@ -605,72 +626,75 @@
 				do_action( 'abprf_property_discount', $price_info, $rent_rule, $current_post_id, $loc_id );
 			}
 			public function features( $property = [] ): void {
-				?>
-                <div class="setting_item full_width feature_selection_area">
-                    <h5 class="_abprf_color_theme"><?php esc_html_e( 'Feature Configuration', 'abp-rentalforge' ); ?></h5>
-					<?php ABPRF_Layout::info_text( 'property_feature' ); ?>
-                    <div class="_divider_xs"></div>
-                    <div class="_d_flex">
-                        <div class="feature_selection"></div>
-                        <div class="feature_selected">
-                            <input type="hidden" name="feature" value="<?php echo esc_attr( $property['features'] ?? '' ); ?>"/>
-                            <div class="selected_list"></div>
+				if ( ABPRF_Function::on_off( 'feature' ) ) {
+					?>
+                    <div class="setting_item full_width feature_selection_area">
+                        <h5 class="_abprf_color_theme"><?php esc_html_e( 'Feature Configuration', 'abp-rentalforge' ); ?></h5>
+						<?php ABPRF_Layout::info_text( 'property_feature' ); ?>
+                        <div class="_divider_xs"></div>
+                        <div class="_d_flex">
+                            <div class="feature_selection"></div>
+                            <div class="feature_selected">
+                                <input type="hidden" name="feature" value="<?php echo esc_attr( $property['features'] ?? '' ); ?>"/>
+                                <div class="selected_list"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="configuration_content _mar_t_xs">
-                        <div class="form_area">
-                            <div class="hide_on_load">
-                                <table class="_abprf ">
-                                    <tbody class="insertable_area sortable_area">
+                        <div class="configuration_content _mar_t_xs">
+                            <div class="form_area">
+                                <div class="hide_on_load">
+                                    <table class="_abprf ">
+                                        <tbody class="insertable_area sortable_area">
+                                        </tbody>
+                                    </table>
+                                    <div class="_divider_xs"></div>
+                                </div>
+                                <div class="_fj_between">
+									<?php ABPRF_Layout::button_add_xs( __( 'Add New Feature', 'abp-rentalforge' ) ); ?>
+                                    <button type="button" class="_btn_theme_xs hide_on_load save_feature"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
+                                </div>
+                            </div>
+                            <div class="abprf_d_none">
+                                <table class="_abprf">
+                                    <tbody class="hidden_content">
+									<?php ABPRF_Feature::form_feature(); ?>
                                     </tbody>
                                 </table>
-                                <div class="_divider_xs"></div>
                             </div>
-                            <div class="_fj_between">
-								<?php ABPRF_Layout::button_add_xs( __( 'Add New Feature', 'abp-rentalforge' ) ); ?>
-                                <button type="button" class="_btn_theme_xs hide_on_load save_feature"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
-                            </div>
-                        </div>
-                        <div class="abprf_d_none">
-                            <table class="_abprf">
-                                <tbody class="hidden_content">
-								<?php ABPRF_Feature::form_feature(); ?>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
-                </div>
-				<?php
+					<?php
+				}
 			}
 			public function gallery( $property = [] ): void {
-				$sliders = array_key_exists( 'gallery', $property ) ? $property['gallery'] : '';
 				?>
                 <div class="setting_item full_width">
                     <h5 class="_abprf_color_theme"><?php esc_html_e( 'Gallery Configuration', 'abp-rentalforge' ); ?></h5>
 					<?php ABPRF_Layout::info_text( 'abprf_sliders' ); ?>
                     <div class="_divider_xs"></div>
-					<?php do_action( 'abprf_add_image_multiple', 'abprf_sliders', $sliders ); ?>
+					<?php do_action( 'abprf_add_image_multiple', 'abprf_sliders', ( $property['gallery'] ?? '' ) ); ?>
                 </div>
 				<?php
 			}
 			//===========================//
-			public function save_property() {
+			public function save_property(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
-				$post_val    = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
-				$int_val     = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? intval( wp_unslash( $_POST[ $key ] ) ) : $default;
-				$filter_args = isset( $_POST['filter_args'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['filter_args'] ) ), true ) : [];
-				$post_id     = $int_val( 'property_post_id' );
-				$property_id = $int_val( 'property_id' );
-				$name        = $post_val( 'name' );
-				$rent_rule   = $post_val( 'rent_rule' );
-				$_rent_rule  = ! empty( $post_id ) ? ABPRF_Function::get_post_info( $post_id, 'rent_rule' ) : '';
-				$rent_rule   = ! empty( $_rent_rule ) ? $_rent_rule : $rent_rule;
-				$rent_rules  = ABPRF_Layout::rent_rules_options();
+				$post_val      = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$int_val       = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? intval( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$post_textarea = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$post_array    = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
+				$filter_args   = $post_array( 'filter_args' );
+				$post_id       = $int_val( 'property_post_id' );
+				$property_id   = $int_val( 'property_id' );
+				$name          = $post_val( 'name' );
+				$rent_rule     = $post_val( 'rent_rule' );
+				$_rent_rule    = ! empty( $post_id ) ? ABPRF_Function::get_post_info( $post_id, 'rent_rule' ) : '';
+				$rent_rule     = ! empty( $_rent_rule ) ? $_rent_rule : $rent_rule;
+				$rent_rules    = ABPRF_Layout::rent_rules_options();
 				if ( $name && $rent_rule ) {
 					$price_info    = [];
 					$rent_continue = $post_val( 'rent_continue', 'on' );
@@ -709,10 +733,10 @@
 							}
 						}
 					}
-					$price_info = apply_filters( 'abprf_filter_price_info', $price_info,$post_id );
+					$price_info = apply_filters( 'abprf_filter_price_info', $price_info, $post_id );
 					$others     = [
-						'icon' => isset( $_POST['icon'] ) ? sanitize_text_field( wp_unslash( $_POST['icon'] ) ) : '',
-						'description' => isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : ''
+						'icon' => $post_val( 'icon' ),
+						'description' => $post_textarea( 'description' )
 					];
 					$data       = [
 						'post_id' => intval( $post_id ),
@@ -749,9 +773,8 @@
 				$this->properties_table( $filter_args );
 				$html = ob_get_clean();
 				wp_send_json_success( [ 'html' => $html, 'msg' => $msg ] );
-				wp_die();
 			}
-			public function add_property() {
+			public function add_property(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
@@ -759,9 +782,10 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				ob_start();
-				$property_id     = isset( $_POST['tax_id'] ) ? sanitize_text_field( wp_unslash( $_POST['tax_id'] ) ) : '';
-				$current_post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
-				$property_copy   = isset( $_POST['property_copy'] ) ? sanitize_text_field( wp_unslash( $_POST['property_copy'] ) ) : 0;
+				$post_int        = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? absint( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$property_id     = $post_int( 'tax_id' );
+				$current_post_id = $post_int( 'post_id' );
+				$property_copy   = $post_int( 'property_copy', 0 );
 				$post_ids        = ABPRF_Query::get_post_id( [ 'status' => [ 'publish', 'draft', 'private', 'trash' ] ] );
 				$save_text       = __( 'Save Property Configuration', 'abp-rentalforge' );
 				$property        = [];
@@ -800,7 +824,7 @@
 				$html = ob_get_clean();
 				wp_send_json_success( [ 'html' => $html, 'msg' => __( 'Property Form Loaded Successfully .....! ', 'abp-rentalforge' ) ] );
 			}
-			public function reload_property_list() {
+			public function reload_property_list(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
@@ -808,14 +832,15 @@
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
 				ob_start();
-				$filter_args            = isset( $_POST['filter_args'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['filter_args'] ) ), true ) : [];
-				$post_id                = array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] !== '' ? $filter_args['post_id'] : 'all';
+				$post_array             = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
+				$filter_args            = $post_array( 'filter_args' );
+				$post_id                = ( $filter_args['post_id'] ?? 'all' ) ?: 'all';
 				$filter_args['post_id'] = $post_id;
 				$this->properties_table( $filter_args );
 				$table_html = ob_get_clean();
 				wp_send_json_success( [ 'html' => $table_html, 'msg' => __( 'Property List Loaded successfully...... !! ', 'abp-rentalforge' ) ] );
 			}
-			public function property_delete() {
+			public function property_delete(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
 				}
@@ -833,8 +858,9 @@
 					}
 				}
 				ob_start();
-				$filter_args            = isset( $_POST['filter_args'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['filter_args'] ) ), true ) : [];
-				$post_id                = array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] !== '' ? $filter_args['post_id'] : 'all';
+				$post_array             = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
+				$filter_args            = $post_array( 'filter_args' );
+				$post_id                = ( $filter_args['post_id'] ?? 'all' ) ?: 'all';
 				$filter_args['post_id'] = $post_id;
 				$this->properties_table( $filter_args );
 				$html = ob_get_clean();

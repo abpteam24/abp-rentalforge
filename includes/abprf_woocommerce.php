@@ -20,10 +20,11 @@
 				$linked_id = ABPRF_Function::get_post_info( $product_id, 'abprf_link_id', $product_id );
 				$post_id   = is_string( get_post_status( $linked_id ) ) ? $linked_id : $product_id;
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() && isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
-					$start_time                     = isset( $_POST['start_time'] ) ? sanitize_text_field( wp_unslash( $_POST['start_time'] ) ) : '';
-					$end_time                       = isset( $_POST['end_time'] ) ? sanitize_text_field( wp_unslash( $_POST['end_time'] ) ) : '';
-					$rent_rule                      = isset( $_POST['rent_rule'] ) ? sanitize_text_field( wp_unslash( $_POST['rent_rule'] ) ) : '';
-					$location                       = isset( $_POST['location'] ) ? sanitize_text_field( wp_unslash( $_POST['location'] ) ) : '';
+					$post_val                       = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+					$start_time                     = $post_val( 'start_time' );
+					$end_time                       = $post_val( 'end_time' );
+					$rent_rule                      = $post_val( 'rent_rule' );
+					$location                       = $post_val( 'location' );
 					$date_info                      = ABPRF_Function::get_date_time_difference( $start_time, $end_time, $rent_rule );
 					$abprf_infos['post_id']         = $post_id;
 					$abprf_infos['start_time']      = $start_time;
@@ -116,14 +117,16 @@
 			public static function get_ticket_info( $abprf_infos = [] ) {
 				$booking_info = [];
 				if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
+					$post_int_array = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'absint', wp_unslash( $_POST[ $key ] ) ) : [];
+					$post_array     = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
 					$post_id        = $abprf_infos['post_id'] ?? '';
 					$start_time     = $abprf_infos['start_time'] ?? '';
 					$end_time       = $abprf_infos['end_time'] ?? '';
 					$rent_rule      = $abprf_infos['rent_rule'] ?? '';
 					$date_info      = $abprf_infos['date_info'] ?? [];
-					$property_ids   = isset( $_POST['property_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['property_id'] ) ) : [];
-					$property_check = isset( $_POST['property_check'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['property_check'] ) ) : [];
-					$property_qty   = isset( $_POST['property_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['property_qty'] ) ) : [];
+					$property_ids   = $post_int_array( 'property_id' );
+					$property_check = $post_array( 'property_check' );
+					$property_qty   = $post_int_array( 'property_qty' );
 					if ( ! empty( $start_time ) && ! empty( $end_time ) && ! empty( $rent_rule ) && ! empty( $date_info ) && sizeof( $date_info ) > 0 && ! empty( $property_ids ) && ! empty( $property_check ) && ! empty( $property_qty ) && ! empty( $post_id ) ) {
 						if ( sizeof( $property_check ) > 0 ) {
 							foreach ( $property_check as $key => $check ) {
@@ -218,7 +221,7 @@
 			}
 			public static function get_passenger_info( $post_id ): array {
 				$pass_info = [];
-				if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
+				if (ABPRF_Function::on_off( 'client_info' ) && isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
 					$display       = ABPRF_Function::get_post_info( $post_id, 'display_client_form', 'on' );
 					$active_global = ABPRF_Function::get_post_info( $post_id, 'active_global_form', 'on' );
 					if ( $active_global == 'on' ) {
@@ -251,7 +254,7 @@
 					$item_data[] = array( 'name' => __( 'Rent Start', 'abp-rentalforge' ), 'value' => ABPRF_Function::date_format( $start_time ) . '<br />' );
 					$item_data[] = array( 'name' => __( 'Rent End', 'abp-rentalforge' ), 'value' => ABPRF_Function::date_format( $end_time ) . '<br />' );
 					$item_data[] = array( 'name' => __( 'Duration', 'abp-rentalforge' ), 'value' => $duration . '<br />' );
-					if ( ! empty( $location ) ) {
+					if ( ABPRF_Function::on_off( 'location' ) && ! empty( $location ) ) {
 						$item_data[] = array( 'name' => __( 'Location', 'abp-rentalforge' ), 'value' => ABPRF_Function::location_value( $location ) . '<br />' );
 					}
 					$item_data[] = array( 'name' => __( 'Property Information', 'abp-rentalforge' ), 'value' => '<br />' );
@@ -262,16 +265,16 @@
 						$price       = $price > 0 ? wc_price( $price ) : __( 'FREE', 'abp-rentalforge' );
 						$item_data[] = array( 'name' => __( 'Rent', 'abp-rentalforge' ), 'value' => $price . '<br />' );
 						$deposit     = $ticket_info['deposit'] ?? '';
-						if ( ! empty( $deposit ) ) {
+						if (ABPRF_Function::on_off( 'deposit' ) &&  ! empty( $deposit ) ) {
 							$item_data[] = array( 'name' => __( 'Deposit', 'abp-rentalforge' ), 'value' => wc_price( $deposit ) . '<br />' );
 						}
 						$brand = $ticket_info['brand'] ?? '';
-						if ( ! empty( $brand ) ) {
+						if ( ! empty( $brand ) && ABPRF_Function::on_off( 'brand' ) ) {
 							$item_data[] = array( 'name' => ABPRF_Function::brand_label(), 'value' => ABPRF_Function::brand_value( $brand ) . '<br />' );
 						}
 						$item_data = apply_filters( 'abprf_cart_property_info_block', $item_data, $cart_item, $key );
 					}
-					if ( ! empty( $additional_info ) && sizeof( $additional_info ) > 0 ) {
+					if (ABPRF_Function::on_off( 'additional_info' ) && ! empty( $additional_info ) && sizeof( $additional_info ) > 0 ) {
 						$item_data[] = array( 'name' => __( 'Additional Information', 'abp-rentalforge' ), 'value' => '<br />' );
 						foreach ( $additional_info as $additional ) {
 							if ( is_array( $additional ) ) {
@@ -283,7 +286,7 @@
 							}
 						}
 					}
-					if ( ! empty( $attendee_infos ) && sizeof( $attendee_infos ) > 0 ) {
+					if (ABPRF_Function::on_off( 'client_info' ) && ! empty( $attendee_infos ) && sizeof( $attendee_infos ) > 0 ) {
 						$item_data[] = array( 'name' => __( 'Client Information', 'abp-rentalforge' ), 'value' => '<br />' );
 						foreach ( $attendee_infos as $attendee_info ) {
 							$label = $attendee_info['label'] ?? '';
@@ -362,7 +365,7 @@
 						$item->add_meta_data( __( 'Rent Start', 'abp-rentalforge' ), ABPRF_Function::date_format( $start_time ) );
 						$item->add_meta_data( __( 'Rent End', 'abp-rentalforge' ), ABPRF_Function::date_format( $end_time ) );
 						$item->add_meta_data( __( 'Duration', 'abp-rentalforge' ), $duration );
-						if ( ! empty( $location ) ) {
+						if (ABPRF_Function::on_off( 'location' ) && ! empty( $location ) ) {
 							$item->add_meta_data( ABPRF_Function::location_label(), ABPRF_Function::location_value( $location ) );
 						}
 						$item->add_meta_data( __( 'Property Information', 'abp-rentalforge' ), '' );
@@ -374,16 +377,16 @@
 							$price = $price > 0 ? wc_price( $price ) : __( 'FREE', 'abp-rentalforge' );
 							$item->add_meta_data( __( 'Rent', 'abp-rentalforge' ), $price );
 							$deposit = $ticket_info['deposit'] ?? '';
-							if ( ! empty( $deposit ) ) {
+							if (ABPRF_Function::on_off( 'deposit' ) &&  ! empty( $deposit ) ) {
 								$item->add_meta_data( __( 'Deposit', 'abp-rentalforge' ), wc_price( $deposit ) );
 							}
 							$brand     = $ticket_info['brand'] ?? '';
 							$all_brand = ! empty( $all_brand ) ? $all_brand . ',' . $brand : $brand;
-							if ( ! empty( $brand ) ) {
+							if ( ! empty( $brand ) && ABPRF_Function::on_off( 'brand' ) ) {
 								$item->add_meta_data( ABPRF_Function::brand_label(), ABPRF_Function::brand_value( $brand ) );
 							}
 						}
-						if ( ! empty( $additional_infos ) && sizeof( $additional_infos ) > 0 ) {
+						if (ABPRF_Function::on_off( 'additional_info' ) &&  ! empty( $additional_infos ) && sizeof( $additional_infos ) > 0 ) {
 							$item->add_meta_data( __( 'Additional Information', 'abp-rentalforge' ), '' );
 							foreach ( $additional_infos as $additional ) {
 								$name       = $additional['name'] ?? '';
@@ -396,7 +399,7 @@
 								}
 							}
 						}
-						if ( ! empty( $attendee_infos ) && sizeof( $attendee_infos ) > 0 ) {
+						if (ABPRF_Function::on_off( 'client_info' ) && ! empty( $attendee_infos ) && sizeof( $attendee_infos ) > 0 ) {
 							$item->add_meta_data( __( 'Client Information', 'abp-rentalforge' ), '' );
 							foreach ( $attendee_infos as $attendee_info ) {
 								$label = $attendee_info['label'] ?? '';
@@ -480,7 +483,7 @@
 											$price_info['item_total'] = $item_info['item_total'] ?? '';
 											$others['rent_rule']      = $item_info['rent_rule'] ?? '';
 											$others['duration']       = $item_info['duration'] ?? '';
-											$order_status             = 'wc-' . $order_status;
+											$_order_status             = 'wc-' . $order_status;
 											$data                     = [
 												'order_id' => intval( $order_id ),
 												'item_id' => intval( $item_id ),
@@ -502,8 +505,8 @@
 												'ex_info' => wp_json_encode( $additional_info ),
 												'pass_info' => wp_json_encode( $item_info['pass_info'] ?? [] ),
 												'delivery_option' => 0,
-												'book_status' => in_array( $order_status, $booked_status ) ? 1 : 0,
-												'order_status' => sanitize_text_field( $order_status ),
+												'book_status' => in_array( $_order_status, $booked_status ) ? 1 : 0,
+												'order_status' => sanitize_text_field( $_order_status ),
 												'payment_method' => sanitize_text_field( $payment_method ),
 												'billing_name' => sanitize_text_field( $billing_name ),
 												'billing_email' => sanitize_text_field( $billing_email ),

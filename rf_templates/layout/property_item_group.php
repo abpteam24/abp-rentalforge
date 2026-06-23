@@ -8,10 +8,10 @@
 			$ex_count = 0;
 			foreach ( $properties as $property ) {
 				if ( is_array( $property ) && sizeof( $property ) > 0 ) {
-					$location   = $abprf_infos['location'] ?? '';
-					$start_time = $abprf_infos['start_time'] ?? '';
-					$end_time   = $abprf_infos['end_time'] ?? '';
-					$post_id    = $property['post_id'] ?? '';
+					$location       = $abprf_infos['location'] ?? '';
+					$start_time     = $abprf_infos['start_time'] ?? '';
+					$end_time       = $abprf_infos['end_time'] ?? '';
+					$post_id        = $property['post_id'] ?? '';
 					$rent_rule      = $property['rent_rule'] ?? '';
 					$price_qty_info = json_decode( $property['price_qty_info'] ?? '', true ) ?: [];
 					if ( ! empty( $location ) && isset( $price_qty_info[ $location ] ) ) {
@@ -32,13 +32,13 @@
 						$ex_count ++;
 						?>
                         <div class="property_item <?php echo esc_attr( $abprf_infos['add_class'] ?? '' ); ?>">
-                            <div class="item_head"><?php ABPRF_Layout::image_icon(  $others['icon'] ?? '' ); ?></div>
+                            <div class="item_head"><?php ABPRF_Layout::image_icon( ($others['icon'] ?? '' ),''); ?></div>
                             <div class="property_details">
                                 <div class="property_title_price">
                                     <div class="_fd_column">
                                         <h4 class="_abprf">
 											<?php echo esc_html( $property_name ); ?>
-											<?php if ($property['brand'] ?? '' ) { ?>
+											<?php if ( ( $property['brand'] ?? '' ) && ABPRF_Function::on_off( 'brand' ) ) { ?>
                                                 <small class="_abprf _color_theme"><?php echo esc_html( ABPRF_Function::brand_value( $property['brand'] ?? '' ) ); ?></small>
 											<?php } ?>
                                         </h4>
@@ -47,7 +47,7 @@
 												<?php echo esc_html( ABPRF_Layout::item_condition( $rent_rule, $price_info ) ); ?>
                                             </div>
 											<?php ABPRF_Layout::item_deposit( $price_info ); ?>
-											<?php if ( $others['description'] ?? '' ) { ?>
+											<?php if ( ABPRF_Function::on_off( 'property_des' ) && $others['description'] ?? '' ) { ?>
                                                 <div class="item_condition"><?php echo esc_html( $others['description'] ?? '' ); ?></div>
 											<?php } ?>
                                         </div>

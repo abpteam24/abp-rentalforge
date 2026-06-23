@@ -11,10 +11,17 @@
 	div.abprf_admin .group_setting {display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	div.abprf_admin .group_setting > * {-webkit-flex-grow: 1;flex-grow: 1; -webkit-flex-shrink: 1; flex-shrink: 1; -webkit-flex-basis: 45%; flex-basis: 45%;}
 	div.abprf_admin .setting_item {padding: var(--rf_gap_xs); background: var(--rf_color_4); width: 100%;border: 2px solid var(--rf_color_green_pale); border-radius: var(--rf_br);min-width: 400px;}
-	div.abprf_admin .setting_item .setting_item{border-color: var(--rf_color_alert);background: var(--rf_color_alert);}
-	div.abprf_admin .setting_item .setting_item .setting_item{border-color: var(--rf_color_green_pale);background: var(--rf_color_green_pale)}
+	div.abprf_admin .setting_item .setting_item {border-color: var(--rf_color_alert);background: var(--rf_color_alert);}
+	div.abprf_admin .setting_item .setting_item .setting_item {border-color: var(--rf_color_green_pale);background: var(--rf_color_green_pale)}
 	div.abprf_admin .group_setting > .full_width,
 	div.abprf_admin .group_setting .full_width {-webkit-flex-basis: 100%; flex-basis: 100%;}
+	div.abprf_admin .abprf_css_var .group_setting > * {-webkit-flex-basis: 30%; flex-basis: 30%;}
+	div.abprf_admin .abprf_css_var .group_setting .setting_item {min-width: 300px;}
+	div.abprf_admin .abprf_css_var .group_setting [class*="_form_control"] {max-width: 100px;min-width: auto;width: auto}
+	div.abprf_admin .abprf_on_off .group_setting > * {-webkit-flex-basis: 30%; flex-basis: 30%;}
+	div.abprf_admin .abprf_on_off .group_setting .setting_item {min-width: 300px;}
+	div.abprf_admin .abprf_on_off .group_setting > .full_width,
+	div.abprf_admin .abprf_on_off .group_setting .full_width {-webkit-flex-basis: 100%; flex-basis: 100%;}
 	div.abprf_admin [class*="_form_control"] {max-width: 250px;min-width: 250px;}
 	div.abprf_admin [class*="_form_control"][class*="_w_full"] {max-width: 100%;min-width: 100%;}
 	div.abprf_admin textarea[class*="_form_control"] {max-width: 100%;}
@@ -25,9 +32,24 @@
 	div.abprf_admin .additional_service [class*="_form_control"] {min-width: auto;}
 	div.abprf_admin .faq_configuration [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
 	/*=============================*/
-	div.abprf_admin .multi_stock table{width: inherit;}
+	div.abprf_admin .multi_stock table {width: inherit;}
 	/*=============================*/
-	/*div.abprf_admin .feature_selection_area {display: -webkit-flex;display: flex;}*/
+	div.related_selection_area .related_selected { overflow: hidden;width: 100%;padding: 0 0 0 var(--rf_gap_xs); }
+	div.related_selection_area .related_selected_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
+	div.related_selection_area .selected_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); background: #FFF; width: max-content;min-width: 200px;max-width: max-content;height: 40px}
+	div.related_selection_area .selected_item:last-child { border-bottom: none; }
+	div.related_selection_area .selected_item .remove_feature { cursor: pointer;margin: 0 0 0 var(--rf_gap_xs); }
+	div.related_selection_area .feature_list { max-height: 200px;border: 1px solid var(--rf_color_theme); border-top: none; overflow-y: auto; position: absolute;top: 40px;left: -1px;right: -1px;z-index: 2222;opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;}
+	div.related_selection_area .feature_list.active { opacity: 1; visibility: visible; transform: translateY(0); }
+	div.related_selection_area .related_selection { width: max-content;max-width: 250px;position: relative; }
+	div.related_selection_area .feature_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); cursor: pointer; background: #FFF; }
+	div.related_selection_area .feature_item:last-child { border-bottom: none; }
+	div.related_selection_area .feature_item:hover { background: #F0F7FF; }
+	div.related_selection_area .feature_item span { color: #333; }
+	div.related_selection_area .feature_item .fs-add { color: #CCC;margin: 0 0 0 var(--rf_gap_xs); }
+	div.related_selection_area .feature_item:hover .fs-add { color: #378ADD; }
+	div.related_selection_area .feature_empty { padding: var(--rf_gap_xs); color: #BBB; text-align: center; }
+	/*=============================*/
 	div.feature_selection_area .feature_selected { overflow: hidden;width: 100%;padding: 0 0 0 var(--rf_gap_xs); }
 	div.feature_selection_area .selected_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	div.feature_selection_area .selected_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); background: #FFF; width: max-content;min-width: 200px;max-width: max-content;height: 40px}
@@ -51,9 +73,6 @@
 	div.abprf_admin .wp-color-result-text {display: none;}
 	div.abprf_admin button.wp-color-result {width: 40px;height: 40px;margin: 0 !important; border-right: none; border-radius: var(--rf_br) 0 0 var(--rf_br);border-color: var(--rf_color_border);}
 	div.abprf_admin .wp-picker-default {margin: 0 !important; border-left: none; border-radius: 0 var(--rf_br) var(--rf_br) 0;border-color: var(--rf_color_border);}
-	div.abprf_admin .abprf_css_var .group_setting > * {-webkit-flex-basis: 32%; flex-basis: 32%;}
-	div.abprf_admin .abprf_css_var .group_setting .setting_item {min-width: 300px;}
-	div.abprf_admin .abprf_css_var .group_setting [class*="_form_control"] {max-width: 100px;min-width: auto;width: auto}
 	/*=============================*/
 	#abprf_configuration {border: none;background-color: transparent;}
 	#abprf_configuration div.abprf_admin {max-width: 100%;width: 100%;border-radius: var(--rf_br_xl); margin: 0}

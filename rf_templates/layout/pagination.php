@@ -2,12 +2,12 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Exit if accessed directly
 	}
-	add_action( 'abprf_pagination_template', function ( $args ) {
-		$total    = array_key_exists( 'total', $args ) ? $args['total'] : 0;
-		$page     = array_key_exists( 'page_number', $args ) ? $args['page_number'] : 1;
-		$per_page = array_key_exists( 'page_item', $args ) ? $args['page_item'] : $total;
-		$style    = array_key_exists( 'style', $args ) ? $args['style'] : 'live';
-		if ( $total > $per_page ) {			?>
+	add_action( 'abprf_pagination_template', function ( $args = [] ) {
+		$total    = $args['total'] ?? 0;
+		$page     = $args['page_number'] ?? 1;
+		$per_page = $args['page_item'] ?? $total;
+		$style    = ( $args['style'] ?? 'live' ) ?: 'live';
+		if ( $total > $per_page ) { ?>
             <div class="pagination_area _all_center">
 				<?php if ( $style == 'live' ) { ?>
                     <button type="button" class="_btn_theme_min_200 live_pagination" data-load-more="0"><?php esc_html_e( 'View More', 'abp-rentalforge' ); ?></button>

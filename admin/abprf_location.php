@@ -157,7 +157,7 @@
                             </div>
                             <div data-collapse="#display_pickup" class="configuration_content <?php echo esc_attr( $display_pickup === 'on' ? 'rf_active' : '' ); ?>">
                                 <div class="insertable_area sortable_area _fd_column">
-									<?php if (!empty($pick_infos) ) {
+									<?php if ( ! empty( $pick_infos ) ) {
 										foreach ( $pick_infos as $key => $pick_info ) {
 											self::pickup_form( $pick_info, $key );
 										}
@@ -182,7 +182,7 @@
                             </div>
                             <div data-collapse="#display_drop" class="configuration_content <?php echo esc_attr( $display_drop === 'on' ? 'rf_active' : '' ); ?>">
                                 <div class="insertable_area sortable_area _fd_column">
-									<?php if ( !empty($drop_infos)) {
+									<?php if ( ! empty( $drop_infos ) ) {
 										foreach ( $drop_infos as $key => $drop_info ) {
 											self::drop_form( $drop_info, $key );
 										}
@@ -272,87 +272,87 @@
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
-				$msg            = '';
-				$cat_term_id    = isset( $_POST['loc_term_id'] ) ? sanitize_text_field( wp_unslash( $_POST['loc_term_id'] ) ) : '';
-				$name           = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
-				$slug           = isset( $_POST['slug'] ) ? sanitize_text_field( wp_unslash( $_POST['slug'] ) ) : '';
-				$description    = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : '';
-				$display_pickup = isset( $_POST['display_pickup'] ) ? sanitize_text_field( wp_unslash( $_POST['display_pickup'] ) ) : 'off';
-				$pick_ids       = isset( $_POST['pick_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['pick_id'] ) ) : [];
-				$pick_names     = isset( $_POST['pick_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['pick_name'] ) ) : [];
-				$display_drop   = isset( $_POST['display_drop'] ) ? sanitize_text_field( wp_unslash( $_POST['display_drop'] ) ) : 'off';
-				$drop_ids       = isset( $_POST['drop_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['drop_id'] ) ) : [];
-				$drop_names     = isset( $_POST['drop_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['drop_name'] ) ) : [];
-				$abprf_post_id  = isset( $_POST['abprf_post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['abprf_post_id'] ) ) : '';
-				$term_target_id = ! empty( $cat_term_id ) ? (int) $cat_term_id : 0;
-				if ( ! empty( $name ) ) {
-					if ( $term_target_id > 0 ) {
-						$result = wp_update_term( $term_target_id, 'abprf_location', [
-							'name' => $name,
-							'slug' => $slug,
-							'description' => $description,
-						] );
-					} else {
-						$result = wp_insert_term( $name, 'abprf_location', [
-							'slug' => $slug,
-							'description' => $description,
-						] );
-					}
-					if ( is_wp_error( $result ) ) {
-						wp_send_json_error( [ 'html' => '', 'msg' => $result->get_error_message() ] );
-					}
-					$term_id = is_array( $result ) ? ( $result['term_id'] ?? 0 ) : 0;
-					if ( $term_id > 0 ) {
-						$pickup_info = [];
-						$drop_info   = [];
-						$number      = 0;
-						$number_drop = 0;
-						if ( ! empty( $pick_names ) ) {
-							foreach ( $pick_names as $key => $pick ) {
-								if ( ! empty( $pick ) ) {
-									$pick_id = $pick_ids[ $key ] ?? '';
-									if ( empty( $pick_id ) ) {
-										$pick_id = 'pick_id_' . $number;
-										while ( array_key_exists( $pick_id, $pickup_info ) ) {
-											$number ++;
-											$pick_id = 'pick_id_' . $number;
-										}
-									}
-									$pickup_info[ $pick_id ] = $pick;
-								}
-							}
-						}
-						if ( ! empty( $drop_names ) ) {
-							foreach ( $drop_names as $key => $drop ) {
-								if ( ! empty( $drop ) ) {
-									$drop_id = $drop_ids[ $key ] ?? '';
-									if ( empty( $drop_id ) ) {
-										$drop_id = 'drop_id_' . $number_drop;
-										while ( array_key_exists( $drop_id, $drop_info ) ) {
-											$number_drop ++;
-											$drop_id = 'drop_id_' . $number_drop;
-										}
-									}
-									$drop_info[ $drop_id ] = $drop;
-								}
-							}
-						}
-						$options = [
-							'display_pickup' => $display_pickup,
-							'pick_info' => $pickup_info,
-							'display_drop' => $display_drop,
-							'drop_info' => $drop_info,
-						];
-						$this->update_location( $options, $term_id );
-						$msg = __( 'Location Saved Successfully !', 'abp-rentalforge' );
-					} else {
-						wp_send_json_error( [ 'html' => '', 'msg' => __( 'Failed to resolve location context.', 'abp-rentalforge' ) ] );
-					}
-				} else {
+				$post_int       = fn( $key, $default = 0 ) => isset( $_POST[ $key ] ) ? absint( $_POST[ $key ] ) : $default;
+				$post_val       = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$post_slug      = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_title( wp_unslash( $_POST[ $key ] ) ) : $default;
+				$post_array     = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
+				$cat_term_id    = $post_int( 'loc_term_id' );
+				$name           = $post_val( 'name' );
+				$slug           = $post_slug( 'slug' );
+				$description    = $post_val( 'description' );
+				$display_pickup = $post_val( 'display_pickup', 'off' );
+				$display_drop   = $post_val( 'display_drop', 'off' );
+				$abprf_post_id  = $post_int( 'abprf_post_id' );
+				$pick_ids       = $post_array( 'pick_id' );
+				$pick_names     = $post_array( 'pick_name' );
+				$drop_ids       = $post_array( 'drop_id' );
+				$drop_names     = $post_array( 'drop_name' );
+				if ( empty( $name ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Location Name cannot be blank!', 'abp-rentalforge' ) ] );
 				}
+				if ( $cat_term_id > 0 ) {
+					$result = wp_update_term( $cat_term_id, 'abprf_location', [
+						'name' => $name,
+						'slug' => $slug,
+						'description' => $description,
+					] );
+				} else {
+					$result = wp_insert_term( $name, 'abprf_location', [
+						'slug' => $slug,
+						'description' => $description,
+					] );
+				}
+				if ( is_wp_error( $result ) ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => $result->get_error_message() ] );
+				}
+				$term_id = absint( $result['term_id'] ?? 0 );
+				if ( $term_id <= 0 ) {
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Failed to resolve location context.', 'abp-rentalforge' ) ] );
+				}
+				$pickup_info = [];
+				$drop_info   = [];
+				$number      = 0;
+				$number_drop = 0;
+				if ( ! empty( $pick_names ) ) {
+					foreach ( $pick_names as $key => $pick ) {
+						if ( ! empty( $pick ) ) {
+							$pick_id = $pick_ids[ $key ] ?? '';
+							if ( empty( $pick_id ) ) {
+								$pick_id = 'pick_id_' . $number;
+								while ( isset( $pickup_info[ $pick_id ] ) ) {
+									$number ++;
+									$pick_id = 'pick_id_' . $number;
+								}
+							}
+							$pickup_info[ $pick_id ] = $pick;
+						}
+					}
+				}
+				if ( ! empty( $drop_names ) ) {
+					foreach ( $drop_names as $key => $drop ) {
+						if ( ! empty( $drop ) ) {
+							$drop_id = $drop_ids[ $key ] ?? '';
+							if ( empty( $drop_id ) ) {
+								$drop_id = 'drop_id_' . $number_drop;
+								while ( isset( $drop_info[ $drop_id ] ) ) {
+									$number_drop ++;
+									$drop_id = 'drop_id_' . $number_drop;
+								}
+							}
+							$drop_info[ $drop_id ] = $drop;
+						}
+					}
+				}
+				$options = [
+					'display_pickup' => $display_pickup,
+					'pick_info' => $pickup_info,
+					'display_drop' => $display_drop,
+					'drop_info' => $drop_info,
+				];
+				$this->update_location( $options, $term_id );
+				$msg = __( 'Location Saved Successfully !', 'abp-rentalforge' );
 				ob_start();
-				if ( ! empty( $abprf_post_id ) && (int) $abprf_post_id > 0 ) {
+				if ( $abprf_post_id > 0 ) {
 					$_location = ABPRF_Function::get_post_info( $abprf_post_id, 'abprf_location' );
 					self::location_selection( $_location );
 				} else {

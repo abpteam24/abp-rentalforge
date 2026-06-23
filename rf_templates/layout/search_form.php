@@ -2,14 +2,17 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		exit; // Exit if accessed directly
 	}
-	add_action( 'abprf_search_form_template', function ( $abprf_infos ) {
-		$admin_order = $abprf_infos['admin_order'] ?? '';
+	add_action( 'abprf_search_form_template', function ( $abprf_infos = [] ) {
+		$admin_order  = $abprf_infos['admin_order'] ?? '';
 		$global_order = $abprf_infos['global_order'] ?? '';
-		$post_id     = $abprf_infos['post_id'] ?? '';
-		$location    = $abprf_infos['abprf_location'] ?? '';
-		$params_form = $abprf_infos['form'] ?? 'inline';
-		$rent_rule   = ($abprf_infos['rent_rule'] ?? null) ?: (!empty($post_id)?ABPRF_Function::get_post_info($post_id,'rent_rule'):null);
-		$brand_icon  = ABPRF_Function::icon();
+		$post_id      = absint( $abprf_infos['post_id'] ?? 0 );
+		$location     = $abprf_infos['abprf_location'] ?? '';
+		$params_form  = $abprf_infos['form'] ?? 'inline';
+		$brand_icon   = ABPRF_Function::icon();
+		$rent_rule    = $abprf_infos['rent_rule'] ?? null;
+		if ( empty( $rent_rule ) && $post_id > 0 ) {
+			$rent_rule = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
+		}
 		if ( isset( $_SESSION['abprf_cart_success'] ) && empty( $admin_order ) ) {
 			?>
             <div class="toast_notice" data-type="success">
@@ -23,57 +26,70 @@
 		$upcoming_date = ! empty( $upcoming_date ) ? gmdate( 'Y-m-d', strtotime( $upcoming_date ) ) : '';
 		?>
         <div id="abprf_search_area">
-            <h2 class="_abprf_mar_b_xs"><span class="_mar_r_xxs">📅</span><?php esc_html_e( 'Select Rental Period', 'abp-rentalforge' ); ?></h2>
-            <form class="abprf_property_form <?php echo esc_attr( $params_form == 'column' ? '_form_column' : '_form_inline' ); ?>" method="post" action="">
-				<?php if ( ! empty( $post_id ) && empty( $global_order ) ) { ?>
+            <h2 class="_abprf_mar_b_xs">
+                <span class="_mar_r_xxs">📅</span><?php esc_html_e( 'Select Rental Period', 'abp-rentalforge' ); ?>
+            </h2>
+            <form class="abprf_property_form <?php echo esc_attr( $params_form === 'column' ? '_form_column' : '_form_inline' ); ?>" method="post" action="">
+				<?php if ( $post_id > 0 && empty( $global_order ) ) { ?>
                     <input type="hidden" name="post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
 				<?php } else {
 					ABPRF_Layout::filter_post_list( $post_id );
 				} ?>
-                    <input type="hidden" name="rent_rule" value="<?php echo esc_attr( $rent_rule ); ?>"/>
-					<?php ABPRF_Layout::location_select( $post_id, $location ); ?>
-					<?php if ( $rent_rule == 'monthly' ) {
-						$all_dates = ABPRF_Function::get_start_month( $post_id, $all_dates );
-						//echo '<pre>';print_r( $all_dates);					echo '</pre>';
-						if ( ! empty( $all_dates ) ) {
-							$first_array   = current( $all_dates );
-							$upcoming_date = is_array( $first_array ) && array_key_exists( 'value', $first_array ) ? $first_array['value'] : '';
-							$upcoming_date = ! empty( $upcoming_date ) ? gmdate( 'Y-m-d', strtotime( $upcoming_date ) ) : '';
-							?>
-                            <div class="start_date _input_item"><?php ABPRF_Layout::rent_start_month( $all_dates ); ?></div>
-                            <div class="end_date _input_item"><?php ABPRF_Layout::rent_end_month( $post_id, $upcoming_date ); ?></div>
-						<?php }
-					} ?>
-					<?php if ( $rent_rule == 'hourly' || $rent_rule == 'daily' || $rent_rule == 'multi_day' || $rent_rule == 'multi_month' || empty($post_id)) { ?>
-                        <div class="start_date _input_item"><?php ABPRF_Layout::rent_start_date( $all_dates, $upcoming_date,$post_id ); ?></div>
-					<?php } ?>
-					<?php if ( $rent_rule == 'hourly' || $rent_rule == 'multi_day' ) { ?>
-                        <div class="start_time _input_item">
-                            <label>
-                                <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Pickup Time', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
-                                <select class="_form_control" name="start_time"></select>
-                            </label>
-                        </div>
-					<?php } ?>
-					<?php if ( $rent_rule == 'daily' || $rent_rule == 'multi_day' || $rent_rule == 'multi_month' || empty($post_id) ) {
-						$all_end_dates = ABPRF_Function::get_end_dates( $post_id, $upcoming_date, $all_dates );
+                <input type="hidden" name="rent_rule" value="<?php echo esc_attr( $rent_rule ); ?>"/>
+				<?php
+					ABPRF_Layout::location_select( $post_id, $location );
+					if ( $rent_rule === 'monthly' && ! empty( $all_dates ) ) {
+						$all_dates     = ABPRF_Function::get_start_month( $post_id, $all_dates );
+						$first_array   = current( $all_dates );
+						$upcoming_date = $first_array['value'] ?? '';
+						$upcoming_date = ! empty( $upcoming_date ) ? gmdate( 'Y-m-d', strtotime( $upcoming_date ) ) : '';
 						?>
-                        <div class="end_date _input_item"><?php ABPRF_Layout::rent_end_date( $all_end_dates,$post_id ); ?></div>
-					<?php } ?>
-					<?php if ( $rent_rule == 'hourly' || $rent_rule == 'multi_day' ) { ?>
-                        <div class="end_time _input_item">
-                            <label>
-                                <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Drop-off Time', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
-                                <select class="_form_control" name="end_time"></select>
-                            </label>
+                        <div class="start_date _input_item"><?php ABPRF_Layout::rent_start_month( $all_dates ); ?></div>
+                        <div class="end_date _input_item"><?php ABPRF_Layout::rent_end_month( $post_id, $upcoming_date ); ?></div>
+						<?php
+					}
+					$is_standard_rule = in_array( $rent_rule, [ 'hourly', 'daily', 'multi_day', 'multi_month' ], true );
+					if ( $is_standard_rule || $post_id === 0 ) {
+						?>
+                        <div class="start_date _input_item">
+							<?php ABPRF_Layout::rent_start_date( $all_dates, $upcoming_date, $post_id ); ?>
                         </div>
 					<?php } ?>
-                    <div class="_input_item_fj_between_fd_column">
-                        <span></span>
-                        <button type="submit" class="_btn_theme"><?php ABPRF_Layout::image_icon( $brand_icon, '_mar_r_xs' ); ?><?php esc_html_e( 'Check Availability', 'abp-rentalforge' ); ?></button>
+
+				<?php if ( $rent_rule === 'hourly' || $rent_rule === 'multi_day' ) { ?>
+                    <div class="start_time _input_item">
+                        <label>
+                            <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Pickup Time', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                            <select class="_form_control" name="start_time"></select>
+                        </label>
                     </div>
+				<?php } ?>
+
+				<?php if ( $rent_rule === 'daily' || $rent_rule === 'multi_day' || $rent_rule === 'multi_month' || $post_id === 0 ) {
+					$all_end_dates = ABPRF_Function::get_end_dates( $post_id, $upcoming_date, $all_dates );
+					?>
+                    <div class="end_date _input_item">
+						<?php ABPRF_Layout::rent_end_date( $all_end_dates, $post_id ); ?>
+                    </div>
+				<?php } ?>
+
+				<?php if ( $rent_rule === 'hourly' || $rent_rule === 'multi_day' ) { ?>
+                    <div class="end_time _input_item">
+                        <label>
+                            <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Drop-off Time', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                            <select class="_form_control" name="end_time"></select>
+                        </label>
+                    </div>
+				<?php } ?>
+                <div class="_input_item_fj_between_fd_column">
+                    <span></span>
+                    <button type="submit" class="_btn_theme">
+						<?php ABPRF_Layout::image_icon( $brand_icon ); ?>
+						<?php esc_html_e( 'Check Availability', 'abp-rentalforge' ); ?>
+                    </button>
+                </div>
             </form>
             <div class="date_details"></div>
         </div>
 		<?php
-	}, 10, 2 );
+	} );

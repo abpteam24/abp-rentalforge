@@ -31,6 +31,7 @@
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce' => wp_create_nonce( 'abprf_admin_ajax_nonce' ),
 					'icon_url' => ABPRF_URL . 'assets/js/abprf_icons.json',
+					'related_info' => wp_json_encode( ABPRF_Function::related_info_js( get_the_ID() ) ),
 					'feature_data' => wp_json_encode( ABPRF_Function::get_option( 'abprf_feature_js' ) ),
 					'msg' => [
 						'confirm_delete' => __( 'Are you sure you want to delete this item?', 'abp-rentalforge' ),
@@ -56,9 +57,12 @@
 						'wc_installed_success' => __( 'Woocommerce Downloaded And Installed successfully ..... !! ', 'abp-rentalforge' ),
 						'wc_installed' => __( 'Woocommerce Installed successfully.... !  ', 'abp-rentalforge' ),
 						'create_post_page' => $label . ' ' . __( 'Page Creating ........!', 'abp-rentalforge' ),
+						'search_related' => __( 'Search Post ........', 'abp-rentalforge' ),
 						'search_feature' => __( 'Search Feature ........', 'abp-rentalforge' ),
+						'no_post' => __( 'No More Post Found !', 'abp-rentalforge' ),
 						'no_feature' => __( 'No More Feature Found !', 'abp-rentalforge' ),
 						'no_feature_selected' => __( 'No feature selected !', 'abp-rentalforge' ),
+						'no_post_selected' => __( 'No Post selected !', 'abp-rentalforge' ),
 					],
 				] );
 				wp_enqueue_style( 'abprf_admin', ABPRF_URL . 'assets/css/abprf_admin.css', array(), ABPRF_VERSION );
@@ -71,6 +75,8 @@
 					wp_enqueue_style( 'select2' );
 					wp_enqueue_script( 'select2' );
 				}
+				wp_enqueue_style( 'abprf_slick', ABPRF_URL . 'assets/css/slick.css', array(), ABPRF_VERSION );
+				wp_enqueue_script( 'abprf_slick', ABPRF_URL . 'assets/js/slick.min.js', array( 'jquery' ), ABPRF_VERSION, true );
 				$this->global_enqueue();
 				do_action( 'abprf_frontend_enqueue' );
 			}
@@ -105,7 +111,7 @@
 						'date_format' => ABPRF_JS_Date_Format,
 					] );
 				}
-				$abprf_css_var = ABPRF_Function::get_option( 'abprf_css_var' );
+				$abprf_css_var   = ABPRF_Function::get_option( 'abprf_css_var' );
 				$default_color   = ( $abprf_css_var['color_default'] ?? null ) ?: '#303030';
 				$color_theme     = ( $abprf_css_var['color_theme'] ?? null ) ?: '#95951c';
 				$alternate_color = ( $abprf_css_var['color_theme_alternate'] ?? null ) ?: '#fff';
@@ -113,25 +119,25 @@
 				$bg_section      = ( $abprf_css_var['bg_section'] ?? null ) ?: '#FAFCFE';
 				$bg_button       = ( $abprf_css_var['bg_button'] ?? null ) ?: '#222';
 				$color_button    = ( $abprf_css_var['color_button'] ?? null ) ?: $alternate_color;
-				$color_theme_ee = $color_theme . 'ee';
-				$color_theme_cc = $color_theme . 'cc';
-				$color_theme_aa = $color_theme . 'aa';
-				$color_theme_88 = $color_theme . '88';
-				$color_theme_77 = $color_theme . '77';
-				$default_br = ! empty( $abprf_css_var['br_default'] ) ? $abprf_css_var['br_default'] . 'px' : '0';
-				$br_xl=! empty( $abprf_css_var['br_default'] ) ? $abprf_css_var['br_default']*2 . 'px' : '0';
-				$fs_h1      = ! empty( $abprf_css_var['fs_h1'] ) ? $abprf_css_var['fs_h1'] . 'px' : '35px';
-				$fs_h2      = ! empty( $abprf_css_var['fs_h2'] ) ? $abprf_css_var['fs_h2'] . 'px' : '30px';
-				$fs_h3      = ! empty( $abprf_css_var['fs_h3'] ) ? $abprf_css_var['fs_h3'] . 'px' : '25px';
-				$fs_h4      = ! empty( $abprf_css_var['fs_h4'] ) ? $abprf_css_var['fs_h4'] . 'px' : '20px';
-				$fs_h5      = ! empty( $abprf_css_var['fs_h5'] ) ? $abprf_css_var['fs_h5'] . 'px' : '17px';
-				$fs_h6      = ! empty( $abprf_css_var['fs_h6'] ) ? $abprf_css_var['fs_h6'] . 'px' : '15px';
-				$fs_label   = ! empty( $abprf_css_var['fs_label'] ) ? $abprf_css_var['fs_label'] . 'px' : '14px';
-				$default_fs = ! empty( $abprf_css_var['fs_default'] ) ? $abprf_css_var['fs_default'] . 'px' : '12px';
-				$button_fs  = ! empty( $abprf_css_var['fs_button'] ) ? $abprf_css_var['fs_button'] . 'px' : '14px';
-				$off        = esc_html__( 'OFF', 'abp-rentalforge' );
-				$on         = esc_html__( 'ON', 'abp-rentalforge' );
-				$abprf_var  =
+				$color_theme_ee  = $color_theme . 'ee';
+				$color_theme_cc  = $color_theme . 'cc';
+				$color_theme_aa  = $color_theme . 'aa';
+				$color_theme_88  = $color_theme . '88';
+				$color_theme_77  = $color_theme . '77';
+				$default_br      = ! empty( $abprf_css_var['br_default'] ) ? $abprf_css_var['br_default'] . 'px' : '0';
+				$br_xl           = ! empty( $abprf_css_var['br_default'] ) ? $abprf_css_var['br_default'] * 2 . 'px' : '0';
+				$fs_h1           = ! empty( $abprf_css_var['fs_h1'] ) ? $abprf_css_var['fs_h1'] . 'px' : '35px';
+				$fs_h2           = ! empty( $abprf_css_var['fs_h2'] ) ? $abprf_css_var['fs_h2'] . 'px' : '30px';
+				$fs_h3           = ! empty( $abprf_css_var['fs_h3'] ) ? $abprf_css_var['fs_h3'] . 'px' : '25px';
+				$fs_h4           = ! empty( $abprf_css_var['fs_h4'] ) ? $abprf_css_var['fs_h4'] . 'px' : '20px';
+				$fs_h5           = ! empty( $abprf_css_var['fs_h5'] ) ? $abprf_css_var['fs_h5'] . 'px' : '17px';
+				$fs_h6           = ! empty( $abprf_css_var['fs_h6'] ) ? $abprf_css_var['fs_h6'] . 'px' : '15px';
+				$fs_label        = ! empty( $abprf_css_var['fs_label'] ) ? $abprf_css_var['fs_label'] . 'px' : '14px';
+				$default_fs      = ! empty( $abprf_css_var['fs_default'] ) ? $abprf_css_var['fs_default'] . 'px' : '12px';
+				$button_fs       = ! empty( $abprf_css_var['fs_button'] ) ? $abprf_css_var['fs_button'] . 'px' : '14px';
+				$off             = esc_html__( 'OFF', 'abp-rentalforge' );
+				$on              = esc_html__( 'ON', 'abp-rentalforge' );
+				$abprf_var       =
 					":root {
 						--rf_br: {$default_br};						
 						--rf_br_xl: {$br_xl};						

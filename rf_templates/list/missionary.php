@@ -5,10 +5,10 @@
 	add_action( 'abprf_missionary_template', function ( $params = [] ) {
 		//echo '<pre>';print_r($params);echo '</pre>';
 		$global_order = $abprf_infos['global_order'] ?? '';
-		$post_ids     = array_key_exists( 'all_post', $params ) && $params['all_post'] ? $params['all_post'] : [];
+		$post_ids     = $params['all_post'] ?? [];
 		if ( ! empty( $post_ids ) && sizeof( $post_ids ) > 0 ) {
-			$column            = array_key_exists( 'column', $params ) ? $params['column'] : 3;
-			$show_post         = array_key_exists( 'show', $params ) && $params['show'] ? $params['show'] : $column * 3;
+			$column            = $params['column'] ?? 3;
+			$show_post         = absint( ( $params['show'] ?? 0 ) ?: ( $column * 3 ) );
 			$post_count        = 0;
 			$args['total']     = sizeof( $post_ids );
 			$args['page_item'] = $show_post;
@@ -25,8 +25,11 @@
 							<?php do_action( 'abprf_category', $post_id, 'ribbon' ); ?>
 							<?php ABPRF_Layout::image( $post_id ); ?>
 							<?php if ( ! empty( $global_order ) ) { ?>
-                                <button type="button" class="_btn_theme_xs_w_full select_post" data-post_id="<?php echo esc_attr($post_id); ?>">
-	                                <?php echo esc_html( $title ); ?>
+                                <button type="button" class="_btn_theme_xs_w_full select_post" data-post_id="<?php echo esc_attr( $post_id ); ?>">
+									<?php if ( ABPRF_Function::on_off( 'post_icon' ) ) {
+										ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ));
+									}
+										echo esc_html( $title ); ?>
                                 </button>
 							<?php } else { ?>
                                 <a class="_abprf list_title" href="<?php echo esc_url( get_the_permalink( $post_id ) ); ?>" target="_blank"><?php echo esc_html( $title ); ?></a>

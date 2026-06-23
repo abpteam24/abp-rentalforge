@@ -149,37 +149,48 @@
 
 				return 0;
 			}
-			public static function already_in_cart( $post_id, $bp, $dp, $bp_date, $seat_name ) {
+			public static function already_in_cart( $post_id, $bp, $dp, $bp_date, $seat_name ): int {
 				$count = 0;
 				if ( is_admin() && str_contains( wp_get_referer(), 'admin_order' ) ) {
 					return $count;
 				}
-				global $woocommerce;
-				$cart_items = $woocommerce->cart->get_cart();
-				if ( is_array( $cart_items ) && sizeof( $cart_items ) > 0 ) {
-					foreach ( $cart_items as $cart_item ) {
-						$cart_post_id = array_key_exists( 'post_id', $cart_item ) ? $cart_item['post_id'] : '';
-						$cart_date    = array_key_exists( 'bp_time', $cart_item ) ? $cart_item['bp_time'] : '';
-						$cart_date    = $cart_date ? gmdate( 'Y-m-d', strtotime( $cart_date ) ) : '';
-						$bp_date      = $bp_date ? gmdate( 'Y-m-d', strtotime( $bp_date ) ) : '';
-						if ( $cart_post_id == $post_id && strtotime( $cart_date ) == strtotime( $bp_date ) ) {
-							$routes = self::get_post_info( $post_id, 'route_direction', [] );
-							if ( sizeof( $routes ) > 0 ) {
-								$cart_bp = array_key_exists( 'bp', $cart_item ) ? $cart_item['bp'] : '';
-								$cart_dp = array_key_exists( 'dp', $cart_item ) ? $cart_item['dp'] : '';
-								$sp      = array_search( $bp, $routes );
-								$ep      = array_search( $dp, $routes );
-								if ( in_array( $cart_bp, array_slice( $routes, 0, $ep ) ) && in_array( $cart_dp, array_slice( $routes, $sp + 1 ) ) ) {
-									$seat_infos = array_key_exists( 'ticket_info', $cart_item ) ? $cart_item['ticket_info'] : '';
-									if ( sizeof( $seat_infos ) > 0 ) {
-										foreach ( $seat_infos as $seat_info ) {
-											if ( array_key_exists( 'seat', $seat_info ) && strtolower( $seat_info['seat'] ) == strtolower( $seat_name ) ) {
-												$count += array_key_exists( 'qty', $cart_item ) ? $cart_item['qty'] : 1;
-											}
-										}
-									}
-								}
-							}
+				$formatted_bp_date = $bp_date ? gmdate( 'Y-m-d', strtotime( $bp_date ) ) : '';
+				if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+					return $count;
+				}
+				$cart_items = WC()->cart->get_cart();
+				if ( ! is_array( $cart_items ) || empty( $cart_items ) ) {
+					return $count;
+				}
+				$routes = self::get_post_info( $post_id, 'route_direction', [] );
+				if ( ! is_array( $routes ) || empty( $routes ) ) {
+					return $count;
+				}
+				$sp          = array_search( $bp, $routes, true );
+				$ep          = array_search( $dp, $routes, true );
+				$target_seat = strtolower( $seat_name );
+				foreach ( $cart_items as $cart_item ) {
+					$cart_post_id = absint( $cart_item['post_id'] ?? 0 );
+					$cart_date    = $cart_item['bp_time'] ?? '';
+					$cart_date    = $cart_date ? gmdate( 'Y-m-d', strtotime( $cart_date ) ) : '';
+					if ( $cart_post_id !== absint( $post_id ) || $cart_date !== $formatted_bp_date ) {
+						continue;
+					}
+					$cart_bp     = $cart_item['bp'] ?? '';
+					$cart_dp     = $cart_item['dp'] ?? '';
+					$is_bp_valid = in_array( $cart_bp, array_slice( $routes, 0, $ep ), true );
+					$is_dp_valid = in_array( $cart_dp, array_slice( $routes, $sp + 1 ), true );
+					if ( ! $is_bp_valid || ! $is_dp_valid ) {
+						continue;
+					}
+					$seat_infos = $cart_item['ticket_info'] ?? [];
+					if ( ! is_array( $seat_infos ) || empty( $seat_infos ) ) {
+						continue;
+					}
+					foreach ( $seat_infos as $seat_info ) {
+						$current_seat = strtolower( $seat_info['seat'] ?? '' );
+						if ( $current_seat === $target_seat ) {
+							$count += absint( $cart_item['qty'] ?? 1 );
 						}
 					}
 				}
@@ -267,51 +278,45 @@
 
 				return $cart_item;
 			}
-			public static function check_date_exit( $abprf_infos ): bool {
-				$post_id         = $abprf_infos['post_id'] ?? 0;
-				$rent_rule       = $abprf_infos['rent_rule'] ?? self::get_post_info( $post_id, 'rent_rule' );
+			public static function check_date_exit( $abprf_infos = [] ): bool {
+				$post_id         = absint( $abprf_infos['post_id'] ?? 0 );
 				$start_date_time = $abprf_infos['start_time'] ?? '';
 				$end_date_time   = $abprf_infos['end_time'] ?? '';
-				if ( ! empty( $post_id ) && $post_id > 0 && ! empty( $start_date_time ) && ! empty( $end_date_time ) && ! empty( $rent_rule ) ) {
-					$all_dates     = self::get_start_dates( $post_id );
-					$start         = gmdate( 'Y-m-d', strtotime( $start_date_time ) );
-					$end           = gmdate( 'Y-m-d', strtotime( $end_date_time ) );
-					$all_end_dates = $rent_rule == 'hourly' ? $all_dates : self::get_end_dates( $post_id, $start, $all_dates );
-					if ( in_array( $start, $all_dates ) && in_array( $end, $all_end_dates ) ) {
-						if ( $rent_rule == 'hourly' || $rent_rule == 'multi_day' ) {
-							$start_time = gmdate( 'H:i', strtotime( $start_date_time ) );
-							$end_time   = gmdate( 'H:i', strtotime( $end_date_time ) );
-							$time_list  = self::get_time( $post_id );
-							if ( ! empty( $time_list ) ) {
-								$day_name = strtolower( gmdate( 'l', strtotime( $start ) ) );
-								if ( array_key_exists( $start, $time_list ) ) {
-									$time_slots = $time_list[ $start ];
-								} elseif ( array_key_exists( $day_name, $time_list ) ) {
-									$time_slots = $time_list[ $day_name ];
-								} else {
-									$time_slots = $time_list['slot'] ?? '';
-								}
-								if ( ! empty( $time_slots ) && $rent_rule == 'hourly' && self::check_time_slot_exit( $time_slots, $start_time ) && self::check_time_slot_exit( $time_slots, $end_time ) ) {
-									return true;
-								}
-								if ( ! empty( $time_slots ) && $rent_rule == 'multi_day' && self::check_time_slot_exit( $time_slots, $start_time ) ) {
-									$day_name = strtolower( gmdate( 'l', strtotime( $end ) ) );
-									if ( array_key_exists( $end, $time_list ) ) {
-										$time_slots = $time_list[ $end ];
-									} elseif ( array_key_exists( $day_name, $time_list ) ) {
-										$time_slots = $time_list[ $day_name ];
-									} else {
-										$time_slots = $time_list['slot'] ?? '';
-									}
-									if ( ! empty( $time_slots ) && self::check_time_slot_exit( $time_slots, $end_time ) ) {
-										return true;
-									}
-								}
-							}
-						} else {
-							return true;
-						}
-					}
+				$rent_rule       = $abprf_infos['rent_rule'] ?? self::get_post_info( $post_id, 'rent_rule' );
+				if ( $post_id <= 0 || empty( $start_date_time ) || empty( $end_date_time ) || empty( $rent_rule ) ) {
+					return false;
+				}
+				$start         = gmdate( 'Y-m-d', strtotime( $start_date_time ) );
+				$end           = gmdate( 'Y-m-d', strtotime( $end_date_time ) );
+				$all_dates     = self::get_start_dates( $post_id );
+				$all_end_dates = ( $rent_rule === 'hourly' ) ? $all_dates : self::get_end_dates( $post_id, $start, $all_dates );
+				if ( ! in_array( $start, $all_dates, true ) || ! in_array( $end, $all_end_dates, true ) ) {
+					return false;
+				}
+				if ( $rent_rule !== 'hourly' && $rent_rule !== 'multi_day' ) {
+					return true;
+				}
+				$time_list = self::get_time( $post_id );
+				if ( empty( $time_list ) ) {
+					return false;
+				}
+				$start_time     = gmdate( 'H:i', strtotime( $start_date_time ) );
+				$end_time       = gmdate( 'H:i', strtotime( $end_date_time ) );
+				$start_day_name = strtolower( gmdate( 'l', strtotime( $start ) ) );
+				$time_slots     = $time_list[ $start ] ?? $time_list[ $start_day_name ] ?? $time_list['slot'] ?? '';
+				if ( empty( $time_slots ) ) {
+					return false;
+				}
+				if ( $rent_rule === 'hourly' ) {
+					return self::check_time_slot_exit( $time_slots, $start_time ) && self::check_time_slot_exit( $time_slots, $end_time );
+				}
+				if ( ! self::check_time_slot_exit( $time_slots, $start_time ) ) {
+					return false;
+				}
+				$end_day_name   = strtolower( gmdate( 'l', strtotime( $end ) ) );
+				$end_time_slots = $time_list[ $end ] ?? $time_list[ $end_day_name ] ?? $time_list['slot'] ?? '';
+				if ( ! empty( $end_time_slots ) && self::check_time_slot_exit( $end_time_slots, $end_time ) ) {
+					return true;
 				}
 
 				return false;
@@ -485,7 +490,7 @@
 						$specific_dates = $date_infos['specific_dates'] ?? [];
 						if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
 							foreach ( $specific_dates as $specific_date ) {
-								$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
+								$date_item = ( is_array( $specific_date ) ? ( $specific_date['date'] ?? '' ) : '' );
 								if ( ! empty( $date_item ) ) {
 									$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
 									if ( strtotime( $date_item ) >= strtotime( $now ) ) {
@@ -525,7 +530,7 @@
 						$off_date_range = $date_infos['off_date_range'] ?? [];
 						if ( is_array( $off_date_range ) && sizeof( $off_date_range ) > 0 ) {
 							foreach ( $off_date_range as $off_date ) {
-								if ( is_array( $off_date ) && array_key_exists( 'from', $off_date ) && $off_date['from'] && array_key_exists( 'to', $off_date ) && $off_date['to'] ) {
+								if ( is_array( $off_date ) && ( $off_date['from'] ?? '' ) !== '' && ( $off_date['to'] ?? '' ) !== '' ) {
 									$from_date      = gmdate( 'Y-m-d', strtotime( $off_date['from'] ) );
 									$to_date        = gmdate( 'Y-m-d', strtotime( $off_date['to'] ) );
 									$off_date_lists = self::date_separate_period( $from_date, $to_date );
@@ -567,7 +572,7 @@
 						$special_on_dates = $date_infos['special_on_dates'] ?? [];
 						if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
 							foreach ( $special_on_dates as $special_on_date ) {
-								$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
+								$date_item = is_array( $special_on_date ) ? ( $special_on_date['date'] ?? '' ) : '';
 								if ( ! empty( $date_item ) ) {
 									$date_item = gmdate( 'Y-m-d', strtotime( $date_item ) );
 									if ( strtotime( $date_item ) >= strtotime( $now ) ) {
@@ -617,55 +622,68 @@
 					update_option( 'abprf_time_info_js', $all_js_slots );
 				}
 			}
-			public static function get_time_slot( $date_infos ): array {
+			public static function get_time_slot( $date_infos = [] ): array {
+				if ( ! is_array( $date_infos ) ) {
+					return [];
+				}
 				$all_slots            = [];
-				$date_type            = array_key_exists( 'date_type', $date_infos ) ? $date_infos['date_type'] : 'periodic_date';
-				$operation_time_start = array_key_exists( 'operation_time_start', $date_infos ) && ! empty( $date_infos['operation_time_start'] ) ? $date_infos['operation_time_start'] : "00:00";
-				$operation_time_end   = array_key_exists( 'operation_time_end', $date_infos ) && ! empty( $date_infos['operation_time_end'] ) ? $date_infos['operation_time_end'] : "23:59";
+				$date_type            = $date_infos['date_type'] ?? 'periodic_date';
+				$operation_time_start = ( $date_infos['operation_time_start'] ?? '' ) ?: '00:00';
+				$operation_time_end   = ( $date_infos['operation_time_end'] ?? '' ) ?: '23:59';
 				if ( strtotime( $operation_time_start ) < strtotime( $operation_time_end ) ) {
 					$all_slots['slot'] = $operation_time_start . '-' . $operation_time_end;
 				}
-				if ( $date_type == 'specific_date' ) {
-					$specific_dates = array_key_exists( 'specific_dates', $date_infos ) ? $date_infos['specific_dates'] : [];
-					if ( is_array( $specific_dates ) && sizeof( $specific_dates ) > 0 ) {
+				if ( $date_type === 'specific_date' ) {
+					$specific_dates = $date_infos['specific_dates'] ?? [];
+					if ( is_array( $specific_dates ) && ! empty( $specific_dates ) ) {
 						foreach ( $specific_dates as $specific_date ) {
-							$date_item = is_array( $specific_date ) && array_key_exists( 'date', $specific_date ) ? $specific_date['date'] : '';
-							if ( ! empty( $date_item ) ) {
-								$start_time = is_array( $specific_date ) && array_key_exists( 'start', $specific_date ) ? $specific_date['start'] : '';
-								$end_time   = is_array( $specific_date ) && array_key_exists( 'end', $specific_date ) ? $specific_date['end'] : '';
-								if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime( $start_time ) < strtotime( $end_time ) ) {
+							if ( ! is_array( $specific_date ) ) {
+								continue;
+							}
+							$date_item = $specific_date['date'] ?? '';
+							if ( $date_item === '' ) {
+								continue;
+							}
+							$start_time = $specific_date['start'] ?? '';
+							$end_time   = $specific_date['end'] ?? '';
+							if ( $start_time !== '' && $end_time !== '' && strtotime( $start_time ) < strtotime( $end_time ) ) {
+								$all_slots[ $date_item ] = $start_time . '-' . $end_time;
+							}
+						}
+					}
+				} else {
+					$date_rule       = $date_infos['date_rule'] ?? '';
+					$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
+					if ( in_array( 'special_on_dates', $date_rule_array, true ) ) {
+						$special_on_dates = $date_infos['special_on_dates'] ?? [];
+						if ( is_array( $special_on_dates ) && ! empty( $special_on_dates ) ) {
+							foreach ( $special_on_dates as $special_on_date ) {
+								if ( ! is_array( $special_on_date ) ) {
+									continue;
+								}
+								$date_item = $special_on_date['date'] ?? '';
+								if ( $date_item === '' ) {
+									continue;
+								}
+								$start_time = $special_on_date['start'] ?? '';
+								$end_time   = $special_on_date['end'] ?? '';
+								if ( $start_time !== '' && $end_time !== '' && strtotime( $start_time ) < strtotime( $end_time ) ) {
 									$all_slots[ $date_item ] = $start_time . '-' . $end_time;
 								}
 							}
 						}
 					}
-				} else {
-					$date_rule       = array_key_exists( 'date_rule', $date_infos ) ? $date_infos['date_rule'] : '';
-					$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
-					if ( in_array( 'special_on_dates', $date_rule_array ) ) {
-						$special_on_dates = array_key_exists( 'special_on_dates', $date_infos ) ? $date_infos['special_on_dates'] : [];
-						if ( is_array( $special_on_dates ) && sizeof( $special_on_dates ) > 0 ) {
-							foreach ( $special_on_dates as $special_on_date ) {
-								$date_item = is_array( $special_on_date ) && array_key_exists( 'date', $special_on_date ) ? $special_on_date['date'] : '';
-								if ( ! empty( $date_item ) ) {
-									$start_time = is_array( $special_on_date ) && array_key_exists( 'start', $special_on_date ) ? $special_on_date['start'] : '';
-									$end_time   = is_array( $special_on_date ) && array_key_exists( 'end', $special_on_date ) ? $special_on_date['end'] : '';
-									if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime( $start_time ) < strtotime( $end_time ) ) {
-										$all_slots[ $date_item ] = $start_time . '-' . $end_time;
-									}
-								}
-							}
-						}
-					}
-					$operation_times = array_key_exists( 'day_wise_time', $date_infos ) ? $date_infos['day_wise_time'] : [];
-					if ( in_array( 'day_wise_time', $date_rule_array ) && sizeof( $operation_times ) > 0 ) {
+					$operation_times = $date_infos['day_wise_time'] ?? [];
+					if ( in_array( 'day_wise_time', $date_rule_array, true ) && is_array( $operation_times ) && ! empty( $operation_times ) ) {
 						$days = ABPRF_Layout::week_day();
 						foreach ( $days as $key => $day ) {
-							$times      = array_key_exists( $key, $operation_times ) && sizeof( $operation_times[ $key ] ) > 0 ? $operation_times[ $key ] : [];
-							$start_time = array_key_exists( 'start', $times ) ? $times['start'] : '';
-							$end_time   = array_key_exists( 'end', $times ) ? $times['end'] : '';
-							if ( ! empty( $start_time ) && ! empty( $end_time ) && strtotime( $start_time ) < strtotime( $end_time ) ) {
-								$all_slots[ $key ] = $start_time . '-' . $end_time;
+							$times = $operation_times[ $key ] ?? [];
+							if ( is_array( $times ) ) {
+								$start_time = $times['start'] ?? '';
+								$end_time   = $times['end'] ?? '';
+								if ( $start_time !== '' && $end_time !== '' && strtotime( $start_time ) < strtotime( $end_time ) ) {
+									$all_slots[ $key ] = $start_time . '-' . $end_time;
+								}
 							}
 						}
 					}
@@ -740,7 +758,7 @@
 				return $formats[ ABPRF_JS_Date_Format ] ?? 'Y-m-d';
 			}
 			public static function date_format_js() {
-				return is_array( ABPRF_Dates ) && array_key_exists( 'date_format', ABPRF_Dates ) && ABPRF_Dates['date_format'] ? ABPRF_Dates['date_format'] : 'D d M , yy';
+				return is_array( ABPRF_Dates ) ? ( ABPRF_Dates['date_format'] ?? 'D d M , yy' ) ?: 'D d M , yy' : 'D d M , yy';
 			}
 			public static function date_separate_period( $start_date, $end_date, $repeat = 1 ): DatePeriod {
 				$repeat    = max( $repeat, 1 );
@@ -915,10 +933,9 @@
 					}
 				}
 
-				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-				return apply_filters( 'woocommerce_get_price_to_display', $return_price, 1, $product );
+				return $return_price;
 			}
-			public static function get_price( $abprf_infos = [],  $property = [], $time_duration = '' ): int|string {
+			public static function get_price( $abprf_infos = [], $property = [], $time_duration = '' ): int|string {
 				$price       = 0;
 				$post_id     = $abprf_infos['post_id'] ?? 0;
 				$rent_rule   = $abprf_infos['rent_rule'] ?? '';
@@ -937,7 +954,7 @@
 				$time_duration  = ! empty( $time_duration ) ? $time_duration : self::time_duration( $abprf_infos, $price_info );
 				if ( ! empty( $rent_rule ) && ! empty( $time_duration ) && ! empty( $price_info ) ) {
 					$price_info = apply_filters( 'abprf_filter_discount_price_info', $price_info, $abprf_infos );
-					$rate          = ( is_array( $price_info ) ? ( $price_info['price'] ?? 0 ) : 0 ) ?: 0;
+					$rate       = ( is_array( $price_info ) ? ( $price_info['price'] ?? 0 ) : 0 ) ?: 0;
 					if ( in_array( $rent_rule, [ 'hourly', 'daily', 'monthly' ], true ) ) {
 						$price = $rate * $time_duration * $qty;
 					}
@@ -964,8 +981,8 @@
 						}
 						$price = ( $rate * $month_num * $qty ) + ( $price_multi * $day_num * $qty );
 					}
-					$discount=( is_array( $price_info ) ? ( $price_info['discount'] ?? 0 ) : 0 ) ?: 0;
-					$price=$price-($price*$discount/100);
+					$discount = ( is_array( $price_info ) ? ( $price_info['discount'] ?? 0 ) : 0 ) ?: 0;
+					$price    = $price - ( $price * $discount / 100 );
 				}
 
 				return $price > 0 ? self::tax_with_price( $post_id, $price ) : 0;
@@ -1005,7 +1022,7 @@
 				return $price;
 			}
 			public static function get_additional_price( int|string $post_id, string $service_name, array $abprf_infos = [] ): int|string {
-				$display = $abprf_infos['display_additional_services'] ?? ABPRF_Function::get_post_info( $post_id, 'display_additional_services', 'on' );
+				$display                  = $abprf_infos['display_additional_services'] ?? ABPRF_Function::get_post_info( $post_id, 'display_additional_services', 'on' );
 				$active_global_additional = $abprf_infos['active_global_additional'] ?? ABPRF_Function::get_post_info( $post_id, 'active_global_additional', 'on' );
 				if ( $active_global_additional === 'on' ) {
 					$services = ABPRF_Function::get_option( 'abprf_additional' );
@@ -1027,79 +1044,117 @@
 			}
 			//=============================//
 			public static function update_global_data( $post_id = '' ): void {
-				if ( ! empty( $post_id ) ) {
-					$img_info             = [];
-					$fec_info             = [];
-					$brand_info           = '';
-					$min_price            = ABPRF_Function::get_option( 'abprf_min_price' );
-					$mm_time              = ABPRF_Function::get_option( 'abprf_mm_time' );
-					$arg['rent_continue'] = 'on';
-					$arg['status']        = 'publish';
-					$arg['post_id']       = $post_id;
-					$count                = 0;
-					$properties           = ABPRF_Query::get_property( $arg );
-					if ( ! empty( $properties ) && is_array( $properties ) && sizeof( $properties ) > 0 ) {
-						$rent_rule = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
-						$title     = get_the_title( $post_id );
-						$rate      = $min_time = $max_time = [];
-						foreach ( $properties as $property ) {
-							$slider = array_key_exists( 'gallery', $property ) ? $property['gallery'] : '';
-							$name   = array_key_exists( 'name', $property ) ? $property['name'] : '';
-							$brand  = array_key_exists( 'brand', $property ) ? $property['brand'] : '';
-							if ( ! empty( $brand ) ) {
-								$brand_info = ! empty( $brand_info ) ? $brand_info . ',' . $brand : $brand;
+				$post_id = absint( $post_id );
+				if ( $post_id <= 0 ) {
+					return;
+				}
+				$arg        = [
+					'rent_continue' => 'on',
+					'status' => 'publish',
+					'post_id' => $post_id,
+				];
+				$properties = ABPRF_Query::get_property( $arg );
+				if ( empty( $properties ) || ! is_array( $properties ) ) {
+					return;
+				}
+				$img_info    = [];
+				$fec_info    = [];
+				$brand_names = [];
+				$min_price   = ABPRF_Function::get_option( 'abprf_min_price' );
+				$min_price   = is_array( $min_price ) ? $min_price : [];
+				$mm_time     = ABPRF_Function::get_option( 'abprf_mm_time' );
+				$mm_time     = is_array( $mm_time ) ? $mm_time : [];
+				$count       = 0;
+				$rent_rule   = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
+				$title       = get_the_title( $post_id );
+				$rate        = [];
+				$min_time    = [];
+				$max_time    = [];
+				foreach ( $properties as $property ) {
+					if ( ! is_array( $property ) ) {
+						continue;
+					}
+					$slider = $property['gallery'] ?? '';
+					$name   = $property['name'] ?? '';
+					$brand  = $property['brand'] ?? '';
+					if ( ! empty( $brand ) ) {
+						$brand_names[] = $brand;
+					}
+					if ( ! empty( $slider ) ) {
+						$image_ids = explode( ',', $slider );
+						foreach ( $image_ids as $id ) {
+							if ( $id !== '' ) {
+								$img_info[ $count ] = [
+									'id' => $id,
+									'post' => $title,
+									'label' => $name,
+								];
+								$count ++;
 							}
-							$image_ids = explode( ',', $slider );
-							if ( ! empty( $image_ids ) ) {
-								foreach ( $image_ids as $id ) {
-									$img_info[ $count ]['id']    = $id;
-									$img_info[ $count ]['post']  = $title;
-									$img_info[ $count ]['label'] = $name;
-									$count ++;
-								}
-							}
-							$features = array_key_exists( 'features', $property ) ? $property['features'] : '';
-							$features = ! empty( $features ) ? explode( ',', $features ) : [];
-							if ( ! empty( $features ) && is_array( $features ) && sizeof( $features ) > 0 ) {
-								$fec_info = array_merge( $fec_info, $features );
-							}
-							$price_qty_info = array_key_exists( 'price_qty_info', $property ) ? $property['price_qty_info'] : '';
-							$price_qty_info = ! empty( $price_qty_info ) ? json_decode( $price_qty_info, true ) : [];
-							$price_info     = ! empty( $rent_rule ) && array_key_exists( $rent_rule, $price_qty_info ) ? $price_qty_info[ $rent_rule ] : [];
-							$rate[]         = is_array( $price_info ) && array_key_exists( 'price', $price_info ) ? $price_info['price'] : 0;
-							$_min_time      = is_array( $price_info ) && array_key_exists( 'min', $price_info ) ? $price_info['min'] : '';
-							if ( $rent_rule == 'multi_month' ) {
-								if ( ! empty( $_min_time ) ) {
-									$_min_time = $_min_time * 30;
-								}
-							} else {
-								if ( empty( $_min_time ) ) {
-									$_min_time = 1;
-								}
-							}
-							$min_time[] = $_min_time;
-							$_max_time  = is_array( $price_info ) && array_key_exists( 'max', $price_info ) ? $price_info['max'] : '';
-							if ( empty( $_max_time ) || $_max_time < 1 ) {
-								$_max_time = $rent_rule == 'hourly' ? 24 : $_max_time;
-								$_max_time = $rent_rule == 'daily' ? 100 : $_max_time;
-								$_max_time = $rent_rule == 'multi_day' ? 100 : $_max_time;
-								$_max_time = $rent_rule == 'monthly' ? 12 : $_max_time;
-								$_max_time = $rent_rule == 'multi_month' ? 365 : $_max_time * 30;
-							}
-							$max_time[] = $_max_time;
 						}
-						$fec_info                   = array_unique( $fec_info );
-						$fec_info                   = implode( ',', $fec_info );
-						$min_price[ $post_id ]      = min( $rate );
-						$mm_time[ $post_id ]['min'] = min( $min_time );
-						$mm_time[ $post_id ]['max'] = max( $max_time );
-						update_post_meta( $post_id, 'abprf_sliders', $img_info );
-						update_post_meta( $post_id, 'abprf_features', $fec_info );
-						update_post_meta( $post_id, 'abprf_brand', $brand_info );
-						update_option( 'abprf_min_price', $min_price );
-						update_option( 'abprf_mm_time', $mm_time );
+					}
+					$features = $property['features'] ?? '';
+					if ( ! empty( $features ) ) {
+						$feature_array = explode( ',', $features );
+						$fec_info      = array_merge( $fec_info, $feature_array );
+					}
+					$price_qty_info = $property['price_qty_info'] ?? '';
+					$price_qty_info = ( $price_qty_info !== '' ) ? json_decode( $price_qty_info, true ) : [];
+					$price_info     = ( $rent_rule !== '' && is_array( $price_qty_info ) ) ? ( $price_qty_info[ $rent_rule ] ?? [] ) : [];
+					$rate[]         = floatval( $price_info['price'] ?? 0 );
+					$_min_time      = $price_info['min'] ?? '';
+					if ( $rent_rule === 'multi_month' ) {
+						if ( $_min_time !== '' ) {
+							$_min_time = absint( $_min_time ) * 30;
+						}
+					} else {
+						if ( $_min_time === '' ) {
+							$_min_time = 1;
+						}
+					}
+					$min_time[] = absint( $_min_time );
+					$_max_time  = absint( $price_info['max'] ?? 0 );
+					if ( $_max_time < 1 ) {
+						$_max_time = match ( $rent_rule ) {
+							'hourly' => 24,
+							'daily' => 100,
+							'multi_day' => 100,
+							'monthly' => 12,
+							'multi_month' => 365,
+							default => ( $_max_time * 30 ),
+						};
+					}
+					$max_time[] = $_max_time;
+				}
+				$fec_info              = implode( ',', array_unique( $fec_info ) );
+				$brand_info            = implode( ',', array_unique( $brand_names ) );
+				$min_price[ $post_id ] = ! empty( $rate ) ? min( $rate ) : 0;
+				$mm_time[ $post_id ]   = [
+					'min' => ! empty( $min_time ) ? min( $min_time ) : 0,
+					'max' => ! empty( $max_time ) ? max( $max_time ) : 0,
+				];
+				update_post_meta( $post_id, 'abprf_sliders', $img_info );
+				update_post_meta( $post_id, 'abprf_features', $fec_info );
+				update_post_meta( $post_id, 'abprf_brand', $brand_info );
+				update_option( 'abprf_min_price', $min_price );
+				update_option( 'abprf_mm_time', $mm_time );
+			}
+			public static function related_info_js( $_post_id = '' ): array {
+				$all_info = [];
+				if ( ! empty( $_post_id ) && $_post_id > 0 ) {
+					$all_post_ids = ABPRF_Query::get_post_id();
+					if ( ! empty( $all_post_ids ) ) {
+						$active_icon = ABPRF_Function::on_off( 'post_icon' );
+						foreach ( $all_post_ids as $post_id ) {
+							if ( $post_id !== $_post_id ) {
+								$icon       = $active_icon ? ABPRF_Function::get_post_info( $post_id, 'post_icon' ) : '';
+								$all_info[] = [ 'id' => $post_id, 'icon' => $icon, 'label' => get_the_title( $post_id ) ];
+							}
+						}
 					}
 				}
+
+				return $all_info;
 			}
 		}
 		new ABPRF_Function();

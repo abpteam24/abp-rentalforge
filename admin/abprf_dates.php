@@ -370,14 +370,14 @@
 			public function day_wise_time( $date_infos = [] ): void {
 				$date_rule       = $date_infos['date_rule'] ?? '';
 				$date_rule_array = $date_rule ? explode( ',', $date_rule ) : [];
-				$operation_times = $date_infos['day_wise_time'] ?? [];
+				$operation_times = (array) ( $date_infos['day_wise_time'] ?? [] );
 				$days            = ABPRF_Layout::week_day();
 				?>
                 <div class="setting_item full_width  <?php echo esc_attr( in_array( 'day_wise_time', $date_rule_array ) ? 'rf_active' : '' ); ?>" data-collapse="#day_wise_time">
                     <div class="_f_wrap_f_equal_f_gap_xxs">
                         <span class="_fs_label_min_500_max_600"><?php esc_html_e( 'Operation Time day Wise(Optional) ', 'abp-rentalforge' ); ?></span>
 						<?php foreach ( $days as $key => $day ) {
-							$times = array_key_exists( $key, $operation_times ) && sizeof( $operation_times[ $key ] ) > 0 ? $operation_times[ $key ] : [];
+							$times = $operation_times[ $key ] ?? [];
 							$start = $times['start'] ?? '';
 							$end   = $times['end'] ?? '';
 							?>
@@ -505,9 +505,9 @@
 				$has_post_nonce = isset( $_POST['abprf_post_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['abprf_post_nonce'] ) ), 'abprf_post_nonce' );
 				$has_ajax_nonce = check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false );
 				if ( ( $has_post_nonce || $has_ajax_nonce ) && current_user_can( 'manage_options' ) ) {
-					$post_val    = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
-					$post_array  = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
-					$format_date = fn( $date ) => $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
+					$post_val                           = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
+					$post_array                         = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
+					$format_date                        = fn( $date ) => $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
 					$date_infos['date_type']            = $post_val( 'date_type', 'periodic_date' );
 					$date_infos['operation_time_start'] = $post_val( 'operation_time_start' );
 					$date_infos['operation_time_end']   = $post_val( 'operation_time_end' );
@@ -520,28 +520,28 @@
 					$date_infos['periodic_after']       = $post_val( 'periodic_after', '1' );
 					$date_infos['date_rule']            = $post_val( 'date_rule' );
 					$date_infos['weekend']              = $post_val( 'weekend' );
-					$specific_off_dates               = array_filter( $post_array( 'specific_off_dates' ) );
-					$date_infos['specific_off_dates'] = array_unique( array_map( fn( $d ) => gmdate( 'Y-m-d', strtotime( $d ) ), $specific_off_dates ) );
-					$off_schedules = [];
-					$from_dates    = $post_array( 'abprf_off_from' );
-					$to_dates      = $post_array( 'abprf_off_to' );
+					$specific_off_dates                 = array_filter( $post_array( 'specific_off_dates' ) );
+					$date_infos['specific_off_dates']   = array_unique( array_map( fn( $d ) => gmdate( 'Y-m-d', strtotime( $d ) ), $specific_off_dates ) );
+					$off_schedules                      = [];
+					$from_dates                         = $post_array( 'abprf_off_from' );
+					$to_dates                           = $post_array( 'abprf_off_to' );
 					foreach ( $from_dates as $key => $from_date ) {
 						if ( $from_date && ! empty( $to_dates[ $key ] ) ) {
 							$off_schedules[] = [ 'from' => $from_date, 'to' => $to_dates[ $key ] ];
 						}
 					}
 					$date_infos['off_date_range'] = $off_schedules;
-					$special_on_dates = $post_array( 'special_on_dates' );
-					$on_start         = $post_array( 'special_on_time_start' );
-					$on_end           = $post_array( 'special_on_time_end' );
-					$specific_on      = [];
+					$special_on_dates             = $post_array( 'special_on_dates' );
+					$on_start                     = $post_array( 'special_on_time_start' );
+					$on_end                       = $post_array( 'special_on_time_end' );
+					$specific_on                  = [];
 					foreach ( $special_on_dates as $key => $date ) {
 						if ( $date ) {
 							$specific_on[ $key ] = [ 'date' => $format_date( $date ), 'start' => $on_start[ $key ] ?? '', 'end' => $on_end[ $key ] ?? '' ];
 						}
 					}
 					$date_infos['special_on_dates'] = $specific_on;
-					$time_info = [];
+					$time_info                      = [];
 					foreach ( ABPRF_Layout::week_day() as $key => $day ) {
 						$start = $post_val( $key . '_time_start' );
 						$end   = $post_val( $key . '_time_end' );
@@ -550,10 +550,10 @@
 						}
 					}
 					$date_infos['day_wise_time'] = $time_info;
-					$specific_dates = $post_array( 'specific_dates' );
-					$spec_start     = $post_array( 'specific_time_start' );
-					$spec_end       = $post_array( 'specific_time_end' );
-					$specific       = [];
+					$specific_dates              = $post_array( 'specific_dates' );
+					$spec_start                  = $post_array( 'specific_time_start' );
+					$spec_end                    = $post_array( 'specific_time_end' );
+					$specific                    = [];
 					foreach ( $specific_dates as $key => $date ) {
 						if ( $date ) {
 							$specific[ $key ] = [ 'date' => $format_date( $date ), 'start' => $spec_start[ $key ] ?? '', 'end' => $spec_end[ $key ] ?? '' ];
@@ -571,9 +571,10 @@
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( [ 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
+				$post_val                  = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
 				$date_infos                = $this->get_date_array();
-				$date_infos['date_format'] = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
-				$date_infos['time_format'] = isset( $_POST['time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['time_format'] ) ) : '';
+				$date_infos['date_format'] = $post_val( 'date_format' );
+				$date_infos['date_format'] = $post_val( 'time_format' );
 				update_option( 'abprf_dates', $date_infos );
 				ABPRF_Function::update_dates( 'global' );
 				ABPRF_Function::update_time_slot();

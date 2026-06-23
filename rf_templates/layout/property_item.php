@@ -28,13 +28,13 @@
 				?>
                 <div class="property_item item_box_1 <?php echo esc_attr( $abprf_infos['add_class'] ?? '' ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>">
                     <div class="item_head">
-						<?php ABPRF_Layout::image_icon( $others['icon'] ?? '' ); ?>
+						<?php ABPRF_Layout::image_icon( ($others['icon'] ?? ''),'' ); ?>
                     </div>
                     <div class="item_body">
                         <div>
                             <h5 class="_abprf list_title">
 								<?php echo esc_html( $property_name ); ?>
-								<?php if ( $property['brand'] ?? '' ) { ?>
+								<?php if ( ($property['brand'] ?? '') && ABPRF_Function::on_off( 'brand' )  ) { ?>
                                     <small class="_abprf_color_theme"><?php echo esc_html( ABPRF_Function::brand_value( $property['brand'] ?? '' ) ); ?></small>
 								<?php } ?>
                             </h5>
@@ -47,7 +47,7 @@
 									<?php echo esc_html( ABPRF_Layout::item_condition( $rent_rule, $price_info ) ); ?>
                                 </div>
 								<?php ABPRF_Layout::item_deposit( $price_info );
-									if ( $others['description'] ?? '' ) { ?>
+									if ( ABPRF_Function::on_off( 'property_des' ) && ($others['description'] ?? '') ) { ?>
                                         <div class="item_condition"><?php echo esc_html( $others['description'] ?? '' ); ?></div>
 									<?php }
 									if ( ! empty( $start_time ) && ! empty( $end_time ) ) {

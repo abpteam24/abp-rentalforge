@@ -71,9 +71,9 @@
 				}
 			}
 			public static function form_feature( $feature = [], $id = '' ): void {
-				$label = is_array( $feature ) && array_key_exists( 'label', $feature ) ? $feature['label'] : '';
-				$value = is_array( $feature ) && array_key_exists( 'value', $feature ) ? $feature['value'] : '';
-				$icon  = is_array( $feature ) && array_key_exists( 'icon', $feature ) ? $feature['icon'] : '';
+				$label = $feature['label'] ?? '';
+				$value = $feature['value'] ?? '';
+				$icon  = $feature['icon'] ?? '';
 				?>
                 <tr class="delete_area">
                     <th><?php do_action( 'abprf_add_icon', 'feature_icon[]', $icon ); ?></th>
@@ -99,47 +99,49 @@
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
+				$post_int       = fn( $key, $default = 0 ) => isset( $_POST[ $key ] ) ? absint( $_POST[ $key ] ) : $default;
+				$post_array     = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
 				$old_features   = ABPRF_Function::get_option( 'abprf_feature' );
 				$old_features   = is_array( $old_features ) ? $old_features : [];
-				$id             = ! empty( $old_features ) ? array_key_last( $old_features ) : 'fec_id_1';
-				$feature_ids    = isset( $_POST['feature_id'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_id'] ) ) : [];
-				$feature_names  = isset( $_POST['feature_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_name'] ) ) : [];
-				$feature_values = isset( $_POST['feature_value'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_value'] ) ) : [];
-				$feature_icon   = isset( $_POST['feature_icon'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['feature_icon'] ) ) : [];
-				$property_add   = isset( $_POST['property_add'] ) ? sanitize_text_field( wp_unslash( $_POST['property_add'] ) ) : 0;
-				if ( count( $feature_names ) > 0 && count( $feature_values ) > 0 ) {
+				$id             = ( ! empty( $old_features ) ) ? array_key_last( $old_features ) : 'fec_id_1';
+				$feature_ids    = $post_array( 'feature_id' );
+				$feature_names  = $post_array( 'feature_name' );
+				$feature_values = $post_array( 'feature_value' );
+				$feature_icon   = $post_array( 'feature_icon' );
+				$property_add   = $post_int( 'property_add' );
+				if ( ! empty( $feature_names ) ) {
 					foreach ( $feature_names as $key => $feature_name ) {
-						if ( ! empty( $feature_name ) && ! empty( $feature_values[ $key ] ) ) {
-							$old_id = array_key_exists( $key, $feature_ids ) ? $feature_ids[ $key ] : '';
-							if ( ! empty( $old_id ) && array_key_exists( $old_id, $old_features ) ) {
+						$feature_val = $feature_values[ $key ] ?? '';
+						if ( $feature_name !== '' && $feature_val !== '' ) {
+							$old_id = $feature_ids[ $key ] ?? '';
+							if ( ! empty( $old_id ) && isset( $old_features[ $old_id ] ) ) {
 								$id = $old_id;
 							} else {
-								if ( array_key_exists( $id, $old_features ) ) {
-									$number    = (int) str_replace( 'fec_id_', '', $id );
-									$new_count = $number + 1;
-									$id        = 'fec_id_' . $new_count;
-									while ( array_key_exists( $id, $old_features ) ) {
-										$number    = (int) str_replace( 'fec_id_', '', $id );
-										$new_count = $number + 1;
-										$id        = 'fec_id_' . $new_count;
+								if ( isset( $old_features[ $id ] ) ) {
+									$number = (int) str_replace( 'fec_id_', '', $id );
+									$id     = 'fec_id_' . ( $number + 1 );
+									while ( isset( $old_features[ $id ] ) ) {
+										$number = (int) str_replace( 'fec_id_', '', $id );
+										$id     = 'fec_id_' . ( $number + 1 );
 									}
 								}
 							}
-							$old_features[ $id ]['label'] = $feature_name;
-							$old_features[ $id ]['value'] = $feature_values[ $key ];
-							$old_features[ $id ]['icon']  = $feature_icon[ $key ] ?? '';
+							$old_features[ $id ] = [
+								'label' => $feature_name,
+								'value' => $feature_val,
+								'icon' => $feature_icon[ $key ] ?? '',
+							];
 						}
 					}
 				}
 				update_option( 'abprf_feature', $old_features );
 				self::update_feature_js();
-				ob_start();
-				if ( ! empty( $property_add ) && (int) $property_add > 0 ) {
-					echo '';
-				} else {
+				$html = '';
+				if ( $property_add <= 0 ) {
+					ob_start();
 					$this->feature_list();
+					$html = ob_get_clean();
 				}
-				$html = ob_get_clean();
 				wp_send_json_success( [
 					'html' => $html,
 					'feature_js' => ABPRF_Function::get_option( 'abprf_feature_js' ),
@@ -156,7 +158,7 @@
 				$fec_id   = isset( $_POST['fec_id'] ) ? sanitize_text_field( wp_unslash( $_POST['fec_id'] ) ) : '';
 				$features = ABPRF_Function::get_option( 'abprf_feature' );
 				$features = is_array( $features ) ? $features : [];
-				if ( ! empty( $fec_id ) && array_key_exists( $fec_id, $features ) ) {
+				if ( ! empty( $fec_id ) && isset( $features[ $fec_id ] ) ) {
 					unset( $features[ $fec_id ] );
 					update_option( 'abprf_feature', $features );
 					self::update_feature_js();
