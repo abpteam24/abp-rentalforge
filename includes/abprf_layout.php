@@ -175,6 +175,16 @@
 					<?php
 				}
 			}
+			public static function load_more( $data = '' ): void {
+				if ( $data ) {
+					?>
+                    <div class="load_more">
+                        <span class="load_more_content"><?php echo wp_kses_post( $data ); ?></span>
+                        <span class="load_more_action" data-less="<?php esc_html_e( '.... Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '.... More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '.... More', 'abp-rentalforge' ); ?></span>
+                    </div>
+					<?php
+				}
+			}
 			public static function layout_warning_info( $key ): void {
 				$data = ABPRF_Layout::array_info( $key );
 				if ( $data ) {

@@ -48,7 +48,7 @@
                                 </div>
 								<?php ABPRF_Layout::item_deposit( $price_info );
 									if ( ABPRF_Function::on_off( 'property_des' ) && ($others['description'] ?? '') ) { ?>
-                                        <div class="item_condition"><?php echo esc_html( $others['description'] ?? '' ); ?></div>
+                                        <div class="item_condition"><?php ABPRF_Layout::load_more( $others['description'] ?? ''  );?></div>
 									<?php }
 									if ( ! empty( $start_time ) && ! empty( $end_time ) ) {
 										ABPRF_Layout::item_cost( $abprf_infos, $price_info, $total_price, $time_duration );

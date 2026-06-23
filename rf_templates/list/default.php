@@ -47,7 +47,7 @@
 									ABPRF_Layout::item_feature( $features );
 									do_action( 'abprf_category', $post_id, 'ribbon' );
 									if ( ABPRF_Function::on_off( 'post_des' ) && $description ) { ?>
-                                        <div class="item_condition"><?php echo esc_html( $description ); ?></div>
+                                        <div class="item_condition"><?php ABPRF_Layout::load_more($description); ?></div>
 									<?php } ?>
                             </div>
                             <div>
