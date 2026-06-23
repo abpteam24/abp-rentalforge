@@ -34,8 +34,9 @@
 	/*=============================*/
 	div.abprf_admin .multi_stock table {width: inherit;}
 	/*=============================*/
-	div.abprf_admin .selection_area { position: relative;width: max-content;max-width: 250px; }
-	div.selection_area .selection_list { max-height: 200px;border: 1px solid var(--rf_color_theme); border-top: none; overflow-y: auto; position: absolute;top: 40px;left: -1px;right: -1px;z-index: 2222;opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;}
+	div.abprf_admin .selection_area { position: relative;width: max-content;max-width: 250px;}
+	div.abprf_admin div.selection_area label input{ border: 2px solid var(--rf_color_theme);}
+	div.selection_area .selection_list {border: 2px solid var(--rf_color_theme);border-top: none; max-height: 200px;background: #FFF;  overflow-y: auto; position: absolute;top: 40px;left: 0;right: 0;z-index: 2222;opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;}
 	div.selection_area .selection_list.active { opacity: 1; visibility: visible; transform: translateY(0); }
 	div.selection_area .selection_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); cursor: pointer; background: #FFF; }
 	div.selection_area .selection_item:last-child { border-bottom: none; }
