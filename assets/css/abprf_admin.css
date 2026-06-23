@@ -29,8 +29,9 @@
 	div.abprf_admin [class*="_form_control"].abprf_color_picker {min-width: 80px; height: 40px;padding: var(--rf_gap_xxs) var(--rf_gap_xs);}
 	div.abprf_admin [class*="_form_control"][class*="_min_150"] {min-width: 150px;max-width: 100%;}
 	div.abprf_admin .abp_dropdown [class*="_form_control"] {max-width: 100%;}
-	div.abprf_admin .additional_service [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
-	div.abprf_admin .faq_configuration [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
+	div.abprf_admin .additional_service [class*="_form_control"],
+	div.abprf_admin .faq_configuration [class*="_form_control"],
+	div.abprf_admin .feature_area [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
 	/*=============================*/
 	div.abprf_admin .multi_stock table {width: inherit;}
 	/*=============================*/

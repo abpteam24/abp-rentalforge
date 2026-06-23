@@ -607,6 +607,7 @@ function abprf_pagination_item(parent) {
         }
         parent.find('.list_view').removeClass('rf_active');
         $(this).addClass('rf_active');
+        abprf_load_more();
     });
     $(document).on('click', 'div.abprf_area  .list_view', function () {
         let parent = $(this).closest('div.abprf_area');
@@ -616,6 +617,7 @@ function abprf_pagination_item(parent) {
             setTimeout(function () {
                 container.removeClass('abprf_grid').addClass('abprf_lists');
                 container.removeClass('view-switching');
+                abprf_load_more();
             }, 150);
         }
         parent.find('.grid_view').removeClass('rf_active');

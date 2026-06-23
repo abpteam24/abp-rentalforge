@@ -1026,7 +1026,7 @@
 			public static function title( $post_id ): void {
 				$post_sku = ABPRF_Function::get_post_info( $post_id, 'post_sku' );
 				if ( ABPRF_Function::on_off( 'post_icon' ) ) {
-					ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ));
+					ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ) );
 				}
 				echo esc_html( get_the_title( $post_id ) ); ?>
                 <p class="_abprf">
@@ -1046,40 +1046,27 @@
 					if ( empty( $feature_ids ) || ! is_array( $abprf_feature ) ) {
 						return;
 					}
-					$unique_id = 'abprf_fea_' . uniqid();
-					$count     = 0;
 					?>
-                    <div class="item_spec">
-						<?php
-							foreach ( $feature_ids as $fec_id ) {
-								$feature = $abprf_feature[ $fec_id ] ?? null;
-								if ( ! is_array( $feature ) ) {
-									continue;
-								}
-								$label = $feature['label'] ?? '';
-								$value = $feature['value'] ?? '';
-								$icon  = $feature['icon'] ?? '';
-								if ( $value !== '' ) {
-									$collapse_attr = ( $count > 3 ) ? ' data-collapse=' . esc_attr( $unique_id ) . '' : '';
-									?>
-                                    <span class="spec_badge" title="<?php echo esc_attr( $label ); ?>" <?php echo esc_attr( $collapse_attr ); ?>>
-                                    <?php ABPRF_Layout::image_icon( $icon );
-	                                    echo esc_html( $label . ' - ' . $value ); ?>
-                                </span>
-									<?php
-									$count ++;
-								}
-							}
-							if ( $count > 4 ) {
-								$remaining = $count - 4;
-								?>
-                                <button type="button" class="_btn_info_xxs"
-                                        data-collapse-target="<?php echo esc_attr( $unique_id ); ?>"
-                                        data-open-text="- <?php echo esc_attr( $remaining ); ?> <?php esc_attr_e( 'Less', 'abp-rentalforge' ); ?>"
-                                        data-close-text="+ <?php echo esc_attr( $remaining ); ?> <?php esc_attr_e( 'More', 'abp-rentalforge' ); ?>">
-                                    <span data-text>+ <?php echo esc_attr( $remaining ); ?> <?php esc_html_e( 'More', 'abp-rentalforge' ); ?></span>
-                                </button>
-							<?php } ?>
+                    <div class="item_spec load_more">
+                        <div class="load_more_content ">
+							<?php
+								foreach ( $feature_ids as $fec_id ) {
+									$feature = $abprf_feature[ $fec_id ] ?? null;
+									if ( ! is_array( $feature ) ) {
+										continue;
+									}
+									$label = $feature['label'] ?? '';
+									$value = $feature['value'] ?? '';
+									$icon  = $feature['icon'] ?? '';
+									if ( $value !== '' ) {
+										echo '<span class="spec_badge" title="' . esc_attr( $label ) . '">';
+										ABPRF_Layout::image_icon( $icon );
+										echo esc_html( $label . ' - ' . $value );
+										echo '</span>';
+									}
+								} ?>
+                        </div>
+                        <span class="load_more_action" data-less="<?php esc_html_e( '....Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '.... More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '.... More', 'abp-rentalforge' ); ?></span>
                     </div>
 					<?php
 				}
@@ -1449,7 +1436,7 @@
 									?>
                                     <li data-value="<?php echo esc_attr( $all_post_id ); ?>" data-text="<?php echo esc_attr( $title ); ?>">
 										<?php if ( ABPRF_Function::on_off( 'post_icon' ) ) {
-											ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $all_post_id, 'post_icon' ));
+											ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $all_post_id, 'post_icon' ) );
 										} ?>
                                         <span class="_fs_label"><?php echo esc_html( $title ); ?></span>
 										<?php if ( ! empty( $category ) && ABPRF_Function::on_off( 'category' ) ) { ?>
