@@ -1000,11 +1000,11 @@
 	/*=============================*/
 	div.abprf_area [class*="_btn_green_pale"],
 	div.abprf_area [class*="_btn_light_green_pale"].rf_active,
-	div.abprf_area [class*="_btn_light_green_pale"]:hover {color: var(--rf_color_white); background-color: var(--rf_color_green_pale);border-color: var(--rf_color_green_pale); }
+	div.abprf_area [class*="_btn_light_green_pale"]:hover {color: var(--rf_color_white); background-color: var(--rf_color_green_pale);border-color: var(--rf_color_7); }
 	div.abprf_area [class*="_btn_green_pale"].rf_active,
 	div.abprf_area [class*="_btn_green_pale"]:hover,
-	div.abprf_area [class*="_btn_light_green_pale"] { color: var(--rf_color_green_pale);background-color: var(--rf_color_white);border-color: var(--rf_color_green_pale);}
-	div.abprf_area [class*="_color_green_pale"] { color: var(--rf_color_green_pale); }
+	div.abprf_area [class*="_btn_light_green_pale"] { color: var(--rf_color_7);background-color: var(--rf_color_white);border-color: var(--rf_color_green_pale);}
+	div.abprf_area [class*="_color_green_pale"] { color: var(--rf_color_7); }
 	div.abprf_area [class*="_bg_green_pale"] { background-color: var(--rf_color_green_pale); }
 	/*=============================*/
 	div.abprf_area [class*="_btn_success"],
