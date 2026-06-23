@@ -29,7 +29,7 @@
 				?>
                 <div class="abprf_posts _abp_panel">
                     <div class="_panel_head _fj_between_f_wrap">
-                        <h4 class="_abprf_color_white"><?php ABPRF_Layout::image_icon( $brand_icon); ?><?php esc_html_e( 'Post Lists', 'abp-rentalforge' ); ?></h4>
+                        <h4 class="_abprf_color_white"><?php ABPRF_Layout::image_icon( $brand_icon ); ?><?php esc_html_e( 'Post Lists', 'abp-rentalforge' ); ?></h4>
                         <div class="_group_content">
                             <input type="hidden" name="select_hidden_post_status" value="<?php echo esc_attr( $status ); ?>"/>
                             <button type="button" class="_btn_white_xs <?php echo esc_attr( $status == 'all' ? 'rf_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'all' ] ) ); ?>"><?php esc_html_e( 'All', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_posts ); ?> )</button>
@@ -101,14 +101,14 @@
 										<?php if ( $post_status == 'trash' ) { ?>
                                             <h5 class="_abprf_color_warning"><?php
 													if ( ABPRF_Function::on_off( 'post_icon' ) ) {
-														ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ));
+														ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ) );
 													}
 													echo esc_html( $title );
 												?></h5>
 										<?php } else { ?>
                                             <a href="<?php echo esc_url( $edit_link ); ?>" class="_abprf_fs_h5 _color_theme">
 												<?php if ( ABPRF_Function::on_off( 'post_icon' ) ) {
-													ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ));
+													ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ) );
 												}
 													echo esc_html( $title ); ?>
                                             </a>
@@ -285,15 +285,20 @@
                             </div>
 						<?php } ?>
 						<?php if ( ABPRF_Function::on_off( 'related' ) ) { ?>
-                            <div class="setting_item full_width related_selection_area">
+                            <div class="setting_item full_width related_item">
                                 <h5 class="_abprf_color_theme"><?php esc_html_e( 'Related Post', 'abp-rentalforge' ); ?></h5>
-								<?php ABPRF_Layout::info_text( 'property_feature' ); ?>
+								<?php ABPRF_Layout::info_text( 'related_item' ); ?>
                                 <div class="_divider_xs"></div>
                                 <div class="_d_flex">
-                                    <div class="related_selection"></div>
-                                    <div class="related_selected">
+                                    <div class="selection_area">
+                                        <label>
+                                            <input class="_form_control item_search" type="text" placeholder="<?php esc_attr_e( 'Search Related Post ....', 'abp-rentalforge' ); ?>"/>
+                                        </label>
+                                        <div class="selection_list"></div>
+                                    </div>
+                                    <div class="selected_area">
                                         <input type="hidden" name="related_item" value="<?php echo esc_attr( $abprf_infos['related_item'] ?? '' ); ?>"/>
-                                        <div class="related_selected_list"></div>
+                                        <div class="selected_list"></div>
                                     </div>
                                 </div>
                             </div>

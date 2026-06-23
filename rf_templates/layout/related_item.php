@@ -16,8 +16,8 @@
                 <div class="_panel_head _fj_between">
                     <h4 class="_abprf"><?php ABPRF_Layout::image_icon($brand_icon);  ?><?php esc_html_e( 'Related', 'abp-rentalforge' ); ?></h4>
                     <div class="_group_content">
-                        <button class="related_prev _btn_light_green_pale_xs" type="button"><span class="fas fa-chevron-left"></span></button>
-                        <button class="related_next _btn_light_green_pale_xs" type="button"><span class="fas fa-chevron-right"></span></button>
+                        <h3 class="related_prev">🔙</h3>
+                        <h3 class="related_next">🔜</h3>
                     </div>
                 </div>
                 <div class="_panel_body_xs ">

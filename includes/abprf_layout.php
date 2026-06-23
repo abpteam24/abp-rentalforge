@@ -687,6 +687,7 @@
 					'deposit_type' => __( 'Note: There are three(3) types of deposit options: Fixed Amount (a set deposit regardless of quantity), Percentage of Total Price (calculated based on the total rental cost), and Fixed Amount per Quantity (applied for each item rented).', 'abp-rentalforge' ),
 					'brand' => __( 'Note: Add a brand name to enable the property sub-tile. Leave this blank if you dont want to show any brand information for this item.', 'abp-rentalforge' ),
 					'post_description' => __( 'Note: Add short description about this Post . Leave this blank if you dont want to show any Post description for this item.', 'abp-rentalforge' ),
+					'related_item' => __( 'Note: Select related items to display on the details page. Leave this option empty or disabled if you do not want to show related items.', 'abp-rentalforge' ),
 					'description' => __( 'Note: Add short description about this property. Leave this blank if you dont want to show any property description for this item.', 'abp-rentalforge' ),
 					'price_rule' => __( 'Note: Select the Property Date & Time Rule that matches this post. If an incorrect rule is chosen, the system will automatically update and apply the post Date & Time Rule to the property upon publishing.', 'abp-rentalforge' ),
 					'property_feature' => __( 'Note: If you want to add feature for this property, you can add Here. These feature will be show with this properties . You may leave this section empty if you do not want to show frontend. ', 'abp-rentalforge' ),

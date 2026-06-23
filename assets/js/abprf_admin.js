@@ -48,7 +48,7 @@ function abprf_save_data(form_area, target, action) {
             }
             if (action === 'abprf_save_feature' && response.data && response.data.hasOwnProperty('feature_js')) {
                 abprf_feature_data = response.data.feature_js;
-                abprf_feature_selection_init();
+                new ABPRF_FeatureSelection('div.abprf_admin .property_feature', abprf_feature_data);
             }
             if (action === 'abprf_save_feature' || action === 'abprf_save_brand') {
                 form_area.find('.insertable_area').html('');
@@ -339,7 +339,7 @@ function abprf_property_filter_arg($this) {
                         abprf_load_more();
                         abprf_load_datepicker(target);
                         if (type === 'property') {
-                            abprf_feature_selection_init();
+                            new ABPRF_FeatureSelection('div.abprf_admin .property_feature', abprf_feature_data);
                         }
                     });
                 }
@@ -449,12 +449,7 @@ function abprf_property_filter_arg($this) {
         e.preventDefault();
         let $this = $(this);
         let body = jQuery('body .rf_post_config');
-        let target = '';
-        if (body.find("[name='abprf_post_id']").length > 0) {
-            target = body.find('.category_selection');
-        } else {
-            target = $('div.abprf_admin .category_list');
-        }
+        let target = (body.find("[name='abprf_post_id']").length > 0) ? body.find('.category_selection') : $('div.abprf_admin .category_list');
         let form_area = $this.closest('.popup_body');
         abprf_save_data(form_area, target, 'abprf_save_category');
     });
@@ -481,12 +476,7 @@ function abprf_property_filter_arg($this) {
         e.preventDefault();
         let $this = $(this);
         let body = jQuery('body .rf_post_config');
-        let target = '';
-        if (body.find("[name='abprf_post_id']").length > 0) {
-            target = body.find('.location_selection');
-        } else {
-            target = $('div.abprf_admin .location_list');
-        }
+        let target = (body.find("[name='abprf_post_id']").length > 0) ? body.find('.location_selection') : $('div.abprf_admin .location_list');
         let form_area = $this.closest('.popup_body');
         abprf_save_data(form_area, target, 'abprf_save_location');
     });
@@ -512,13 +502,8 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin button.save_brand', function (e) {
         e.preventDefault();
         let $this = $(this);
-        let target = '';
         let form_area = $this.closest('.form_area');
-        if (form_area.closest(".data_property").length > 0) {
-            target = form_area.closest(".data_property").find('.brand_selection');
-        } else {
-            target = $('div.abprf_admin .brand_list');
-        }
+        let target = (form_area.closest(".data_property").length > 0) ? form_area.closest(".data_property").find('.brand_selection') : $('div.abprf_admin .brand_list');
         abprf_save_data(form_area, target, 'abprf_save_brand');
     });
     $(document).on('click', 'div.abprf_admin button.delete_brand', function (e) {
@@ -564,13 +549,8 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin button.save_feature', function (e) {
         e.preventDefault();
         let $this = $(this);
-        let target = '';
         let form_area = $this.closest('.form_area');
-        if (form_area.closest(".data_property").length > 0) {
-            target = form_area.closest(".data_property").find('.feature_selection');
-        } else {
-            target = $('div.abprf_admin .feature_list');
-        }
+        let target = (form_area.closest(".data_property").length > 0) ? form_area.closest(".data_property").find('.feature_selection') : $('div.abprf_admin .feature_list');
         abprf_save_data(form_area, target, 'abprf_save_feature');
     });
     $(document).on('click', 'div.abprf_admin button.delete_feature', function (e) {
@@ -1085,7 +1065,7 @@ function abprf_emoji_check(str) {
     return !(/^fa[bsrld]\s/.test(str));
 }
 jQuery(document).ready(function ($) {
-    abprf_related_selection_init();
+    // abprf_related_selection_init();
     $('#publish, .editor-post-publish-button').on('click', function (e) {
         let title = $('#title').val() || $('.editor-post-title__input').val();
         if (!title || title.trim().length === 0) {
@@ -1096,251 +1076,133 @@ jQuery(document).ready(function ($) {
     });
 });
 //=========== Feature selection start=================//
-document.addEventListener('focusin', function (e) {
-    if (e.target.matches('.feature_search')) {
-        let parentSelection = e.target.closest('.feature_selection');
-        if (parentSelection) {
-            let featureList = parentSelection.querySelector('.feature_list');
-            if (featureList) {
-                featureList.classList.add('active');
-            }
-        }
+class ABPRF_FeatureSelection {
+    constructor(parentSelector, dataSource) {
+        this.parent = document.querySelector(parentSelector);
+        if (!this.parent) return;
+        this.dataSource = dataSource;
+        this.hiddenInput = this.parent.querySelector('input[type="hidden"]');
+        this.selectedList = this.parent.querySelector('.selected_list');
+        this.init();
     }
-});
-document.addEventListener('click', function (e) {
-    if (e.target.matches('.feature_search')) {
-        let parentSelection = e.target.closest('.feature_selection');
-        if (parentSelection) {
-            let featureList = parentSelection.querySelector('.feature_list');
-            if (featureList) {
-                featureList.classList.add('active');
-            }
-        }
+    init() {
+        this.searchEl = this.parent.querySelector('.item_search');
+        this.featureListEl = this.parent.querySelector('.selection_list');
+        this.loadPreSelected();
+        this.bindEvents();
+        this.render();
     }
-    if (!e.target.closest('.feature_selection_area')) {
-        document.querySelectorAll('.feature_list').forEach(function (list) {
-            list.classList.remove('active');
-        });
-    }
-});
-document.addEventListener('input', function (e) {
-    if (e.target.matches('.feature_search')) {
-        abprf_feature_render();
-    }
-});
-function abprf_feature_selection_init() {
-    let hiddenVal = document.querySelector('div.abprf_admin .feature_selection_area input[name="feature"]').value;
-    let preIds = hiddenVal ? hiddenVal.split(',').map(function (s) {
-        return s.trim();
-    }).filter(Boolean) : [];
-    if (preIds.length > 0) {
-        let selList = document.querySelector('div.abprf_admin .feature_selection_area .selected_list');
-        selList.innerHTML = '';
-        preIds.forEach(function (id) {
-            let f = abprf_feature_data.find(function (x) {
-                return String(x.id) === String(id);
+    bindEvents() {
+        if (this.searchEl) {
+            ['focusin', 'click'].forEach(eventType => {
+                this.searchEl.addEventListener(eventType, (e) => {
+                    e.stopPropagation();
+                    this.featureListEl?.classList.add('active');
+                });
             });
-            if (!f) return;
-            let div = document.createElement('div');
-            div.className = 'selected_item';
-            div.setAttribute('data-id', f.id);
-            div.innerHTML = abprf_feature_inner_html(f);
-            selList.appendChild(div);
+            this.searchEl.addEventListener('input', () => this.render());
+        }
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest(this.parent.className.split(' ').map(c => '.' + c).join(''))) {
+                this.featureListEl?.classList.remove('active');
+            }
         });
     }
-    document.querySelector('div.feature_selection_area .feature_selection').innerHTML =
-        '<label><input class="_form_control feature_search" type="text" placeholder="' + abprf_admin_data.msg.search_feature + '" /></label>' +
-        '<div class="feature_list"></div>';
-    abprf_feature_render();
-}
-function abprf_feature_selected_id() {
-    let ids = [];
-    document.querySelectorAll('div.feature_selection_area .selected_item').forEach(function (el) {
-        let id = el.getAttribute('data-id');
-        if (id) ids.push(id);
-    });
-    return ids;
-}
-function abprf_feature_render() {
-    let q = '';
-    let searchEl = document.querySelector('div.feature_selection_area .feature_search');
-    if (searchEl) q = searchEl.value.toLowerCase();
-    let selectedIds = abprf_feature_selected_id();
-    let available = abprf_feature_data.filter(function (f) {
-        return selectedIds.indexOf(String(f.id)) === -1 && f.label.toLowerCase().indexOf(q) !== -1;
-    });
-    let el = document.querySelector('div.feature_selection_area .feature_list')
-    if (!el) return;
-    el.innerHTML = available.length === 0
-        ? '<div class="feature_empty">' + abprf_admin_data.msg.no_feature + '</div>'
-        : available.map(function (f) {
-            let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<span class="' + f.icon + ' _mar_r_xxs"></span>';
-            return '<div class="feature_item" data-id="' + f.id + '" onclick="abprf_feature_select(\'' + f.id + '\')"><div>' + icon_text + f.label + ' - ' + f.value + '</div><span class="fa-solid fa-plus fs-add"></span></div>';
-        }).join('');
-}
-function abprf_feature_select(id) {
-    let f = abprf_feature_data.find(function (x) {
-        return String(x.id) === String(id);
-    });
-    if (!f) return;
-    let selList = document.querySelector('div.abprf_admin .feature_selection_area .selected_list');
-    let placeholder = selList.querySelector('.feature_empty');
-    if (placeholder) placeholder.remove();
-    let div = document.createElement('div');
-    div.className = 'selected_item';
-    div.setAttribute('data-id', f.id);
-    div.innerHTML = abprf_feature_inner_html(f);
-    selList.appendChild(div);
-    abprf_feature_update_hidden();
-    abprf_feature_render();
-    setTimeout(function () {
-        let featureList = document.querySelector('.feature_selection_area .feature_list');
-        if (featureList) {
-            featureList.classList.add('active');
+    loadPreSelected() {
+        if (!this.hiddenInput || !this.selectedList) return;
+        let hiddenVal = this.hiddenInput.value;
+        let preIds = hiddenVal ? hiddenVal.split(',').map(s => s.trim()).filter(Boolean) : [];
+        if (preIds.length > 0) {
+            this.selectedList.innerHTML = '';
+            preIds.forEach(id => {
+                let f = this.dataSource.find(x => String(x.id) === String(id));
+                if (!f) return;
+                this.appendSelectedItem(f);
+            });
         }
-    }, 0);
-}
-function abprf_feature_inner_html(f) {
-    let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<i class="' + f.icon + ' _mar_r_xxs"></i>';
-    return '<div class="_fa_center">' + icon_text + f.label + ' - ' + f.value + '</div><span class="remove_feature" onclick="abprf_feature_remove(\'' + f.id + '\')">❌</span>';
-}
-function abprf_feature_remove(id) {
-    let item = document.querySelector('.selected_list .selected_item[data-id="' + id + '"]');
-    if (item) item.remove();
-    let selList = document.querySelector('div.abprf_admin .feature_selection_area .selected_list');
-    if (!selList.querySelector('.selected_item')) {
-        selList.innerHTML = '<div class="feature_empty">' + abprf_admin_data.msg.no_feature_selected + '</div>';
     }
-    abprf_feature_update_hidden();
-    abprf_feature_render();
+    getSelectedIds() {
+        let ids = [];
+        this.parent.querySelectorAll('.selected_item').forEach(el => {
+            let id = el.getAttribute('data-id');
+            if (id) ids.push(id);
+        });
+        return ids;
+    }
+    render() {
+        if (!this.featureListEl) return;
+        let q = this.searchEl ? this.searchEl.value.toLowerCase() : '';
+        let selectedIds = this.getSelectedIds();
+        let available = this.dataSource.filter(f => {
+            return selectedIds.indexOf(String(f.id)) === -1 && f.label.toLowerCase().indexOf(q) !== -1;
+        });
+        if (available.length === 0) {
+            this.featureListEl.innerHTML = `<div class="item_empty">${abprf_admin_data.msg.no_item}</div>`;
+            return;
+        }
+        this.featureListEl.innerHTML = available.map(f => {
+            let icon_text = abprf_emoji_check(f.icon) ? `<span class="_mar_r_xxs">${f.icon}</span>` : `<span class="${f.icon} _mar_r_xxs"></span>`;
+            let label = f.value ? f.label + '-' + f.value : f.label;
+            return `
+                <div class="selection_item" data-id="${f.id}">
+                    <div>${icon_text}${label}</div>
+                    <span class="fa-solid fa-plus fs-add"></span>
+                </div>
+            `;
+        }).join('');
+        this.featureListEl.querySelectorAll('.selection_item').forEach(item => {
+            item.addEventListener('click', () => {
+                this.selectItem(item.getAttribute('data-id'));
+            });
+        });
+    }
+    selectItem(id) {
+        let f = this.dataSource.find(x => String(x.id) === String(id));
+        if (!f) return;
+        let placeholder = this.selectedList.querySelector('.item_empty');
+        if (placeholder) placeholder.remove();
+        this.appendSelectedItem(f);
+        this.updateHiddenField();
+        this.render();
+        setTimeout(() => {
+            this.featureListEl?.classList.add('active');
+        }, 0);
+    }
+    appendSelectedItem(f) {
+        let div = document.createElement('div');
+        div.className = 'selected_item';
+        div.setAttribute('data-id', f.id);
+        let icon_text = abprf_emoji_check(f.icon) ? `<span class="_mar_r_xxs">${f.icon}</span>` : `<i class="${f.icon} _mar_r_xxs"></i>`;
+        let label = f.value ? f.label + '-' + f.value : f.label;
+        div.innerHTML = `
+            <div class="_fa_center">${icon_text}${label}</div>
+            <span class="item_remove">❌</span>
+        `;
+        div.querySelector('.item_remove').addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.removeItem(f.id);
+        });
+        this.selectedList.appendChild(div);
+    }
+    removeItem(id) {
+        let item = this.selectedList.querySelector(`.selected_item[data-id="${id}"]`);
+        if (item) item.remove();
+        if (!this.selectedList.querySelector('.selected_item')) {
+            this.selectedList.innerHTML = `<div class="item_empty">${abprf_admin_data.msg.no_item_selected}</div>`;
+        }
+        this.updateHiddenField();
+        this.render();
+    }
+    updateHiddenField() {
+        if (this.hiddenInput) {
+            this.hiddenInput.value = this.getSelectedIds().join(',');
+        }
+    }
 }
-function abprf_feature_update_hidden() {
-    let ids = abprf_feature_selected_id();
-    document.querySelector('div.abprf_admin .feature_selection_area input[name="feature"]').value = ids.join(',');
-}
+document.addEventListener('DOMContentLoaded', function () {
+    //=========== Related post  selection=================//
+    new ABPRF_FeatureSelection('div.abprf_admin .related_item', abprf_related_info);
+});
 //=========== Feature selection end=================//
-//=========== Related selection start=================//
-document.addEventListener('focusin', function (e) {
-    if (e.target.matches('.related_search')) {
-        let parentSelection = e.target.closest('.related_selection');
-        if (parentSelection) {
-            let featureList = parentSelection.querySelector('.feature_list');
-            if (featureList) {
-                featureList.classList.add('active');
-            }
-        }
-    }
-});
-document.addEventListener('click', function (e) {
-    if (e.target.matches('.related_search')) {
-        let parentSelection = e.target.closest('.related_selection');
-        if (parentSelection) {
-            let featureList = parentSelection.querySelector('.feature_list');
-            if (featureList) {
-                featureList.classList.add('active');
-            }
-        }
-    }
-    if (!e.target.closest('.related_selection_area')) {
-        document.querySelectorAll('.feature_list').forEach(function (list) {
-            list.classList.remove('active');
-        });
-    }
-});
-document.addEventListener('input', function (e) {
-    if (e.target.matches('.related_search')) {
-        abprf_feature_render();
-    }
-});
-function abprf_related_selection_init() {
-    let hiddenVal = document.querySelector('div.abprf_admin .related_selection_area input[name="related_item"]').value;
-    let preIds = hiddenVal ? hiddenVal.split(',').map(function (s) {
-        return s.trim();
-    }).filter(Boolean) : [];
-    if (preIds.length > 0) {
-        let selList = document.querySelector('div.abprf_admin .related_selection_area .related_selected_list');
-        selList.innerHTML = '';
-        preIds.forEach(function (id) {
-            let f = abprf_related_info.find(function (x) {
-                return String(x.id) === String(id);
-            });
-            if (!f) return;
-            let div = document.createElement('div');
-            div.className = 'selected_item';
-            div.setAttribute('data-id', f.id);
-            div.innerHTML = abprf_related_inner_html(f);
-            selList.appendChild(div);
-        });
-    }
-    document.querySelector('div.related_selection_area .related_selection').innerHTML =
-        '<label><input class="_form_control related_search" type="text" placeholder="' + abprf_admin_data.msg.search_related + '" /></label>' +
-        '<div class="feature_list"></div>';
-    abprf_related_render();
-}
-function abprf_related_selected_id() {
-    let ids = [];
-    document.querySelectorAll('div.related_selection_area .selected_item').forEach(function (el) {
-        let id = el.getAttribute('data-id');
-        if (id) ids.push(id);
-    });
-    return ids;
-}
-function abprf_related_render() {
-    let q = '';
-    let searchEl = document.querySelector('div.related_selection_area .feature_search');
-    if (searchEl) q = searchEl.value.toLowerCase();
-    let selectedIds = abprf_related_selected_id();
-    let available = abprf_related_info.filter(function (f) {
-        return selectedIds.indexOf(String(f.id)) === -1 && f.label.toLowerCase().indexOf(q) !== -1;
-    });
-    let el = document.querySelector('div.related_selection_area .feature_list')
-    if (!el) return;
-    el.innerHTML = available.length === 0
-        ? '<div class="feature_empty">' + abprf_admin_data.msg.no_post + '</div>'
-        : available.map(function (f) {
-            let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<span class="' + f.icon + ' _mar_r_xxs"></span>';
-            return '<div class="feature_item" data-id="' + f.id + '" onclick="abprf_related_select(\'' + f.id + '\')"><div>' + icon_text + f.label + '</div><span class="fa-solid fa-plus fs-add"></span></div>';
-        }).join('');
-}
-function abprf_related_select(id) {
-    let f = abprf_related_info.find(function (x) {
-        return String(x.id) === String(id);
-    });
-    if (!f) return;
-    let selList = document.querySelector('div.abprf_admin .related_selection_area .related_selected_list');
-    let placeholder = selList.querySelector('.feature_empty');
-    if (placeholder) placeholder.remove();
-    let div = document.createElement('div');
-    div.className = 'selected_item';
-    div.setAttribute('data-id', f.id);
-    div.innerHTML = abprf_related_inner_html(f);
-    selList.appendChild(div);
-    abprf_related_update_hidden();
-    abprf_related_render();
-    setTimeout(function () {
-        let featureList = document.querySelector('.related_selection_area .feature_list');
-        if (featureList) {
-            featureList.classList.add('active');
-        }
-    }, 0);
-}
-function abprf_related_inner_html(f) {
-    let icon_text = abprf_emoji_check(f.icon) ? '<span class="_mar_r_xxs">' + f.icon + '</span>' : '<i class="' + f.icon + ' _mar_r_xxs"></i>';
-    return '<div class="_fa_center">' + icon_text + f.label + '</div><span class="remove_feature" onclick="abprf_related_remove(\'' + f.id + '\')">❌</span>';
-}
-function abprf_related_remove(id) {
-    let item = document.querySelector('.related_selected_list .selected_item[data-id="' + id + '"]');
-    if (item) item.remove();
-    let selList = document.querySelector('div.abprf_admin .related_selection_area .related_selected_list');
-    if (!selList.querySelector('.selected_item')) {
-        selList.innerHTML = '<div class="feature_empty">' + abprf_admin_data.msg.no_post_selected + '</div>';
-    }
-    abprf_related_update_hidden();
-    abprf_related_render();
-}
-function abprf_related_update_hidden() {
-    let ids = abprf_related_selected_id();
-    document.querySelector('div.abprf_admin .related_selection_area input[name="related_item"]').value = ids.join(',');
-}
-//=========== Related selection end=================//
+
 

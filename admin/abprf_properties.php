@@ -186,7 +186,7 @@
 							?>
                             <tr class="delete_area">
                                 <th><?php echo esc_html( $count ); ?>.</th>
-                                <th class="_fs_h2"><?php ABPRF_Layout::image_icon( $icon,'' ); ?></th>
+                                <th class="_fs_h2"><?php ABPRF_Layout::image_icon( $icon, '' ); ?></th>
                                 <td>
                                     <div class="_fd_column">
                                         <h5 class="_abprf_color_theme"><?php echo esc_html( $name ); ?></h5>
@@ -206,7 +206,7 @@
 										<?php if ( ! empty( $post_id ) ) { ?>
                                             <a href="<?php echo esc_url( get_edit_post_link( $post_id ) ); ?>" class="_abprf_fs_h5 _color_theme">
 												<?php if ( ABPRF_Function::on_off( 'post_icon' ) ) {
-													ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ));
+													ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ) );
 												}
 													echo esc_html( get_the_title( $post_id ) ); ?>
                                             </a>
@@ -628,13 +628,18 @@
 			public function features( $property = [] ): void {
 				if ( ABPRF_Function::on_off( 'feature' ) ) {
 					?>
-                    <div class="setting_item full_width feature_selection_area">
+                    <div class="setting_item full_width property_feature">
                         <h5 class="_abprf_color_theme"><?php esc_html_e( 'Feature Configuration', 'abp-rentalforge' ); ?></h5>
 						<?php ABPRF_Layout::info_text( 'property_feature' ); ?>
                         <div class="_divider_xs"></div>
                         <div class="_d_flex">
-                            <div class="feature_selection"></div>
-                            <div class="feature_selected">
+                            <div class="selection_area">
+                                <label>
+                                    <input class="_form_control item_search" type="text" placeholder="<?php esc_attr_e( 'Search feature ....', 'abp-rentalforge' ); ?>"/>
+                                </label>
+                                <div class="selection_list"></div>
+                            </div>
+                            <div class="selected_area">
                                 <input type="hidden" name="feature" value="<?php echo esc_attr( $property['features'] ?? '' ); ?>"/>
                                 <div class="selected_list"></div>
                             </div>

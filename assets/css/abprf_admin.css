@@ -34,37 +34,21 @@
 	/*=============================*/
 	div.abprf_admin .multi_stock table {width: inherit;}
 	/*=============================*/
-	div.related_selection_area .related_selected { overflow: hidden;width: 100%;padding: 0 0 0 var(--rf_gap_xs); }
-	div.related_selection_area .related_selected_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
-	div.related_selection_area .selected_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); background: #FFF; width: max-content;min-width: 200px;max-width: max-content;height: 40px}
-	div.related_selection_area .selected_item:last-child { border-bottom: none; }
-	div.related_selection_area .selected_item .remove_feature { cursor: pointer;margin: 0 0 0 var(--rf_gap_xs); }
-	div.related_selection_area .feature_list { max-height: 200px;border: 1px solid var(--rf_color_theme); border-top: none; overflow-y: auto; position: absolute;top: 40px;left: -1px;right: -1px;z-index: 2222;opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;}
-	div.related_selection_area .feature_list.active { opacity: 1; visibility: visible; transform: translateY(0); }
-	div.related_selection_area .related_selection { width: max-content;max-width: 250px;position: relative; }
-	div.related_selection_area .feature_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); cursor: pointer; background: #FFF; }
-	div.related_selection_area .feature_item:last-child { border-bottom: none; }
-	div.related_selection_area .feature_item:hover { background: #F0F7FF; }
-	div.related_selection_area .feature_item span { color: #333; }
-	div.related_selection_area .feature_item .fs-add { color: #CCC;margin: 0 0 0 var(--rf_gap_xs); }
-	div.related_selection_area .feature_item:hover .fs-add { color: #378ADD; }
-	div.related_selection_area .feature_empty { padding: var(--rf_gap_xs); color: #BBB; text-align: center; }
-	/*=============================*/
-	div.feature_selection_area .feature_selected { overflow: hidden;width: 100%;padding: 0 0 0 var(--rf_gap_xs); }
-	div.feature_selection_area .selected_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
-	div.feature_selection_area .selected_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); background: #FFF; width: max-content;min-width: 200px;max-width: max-content;height: 40px}
-	div.feature_selection_area .selected_item:last-child { border-bottom: none; }
-	div.feature_selection_area .selected_item .remove_feature { cursor: pointer;margin: 0 0 0 var(--rf_gap_xs); }
-	div.feature_selection_area .feature_list { max-height: 200px;border: 1px solid var(--rf_color_theme); border-top: none; overflow-y: auto; position: absolute;top: 40px;left: -1px;right: -1px;z-index: 2222;opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;}
-	div.feature_selection_area .feature_list.active { opacity: 1; visibility: visible; transform: translateY(0); }
-	div.feature_selection_area .feature_selection { width: max-content;max-width: 250px;position: relative; }
-	div.feature_selection_area .feature_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); cursor: pointer; background: #FFF; }
-	div.feature_selection_area .feature_item:last-child { border-bottom: none; }
-	div.feature_selection_area .feature_item:hover { background: #F0F7FF; }
-	div.feature_selection_area .feature_item span { color: #333; }
-	div.feature_selection_area .feature_item .fs-add { color: #CCC;margin: 0 0 0 var(--rf_gap_xs); }
-	div.feature_selection_area .feature_item:hover .fs-add { color: #378ADD; }
-	div.feature_selection_area .feature_empty { padding: var(--rf_gap_xs); color: #BBB; text-align: center; }
+	div.abprf_admin .selection_area { position: relative;width: max-content;max-width: 250px; }
+	div.selection_area .selection_list { max-height: 200px;border: 1px solid var(--rf_color_theme); border-top: none; overflow-y: auto; position: absolute;top: 40px;left: -1px;right: -1px;z-index: 2222;opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;}
+	div.selection_area .selection_list.active { opacity: 1; visibility: visible; transform: translateY(0); }
+	div.selection_area .selection_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); cursor: pointer; background: #FFF; }
+	div.selection_area .selection_item:last-child { border-bottom: none; }
+	div.selection_area .selection_item:hover { background: #F0F7FF; }
+	div.selection_area .selection_item span { color: #333; }
+	div.selection_area .selection_item .fs-add { color: #CCC;margin: 0 0 0 var(--rf_gap_xs); }
+	div.selection_area .selection_item:hover .fs-add { color: #378ADD; }
+	div.abprf_admin .selected_area { overflow: hidden;padding: 0 0 0 var(--rf_gap_xs); position: relative;width: 100%; }
+	div.selected_area .selected_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
+	div.selected_area .selected_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); background: #FFF; width: max-content;min-width: 200px;max-width: max-content;height: 40px}
+	div.selected_area .selected_item:last-child { border-bottom: none; }
+	div.selected_area .item_remove { cursor: pointer;margin: 0 0 0 var(--rf_gap_xs); }
+	div.abprf_admin .item_empty { padding: var(--rf_gap_xs); color: #BBB; text-align: center; }
 	/*=============================*/
 	div.abprf_admin .configuration_content .edit_area {display: none;}
 	/*=============================*/
