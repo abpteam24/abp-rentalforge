@@ -20,7 +20,7 @@
 					$loc_id = ABPRF_Function::get_post_info( $post_id, 'abprf_location' );
 					$post_count ++;
 					$title = get_the_title( $post_id ); ?>
-                    <div class="pagination_item item_box_1  <?php echo esc_attr( $show_post >= $post_count ? '' : 'rf_close' ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>">
+                    <div class="pagination_item item_box_1  <?php echo esc_attr( $show_post >= $post_count ? '' : 'abp_close' ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>">
                         <div class="item_head">
 							<?php do_action( 'abprf_category', $post_id, 'ribbon' ); ?>
 							<?php ABPRF_Layout::image( $post_id ); ?>

@@ -26,7 +26,7 @@
 				wp_enqueue_style( 'wp-codemirror' );
 				wp_enqueue_script( 'wp-codemirror' );
 				//=============================//
-				wp_enqueue_script( 'abprf_admin', ABPRF_URL . 'assets/js/abprf_admin.js', array( 'jquery' ), time(), true );
+				wp_enqueue_script( 'abprf_admin', ABPRF_URL . 'assets/js/abprf_admin.js', array( 'jquery' ), ABPRF_VERSION, true );
 				wp_localize_script( 'abprf_admin', 'abprf_admin_data', [
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce' => wp_create_nonce( 'abprf_admin_ajax_nonce' ),
@@ -61,7 +61,7 @@
 						'no_item_selected' => __( 'No Item selected !', 'abp-rentalforge' ),
 					],
 				] );
-				wp_enqueue_style( 'abprf_admin', ABPRF_URL . 'assets/css/abprf_admin.css', array(), time() );
+				wp_enqueue_style( 'abprf_admin', ABPRF_URL . 'assets/css/abprf_admin.css', array(), ABPRF_VERSION );
 				//=============================//
 				do_action( 'abprf_admin_enqueue' );
 			}
@@ -71,7 +71,7 @@
 					wp_enqueue_style( 'select2' );
 					wp_enqueue_script( 'select2' );
 				}
-				wp_enqueue_script( 'abprf_frontend', ABPRF_URL . 'assets/js/abprf_frontend.js', array( 'jquery' ), time(), true );
+				wp_enqueue_script( 'abprf_frontend', ABPRF_URL . 'assets/js/abprf_frontend.js', array( 'jquery' ), ABPRF_VERSION, true );
 				wp_enqueue_script( 'abprf_slick', ABPRF_URL . 'assets/js/slick.min.js', array( 'jquery' ), ABPRF_VERSION, true );
 				$this->global_enqueue();
 				do_action( 'abprf_frontend_enqueue' );
@@ -82,8 +82,8 @@
 				wp_enqueue_script( 'jquery-ui-datepicker' );
 				wp_enqueue_style( 'abprf_jquery_ui', ABPRF_URL . 'assets/css/jquery-ui.min.css', array(), '1.13.2' );
 				wp_enqueue_style( 'abprf_font_awesome', ABPRF_URL . 'assets/css/font_awesome.min.css', array(), '5.15.4' );
-				wp_enqueue_style( 'abprf_lib', ABPRF_URL . 'assets/css/abprf_lib.css', array(), time() );
-				wp_enqueue_script( 'abprf_lib', ABPRF_URL . 'assets/js/abprf_lib.js', array( 'jquery' ), time(), true );
+				wp_enqueue_style( 'abprf_lib', ABPRF_URL . 'assets/css/abprf_lib.css', array(), ABPRF_VERSION );
+				wp_enqueue_script( 'abprf_lib', ABPRF_URL . 'assets/js/abprf_lib.js', array( 'jquery' ), ABPRF_VERSION, true );
 				if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins' ) ) ) {
 					wp_localize_script( 'abprf_lib', 'abprf_var', [
 						'currency_symbol' => get_woocommerce_currency_symbol(),
@@ -162,9 +162,9 @@
 						--rf_color_warning:{$color_warning};						
 					}";
 				wp_add_inline_style( 'abprf_lib', wp_kses_post( $abprf_var ) );
-				wp_enqueue_style( 'abprf', ABPRF_URL . 'assets/css/abprf.css', array(), time() );
+				wp_enqueue_style( 'abprf', ABPRF_URL . 'assets/css/abprf.css', array(), ABPRF_VERSION );
 				$all_time = ABPRF_Function::get_time( get_the_id(), 'js' );
-				wp_enqueue_script( 'abprf_infos', ABPRF_URL . 'assets/js/abprf.js', array( 'jquery' ), time(), true );
+				wp_enqueue_script( 'abprf_infos', ABPRF_URL . 'assets/js/abprf.js', array( 'jquery' ), ABPRF_VERSION, true );
 				$rental_data = array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce' => wp_create_nonce( 'abprf_ajax_nonce' ),
@@ -420,7 +420,7 @@
 			}
 			public function plugin_settings_link( $links_array, $plugin_file_name ) {
 				if ( strpos( $plugin_file_name, ABPRF_BASE ) ) {
-					array_unshift( $links_array, '<a class="_abprf" href="' . esc_url( admin_url() ) . 'admin.php?page=rental-forge&rf_tab=configuration">' . __( 'Configuration', 'abp-rentalforge' ) . '</a>' );
+					array_unshift( $links_array, '<a class="_abprf" href="' . esc_url( admin_url() ) . 'admin.php?page=rental-forge&tab=configuration">' . __( 'Configuration', 'abp-rentalforge' ) . '</a>' );
 				}
 
 				return $links_array;
@@ -436,10 +436,14 @@
 				return $current_status;
 			}
 			public function activation_redirect(): void {
-				$active_tab = filter_input( INPUT_GET, 'rf_tab', FILTER_SANITIZE_SPECIAL_CHARS );
-				$page       = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_SPECIAL_CHARS );
+				$active_tab = '';
+				$page       = '';
+				if ( isset( $_GET['_abprf_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_abprf_nonce'] ) ), 'abprf_url_action' ) ) {
+					$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'status';
+					$page       = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+				}
 				if ( $page === 'rental-forge' && ABPRF_WC < 2 && $active_tab != 'status' ) {
-					wp_safe_redirect( admin_url( 'admin.php?page=rental-forge&rf_tab=status' ) );
+					wp_safe_redirect( ABPRF_Function::build_url( 'status' ) );
 					exit;
 				}
 			}

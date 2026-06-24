@@ -13,7 +13,7 @@
         <div class="abprf_popup" data-popup="<?php echo esc_attr( $popup_id ); ?>">
             <div class="popup_area abprf_slider">
                 <span class="popup_close"><i class="fas fa-times"></i></span>
-                <div data-rf-slider>
+                <div data-slider>
                     <div class="popup_body">
                         <div class="slider_show">
                             <div class="_circle_icon slide_counter">

@@ -44,7 +44,7 @@ function abprf_icon_change(currentTarget) {
     let openIcon = currentTarget.data('open-icon');
     let closeIcon = currentTarget.data('close-icon');
     if (openIcon || closeIcon) {
-        if (currentTarget.hasClass('rf_active')) {
+        if (currentTarget.hasClass('abp_active')) {
             currentTarget.find('[data-icon]').removeClass(closeIcon).addClass(openIcon);
         } else {
             currentTarget.find('[data-icon]').removeClass(openIcon).addClass(closeIcon);
@@ -128,7 +128,7 @@ function abprf_input_value_change(currentTarget) {
     $(document).on('click', '.abprf_area .time_close_icon', function (e) {
         e.preventDefault();
         let parent = $(this).closest('label');
-        parent.find('input[type="time"]').val('').trigger('rf_trigger');
+        parent.find('input[type="time"]').val('').trigger('abp_trigger');
     });
 }(jQuery));
 document.body.addEventListener('click', function (event) {
@@ -145,7 +145,7 @@ document.body.addEventListener('click', function (event) {
 function abprf_load_tabs() {
     jQuery('div.abprf_area .abprf_tabs').each(function () {
         let tab_lists = jQuery(this).find('.tab_lists:first');
-        let activeTab = tab_lists.find('[data-tabs-target].rf_active');
+        let activeTab = tab_lists.find('[data-tabs-target].abp_active');
         let targetTab = activeTab.length > 0 ? activeTab : tab_lists.find('[data-tabs-target]').first();
         targetTab.trigger('click');
     });
@@ -176,23 +176,23 @@ function abprf_popup_close(target_id = '') {
 (function ($) {
     "use strict";
     $(document).on('click', 'div.abprf_area [data-tabs-target]', function () {
-        if (!$(this).hasClass('rf_active')) {
+        if (!$(this).hasClass('abp_active')) {
             let tabsTarget = $(this).data('tabs-target');
             let parent = $(this).closest('.abprf_tabs');
             parent.height(parent.height());
             let tab_lists = $(this).closest('.tab_lists');
             let tab_content = parent.find('.tab_content:first');
-            tab_lists.find('[data-tabs-target].rf_active').each(function () {
-                $(this).removeClass('rf_active').promise().done(function () {
+            tab_lists.find('[data-tabs-target].abp_active').each(function () {
+                $(this).removeClass('abp_active').promise().done(function () {
                     abprf_data_change($(this))
                 });
             });
-            $(this).addClass('rf_active').promise().done(function () {
+            $(this).addClass('abp_active').promise().done(function () {
                 abprf_data_change($(this))
             });
             tab_content.children('[data-tabs="' + tabsTarget + '"]').slideDown(350);
-            tab_content.children('[data-tabs].rf_active').slideUp(350).removeClass('rf_active').promise().done(function () {
-                tab_content.children('[data-tabs="' + tabsTarget + '"]').addClass('rf_active').promise().done(function () {
+            tab_content.children('[data-tabs].abp_active').slideUp(350).removeClass('abp_active').promise().done(function () {
+                tab_content.children('[data-tabs="' + tabsTarget + '"]').addClass('abp_active').promise().done(function () {
                     abprf_load_image();
                     parent.height('auto');
                 });
@@ -206,7 +206,7 @@ function abprf_popup_close(target_id = '') {
         let target = $this.attr('data-active-popup', '').data('target-popup');
         $('body').addClass('_stop_scroll').find('[data-popup="' + target + '"]').addClass('in').promise().done(function () {
             abprf_load_image();
-            $this.trigger('rf_trigger');
+            $this.trigger('abp_trigger');
             return true;
         });
     });
@@ -214,7 +214,7 @@ function abprf_popup_close(target_id = '') {
         let $this = $(this);
         $this.closest('[data-popup]').removeClass('in');
         $('body').removeClass('_stop_scroll').find('[data-active-popup]').removeAttr('data-active-popup');
-        $this.trigger('rf_trigger');
+        $this.trigger('abp_trigger');
         return true;
     });
     //================//
@@ -236,11 +236,11 @@ function abprf_popup_close(target_id = '') {
                 target_ids = target_ids.toString().split(" ");
                 target_ids.forEach(function (target_id) {
                     let target = get_collapse_target(currentTarget, target_id);
-                    target.slideUp(350).removeClass('rf_active');
+                    target.slideUp(350).removeClass('abp_active');
                 });
             } else {
                 let target = get_collapse_target($(this));
-                target.slideUp('fast').removeClass('rf_active');
+                target.slideUp('fast').removeClass('abp_active');
             }
         }).promise().done(function () {
             currentTarget.find('option').each(function () {
@@ -251,11 +251,11 @@ function abprf_popup_close(target_id = '') {
                         target_ids = target_ids.toString().split(" ");
                         target_ids.forEach(function (target_id) {
                             let target = get_collapse_target(currentTarget, target_id);
-                            target.slideDown(350).removeClass('rf_active');
+                            target.slideDown(350).removeClass('abp_active');
                         });
                     } else {
                         let target = get_collapse_target($(this));
-                        target.slideDown(350).removeClass('rf_active');
+                        target.slideDown(350).removeClass('abp_active');
                     }
                 }
             });
@@ -279,7 +279,7 @@ function abprf_popup_close(target_id = '') {
         } else {
             target.each(function () {
                 $(this).stop(true, true).slideToggle(250, function () {
-                    $(this).toggleClass('rf_active');
+                    $(this).toggleClass('abp_active');
                 });
             });
         }
@@ -289,11 +289,11 @@ function abprf_popup_close(target_id = '') {
         let parent_target_close = currentTarget.data('collapse-close-inside');
         if (parent_target_close) {
             $(parent_target_close).find('[data-collapse]').each(function () {
-                if ($(this).hasClass('rf_active')) {
+                if ($(this).hasClass('abp_active')) {
                     let collapse_id = $(this).data('collapse');
                     let target_collapse = $('[data-collapse-target="' + collapse_id + '"]');
                     if (collapse_id !== currentTarget.data('collapse-target')) {
-                        $(this).slideUp(250).removeClass('rf_active');
+                        $(this).slideUp(250).removeClass('abp_active');
                         let clsName = target_collapse.data('add-class');
                         if (clsName) {
                             target_collapse.removeClass(clsName);
@@ -332,18 +332,18 @@ function abprf_popup_close(target_id = '') {
     //=======================================================Group checkbox ==============//
     $(document).on('click', 'div.abprf_area .custom_checkbox [data-checked]', function () {
         let $this = $(this);
-        $this.toggleClass('rf_active').promise().done(function () {
+        $this.toggleClass('abp_active').promise().done(function () {
             let parent = $(this).closest('.custom_checkbox');
             let value = '';
             let separator = ',';
             parent.find(' [data-checked]').each(function () {
-                if ($(this).hasClass('rf_active')) {
+                if ($(this).hasClass('abp_active')) {
                     let currentValue = $(this).attr('data-checked');
                     value = value + (value ? separator : '') + currentValue;
                 }
             }).promise().done(function () {
                 abprf_data_change($this);
-                parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
+                parent.find('input[type="hidden"]').val(value).trigger('abp_trigger');
             });
         });
     });
@@ -351,32 +351,32 @@ function abprf_popup_close(target_id = '') {
     $(document).on('click', 'div.abprf_area  .custom_radio [data-radio]', function () {
         let parent = $(this).closest('.custom_radio');
         let $this = $(this);
-        if (!$this.hasClass('rf_active')) {
+        if (!$this.hasClass('abp_active')) {
             let value = $this.attr('data-radio');
-            parent.find('.rf_active[data-radio]').each(function () {
+            parent.find('.abp_active[data-radio]').each(function () {
                 if ($(this).attr('data-close-target')) {
                     let close_id = $(this).attr('data-close-target');
                     abprf_target_close(close_id, $this);
                 }
-                $(this).removeClass('rf_active');
+                $(this).removeClass('abp_active');
                 abprf_data_change($(this));
             }).promise().done(function () {
                 if ($this.attr('data-close-target')) {
                     let close_id = $this.attr('data-close-target');
                     abprf_target_open(close_id, $this);
                 }
-                $this.addClass('rf_active');
+                $this.addClass('abp_active');
                 abprf_data_change($this);
-                parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
+                parent.find('input[type="hidden"]').val(value).trigger('abp_trigger');
             });
         }
     });
     //=======================================================Switch button ==============//
     $(document).on('click', 'div.abprf_area  [data-switch]', function () {
-        if ($(this).hasClass('rf_active')) {
-            $(this).removeClass('rf_active').find('input[type="hidden"]').val('off').trigger('rf_trigger');
+        if ($(this).hasClass('abp_active')) {
+            $(this).removeClass('abp_active').find('input[type="hidden"]').val('off').trigger('abp_trigger');
         } else {
-            $(this).addClass('rf_active').find('input[type="hidden"]').val('on').trigger('rf_trigger');
+            $(this).addClass('abp_active').find('input[type="hidden"]').val('on').trigger('abp_trigger');
         }
     });
     //=======================================================validation ==============//
@@ -432,7 +432,7 @@ function abprf_popup_close(target_id = '') {
         let text = current.attr('data-text');
         parent.find('.dropdown_list').slideUp(250);
         parent.find('input[type="text"]').val(text);
-        parent.find('input[type="hidden"]').val(value).trigger('rf_trigger');
+        parent.find('input[type="hidden"]').val(value).trigger('abp_trigger');
     });
     $(document).on({
         keyup: function () {
@@ -484,7 +484,7 @@ function abprf_popup_close(target_id = '') {
                                 if (exit < 1) {
                                     parent.find('input[type="text"]').val('');
                                     parent.find('input[type="hidden"]').val('');
-                                    parent.find('input[type="hidden"]').trigger('rf_trigger');
+                                    parent.find('input[type="hidden"]').trigger('abp_trigger');
                                 }
                             });
                         }
@@ -509,9 +509,9 @@ function abprf_filter(parent) {
         let isCatMatch = cat_id === '' || itemCat === cat_id;
         let isLocMatch = loc_id === '' || itemLocArray.includes(loc_id);
         if (isCatMatch && isLocMatch) {
-            item.removeClass('rf_off').addClass('rf_on rf_close');
+            item.removeClass('abp_off').addClass('abp_on abp_close');
         } else {
-            item.addClass('rf_off').removeClass('rf_on rf_close');
+            item.addClass('abp_off').removeClass('abp_on abp_close');
         }
     }).promise().done(function () {
         let btn = parent.find('.live_pagination');
@@ -525,8 +525,8 @@ function abprf_live_pagination(parent) {
     let page_item = parseInt(parent.find('input[name="page_item"]').val()) || 10;
     let show_until = (pagination_page + 1) * page_item;
     let visible_count = 0;
-    let is_filter_active = parent.find('.pagination_item.rf_on, .pagination_item.rf_off').length > 0;
-    let total_filtered_match = parent.find('.pagination_item.rf_on').length;
+    let is_filter_active = parent.find('.pagination_item.abp_on, .pagination_item.abp_off').length > 0;
+    let total_filtered_match = parent.find('.pagination_item.abp_on').length;
     if (is_filter_active && total_filtered_match === 0) {
         parent.find('.rf_no_results').fadeIn();
     } else {
@@ -536,21 +536,21 @@ function abprf_live_pagination(parent) {
         let item = jQuery(this);
         if (!is_filter_active) {
             if (visible_count < show_until) {
-                item.removeClass('rf_close');
+                item.removeClass('abp_close');
             } else {
-                item.addClass('rf_close');
+                item.addClass('abp_close');
             }
             visible_count++;
         } else {
-            if (item.hasClass('rf_on')) {
+            if (item.hasClass('abp_on')) {
                 if (visible_count < show_until) {
-                    item.removeClass('rf_close');
+                    item.removeClass('abp_close');
                 } else {
-                    item.addClass('rf_close');
+                    item.addClass('abp_close');
                 }
                 visible_count++;
             } else {
-                item.addClass('rf_close');
+                item.addClass('abp_close');
             }
         }
     });
@@ -560,15 +560,15 @@ function abprf_live_pagination(parent) {
     }
 }
 function abprf_pagination_item(parent) {
-    let is_filter_active = parent.find('.pagination_item.rf_on, .pagination_item.rf_off').length > 0;
+    let is_filter_active = parent.find('.pagination_item.abp_on, .pagination_item.abp_off').length > 0;
     let hidden_items;
     let total_items;
     if (!is_filter_active) {
         total_items = parent.find('.pagination_item').length;
-        hidden_items = parent.find('.pagination_item.rf_close').length;
+        hidden_items = parent.find('.pagination_item.abp_close').length;
     } else {
-        total_items = parent.find('.pagination_item.rf_on').length;
-        hidden_items = parent.find('.pagination_item.rf_on.rf_close').length;
+        total_items = parent.find('.pagination_item.abp_on').length;
+        hidden_items = parent.find('.pagination_item.abp_on.abp_close').length;
     }
     if (total_items === 0 || hidden_items === 0) {
         parent.find('.live_pagination').attr('disabled', 'disabled').hide();
@@ -583,7 +583,7 @@ function abprf_pagination_item(parent) {
         let parent = $(this).closest('div.rf_pagination');
         abprf_filter(parent);
     });
-    $(document).on('rf_trigger', 'div.abprf_area .rf_pagination [name="cat_id"]', function () {
+    $(document).on('abp_trigger', 'div.abprf_area .rf_pagination [name="cat_id"]', function () {
         let parent = $(this).closest('div.rf_pagination');
         abprf_filter(parent);
     });
@@ -591,7 +591,7 @@ function abprf_pagination_item(parent) {
         let parent = $(this).closest('div.rf_pagination');
         abprf_filter(parent);
     });
-    $(document).on('rf_trigger', 'div.abprf_area .rf_pagination [name="loc_id"]', function () {
+    $(document).on('abp_trigger', 'div.abprf_area .rf_pagination [name="loc_id"]', function () {
         let parent = $(this).closest('div.rf_pagination');
         abprf_filter(parent);
     });
@@ -605,8 +605,8 @@ function abprf_pagination_item(parent) {
                 container.removeClass('view-switching');
             }, 150);
         }
-        parent.find('.list_view').removeClass('rf_active');
-        $(this).addClass('rf_active');
+        parent.find('.list_view').removeClass('abp_active');
+        $(this).addClass('abp_active');
         abprf_load_more();
     });
     $(document).on('click', 'div.abprf_area  .list_view', function () {
@@ -620,8 +620,8 @@ function abprf_pagination_item(parent) {
                 abprf_load_more();
             }, 150);
         }
-        parent.find('.grid_view').removeClass('rf_active');
-        $(this).addClass('rf_active');
+        parent.find('.grid_view').removeClass('abp_active');
+        $(this).addClass('abp_active');
     });
     $(document).on('click', 'div.abprf_area .rf_pagination .live_pagination', function () {
         let parent = $(this).closest('div.rf_pagination');
@@ -884,7 +884,7 @@ class ABPRFSlider {
 }
 document.addEventListener('DOMContentLoaded', () => {
     abprf_load_more()
-    document.querySelectorAll('div.abprf_area [data-rf-slider]').forEach(el => new ABPRFSlider(el));
+    document.querySelectorAll('div.abprf_area [data-slider]').forEach(el => new ABPRFSlider(el));
     const rf_gallery_item = document.querySelectorAll('div.abprf_area .gallery_item');
     rf_gallery_item.forEach(item => {
         const url = item.dataset.img;

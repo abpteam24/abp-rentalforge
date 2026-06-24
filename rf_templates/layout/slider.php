@@ -14,7 +14,7 @@
 		$active_popup        = ( $abprf_slider['visible_popup'] ?? 'on' ) ?: 'on';
 		?>
         <div class="abprf_slider">
-            <div class="<?php echo esc_attr( $indication_position ); ?>" data-rf-slider>
+            <div class="<?php echo esc_attr( $indication_position ); ?>" data-slider>
                 <div class="slider_show">
                     <div class="_circle_icon slide_counter">
                         <span class="slide_current_num">1</span> / <span><?php echo esc_html( $total_images ); ?></span>

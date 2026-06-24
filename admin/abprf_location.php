@@ -155,7 +155,7 @@
 								<?php ABPRF_Layout::switch_checkbox( 'display_pickup', $display_pickup ); ?>
                                 <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Multiple Pickup Point ?', 'abp-rentalforge' ); ?></span>
                             </div>
-                            <div data-collapse="#display_pickup" class="configuration_content <?php echo esc_attr( $display_pickup === 'on' ? 'rf_active' : '' ); ?>">
+                            <div data-collapse="#display_pickup" class="configuration_content <?php echo esc_attr( $display_pickup === 'on' ? 'abp_active' : '' ); ?>">
                                 <div class="insertable_area sortable_area _fd_column">
 									<?php if ( ! empty( $pick_infos ) ) {
 										foreach ( $pick_infos as $key => $pick_info ) {
@@ -180,7 +180,7 @@
 								<?php ABPRF_Layout::switch_checkbox( 'display_drop', $display_drop ); ?>
                                 <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Multiple Drop Point ?', 'abp-rentalforge' ); ?></span>
                             </div>
-                            <div data-collapse="#display_drop" class="configuration_content <?php echo esc_attr( $display_drop === 'on' ? 'rf_active' : '' ); ?>">
+                            <div data-collapse="#display_drop" class="configuration_content <?php echo esc_attr( $display_drop === 'on' ? 'abp_active' : '' ); ?>">
                                 <div class="insertable_area sortable_area _fd_column">
 									<?php if ( ! empty( $drop_infos ) ) {
 										foreach ( $drop_infos as $key => $drop_info ) {
@@ -236,7 +236,7 @@
 						<?php foreach ( $all_location as $key => $location ) {
 							$name = $location['name'] ?? ''; ?>
                             <div class="checkbox_item _min_100">
-                                <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( (string) $key, $location_array, true ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
+                                <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( (string) $key, $location_array, true ) ? 'abp_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
                                     <span data-icon class="_mar_r_xs far <?php echo esc_attr( in_array( (string) $key, $location_array, true ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span><?php echo esc_html( $name ); ?>
                                 </button>
                             </div>

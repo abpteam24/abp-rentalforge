@@ -107,15 +107,15 @@
 
 				return $ids;
 			}
-			public static function build_url( string $value = '', array $extra_args = [] ): string {
+			public static function build_url( $value = '', $extra_args = [] ): string {
 				$default_args = [
 					'page' => 'rental-forge',
 					'tab' => $value,
+					'_abprf_nonce' => wp_create_nonce( 'abprf_url_action' ),
 				];
 				$final_args   = array_merge( $default_args, $extra_args );
-				$base_url     = add_query_arg( $final_args, admin_url( 'admin.php' ) );
 
-				return wp_nonce_url( $base_url, 'abprf_url_action', '_abprf_nonce' );
+				return add_query_arg( $final_args, admin_url( 'admin.php' ) );
 			}
 			public static function get_image_url( $post_id = '', $image_id = '', $size = 'full' ): bool|string {
 				$image_id = $post_id && $post_id > 0 ? get_post_thumbnail_id( $post_id ) : $image_id;

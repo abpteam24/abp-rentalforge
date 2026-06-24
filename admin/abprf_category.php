@@ -129,7 +129,7 @@
 						<?php foreach ( $all_categories as $key => $category ) {
 							$name =$category['name'] ?? ''; ?>
                             <div class="radio_item">
-                                <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $_category == $key ? 'rf_active' : '' ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
+                                <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $_category == $key ? 'abp_active' : '' ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
                                     <span data-icon class="_mar_r_xs <?php echo esc_attr( $_category == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><span class="_text_left_fs_label"><?php echo esc_html( $name ); ?></span>
                                 </button>
                             </div>

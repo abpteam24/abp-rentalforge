@@ -33,7 +33,7 @@
                         <div class="post_top_filter">
                             <h3 class="_abprf"><?php esc_html_e( 'Available Property', 'abp-rentalforge' ); ?></h3>
                             <div class="_group_content">
-                                <button type="button" class="_btn_light_info_xs_fs_h6 grid_view rf_active">
+                                <button type="button" class="_btn_light_info_xs_fs_h6 grid_view abp_active">
                                     <span class="fas fa-table-cells"></span>
                                 </button>
                                 <button type="button" class="_btn_light_info_xs_fs_h6 list_view">

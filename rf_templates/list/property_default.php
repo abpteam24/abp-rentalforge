@@ -31,7 +31,7 @@
 							'post_id' => $property_post_id,
 							'property_id' => $property['id'] ?? '',
 							'property_name' => $property['name'] ?? '',
-							'add_class' => ( $show_post >= $post_count ) ? 'pagination_item' : 'pagination_item rf_close',
+							'add_class' => ( $show_post >= $post_count ) ? 'pagination_item' : 'pagination_item abp_close',
 						];
 						do_action( 'abprf_property_item', $abprf_infos, $property );
 					}

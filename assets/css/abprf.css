@@ -46,7 +46,7 @@
 	.abprf_area .select_property .custom_checkbox .checkbox_item {margin: 0;}
 	.abprf_area .item_location {font-size: var(--rf_fs_h6);margin-bottom: var(--rf_gap_xs);line-height: 1;display: -webkit-flex;display: flex;}
 	/*********************************************/
-	div.abprf_area div.pagination_item.rf_close {display: none;}
+	div.abprf_area div.pagination_item.abp_close {display: none;}
 	div.abprf_area div.pagination_item::before { content: ""; position: absolute; inset: 0; min-width: 80px; background-size: 200% 100%; pointer-events: none; z-index: 1; transition: ease-in-out 0.3s; }
 	div.abprf_area div.pagination_item::after { content: ""; position: absolute; inset: 0; background: rgba(200, 68, 10, 0); transition: background 0.25s; pointer-events: none; z-index: 2; }
 	div.abprf_area div.pagination_item:hover::after { background: rgba(200, 68, 10, 0.10); }

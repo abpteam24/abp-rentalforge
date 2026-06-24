@@ -46,13 +46,13 @@
                                 <div class="_divider_xs"></div>
 								<?php ABPRF_Layout::info_text( 'display_client_form' ); ?>
                             </div>
-                            <div data-collapse="#display_client_form" class="setting_item <?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
+                            <div data-collapse="#display_client_form" class="setting_item <?php echo esc_attr( $display == 'on' ? 'abp_active' : '' ); ?>">
                                 <div class="_fj_between">
                                     <div class="_fa_center">
 										<?php ABPRF_Layout::switch_checkbox( 'active_global_form', $active_global_form ); ?>
                                         <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Client Form ?', 'abp-rentalforge' ); ?></span>
                                     </div>
-                                    <div data-collapse="#active_global_form" class=" <?php echo esc_attr( $active_global_form == 'on' ? '' : 'rf_active' ); ?>">
+                                    <div data-collapse="#active_global_form" class=" <?php echo esc_attr( $active_global_form == 'on' ? '' : 'abp_active' ); ?>">
                                         <button type="button" class="_btn_theme import_global_form"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Global Client Form', 'abp-rentalforge' ); ?></button>
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
 								<?php ABPRF_Layout::info_text( 'active_global_form' ); ?>
                             </div>
                         </div>
-                        <div class="<?php echo esc_attr( $active_global_form == 'on' ? '' : 'rf_active' ); ?>" data-collapse="#active_global_form">
+                        <div class="<?php echo esc_attr( $active_global_form == 'on' ? '' : 'abp_active' ); ?>" data-collapse="#active_global_form">
                             <div class="client_form_content _mar_t_xs">
 								<?php $this->passenger_form_settings( $client_forms ); ?>
                             </div>
@@ -120,14 +120,14 @@
 				$label        = $form['label'] ?? '';
 				$options      = $form['option'] ?? '';
 				$d_value      = $form['d_value'] ?? '';
-				$active_type  = ( $type == 'select' || $type == 'checkbox' || $type == 'radio' ) ? 'rf_active' : '';
-				$active_value = $type != 'date' ? 'rf_active' : '';
+				$active_type  = ( $type == 'select' || $type == 'checkbox' || $type == 'radio' ) ? 'abp_active' : '';
+				$active_value = $type != 'date' ? 'abp_active' : '';
 				$date         = $type == 'date' ? $d_value : '';
 				$date_format  = ABPRF_Function::date_format_php();
 				$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				$hidden_date  = $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
 				$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
-				$active_date  = $type == 'date' ? 'rf_active' : '';
+				$active_date  = $type == 'date' ? 'abp_active' : '';
 				?>
                 <tr class="delete_area data_single_collapse">
                     <td>

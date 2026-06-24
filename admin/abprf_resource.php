@@ -33,7 +33,7 @@
 				?>
                 <div class="_abp_panel_xs">
                     <div class="_panel_head_xs" data-collapse-target="#abprf_tax"><h5 class="_abprf"><span class="_mar_r_xxs">🧾</span> <?php esc_html_e( 'Tax Configuration', 'abp-rentalforge' ); ?></h5></div>
-                    <div class="_panel_body_xs rf_active" data-collapse="#abprf_tax">
+                    <div class="_panel_body_xs abp_active" data-collapse="#abprf_tax">
 						<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) { ?>
                             <div class="group_setting">
                                 <div class="setting_item">
@@ -81,7 +81,7 @@
 					?>
                     <div class="_abp_panel_xs faq_configuration _mar_t_xs">
                         <div class="_panel_head_xs" data-collapse-target="#abprf_faq"><h5 class="_abprf"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'FAQs Configuration', 'abp-rentalforge' ); ?></h5></div>
-                        <div class="_panel_body_xs rf_active" data-collapse="#abprf_faq">
+                        <div class="_panel_body_xs abp_active" data-collapse="#abprf_faq">
                             <div class="group_setting">
                                 <div class="setting_item">
                                     <div class="_f_wrap_fj_between_fa_center">
@@ -93,13 +93,13 @@
                                     <div class="_divider_xs"></div>
 									<?php ABPRF_Layout::info_text( 'display_faq' ); ?>
                                 </div>
-                                <div data-collapse="#display_faq" class="setting_item <?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
+                                <div data-collapse="#display_faq" class="setting_item <?php echo esc_attr( $display == 'on' ? 'abp_active' : '' ); ?>">
                                     <div class="_fj_between">
                                         <div class="_fa_center">
 											<?php ABPRF_Layout::switch_checkbox( 'active_global_faq', $active_global_faq ); ?>
                                             <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global FAQ ?', 'abp-rentalforge' ); ?></span>
                                         </div>
-                                        <div data-collapse="#active_global_faq" class=" <?php echo esc_attr( $active_global_faq == 'on' ? '' : 'rf_active' ); ?>">
+                                        <div data-collapse="#active_global_faq" class=" <?php echo esc_attr( $active_global_faq == 'on' ? '' : 'abp_active' ); ?>">
                                             <button type="button" class="_btn_theme import_faq"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Global FAQ', 'abp-rentalforge' ); ?></button>
                                         </div>
                                     </div>
@@ -107,8 +107,8 @@
 									<?php ABPRF_Layout::info_text( 'active_global_faq' ); ?>
                                 </div>
                             </div>
-                            <div data-collapse="#display_faq" class="<?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
-                                <div class="_mar_t_xs <?php echo esc_attr( $active_global_faq == 'on' ? '' : 'rf_active' ); ?>" data-collapse="#active_global_faq">
+                            <div data-collapse="#display_faq" class="<?php echo esc_attr( $display == 'on' ? 'abp_active' : '' ); ?>">
+                                <div class="_mar_t_xs <?php echo esc_attr( $active_global_faq == 'on' ? '' : 'abp_active' ); ?>" data-collapse="#active_global_faq">
                                     <div class="faq_content">
 										<?php $this->faq( $faqs ); ?>
                                     </div>
@@ -127,7 +127,7 @@
 					?>
                     <div class="_abp_panel_xs tc_configuration _mar_t_xs">
                         <div class="_panel_head_xs" data-collapse-target="#abprf_tc"><h5 class="_abprf"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Term & Conditions', 'abp-rentalforge' ); ?></h5></div>
-                        <div class="_panel_body_xs rf_active" data-collapse="#abprf_tc">
+                        <div class="_panel_body_xs abp_active" data-collapse="#abprf_tc">
                             <div class="group_setting">
                                 <div class="setting_item">
                                     <div class="_f_wrap_fj_between_fa_center">
@@ -139,21 +139,21 @@
                                     <div class="_divider_xs"></div>
 									<?php ABPRF_Layout::info_text( 'display_tc' ); ?>
                                 </div>
-                                <div data-collapse="#display_tc" class="setting_item <?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
+                                <div data-collapse="#display_tc" class="setting_item <?php echo esc_attr( $display == 'on' ? 'abp_active' : '' ); ?>">
                                     <div class="_fj_between">
                                         <div class="_fa_center">
 											<?php ABPRF_Layout::switch_checkbox( 'active_global_tc', $active_global_tc ); ?>
                                             <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Term & Conditions ?', 'abp-rentalforge' ); ?></span>
                                         </div>
-                                        <div data-collapse="#active_global_tc" class=" <?php echo esc_attr( $active_global_tc == 'on' ? '' : 'rf_active' ); ?>">
+                                        <div data-collapse="#active_global_tc" class=" <?php echo esc_attr( $active_global_tc == 'on' ? '' : 'abp_active' ); ?>">
                                             <button type="button" class="_btn_theme import_tc"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Global Term & Conditions', 'abp-rentalforge' ); ?></button>
                                         </div>
                                     </div>
                                     <div class="_divider_xs"></div>
 									<?php ABPRF_Layout::info_text( 'active_global_tc' ); ?>
                                 </div>
-                                <div data-collapse="#display_tc" class="<?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
-                                    <div class="setting_item full_width <?php echo esc_attr( $active_global_tc == 'on' ? '' : 'rf_active' ); ?>" data-collapse="#active_global_tc">
+                                <div data-collapse="#display_tc" class="<?php echo esc_attr( $display == 'on' ? 'abp_active' : '' ); ?>">
+                                    <div class="setting_item full_width <?php echo esc_attr( $active_global_tc == 'on' ? '' : 'abp_active' ); ?>" data-collapse="#active_global_tc">
                                         <div class="tc_content">
 											<?php $this->tc( $abprf_tc ); ?>
                                         </div>
@@ -174,7 +174,7 @@
                             <h5 class="_abprf"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Global Term & Conditions Configuration', 'abp-rentalforge' ); ?></h5>
 							<?php ABPRF_Layout::info_text( 'abprf_tc' ); ?>
                         </div>
-                        <div class="_panel_body_xs rf_active" data-collapse="#abprf_tc">
+                        <div class="_panel_body_xs abp_active" data-collapse="#abprf_tc">
                             <form class="save_tc" method="post" action="">
 								<?php $this->tc( $tcs ); ?>
                                 <div class="_divider_xs"></div>
@@ -194,7 +194,7 @@
                             <h5 class="_abprf"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'Global FAQ Configuration', 'abp-rentalforge' ); ?></h5>
 							<?php ABPRF_Layout::info_text( 'abprf_faqs' ); ?>
                         </div>
-                        <div class="_panel_body_xs rf_active" data-collapse="#abprf_faq">
+                        <div class="_panel_body_xs abp_active" data-collapse="#abprf_faq">
                             <form class=" save_faq " method="post" action="">
 								<?php $this->faq( $faqs ); ?>
                                 <div class="_divider_xs"></div>

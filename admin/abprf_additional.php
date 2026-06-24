@@ -46,13 +46,13 @@
                                 <div class="_divider_xs"></div>
 								<?php ABPRF_Layout::info_text( 'display_additional_services' ); ?>
                             </div>
-                            <div data-collapse="#display_additional_services" class="setting_item <?php echo esc_attr( $display == 'on' ? 'rf_active' : '' ); ?>">
+                            <div data-collapse="#display_additional_services" class="setting_item <?php echo esc_attr( $display == 'on' ? 'abp_active' : '' ); ?>">
                                 <div class="_fj_between">
                                     <div class="_fa_center">
 										<?php ABPRF_Layout::switch_checkbox( 'active_global_additional', $active_global_additional ); ?>
                                         <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Additional Service ?', 'abp-rentalforge' ); ?></span>
                                     </div>
-                                    <div data-collapse="#active_global_additional" class=" <?php echo esc_attr( $active_global_additional == 'on' ? '' : 'rf_active' ); ?>">
+                                    <div data-collapse="#active_global_additional" class=" <?php echo esc_attr( $active_global_additional == 'on' ? '' : 'abp_active' ); ?>">
                                         <button type="button" class="_btn_theme import_additional"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Additional Service', 'abp-rentalforge' ); ?></button>
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
 								<?php ABPRF_Layout::info_text( 'active_global_additional' ); ?>
                             </div>
                         </div>
-                        <div class="<?php echo esc_attr( $active_global_additional == 'on' ? '' : 'rf_active' ); ?>" data-collapse="#active_global_additional">
+                        <div class="<?php echo esc_attr( $active_global_additional == 'on' ? '' : 'abp_active' ); ?>" data-collapse="#active_global_additional">
                             <div class="additional_content _mar_t_xs">
 								<?php $this->additional_service( $additional_services ); ?>
                             </div>

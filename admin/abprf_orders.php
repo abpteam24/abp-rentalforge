@@ -81,10 +81,10 @@
 				?>
                 <div class="_panel_head_xs_ov_auto _fj_between">
                     <div class="_group_content order_status_menu">
-                        <button class="_btn_white_xs_text_nowrap <?php echo esc_attr( $data_status === 'all' ? 'rf_active' : '' ); ?>" type="button" data-status="all" title="<?php esc_attr_e( 'All Booking', 'abp-rentalforge' ); ?>">
+                        <button class="_btn_white_xs_text_nowrap <?php echo esc_attr( $data_status === 'all' ? 'abp_active' : '' ); ?>" type="button" data-status="all" title="<?php esc_attr_e( 'All Booking', 'abp-rentalforge' ); ?>">
 							<?php echo esc_html( __( 'All Booking', 'abp-rentalforge' ) . ' (' . ABPRF_Query::get_booking_query( $filter_args, 0, 0, true ) . ' )' ) ?>
                         </button>
-                        <button class="_btn_white_xs_text_nowrap <?php echo esc_attr( ! $data_status ? 'rf_active' : '' ); ?>" type="button" data-status="" title="<?php esc_attr_e( 'Booking Completed', 'abp-rentalforge' ); ?>">
+                        <button class="_btn_white_xs_text_nowrap <?php echo esc_attr( ! $data_status ? 'abp_active' : '' ); ?>" type="button" data-status="" title="<?php esc_attr_e( 'Booking Completed', 'abp-rentalforge' ); ?>">
 							<?php
 								$filter_args['status'] = '';
 								echo esc_html( __( 'Booking Completed', 'abp-rentalforge' ) . ' (' . ABPRF_Query::get_booking_query( $filter_args, 0, 0, true ) . ' )' );
@@ -95,7 +95,7 @@
 							if ( ! empty( $all_status ) && is_array( $all_status ) ) {
 								foreach ( $all_status as $key => $status ) {
 									?>
-                                    <button class="_btn_white_xs_text_nowrap <?php echo esc_attr( $data_status === $key ? 'rf_active' : '' ); ?>" type="button" data-status="<?php echo esc_attr( $key ); ?>">
+                                    <button class="_btn_white_xs_text_nowrap <?php echo esc_attr( $data_status === $key ? 'abp_active' : '' ); ?>" type="button" data-status="<?php echo esc_attr( $key ); ?>">
 										<?php
 											$filter_args['status'] = sanitize_key( $key );
 											echo esc_html( $status . ' (' . ABPRF_Query::get_booking_query( $filter_args, 0, 0, true ) . ')' );

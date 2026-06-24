@@ -31,7 +31,7 @@
 							}
 							$add_class = '';
 							if ( ! empty( $show_item ) ) {
-								$add_class = ( absint( $show_item ) >= $post_count ) ? 'pagination_item' : 'pagination_item rf_close';
+								$add_class = ( absint( $show_item ) >= $post_count ) ? 'pagination_item' : 'pagination_item abp_close';
 							}
 							$post_count ++;
 							$url       = ABPRF_Function::get_image_url( '', $id ) ?: ABPRF_BLANK_IMG_URL;

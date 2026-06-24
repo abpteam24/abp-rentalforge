@@ -30,7 +30,7 @@
                                 <button class="_btn_tp_xs" type="button" disabled><span class="fas fa-ellipsis-h "></span></button>
 							<?php }
 							for ( $i = $start_page; $i <= $end_page; $i ++ ) { ?>
-                                <button class="_btn_tp_xs <?php echo esc_attr( $i == $page ? 'rf_active' : '' ); ?>" type="button" data-page="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></button>
+                                <button class="_btn_tp_xs <?php echo esc_attr( $i == $page ? 'abp_active' : '' ); ?>" type="button" data-page="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $i ); ?></button>
 							<?php }
 							if ( $total_page > 11 && $page < $total_page - 5 ) { ?>
                                 <button class="_btn_tp_xs" type="button" disabled><span class="fas fa-ellipsis-h"></span></button>

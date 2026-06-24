@@ -100,7 +100,7 @@
 														$section        = $collapse['option'] ?? '';
 														$section_key    = $collapse['key'] ?? '';
 														$option_value   = $this->get_option_value( $section, $section_key );
-														$add_class      = $option_value == 'on' ? $add_class . ' ' . 'rf_active' : $add_class;
+														$add_class      = $option_value == 'on' ? $add_class . ' ' . 'abp_active' : $add_class;
 														$section_target = $section . '[' . $section_key . ']';
 													}
 													$collapse_radio = $option['collapse_radio'] ?? [];
@@ -114,7 +114,7 @@
 														$radio_id           = $radio_section . '_' . $radio_key . '_' . $radio_value;
 														if ( ! empty( $radio_id ) ) {
 															$radio_pass ++;
-															?><div class="<?php echo esc_attr( $radio_option_value == $radio_value ? $span_class . '  ' . 'rf_active' : $span_class ); ?>" data-close="<?php echo esc_attr( '#' . $radio_id ); ?>"><?php
+															?><div class="<?php echo esc_attr( $radio_option_value == $radio_value ? $span_class . '  ' . 'abp_active' : $span_class ); ?>" data-close="<?php echo esc_attr( '#' . $radio_id ); ?>"><?php
 														}
 													}
 													$option['collapse_target'] = $section_target;
@@ -755,7 +755,7 @@
                             <input type="hidden" class="_form_control" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $option_data as $key => $data ) { ?>
                                 <div class="radio_item">
-                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $key == $value ? 'rf_active' : '' ); ?>"
+                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $key == $value ? 'abp_active' : '' ); ?>"
 										<?php if ( ! empty( $collapse ) ) { ?> data-close-target="#<?php echo esc_attr( $section . '_' . $key_name . '_' . $key ); ?>" <?php } ?>
                                             data-radio="<?php echo esc_attr( $key ); ?>"
                                             data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
@@ -810,7 +810,7 @@
                             <input type="hidden" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $option_data as $key => $label ) { ?>
                                 <div class="checkbox_item">
-                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
+                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'abp_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
                                         <span data-icon class="_mar_r_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $label ); ?>
                                     </button>
                                 </div>
@@ -848,7 +848,7 @@
                             <input type="hidden" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="<?php echo esc_attr( $option['value'] ?? '' ); ?>"/>
 							<?php foreach ( $wp_roles->roles as $key => $label ) { ?>
                                 <div class="checkbox_item">
-                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'rf_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
+                                    <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'abp_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
                                         <span data-icon class="_mar_r_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $label['name'] ); ?>
                                     </button>
                                 </div>

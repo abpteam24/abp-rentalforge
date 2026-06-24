@@ -6,7 +6,7 @@
             load_start_time($(this));
         })
     });
-    $(document).on('rf_trigger', '#abprf_search_area [name="post_id"]', function () {
+    $(document).on('abp_trigger', '#abprf_search_area [name="post_id"]', function () {
         let post_id = $(this).val();
         load_global_data(post_id, $(this));
     });
@@ -271,7 +271,7 @@
 }(jQuery));
 (function ($) {
     "use strict";
-    $(document).on("rf_trigger", "div.abprf_booking [name='property_check[]']", function (e) {
+    $(document).on("abp_trigger", "div.abprf_booking [name='property_check[]']", function (e) {
         e.preventDefault();
         let $this = $(this);
         let parent = $this.closest(".select_property");
@@ -279,7 +279,7 @@
         let target = parent.find('[data-collapse="' + data_id + '"]');
         if (target.length > 0) {
             target.slideToggle('fast');
-            $this.closest('.property_item').toggleClass('rf_active');
+            $this.closest('.property_item').toggleClass('abp_active');
         }
         parent.find('[name="property_qty[]"]').trigger('change');
     });

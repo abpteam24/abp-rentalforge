@@ -28,7 +28,7 @@
 					$loc_id      = ABPRF_Function::get_post_info( $post_id, 'abprf_location' );
 					$description = ABPRF_Function::get_post_info( $post_id, 'post_description' );
 					$url         = get_the_permalink( $post_id );
-					$show_class  = $show_post >= $post_count ? '' : 'rf_close';
+					$show_class  = $show_post >= $post_count ? '' : 'abp_close';
 					//echo '<pre>';print_r($filter_args);echo '</pre>';
 					?>
                     <div class="pagination_item item_box_1 <?php echo esc_attr( $show_class ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>">

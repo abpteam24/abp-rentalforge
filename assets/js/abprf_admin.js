@@ -71,8 +71,8 @@ function abprf_property_filter_arg($this) {
             filter_args['post_id'] = parent.find(".data_property [name='post_id']").val();
         }
     }
-    if (parent.find(".properties_list [data-page].rf_active").length > 0) {
-        filter_args['page_number'] = parent.find(".properties_list [data-page].rf_active").attr('data-page');
+    if (parent.find(".properties_list [data-page].abp_active").length > 0) {
+        filter_args['page_number'] = parent.find(".properties_list [data-page].abp_active").attr('data-page');
     } else {
         filter_args['page_number'] = 1;
     }
@@ -134,7 +134,7 @@ function abprf_property_filter_arg($this) {
     });
     $(document).on('click', 'div.abprf_admin .post_list .pagination_area button[data-page]', function () {
         let $this = $(this);
-        if (!$this.hasClass('rf_active')) {
+        if (!$this.hasClass('abp_active')) {
             let parent = $(this).closest('.abprf_posts');
             let filter_args = {};
             if (parent.find("[name='select_hidden_post_status']").length > 0) {
@@ -177,7 +177,7 @@ function abprf_property_filter_arg($this) {
         let form_area = $this.closest('.data_property');
         abprf_save_data(form_area, target, 'abprf_save_property');
     });
-    $(document).on("rf_trigger", "div.abprf_admin input[name='select_property_hidden']", function () {
+    $(document).on("abp_trigger", "div.abprf_admin input[name='select_property_hidden']", function () {
         let parent = $(this).closest('.abprf_admin');
         let filter_args = abprf_property_filter_arg($(this));
         filter_args['post_id'] = $(this).val();
@@ -186,7 +186,7 @@ function abprf_property_filter_arg($this) {
     });
     $(document).on('click', 'div.abprf_admin .properties_list .pagination_area button[data-page]', function () {
         let $this = $(this);
-        if (!$this.hasClass('rf_active')) {
+        if (!$this.hasClass('abp_active')) {
             let parent = $this.closest('.abprf_admin');
             let filter_args = abprf_property_filter_arg($this);
             filter_args['page_number'] = parseInt($this.attr('data-page'));
@@ -240,11 +240,11 @@ function abprf_property_filter_arg($this) {
         let parent = $(this).closest('.abprf_orders');
         let target = parent.find('.order_list');
         let formData = new FormData(this);
-        if (parent.find('[data-page].rf_active').length > 0) {
-            formData.append('page_number', parseInt(parent.find('[data-page].rf_active').attr('data-page')));
+        if (parent.find('[data-page].abp_active').length > 0) {
+            formData.append('page_number', parseInt(parent.find('[data-page].abp_active').attr('data-page')));
         }
         formData.append('page_item', parseInt(parent.find("[name='page_item']").val()));
-        formData.append('status', parent.find('.order_status_menu [data-status].rf_active').attr('data-status'));
+        formData.append('status', parent.find('.order_status_menu [data-status].abp_active').attr('data-status'));
         formData.append('action', 'abprf_load_order_list');
         formData.append('nonce', abprf_admin_data.nonce);
         $.ajax({
@@ -263,9 +263,9 @@ function abprf_property_filter_arg($this) {
     });
     $(document).on('click', 'div.abprf_admin .order_status_menu button[data-status]', function () {
         let $this = $(this);
-        if (!$this.hasClass('rf_active')) {
-            $this.closest('.order_status_menu').find('[data-status].rf_active').removeClass('rf_active').promise().done(function () {
-                $this.addClass('rf_active').promise().done(function () {
+        if (!$this.hasClass('abp_active')) {
+            $this.closest('.order_status_menu').find('[data-status].abp_active').removeClass('abp_active').promise().done(function () {
+                $this.addClass('abp_active').promise().done(function () {
                     $this.closest('.abprf_orders').find('form.load_order_list').submit();
                 });
             });
@@ -292,10 +292,10 @@ function abprf_property_filter_arg($this) {
     });
     $(document).on('click', 'div.abprf_admin .order_list .pagination_area button[data-page]', function () {
         let $this = $(this);
-        if (!$this.hasClass('rf_active')) {
+        if (!$this.hasClass('abp_active')) {
             let parent = $(this).closest('.order_list');
-            parent.find('[data-page].rf_active').removeClass('rf_active').promise().done(function () {
-                $this.addClass('rf_active').promise().done(function () {
+            parent.find('[data-page].abp_active').removeClass('abp_active').promise().done(function () {
+                $this.addClass('abp_active').promise().done(function () {
                     $this.closest('.abprf_orders').find('form.load_order_list').submit();
                 });
             });
@@ -305,10 +305,10 @@ function abprf_property_filter_arg($this) {
 //==========Date/Additional/Client Form/Faq/Status configuration=================//
 (function ($) {
     "use strict";
-    $(document).on("rf_trigger", "div.abprf_admin [data-popup='#abprf_global_popup'] .popup_close", function () {
+    $(document).on("abp_trigger", "div.abprf_admin [data-popup='#abprf_global_popup'] .popup_close", function () {
         $(this).closest('.abprf_popup').find('.popup_body').html('');
     });
-    $(document).on("rf_trigger", "div.abprf_admin [data-target-popup='#abprf_global_popup']", function () {
+    $(document).on("abp_trigger", "div.abprf_admin [data-target-popup='#abprf_global_popup']", function () {
         let tax_id = $(this).attr('data-id');
         let type = $(this).attr('data-type');
         let action = '';
@@ -799,7 +799,7 @@ function abprf_wp_editor_init(target) {
         $(document).find('div.abprf_area .sortable_area').sortable({
             handle: $(this).find('.sortable_handle'),
             stop: function (event, ui) {
-                ui.item.trigger('rf_trigger');
+                ui.item.trigger('abp_trigger');
             }
         });
     });
@@ -903,7 +903,7 @@ function abprf_wp_editor_init(target) {
             target.find('.edit_area').slideDown('fast');
         }
         parent.find('.hide_on_load').slideDown(300);
-        $(this).trigger('rf_trigger');
+        $(this).trigger('abp_trigger');
     });
     $(document).on('click', 'div.abprf_admin .edit_hook', function () {
         $(this).closest('.delete_area').toggleClass('active').find('.edit_area').slideToggle('fast');
@@ -938,7 +938,7 @@ function abprf_wp_editor_init(target) {
     $(document).on('click', 'div.abprf_admin .icon_image_selection_area button.icon_add', function () {
         load_icon_list();
     });
-    $(document).on('rf_trigger', 'div.abprf_admin .abp_dropdown .abp_icon_search_hidden', function () {
+    $(document).on('abp_trigger', 'div.abprf_admin .abp_dropdown .abp_icon_search_hidden', function () {
         let search_value = $(this).val().toLowerCase().trim();
         if (search_value === '' || search_value.length > 2) {
             load_icon_list();
@@ -958,7 +958,7 @@ function abprf_wp_editor_init(target) {
     });
     abprf_target_popup.find('.popup_close').click(function () {
         abprf_search_field.val('').trigger('change');
-        abprf_target_popup.find('.icon_item').removeClass('rf_active');
+        abprf_target_popup.find('.icon_item').removeClass('abp_active');
     });
     abprf_target_popup.on('click', '.icon_item', function () {
         let parent = $('[data-active-popup]').closest('.icon_image_selection_area');
@@ -973,7 +973,7 @@ function abprf_wp_editor_init(target) {
             } else {
                 parent.find('[data-add-icon]').removeAttr('class').addClass(icon_class).html('');
             }
-            abprf_target_popup.find('.icon_item').removeClass('rf_active');
+            abprf_target_popup.find('.icon_item').removeClass('abp_active');
             abprf_target_popup.find('.popup_close').trigger('click');
         }
     });
