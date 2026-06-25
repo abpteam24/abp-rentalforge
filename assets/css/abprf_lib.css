@@ -451,7 +451,7 @@
 	div.abprf_area label[class*="_fd_column"] span {margin: 0 0 var(--rf_gap_xs) 0; }
 	div.abprf_area [class*="_form_control"]:focus {outline: 1px solid var(--rf_color_theme);}
 	div.abprf_area [class*="_form_control"][class*="_w_min_auto"] {min-width: auto;}
-	div.abprf_area [class*="_abp_label"] {text-wrap: nowrap;margin-right: var(--rf_gap_xs);font-size: var(--rf_fs_label); font-weight: var(--rf_fw-medium); padding: 0; color: inherit;}
+	div.abprf_area [class*="_abp_label"] {text-wrap: nowrap;margin-right: var(--rf_gap_xxs);font-size: var(--rf_fs_label); font-weight: var(--rf_fw-medium); padding: 0; color: inherit;}
 	/*=============================*/
 	div.abprf_area [class*="_form_control"] {
 		width: 100%; height: auto; min-width: auto; max-width: inherit; min-height: 40px; border: 1px solid var(--rf_color_border);font-family: inherit; line-height: 1.5; margin: 0;-webkit-border-radius: var(--rf_br); border-radius: var(--rf_br);
@@ -489,7 +489,7 @@
 	div.abprf_area [class*="_form_column"] label {-webkit-flex-direction: column; flex-direction: column;-webkit-align-items: flex-start;align-items: flex-start;margin: 0 0 var(--rf_gap_xs) 0;}
 	div.abprf_area [class*="_form_column"] label span {margin: 0 0 var(--rf_gap_xxs) 0;}
 	/*************** Switch on/off*********/
-	div.abprf_area [data-switch] {width: 80px; height: 30px; min-width: auto;position: relative; background-color: var(--rf_color_white);border: 2px solid var(--rf_color_theme);}
+	div.abprf_area [data-switch] {width: 80px; height: 30px; min-width: auto;position: relative; background-color: var(--rf_color_white);border: 2px solid var(--rf_color_theme);margin: 0 var(--rf_gap_xs) 0 0;border-radius: var(--rf_br);}
 	div.abprf_area [data-switch]::before {position: absolute; content: var(--rf_text_off);height: 26px; width: 50%; left: 0; bottom: 0;top: 0; background-color: var(--rf_color_warning);color: var(--rf_color_white);opacity: 1; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center; -webkit-transition: var(--rf_transition); transition: var(--rf_transition);}
 	div.abprf_area [data-switch].abp_active::before {opacity: 0.4;background-color: var(--rf_color_light);color: var(--rf_color_theme);}
 	div.abprf_area [data-switch]::after {position: absolute; content: var(--rf_text_on);height: 26px; width: 50%; right: 0; bottom: 0;top: 0; background-color: var(--rf_color_light);color: var(--rf_color_theme);border-left: 2px solid var(--rf_color_theme);opacity: 0.4; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;-webkit-transition: var(--rf_transition); transition: var(--rf_transition); }

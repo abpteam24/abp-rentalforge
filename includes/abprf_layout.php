@@ -286,7 +286,7 @@
 			public static function switch_checkbox( $name, $value = '' ): void {
 				$value = in_array( $value, [ 'on', 'off', '' ], true ) ? $value : '';
 				?>
-                <div class="_br <?php echo esc_attr( $value === 'on' ? 'abp_active' : '' ); ?>" data-switch data-collapse-target="#<?php echo esc_attr( $name ); ?>">
+                <div class="<?php echo esc_attr( $value === 'on' ? 'abp_active' : '' ); ?>" data-switch data-collapse-target="#<?php echo esc_attr( $name ); ?>">
                     <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
                 </div>
 				<?php

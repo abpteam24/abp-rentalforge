@@ -124,81 +124,79 @@
 				$drop_infos     = $location['drop_info'] ?? [];
 				?>
                 <input type="hidden" name="loc_term_id" value="<?php echo esc_attr( $loc_id ); ?>"/>
-                <div class="group_setting">
-                    <div class="setting_item">
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Location Name', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
-                            <input class="_form_control" name="name" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" required/>
-                        </label>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'loc_name' ); ?>
-                    </div>
-                    <div class="setting_item">
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Location Slug (Optional)', 'abp-rentalforge' ); ?></span>
-                            <input class="_form_control" name="slug" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abp-rentalforge' ); ?>"/>
-                        </label>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'loc_slug' ); ?>
-                    </div>
-                    <div class="setting_item full_width">
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Location Full Address', 'abp-rentalforge' ); ?></span>
-                            <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'Address', 'abp-rentalforge' ); ?>"><?php echo esc_html( $des ); ?></textarea>
-                        </label>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'loc_des' ); ?>
-                    </div>
-                    <div class="setting_item">
-                        <div class="_fj_between">
-                            <div class="_fa_start">
-								<?php ABPRF_Layout::switch_checkbox( 'display_pickup', $display_pickup ); ?>
-                                <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Multiple Pickup Point ?', 'abp-rentalforge' ); ?></span>
+                <div class="setting_item _mar_b_xs">
+                    <label class="_f_equal_f_wrap">
+                        <span class="_abp_label"><?php esc_html_e( 'Location Name', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                        <input class="_form_control" name="name" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" required/>
+                    </label>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'loc_name' ); ?>
+                </div>
+                <div class="setting_item _mar_b_xs">
+                    <label class="_f_equal_f_wrap">
+                        <span class="_abp_label"><?php esc_html_e( 'Location Slug (Optional)', 'abp-rentalforge' ); ?></span>
+                        <input class="_form_control" name="slug" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abp-rentalforge' ); ?>"/>
+                    </label>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'loc_slug' ); ?>
+                </div>
+                <div class="setting_item">
+                    <label class="_f_equal_f_wrap">
+                        <span class="_abp_label"><?php esc_html_e( 'Location Full Address', 'abp-rentalforge' ); ?></span>
+                        <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'Address', 'abp-rentalforge' ); ?>"><?php echo esc_html( $des ); ?></textarea>
+                    </label>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'loc_des' ); ?>
+                </div>
+                <div class="setting_item _d_none">
+                    <div class="_fj_between">
+                        <div class="_fa_start">
+							<?php ABPRF_Layout::switch_checkbox( 'display_pickup', $display_pickup ); ?>
+                            <span class="_mar_b_xs"><?php esc_html_e( 'Multiple Pickup Point ?', 'abp-rentalforge' ); ?></span>
+                        </div>
+                        <div data-collapse="#display_pickup" class="configuration_content <?php echo esc_attr( $display_pickup === 'on' ? 'abp_active' : '' ); ?>">
+                            <div class="insertable_area sortable_area _fd_column">
+								<?php if ( ! empty( $pick_infos ) ) {
+									foreach ( $pick_infos as $key => $pick_info ) {
+										self::pickup_form( $pick_info, $key );
+									}
+								} ?>
                             </div>
-                            <div data-collapse="#display_pickup" class="configuration_content <?php echo esc_attr( $display_pickup === 'on' ? 'abp_active' : '' ); ?>">
-                                <div class="insertable_area sortable_area _fd_column">
-									<?php if ( ! empty( $pick_infos ) ) {
-										foreach ( $pick_infos as $key => $pick_info ) {
-											self::pickup_form( $pick_info, $key );
-										}
-									} ?>
-                                </div>
-								<?php ABPRF_Layout::button_add( __( 'Add New Pickup Point', 'abp-rentalforge' ) ); ?>
-                                <div class="abprf_d_none">
-                                    <div class="hidden_content">
-										<?php self::pickup_form(); ?>
-                                    </div>
+							<?php ABPRF_Layout::button_add( __( 'Add New Pickup Point', 'abp-rentalforge' ) ); ?>
+                            <div class="abprf_d_none">
+                                <div class="hidden_content">
+									<?php self::pickup_form(); ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'display_pickup' ); ?>
                     </div>
-                    <div class="setting_item">
-                        <div class="_fj_between">
-                            <div class="_fa_start">
-								<?php ABPRF_Layout::switch_checkbox( 'display_drop', $display_drop ); ?>
-                                <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Multiple Drop Point ?', 'abp-rentalforge' ); ?></span>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'display_pickup' ); ?>
+                </div>
+                <div class="setting_item _d_none">
+                    <div class="_fj_between">
+                        <div class="_fa_start">
+							<?php ABPRF_Layout::switch_checkbox( 'display_drop', $display_drop ); ?>
+                            <span class="_mar_b_xs"><?php esc_html_e( 'Multiple Drop Point ?', 'abp-rentalforge' ); ?></span>
+                        </div>
+                        <div data-collapse="#display_drop" class="configuration_content <?php echo esc_attr( $display_drop === 'on' ? 'abp_active' : '' ); ?>">
+                            <div class="insertable_area sortable_area _fd_column">
+								<?php if ( ! empty( $drop_infos ) ) {
+									foreach ( $drop_infos as $key => $drop_info ) {
+										self::drop_form( $drop_info, $key );
+									}
+								} ?>
                             </div>
-                            <div data-collapse="#display_drop" class="configuration_content <?php echo esc_attr( $display_drop === 'on' ? 'abp_active' : '' ); ?>">
-                                <div class="insertable_area sortable_area _fd_column">
-									<?php if ( ! empty( $drop_infos ) ) {
-										foreach ( $drop_infos as $key => $drop_info ) {
-											self::drop_form( $drop_info, $key );
-										}
-									} ?>
-                                </div>
-								<?php ABPRF_Layout::button_add( __( 'Add New Drop Point', 'abp-rentalforge' ) ); ?>
-                                <div class="abprf_d_none">
-                                    <div class="hidden_content">
-										<?php self::drop_form(); ?>
-                                    </div>
+							<?php ABPRF_Layout::button_add( __( 'Add New Drop Point', 'abp-rentalforge' ) ); ?>
+                            <div class="abprf_d_none">
+                                <div class="hidden_content">
+									<?php self::drop_form(); ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'display_drop' ); ?>
                     </div>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'display_drop' ); ?>
                 </div>
                 <div class="_divider_xs"></div>
                 <button type="button" class="_btn_theme save_location"><span class="_mar_r_xxs">💾</span><?php echo( ! empty( $loc_id ) ? esc_html__( 'Update Location', 'abp-rentalforge' ) : esc_html__( 'Save Location', 'abp-rentalforge' ) ); ?></button>

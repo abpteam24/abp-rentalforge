@@ -13,14 +13,14 @@
 			}
 			public function global_category(): void {
 				if ( ABPRF_Function::on_off( 'category' ) ) {
-				$category_label = ABPRF_Function::category_label();
-				?>
-                <div class="category_list _ov_auto">
-					<?php $this->category_list(); ?>
-                </div>
-                <div class="_divider_xs"></div>
-                <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( $category_label ); ?></button>
-				<?php
+					$category_label = ABPRF_Function::category_label();
+					?>
+                    <div class="category_list _ov_auto">
+						<?php $this->category_list(); ?>
+                    </div>
+                    <div class="_divider_xs"></div>
+                    <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="category"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( $category_label ); ?></button>
+					<?php
 				}
 			}
 			public function update_category(): void {
@@ -53,8 +53,8 @@
                         </thead>
                         <tbody>
 						<?php foreach ( $all_categories as $term_id => $category ) {
-							$name        =$category['name'] ?? '';
-							$description =  $category['description'] ?? '';
+							$name        = $category['name'] ?? '';
+							$description = $category['description'] ?? '';
 							?>
                             <tr>
                                 <th><?php echo esc_html( $count ); ?>.</th>
@@ -91,31 +91,29 @@
 				}
 				?>
                 <input type="hidden" name="cat_term_id" value="<?php echo esc_attr( $term_id ); ?>"/>
-                <div class="group_setting">
-                    <div class="setting_item">
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Name', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
-                            <input class="_form_control" name="name" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" required/>
-                        </label>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'cat_name' ); ?>
-                    </div>
-                    <div class="setting_item">
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Slug (Optional)', 'abp-rentalforge' ); ?></span>
-                            <input class="_form_control" name="slug" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abp-rentalforge' ); ?>"/>
-                        </label>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'cat_slug' ); ?>
-                    </div>
-                    <div class="setting_item full_width">
-                        <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Description', 'abp-rentalforge' ); ?></span>
-                            <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $des ); ?></textarea>
-                        </label>
-                        <div class="_divider_xs"></div>
-						<?php ABPRF_Layout::info_text( 'cat_des' ); ?>
-                    </div>
+                <div class="setting_item _mar_b_xs">
+                    <label class="_f_equal_f_wrap">
+                        <span class="_abp_label"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Name', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                        <input class="_form_control" name="name" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" required/>
+                    </label>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'cat_name' ); ?>
+                </div>
+                <div class="setting_item _mar_b_xs">
+                    <label class="_f_equal_f_wrap">
+                        <span class="_abp_label"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Slug (Optional)', 'abp-rentalforge' ); ?></span>
+                        <input class="_form_control" name="slug" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abp-rentalforge' ); ?>"/>
+                    </label>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'cat_slug' ); ?>
+                </div>
+                <div class="setting_item">
+                    <label class="_f_equal_f_wrap">
+                        <span class="_abp_label"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Description', 'abp-rentalforge' ); ?></span>
+                        <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $des ); ?></textarea>
+                    </label>
+                    <div class="_divider_xs"></div>
+					<?php ABPRF_Layout::info_text( 'cat_des' ); ?>
                 </div>
                 <div class="_divider_xs"></div>
                 <button type="button" class="_btn_theme save_category"><span class="_mar_r_xxs">💾</span><?php echo ( ! empty( $term_id ) ? esc_html__( 'Update', 'abp-rentalforge' ) : esc_html__( 'Save', 'abp-rentalforge' ) ) . ' ' . esc_html( $category_label ); ?></button>
@@ -127,7 +125,7 @@
                     <div class="custom_radio _fj_end">
                         <input type="hidden" name="abprf_category" value="<?php echo esc_attr( $_category ); ?>"/>
 						<?php foreach ( $all_categories as $key => $category ) {
-							$name =$category['name'] ?? ''; ?>
+							$name = $category['name'] ?? ''; ?>
                             <div class="radio_item">
                                 <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $_category == $key ? 'abp_active' : '' ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
                                     <span data-icon class="_mar_r_xs <?php echo esc_attr( $_category == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><span class="_text_left_fs_label"><?php echo esc_html( $name ); ?></span>

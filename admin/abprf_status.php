@@ -132,8 +132,8 @@
 			}
 			public function post_page( $abprf_info ): void {
 				$label          = ABPRF_Function::label();
-				$total          = sizeof( isset( $abprf_info['post_ids'] ) && $abprf_info['post_ids'] ? $abprf_info['post_ids'] : ABPRF_Query::get_post_id() );
-				$total_property = isset( $abprf_info['total_property'] ) && $abprf_info['total_property'] ? $abprf_info['total_property'] : 0;
+				$total          = sizeof( $abprf_info['post_ids'] ?? ABPRF_Query::get_post_id() );
+				$total_property = $abprf_info['total_property'] ?? 0;
 				?>
                 <div class="_section_xs">
                     <div class="_fa_center_fj_between">

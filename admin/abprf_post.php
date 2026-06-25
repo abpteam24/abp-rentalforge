@@ -166,7 +166,7 @@
 				$abprf_infos = ABPRF_Function::get_all_meta( $new_post_id );
 				wp_nonce_field( 'abprf_post_nonce', 'abprf_post_nonce' );
 				?>
-                <div class="abprf_area abprf_admin rf_post_config">
+                <div class="abprf_area abprf_admin abp_post_config">
                     <input type="hidden" name="abprf_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
                     <div class="_abp_panel">
                         <div class="abprf_tabs tab_top">
@@ -208,14 +208,14 @@
                         <div class="setting_item">
                             <div class="_fa_center">
 								<?php ABPRF_Layout::switch_checkbox( 'rent_continue', ( $abprf_infos['rent_continue'] ?? 'on' ) ); ?>
-                                <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Rent continue?', 'abp-rentalforge' ); ?></span>
+                                <span class="_abp_label"><?php esc_html_e( 'Rent continue?', 'abp-rentalforge' ); ?></span>
                             </div>
                             <div class="_divider_xs"></div>
 							<?php ABPRF_Layout::info_text( 'rent_continue' ); ?>
                         </div>
                         <div class="setting_item">
                             <label class="_f_equal_f_wrap">
-                                <span class="_mar_r_xs"><?php esc_html_e( 'Template', 'abp-rentalforge' ); ?></span>
+                                <span class="_abp_label"><?php esc_html_e( 'Template', 'abp-rentalforge' ); ?></span>
                                 <select class="_form_control " name="abprf_template" data-collapse-target required>
                                     <option disabled selected><?php esc_html_e( 'Please Select', 'abp-rentalforge' ); ?></option>
                                     <option value="grid" <?php echo esc_attr( $abprf_template == 'grid' ? 'selected' : '' ); ?>><?php esc_html_e( 'Grid/List Template', 'abp-rentalforge' ); ?></option>
@@ -230,7 +230,7 @@
                                 <div class="_fj_between">
                                     <div class="_fa_center">
 										<?php ABPRF_Layout::switch_checkbox( 'display_sku', ( $abprf_infos['display_sku'] ?? 'off' ) ); ?>
-                                        <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'SKU', 'abp-rentalforge' ); ?></span>
+                                        <span class="_abp_label"><?php esc_html_e( 'SKU', 'abp-rentalforge' ); ?></span>
                                     </div>
                                     <label>
                                         <input class="_form_control" name="post_sku" value="<?php echo esc_attr( $abprf_infos['post_sku'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'Post SKU', 'abp-rentalforge' ); ?>"/>
@@ -245,7 +245,7 @@
                                 <div class="_fj_between">
                                     <div class="_fa_center">
 										<?php ABPRF_Layout::switch_checkbox( 'display_sub_title', $display_sub_title ); ?>
-                                        <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Sub Title', 'abp-rentalforge' ); ?></span>
+                                        <span class="_abp_label"><?php esc_html_e( 'Sub Title', 'abp-rentalforge' ); ?></span>
                                     </div>
                                     <div data-collapse="#display_sub_title" class=" <?php echo esc_attr( $display_sub_title == 'on' ? 'abp_active' : '' ); ?>">
                                         <label>
@@ -270,7 +270,7 @@
 						<?php if ( ABPRF_Function::on_off( 'post_des' ) ) { ?>
                             <div class="setting_item">
                                 <label class="_f_equal_f_wrap">
-                                    <span class="_mar_r_xs"><?php esc_html_e( 'Post Short Description', 'abp-rentalforge' ); ?></span>
+                                    <span class="_abp_label"><?php esc_html_e( 'Post Short Description', 'abp-rentalforge' ); ?></span>
                                     <textarea class="_form_control" name="post_description" placeholder="<?php esc_attr_e( 'EX: Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $abprf_infos['post_description'] ?? '' ); ?></textarea>
                                 </label>
                                 <div class="_divider_xs"></div>
@@ -279,7 +279,7 @@
 						<?php } ?>
 						<?php if ( ABPRF_Function::on_off( 'related' ) ) { ?>
                             <div class="setting_item full_width related_item">
-                                <h5 class="_abprf_color_theme"><?php esc_html_e( 'Related Post', 'abp-rentalforge' ); ?></h5>
+                                <span class="_abp_label"><?php esc_html_e( 'Related Post', 'abp-rentalforge' ); ?></span>
 								<?php ABPRF_Layout::info_text( 'related_item' ); ?>
                                 <div class="_divider_xs"></div>
                                 <div class="_d_flex">
@@ -301,7 +301,7 @@
                                 <div class="_fj_between_fa_start">
                                     <div class="_fa_center">
 										<?php ABPRF_Layout::switch_checkbox( 'display_category', ( $abprf_infos['display_category'] ?? 'on' ) ); ?>
-                                        <span class="_fs_label_mar_lr_xs"><?php echo esc_html( ABPRF_Function::category_label() ); ?></span>
+                                        <span class="_abp_label"><?php echo esc_html( ABPRF_Function::category_label() ); ?></span>
                                     </div>
                                     <div class="category_selection">
 										<?php ABPRF_Category::category_selection( $abprf_infos['abprf_category'] ?? '' ); ?>
@@ -316,7 +316,7 @@
                                 <div class="_fj_between">
                                     <div class="_fa_center">
 										<?php ABPRF_Layout::switch_checkbox( 'display_location', ( $abprf_infos['display_location'] ?? 'on' ) ); ?>
-                                        <span class="_fs_label_mar_lr_xs"><?php echo esc_html( ABPRF_Function::location_label() ); ?></span>
+                                        <span class="_abp_label"><?php echo esc_html( ABPRF_Function::location_label() ); ?></span>
                                     </div>
                                     <div class="location_selection">
 										<?php ABPRF_Location::location_selection( $abprf_infos['abprf_location'] ?? '' ); ?>

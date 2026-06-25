@@ -15,7 +15,6 @@
 				add_action( 'admin_init', array( $this, 'activation_redirect' ) );
 			}
 			public function admin_enqueue(): void {
-				$label = ABPRF_Function::label();
 				$this->global_enqueue();
 				wp_enqueue_editor();
 				wp_enqueue_media();
@@ -56,7 +55,7 @@
 						'wc_installing' => __( 'Woocommerce  Installing.........!', 'abp-rentalforge' ),
 						'wc_installed_success' => __( 'Woocommerce Downloaded And Installed successfully ..... !! ', 'abp-rentalforge' ),
 						'wc_installed' => __( 'Woocommerce Installed successfully.... !  ', 'abp-rentalforge' ),
-						'create_post_page' => $label . ' ' . __( 'Page Creating ........!', 'abp-rentalforge' ),
+						'create_page' => __( 'Page Creating ........!', 'abp-rentalforge' ),
 						'no_item' => __( 'No More Item Found !', 'abp-rentalforge' ),
 						'no_item_selected' => __( 'No Item selected !', 'abp-rentalforge' ),
 					],

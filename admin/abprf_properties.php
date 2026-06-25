@@ -69,7 +69,7 @@
                     <div class="group_setting">
                         <div class="setting_item full_width">
                             <div class="_fj_between">
-                                <h5 class="_abprf"><?php esc_html_e( 'Rent Date & Time Rule', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></h5>
+                                <span class="_abp_label"><?php esc_html_e( 'Rent Date & Time Rule', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
                                 <div class="custom_radio">
                                     <input type="hidden" class="_form_control" name="rent_rule" value="<?php echo esc_attr( $rent_rule ); ?>"/>
 									<?php foreach ( $rent_rules as $key => $rule ) { ?>
@@ -87,7 +87,7 @@
 						<?php if ( $rent_rules['daily'] ?? '' ) { ?>
                             <div class="setting_item <?php echo esc_attr( $rent_rule == 'daily' ? 'abp_active' : '' ); ?>" data-close="#daily">
                                 <div class="_f_wrap_fj_between_fa_center">
-                                    <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Day time Start-End', 'abp-rentalforge' ); ?></span>
+                                    <span class="_abp_label"><?php esc_html_e( 'Day time Start-End', 'abp-rentalforge' ); ?></span>
                                     <div class="_group_content">
 										<?php ABPRF_Layout::input_time( 'day_time_start', $day_time_start );
 											ABPRF_Layout::input_time( 'day_time_end', $day_time_end ); ?>
@@ -100,7 +100,7 @@
 						<?php if ( $rent_rules['multi_day'] ?? '' ) { ?>
                             <div class="setting_item full_width <?php echo esc_attr( $rent_rule == 'multi_day' ? 'abp_active' : '' ); ?>" data-close="#multi_day">
                                 <label class="_f_equal_f_wrap">
-                                    <span class="_mar_r_xs"><?php esc_html_e( 'Hour Threshold', 'abp-rentalforge' ); ?></span>
+                                    <span class="_abp_label"><?php esc_html_e( 'Hour Threshold', 'abp-rentalforge' ); ?></span>
                                     <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="hour_threshold" placeholder="Ex:30" value="<?php echo esc_attr( $hour_threshold ); ?>"/>
                                 </label>
                                 <div class="_divider_xs"></div>
@@ -110,7 +110,7 @@
 						<?php if ( $rent_rules['monthly'] ?? '' ) { ?>
                             <div class="setting_item full_width <?php echo esc_attr( $rent_rule == 'monthly' ? 'abp_active' : '' ); ?>" data-close="#monthly">
                                 <label class="_f_equal_f_wrap">
-                                    <span class="_mar_r_xs"><?php esc_html_e( 'Month Cut-Off Date', 'abp-rentalforge' ); ?></span>
+                                    <span class="_abp_label"><?php esc_html_e( 'Month Cut-Off Date', 'abp-rentalforge' ); ?></span>
                                     <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="cut_off_date" placeholder="Ex:10" value="<?php echo esc_attr( $cut_off_date ); ?>"/>
                                 </label>
                                 <div class="_divider_xs"></div>
@@ -120,7 +120,7 @@
 						<?php if ( $rent_rules['multi_month'] ?? '' ) { ?>
                             <div class="setting_item <?php echo esc_attr( $rent_rule == 'multi_month' ? 'abp_active' : '' ); ?>" data-close="#multi_month">
                                 <label class="_f_equal_f_wrap">
-                                    <span class="_mar_r_xs"><?php esc_html_e( 'Day Threshold', 'abp-rentalforge' ); ?></span>
+                                    <span class="_abp_label"><?php esc_html_e( 'Day Threshold', 'abp-rentalforge' ); ?></span>
                                     <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="day_threshold" placeholder="Ex:10" value="<?php echo esc_attr( $day_threshold ); ?>"/>
                                 </label>
                                 <div class="_divider_xs"></div>
@@ -261,10 +261,10 @@
                                 <th><?php echo esc_html( $_price_info['qty'] ?? '' ); ?></th>
                                 <th>
 									<?php if ( empty( $copy_post_id ) ) { ?>
-                                        <div class="_f_wrap">
-                                            <button type="button" class="_btn_light_yellow_mar_r_xxs" data-id="<?php echo esc_attr( $property_id ); ?>" data-target-popup="#abprf_global_popup" data-type="property" title="<?php echo esc_html__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_html( $name ); ?>">✍️</button>
-                                            <button type="button" class="_btn_light_navy_blue _mar_r_xxs property_copy" data-id="<?php echo esc_attr( $property_id ); ?>" data-target-popup="#abprf_global_popup" data-type="property" title="<?php echo esc_html__( 'Copy/Clone : ', 'abp-rentalforge' ) . ' ' . esc_html( $name ); ?>">🔁</button>
-                                            <button type="button" class="_btn_light_danger_xxs delete_property" data-property_id="<?php echo esc_attr( $property_id ); ?>" title="<?php echo esc_html__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_html( $name ); ?>">❌</button>
+                                        <div class="_group_content">
+                                            <button type="button" class="_btn_light_info_xxs" data-id="<?php echo esc_attr( $property_id ); ?>" data-target-popup="#abprf_global_popup" data-type="property" title="<?php echo esc_html__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_html( $name ); ?>">✍️</button>
+                                            <button type="button" class="_btn_light_info_xxs property_copy" data-id="<?php echo esc_attr( $property_id ); ?>" data-target-popup="#abprf_global_popup" data-type="property" title="<?php echo esc_html__( 'Copy/Clone : ', 'abp-rentalforge' ) . ' ' . esc_html( $name ); ?>">🔁</button>
+                                            <button type="button" class="_btn_light_info_xxs delete_property" data-property_id="<?php echo esc_attr( $property_id ); ?>" title="<?php echo esc_html__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_html( $name ); ?>">❌</button>
                                         </div>
 									<?php } else { ?>
 										<?php ABPRF_Layout::button_delete(); ?>
@@ -289,7 +289,7 @@
 				?>
                 <div class="setting_item">
                     <label class="_f_equal_f_wrap">
-                        <span class="_mar_r_xs"><?php esc_html_e( 'Select Post', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                        <span class="_abp_label"><?php esc_html_e( 'Select Post', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
                         <select class="_form_control " name="property_post_id" required>
                             <option disabled selected><?php esc_html_e( 'Please Select', 'abp-rentalforge' ); ?></option>
 							<?php foreach ( $post_ids as $post_id ) {
@@ -307,7 +307,7 @@
                 <div class="setting_item">
                     <div class="_fa_center">
 						<?php ABPRF_Layout::switch_checkbox( 'rent_continue', $rent_continue ); ?>
-                        <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Rent continue?', 'abp-rentalforge' ); ?></span>
+                        <span class="_abp_label"><?php esc_html_e( 'Rent continue?', 'abp-rentalforge' ); ?></span>
                     </div>
                     <div class="_divider_xs"></div>
 					<?php ABPRF_Layout::info_text( 'rent_continue' ); ?>
@@ -321,7 +321,7 @@
 				?>
                 <div class="setting_item">
                     <label class="_f_equal_f_wrap">
-                        <span class="_mar_r_xs"><?php esc_html_e( 'Property Name', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                        <span class="_abp_label"><?php esc_html_e( 'Property Name', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
                         <input type="text" class="_form_control validation_name" name="name" placeholder="<?php esc_attr_e( 'EX: Bike', 'abp-rentalforge' ); ?>" value="<?php echo esc_attr( $name ); ?>" required/>
                     </label>
                     <div class="_divider_xs"></div>
@@ -345,7 +345,7 @@
 					?>
                     <div class="setting_item">
                         <div class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs_fs_label"><?php esc_html_e( 'Property Brand', 'abp-rentalforge' ); ?></span>
+                            <span class="_abp_label"><?php esc_html_e( 'Property Brand', 'abp-rentalforge' ); ?></span>
                             <div class="brand_selection"><?php ABPRF_Brand::brand_selection( $brand ); ?></div>
                         </div>
 						<?php ABPRF_Brand::brand_selection_form(); ?>
@@ -356,7 +356,7 @@
 				if ( ABPRF_Function::on_off( 'property_des' ) ) { ?>
                     <div class="setting_item">
                         <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Property Short Description', 'abp-rentalforge' ); ?></span>
+                            <span class="_abp_label"><?php esc_html_e( 'Property Short Description', 'abp-rentalforge' ); ?></span>
                             <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'EX: Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
                         </label>
                         <div class="_divider_xs"></div>

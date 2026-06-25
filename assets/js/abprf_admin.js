@@ -1,7 +1,7 @@
 let abprf_feature_data = JSON.parse(abprf_admin_data.feature_data);
 let abprf_related_info = JSON.parse(abprf_admin_data.related_info);
 function abprf_save_data(form_area, target, action) {
-    let body = jQuery('body .rf_post_config');
+    let body = jQuery('body .abp_post_config');
     let formData = new FormData();
     form_area.find('input, select, textarea').each(function () {
         let name = jQuery(this).attr('name');
@@ -448,7 +448,7 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin button.save_category', function (e) {
         e.preventDefault();
         let $this = $(this);
-        let body = jQuery('body .rf_post_config');
+        let body = jQuery('body .abp_post_config');
         let target = (body.find("[name='abprf_post_id']").length > 0) ? body.find('.category_selection') : $('div.abprf_admin .category_list');
         let form_area = $this.closest('.popup_body');
         abprf_save_data(form_area, target, 'abprf_save_category');
@@ -475,7 +475,7 @@ function abprf_property_filter_arg($this) {
     $(document).on('click', 'div.abprf_admin button.save_location', function (e) {
         e.preventDefault();
         let $this = $(this);
-        let body = jQuery('body .rf_post_config');
+        let body = jQuery('body .abp_post_config');
         let target = (body.find("[name='abprf_post_id']").length > 0) ? body.find('.location_selection') : $('div.abprf_admin .location_list');
         let form_area = $this.closest('.popup_body');
         abprf_save_data(form_area, target, 'abprf_save_location');
@@ -711,7 +711,7 @@ function abprf_property_filter_arg($this) {
                 "action": "abprf_create_page", 'nonce': abprf_admin_data.nonce, 'type': type
             }, beforeSend: function () {
                 abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.create_post_page);
+                abprf_toast_msg(abprf_admin_data.msg.create_page);
             }, success: function (response) {
                 abprf_toast_msg(response.data.msg, response.data.info_type);
                 window.location.reload();
@@ -886,7 +886,14 @@ function abprf_wp_editor_init(target) {
     //========= ==============//
     $(document).on('click', 'div.abprf_admin .delete_hook', function () {
         if (confirm(abprf_admin_data.msg.confirm_delete + ' \n\n' + abprf_admin_data.msg.confirm_ok + ' \n ' + abprf_admin_data.msg.confirm_cancel)) {
-            $(this).closest('.delete_area ').slideUp(250).remove();
+            let deleteArea = $(this).closest('.delete_area');
+            let parent = $(this).closest('.configuration_content');
+            deleteArea.slideUp(250, function () {
+                $(this).remove();
+                if (parent.find('.insertable_area .delete_area').length === 0) {
+                    parent.find('.hide_on_load').slideUp(250);
+                }
+            });
             abprf_toast_msg(abprf_admin_data.msg.delete_success);
         }
     });
