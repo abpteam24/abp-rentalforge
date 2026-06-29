@@ -404,7 +404,7 @@
 			}
 			public function plugin_settings_link( $links_array, $plugin_file_name ) {
 				if ( strpos( $plugin_file_name, ABPRF_BASE ) ) {
-					array_unshift( $links_array, '<a class="_abp" href="' . esc_url( admin_url() ) . 'admin.php?page=rental-forge&tab=configuration">' . __( 'Configuration', 'abp-rentalforge' ) . '</a>' );
+					array_unshift( $links_array, '<a class="_abp" href="' . esc_url( ABPRF_Function::build_url( 'configuration' ) ) . '">' . __( 'Configuration', 'abp-rentalforge' ) . '</a>' );
 				}
 
 				return $links_array;
@@ -426,7 +426,7 @@
 					$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'status';
 					$page       = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
 				}
-				if ( $page === 'rental-forge' && ABPRF_WC < 2 && $active_tab != 'status' ) {
+				if ( $page === ABPRF_Function::slug() && ABPRF_WC < 2 && $active_tab != 'status' ) {
 					wp_safe_redirect( ABPRF_Function::build_url( 'status' ) );
 					exit;
 				}

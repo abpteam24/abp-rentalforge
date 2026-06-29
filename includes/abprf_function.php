@@ -109,7 +109,7 @@
 			}
 			public static function build_url( $value = '', $extra_args = [] ): string {
 				$default_args = [
-					'page' => 'rental-forge',
+					'page' => ABPRF_Function::slug(),
 					'tab' => $value,
 					'_abprf_nonce' => wp_create_nonce( 'abprf_url_action' ),
 				];
