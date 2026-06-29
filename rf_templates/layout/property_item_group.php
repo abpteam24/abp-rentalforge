@@ -36,10 +36,10 @@
                             <div class="property_details">
                                 <div class="property_title_price">
                                     <div class="_fd_column">
-                                        <h4 class="_abprf">
+                                        <h4 class="_abp">
 											<?php echo esc_html( $property_name ); ?>
 											<?php if ( ( $property['brand'] ?? '' ) && ABPRF_Function::on_off( 'brand' ) ) { ?>
-                                                <small class="_abprf _color_theme"><?php echo esc_html( ABPRF_Function::brand_value( $property['brand'] ?? '' ) ); ?></small>
+                                                <small class="_abp _color_theme"><?php echo esc_html( ABPRF_Function::brand_value( $property['brand'] ?? '' ) ); ?></small>
 											<?php } ?>
                                         </h4>
                                         <div class="pricing_box">

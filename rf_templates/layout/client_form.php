@@ -19,7 +19,7 @@
 				?>
                 <div class="client_info_area">
                     <div class="item_box_1 attendee_item">
-                        <h5 class=" _abprf_title">
+                        <h5 class=" _abp_title">
 							<?php esc_html_e( 'Client Info : ', 'abp-rentalforge' ); ?>&nbsp;<span class="_color_theme attendee_seat_name"></span>
                         </h5>
 						<?php

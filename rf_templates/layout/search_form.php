@@ -26,7 +26,7 @@
 		$upcoming_date = ! empty( $upcoming_date ) ? gmdate( 'Y-m-d', strtotime( $upcoming_date ) ) : '';
 		?>
         <div id="abprf_search_area">
-            <h2 class="_abprf_mar_b_xs">
+            <h2 class="_abp_mar_b_xs">
                 <span class="_mar_r_xxs">📅</span><?php esc_html_e( 'Select Rental Period', 'abp-rentalforge' ); ?>
             </h2>
             <form class="abprf_property_form <?php echo esc_attr( $params_form === 'column' ? '_form_column' : '_form_inline' ); ?>" method="post" action="">

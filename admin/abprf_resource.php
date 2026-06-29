@@ -32,7 +32,7 @@
 				$tax_class   = $abprf_infos['_tax_class'] ?? '';
 				?>
                 <div class="_abp_panel_xs">
-                    <div class="_panel_head_xs" data-collapse-target="#abprf_tax"><h5 class="_abprf"><span class="_mar_r_xxs">🧾</span> <?php esc_html_e( 'Tax Configuration', 'abp-rentalforge' ); ?></h5></div>
+                    <div class="_panel_head_xs" data-collapse-target="#abprf_tax"><h5 class="_abp"><span class="_mar_r_xxs">🧾</span> <?php esc_html_e( 'Tax Configuration', 'abp-rentalforge' ); ?></h5></div>
                     <div class="_panel_body_xs abp_active" data-collapse="#abprf_tax">
 						<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) { ?>
                             <div class="group_setting">
@@ -80,7 +80,7 @@
 					$faqs              = is_array( $faqs ) ? $faqs : [];
 					?>
                     <div class="_abp_panel_xs faq_configuration _mar_t_xs">
-                        <div class="_panel_head_xs" data-collapse-target="#abprf_faq"><h5 class="_abprf"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'FAQs Configuration', 'abp-rentalforge' ); ?></h5></div>
+                        <div class="_panel_head_xs" data-collapse-target="#abprf_faq"><h5 class="_abp"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'FAQs Configuration', 'abp-rentalforge' ); ?></h5></div>
                         <div class="_panel_body_xs abp_active" data-collapse="#abprf_faq">
                             <div class="group_setting">
                                 <div class="setting_item">
@@ -126,7 +126,7 @@
 					$active_global_tc = $abprf_infos['active_global_tc'] ?? 'on';
 					?>
                     <div class="_abp_panel_xs tc_configuration _mar_t_xs">
-                        <div class="_panel_head_xs" data-collapse-target="#abprf_tc"><h5 class="_abprf"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Term & Conditions', 'abp-rentalforge' ); ?></h5></div>
+                        <div class="_panel_head_xs" data-collapse-target="#abprf_tc"><h5 class="_abp"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Term & Conditions', 'abp-rentalforge' ); ?></h5></div>
                         <div class="_panel_body_xs abp_active" data-collapse="#abprf_tc">
                             <div class="group_setting">
                                 <div class="setting_item">
@@ -171,7 +171,7 @@
 					?>
                     <div class="_abp_panel_xs">
                         <div class="_panel_head_xs _fd_column" data-collapse-target="#abprf_tc">
-                            <h5 class="_abprf"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Global Term & Conditions Configuration', 'abp-rentalforge' ); ?></h5>
+                            <h5 class="_abp"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Global Term & Conditions Configuration', 'abp-rentalforge' ); ?></h5>
 							<?php ABPRF_Layout::info_text( 'abprf_tc' ); ?>
                         </div>
                         <div class="_panel_body_xs abp_active" data-collapse="#abprf_tc">
@@ -191,7 +191,7 @@
 					?>
                     <div class="_abp_panel_xs faq_configuration _mar_b_xs">
                         <div class="_panel_head_xs _fd_column" data-collapse-target="#abprf_faq">
-                            <h5 class="_abprf"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'Global FAQ Configuration', 'abp-rentalforge' ); ?></h5>
+                            <h5 class="_abp"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'Global FAQ Configuration', 'abp-rentalforge' ); ?></h5>
 							<?php ABPRF_Layout::info_text( 'abprf_faqs' ); ?>
                         </div>
                         <div class="_panel_body_xs abp_active" data-collapse="#abprf_faq">
@@ -260,7 +260,7 @@
 				?>
                 <div class="delete_area faq_item _mar_b_xs <?php echo esc_attr( empty( $faq ) ? 'active' : '' ); ?>">
                     <div class="faq_question">
-                        <h6 class="_abprf edit_hook" data-paste="#faq_title"><?php echo esc_html( $title ); ?></h6>
+                        <h6 class="_abp edit_hook" data-paste="#faq_title"><?php echo esc_html( $title ); ?></h6>
 						<?php ABPRF_Layout::button_delete_sort_edit(); ?>
                     </div>
                     <div class="edit_area">

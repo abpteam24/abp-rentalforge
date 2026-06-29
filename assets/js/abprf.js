@@ -120,6 +120,7 @@
                     form_area.find('.date_details').html(response.data.date_details).promise().done(function () {
                         abprf_load_datepicker(target);
                         abprf_load_image(target);
+                        abprf_load_more();
                     });
                     abprf_toast_msg(response.data.msg, 'success');
                 } else {
@@ -157,6 +158,7 @@
                         abprf_load_image(parent);
                     }).promise().done(function () {
                         load_start_time(target_form);
+                        abprf_load_more();
                     });
                     abprf_toast_msg(response.data.msg, 'success');
                 } else {

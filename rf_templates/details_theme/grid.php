@@ -11,13 +11,13 @@
 			?>
             <div id="abprf_area" class="abprf_area default_details_page">
                 <div class="abprf_container">
-                    <div class="_abprf_row">
+                    <div class="_abp_row">
                         <div class="_fd_column_mar_b">
 							<?php do_action( 'abprf_title', $post_id, $abprf_infos );
 								do_action( 'abprf_sub_title', $post_id, $abprf_infos ); ?>
                         </div>
                     </div>
-                    <div class="_abprf_row">
+                    <div class="_abp_row">
                         <div class="_col_12">
 							<?php if ( $rent_continue == 'on' ) {
 								do_action( 'abprf_search_form', $abprf_infos );
@@ -26,26 +26,26 @@
 							} ?>
                         </div>
                     </div>
-                    <div class="_abprf_row">
+                    <div class="_abp_row">
                         <div class="_col_12">
 							<?php do_action( 'abprf_registration', $abprf_infos ); ?>
                         </div>
                     </div>
-                    <div class="_abprf_row">
+                    <div class="_abp_row">
                         <div class="_col_12">
 							<?php do_action( 'abprf_content', $post_id ); ?>
                         </div>
                     </div>
-                    <div class="_abprf_row">
+                    <div class="_abp_row">
                         <div class="_col_12_mar_t"> <?php do_action( 'abprf_slider', ( $abprf_infos['abprf_sliders'] ?? [] ) ); ?></div>
                     </div>
-                    <div class="_abprf_row">
+                    <div class="_abp_row">
                         <div class="_col_12_mar_t"> <?php do_action( 'abprf_faq', $abprf_infos ); ?></div>
                     </div>
-                    <div class="_abprf_row">
+                    <div class="_abp_row">
                         <div class="_col_12_mar_t"> <?php do_action( 'abprf_term_condition', $abprf_infos ); ?></div>
                     </div>
-                    <div class="_abprf_row">
+                    <div class="_abp_row">
                         <div class="_col_12_mar_t"> <?php do_action( 'abprf_related_item', ( $abprf_infos['related_item'] ?? '' ) ); ?></div>
                     </div>
                 </div>

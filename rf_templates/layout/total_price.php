@@ -16,24 +16,24 @@
         <div class="total_continue_area">
             <div class="total_continue item_box_1">
                 <div class="_fd_column_max_500">
-                    <h5 class="_abprf _f_equal">
+                    <h5 class="_abp _f_equal">
                         <span><?php esc_html_e( 'Property Rent : ', 'abp-rentalforge' ); ?>&nbsp;</span>
                         <span class="item_total _color_theme_text_right"></span>
                     </h5>
 					<?php if ( ABPRF_Function::on_off( 'additional_info' ) && $display_additional === 'on' ) { ?>
-                        <h5 class="_abprf _f_equal">
+                        <h5 class="_abp _f_equal">
                             <span><?php esc_html_e( 'Additional : ', 'abp-rentalforge' ); ?>&nbsp;</span>
                             <span class="additional_total _color_theme_text_right"></span>
                         </h5>
 					<?php } ?>
 					<?php if ( ABPRF_Function::on_off( 'deposit' ) ) { ?>
-                        <h5 class="_abprf _f_equal">
+                        <h5 class="_abp _f_equal">
                             <span><?php esc_html_e( 'Deposit : ', 'abp-rentalforge' ); ?>&nbsp;</span>
                             <span class="deposit_total _color_theme_text_right"></span>
                         </h5>
 					<?php } ?>
                     <div class="_divider_xs"></div>
-                    <h5 class="_abprf _f_equal">
+                    <h5 class="_abp _f_equal">
                         <span><?php esc_html_e( 'Total : ', 'abp-rentalforge' ); ?>&nbsp;</span>
                         <span class="abprf_total _color_theme_text_right"></span>
                     </h5>

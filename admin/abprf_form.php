@@ -16,7 +16,7 @@
 					$abprf_forms = ABPRF_Function::get_option( 'abprf_forms', ABPRF_Layout::static_form() );
 					?>
                     <form class="save_client_form" method="post" action="">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
+                        <h4 class="_abp"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
                         <div class="_divider_xs"></div>
 						<?php $this->passenger_form_settings( $abprf_forms ); ?>
@@ -33,7 +33,7 @@
 					$active_global_form = $abprf_infos['active_global_form'] ?? 'on';
 					?>
                     <div class="tab_item abprf_client_form" data-tabs="#abprf_client_form">
-                        <h4 class=" _abprf_color_theme"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Forms Configuration', 'abp-rentalforge' ); ?></h4>
+                        <h4 class=" _abp_color_theme"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Forms Configuration', 'abp-rentalforge' ); ?></h4>
                         <div class="_divider_xs"></div>
                         <div class="group_setting">
                             <div class="setting_item">
@@ -73,7 +73,7 @@
 				?>
                 <div class="configuration_content">
                     <div class="_ov_auto">
-                        <table class=" _abprf">
+                        <table class=" _abp">
                             <thead>
                             <tr>
                                 <th class="_text_table_center"><?php esc_html_e( 'Form Title', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></th>
@@ -104,7 +104,7 @@
 						<?php ABPRF_Layout::button_add( __( 'Add New Form', 'abp-rentalforge' ) ); ?>
                     </div>
                     <div class="abprf_d_none">
-                        <table class=" _abprf">
+                        <table class=" _abp">
                             <tbody class="hidden_content">
 							<?php $this->form_item(); ?>
                             </tbody>

@@ -16,7 +16,7 @@
 					$additional_services = ABPRF_Function::get_option( 'abprf_additional', ABPRF_Layout::static_additional() );
 					?>
                     <form class=" save_additional_service" method="post" action="">
-                        <h4 class="_abprf_color"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Global Additional services Configuration', 'abp-rentalforge' ); ?></h4>
+                        <h4 class="_abp_color"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Global Additional services Configuration', 'abp-rentalforge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'additional_services' ); ?>
                         <div class="_divider_xs"></div>
 						<?php $this->additional_service( $additional_services ); ?>
@@ -33,7 +33,7 @@
 					$active_global_additional = $abprf_infos['active_global_additional'] ?? 'on';
 					?>
                     <div class="tab_item additional_configuration" data-tabs="#abprf_additional_service">
-                        <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">💰</span><?php esc_html_e( 'Additional services Configuration', 'abp-rentalforge' ); ?></h4>
+                        <h4 class="_abp_color_theme"><span class="_mar_r_xxs">💰</span><?php esc_html_e( 'Additional services Configuration', 'abp-rentalforge' ); ?></h4>
                         <div class="_divider_xs"></div>
                         <div class="group_setting">
                             <div class="setting_item">
@@ -73,7 +73,7 @@
 				?>
                 <div class="configuration_content additional_service">
                     <div class="_ov_auto">
-                        <table class="_abprf">
+                        <table class="_abp">
                             <thead>
                             <tr>
                                 <th class="_w_125"><?php esc_html_e( 'Icon / Image', 'abp-rentalforge' ); ?></th>
@@ -100,7 +100,7 @@
                     <div class="_divider_xs"></div>
 					<?php ABPRF_Layout::button_add( __( 'Add New Additional services', 'abp-rentalforge' ) ); ?>
                     <div class="abprf_d_none">
-                        <table class="_abprf">
+                        <table class="_abp">
                             <tbody class="hidden_content">
 							<?php $this->service_item(); ?>
                             </tbody>

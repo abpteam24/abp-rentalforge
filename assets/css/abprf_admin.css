@@ -5,8 +5,8 @@
 	div.abprf_admin table thead,
 	div.abprf_admin table tfoot {background: var(--rf_color_muted_2);}
 	div.abprf_admin table tbody tr:nth-child(even) {background: var(--rf_color_6);}
-	div.abprf_admin .abprf_orders table[class*="_abprf"] tbody th,
-	div.abprf_admin .abprf_orders table[class*="_abprf"] tbody td {vertical-align: top;text-wrap: nowrap;padding: var(--rf_gap_xxs);}
+	div.abprf_admin .abprf_orders table[class*="_abp"] tbody th,
+	div.abprf_admin .abprf_orders table[class*="_abp"] tbody td {vertical-align: top;text-wrap: nowrap;padding: var(--rf_gap_xxs);}
 	/*=============================*/
 	div.abprf_admin .group_setting {display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	div.abprf_admin .group_setting > * {-webkit-flex-grow: 1;flex-grow: 1; -webkit-flex-shrink: 1; flex-shrink: 1; -webkit-flex-basis: 45%; flex-basis: 45%;}
@@ -121,4 +121,6 @@
 	div.abprf_admin .properties_list {overflow-x: auto;margin-top: var(--rf_gap_xs);}
 	div.abprf_admin .abprf_properties .properties_list {margin: 0;}
 	div.abprf_admin .category_list table {text-align: left;}
+	div.abprf_admin .dashboard_content [class*="_panel_head"] [class*="_group_content"] {white-space: nowrap;  -webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xxs);}
+	div.abprf_admin .dashboard_content [class*="_panel_head"] [class*="_group_content"] > * {-webkit-justify-content: center; justify-content: center; -webkit-flex: 1; flex: 1; min-width: max-content;  border: none;}
 }

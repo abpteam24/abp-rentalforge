@@ -14,9 +14,9 @@
 			?>
             <div class="abprf_area">
                 <div class="_section_xs">
-                    <h6 class="_abprf _color_theme"><?php esc_html_e( 'Booking Information : ', 'abp-rentalforge' ); ?></h6>
+                    <h6 class="_abp _color_theme"><?php esc_html_e( 'Booking Information : ', 'abp-rentalforge' ); ?></h6>
                     <div class="_divider_xxs"></div>
-                    <ul class="_abprf cart_list">
+                    <ul class="_abp cart_list">
                         <li>
                             <span class="fas fa-calendar-check _mar_r_xs"></span>
                             <span class="_fs_label"><?php esc_html_e( 'Rent Start : ', 'abp-rentalforge' ); ?></span>&nbsp;<?php echo esc_html( ABPRF_Function::date_format( $start_time ) ); ?>
@@ -38,7 +38,7 @@
                     </ul>
                 </div>
                 <div class="_section_xs">
-                    <h6 class="_abprf _color_theme"><?php esc_html_e( 'Property Information : ', 'abp-rentalforge' ); ?></h6>
+                    <h6 class="_abp _color_theme"><?php esc_html_e( 'Property Information : ', 'abp-rentalforge' ); ?></h6>
 					<?php
 						foreach ( $ticket_infos as $ticket_info ) {
 							if ( ! is_array( $ticket_info ) ) {
@@ -52,7 +52,7 @@
 							$deposit     = $ticket_info['deposit'] ?? '';
 							?>
                             <div class="_divider_xxs"></div>
-                            <ul class="_abprf cart_list">
+                            <ul class="_abp cart_list">
                                 <li><span class="_fs_label"><?php esc_html_e( 'Name : ', 'abp-rentalforge' ); ?></span><?php echo esc_html( $ticket_name ); ?></li>
                                 <li><span class="_fs_label"><?php esc_html_e( 'Quantity : ', 'abp-rentalforge' ); ?></span><?php echo esc_html( $ticket_qty ); ?></li>
                                 <li><span class="_fs_label"><?php esc_html_e( 'Rent : ', 'abp-rentalforge' ); ?></span><?php echo wp_kses_post( $price_html ); ?></li>
@@ -67,9 +67,9 @@
                 </div>
 				<?php if ( ABPRF_Function::on_off( 'additional_info' ) && ! empty( $additional_info ) && is_array( $additional_info ) ) { ?>
                     <div class="_section_xs">
-                        <h6 class="_abprf _color_theme"><?php esc_html_e( 'Additional Information : ', 'abp-rentalforge' ); ?></h6>
+                        <h6 class="_abp _color_theme"><?php esc_html_e( 'Additional Information : ', 'abp-rentalforge' ); ?></h6>
                         <div class="_divider_xxs"></div>
-                        <ul class="_abprf cart_list">
+                        <ul class="_abp cart_list">
 							<?php
 								foreach ( $additional_info as $additional ) {
 									if ( ! is_array( $additional ) || empty( $additional ) ) {
@@ -94,9 +94,9 @@
 
 				<?php if ( ABPRF_Function::on_off( 'client_info' ) && ! empty( $attendee_infos ) && is_array( $attendee_infos ) ) { ?>
                     <div class="_section_xs">
-                        <h6 class="_abprf _color_theme"><?php esc_html_e( 'Client Information : ', 'abp-rentalforge' ); ?></h6>
+                        <h6 class="_abp _color_theme"><?php esc_html_e( 'Client Information : ', 'abp-rentalforge' ); ?></h6>
                         <div class="_divider_xxs"></div>
-                        <ul class=" _abprf cart_list">
+                        <ul class=" _abp cart_list">
 							<?php
 								foreach ( $attendee_infos as $attendee_info ) {
 									if ( ! is_array( $attendee_info ) ) {

@@ -14,7 +14,7 @@
 				$date_infos = ABPRF_Function::get_option( 'abprf_dates' );
 				?>
                 <form class="save_dates" method="post" action="">
-                    <h4 class="_abprf"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abp-rentalforge' ); ?></h4>
+                    <h4 class="_abp"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abp-rentalforge' ); ?></h4>
 					<?php ABPRF_Layout::info_text( 'abprf_dates' ); ?>
                     <div class="_divider_xs"></div>
 					<?php $this->date_time_format( $date_infos );
@@ -29,7 +29,7 @@
 				$active_global_dates = $post_infos['active_global_dates'] ?? 'on';
 				?>
                 <div class="tab_item" data-tabs="#abprf_dates">
-                    <h4 class="_abprf_color_theme"><span class=" _mar_r_xs">🗓️</span> <?php esc_html_e( 'Date Configuration', 'abp-rentalforge' ); ?></h4>
+                    <h4 class="_abp_color_theme"><span class=" _mar_r_xs">🗓️</span> <?php esc_html_e( 'Date Configuration', 'abp-rentalforge' ); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="group_setting">
                         <div class="setting_item">
@@ -140,7 +140,7 @@
 				?>
                 <div class="setting_item">
                     <div class=" _fj_between">
-                        <h5 class="_abprf"><?php esc_html_e( 'Operational Date Type', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></h5>
+                        <h5 class="_abp"><?php esc_html_e( 'Operational Date Type', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></h5>
                         <div class="custom_radio">
                             <input type="hidden" class="_form_control" name="date_type" value="<?php echo esc_attr( $date_type ); ?>"/>
                             <div class="radio_item">
@@ -217,7 +217,7 @@
                     <div class="group_setting _mar_t_xs">
                         <div class="setting_item full_width">
                             <div class="_fj_between _mar_t_xs">
-                                <h5 class="_abprf_color_theme"><?php esc_html_e( 'Special On/Off Date Time(optional)', 'abp-rentalforge' ); ?></h5>
+                                <h5 class="_abp_color_theme"><?php esc_html_e( 'Special On/Off Date Time(optional)', 'abp-rentalforge' ); ?></h5>
                                 <div class="custom_checkbox">
                                     <input type="hidden" name="date_rule" value="<?php echo esc_attr( $date_rule ); ?>"/>
 									<?php foreach ( $date_rules as $key => $rule ) { ?>

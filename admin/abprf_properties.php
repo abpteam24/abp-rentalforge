@@ -19,14 +19,14 @@
 				?>
                 <div class="abprf_properties _abp_panel">
                     <div class="_panel_head_fj_between_f_wrap">
-                        <h4 class="_abprf_color_white"><span class="_mar_r_xxs">🏠</span> <?php esc_html_e( 'Properties', 'abp-rentalforge' ); ?></h4>
+                        <h4 class="_abp_color_white"><span class="_mar_r_xxs">🏠</span> <?php esc_html_e( 'Properties', 'abp-rentalforge' ); ?></h4>
                         <div class="abp_dropdown _max_400">
-                            <label class="_abprf_all_center">
+                            <label class="_abp_all_center">
                                 <input type="hidden" name="select_property_hidden" value=""/>
                                 <input type="text" class="_form_control_text_center validation_name" name="select_property" placeholder="<?php esc_attr_e( 'Search  Post', 'abp-rentalforge' ); ?>" value=""/>
                             </label>
                             <div class="dropdown_list">
-                                <ul class="_abprf">
+                                <ul class="_abp">
                                     <li data-value="all" data-text="<?php esc_attr_e( 'All Post', 'abp-rentalforge' ); ?>"><?php esc_html_e( 'All Post', 'abp-rentalforge' ); ?></li>
                                     <li data-value="on" data-text="<?php esc_attr_e( 'Rent Active', 'abp-rentalforge' ); ?>"><?php esc_html_e( 'Rent Active', 'abp-rentalforge' ); ?></li>
                                     <li data-value="off" data-text="<?php esc_attr_e( 'Rent De-active', 'abp-rentalforge' ); ?>"><?php esc_html_e( 'Rent De-active', 'abp-rentalforge' ); ?></li>
@@ -64,7 +64,7 @@
 				//echo '<pre>';print_r( ABPRF_Layout::rent_rules_options());					echo '</pre>';
 				?>
                 <div class="tab_item abprf_equipment_price" data-tabs="#abprf_equipment_price">
-                    <h4 class="_abprf_color_theme"><span class="_mar_r_xxs">🏠</span> <?php esc_html_e( 'Properties and Price Configuration', 'abp-rentalforge' ); ?></h4>
+                    <h4 class="_abp_color_theme"><span class="_mar_r_xxs">🏠</span> <?php esc_html_e( 'Properties and Price Configuration', 'abp-rentalforge' ); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="group_setting">
                         <div class="setting_item full_width">
@@ -75,7 +75,7 @@
 									<?php foreach ( $rent_rules as $key => $rule ) { ?>
                                         <div class="radio_item">
                                             <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $rent_rule == $key ? 'abp_active' : '' ); ?>" data-close-target="#<?php echo esc_attr( $key ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                                <i class="_abprf_fs_h5"><span data-icon class="_mar_r_xs <?php echo esc_attr( $rent_rule == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html( $rule ); ?></span>
+                                                <i class="_abp_fs_h5"><span data-icon class="_mar_r_xs <?php echo esc_attr( $rent_rule == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html( $rule ); ?></span>
                                             </button>
                                         </div>
 									<?php } ?>
@@ -152,7 +152,7 @@
 					$copy_post_id   = $filter_args['copy_post_id'] ?? '';
 					$rent_rules     = ABPRF_Layout::rent_rules_options();
 					?>
-                    <table class="_abprf">
+                    <table class="_abp">
                         <thead>
                         <tr>
                             <th class="_w_50"><?php esc_html_e( 'SI', 'abp-rentalforge' ); ?></th>
@@ -189,7 +189,7 @@
                                 <th class="_fs_h2"><?php ABPRF_Layout::image_icon( $icon, '' ); ?></th>
                                 <td>
                                     <div class="_fd_column">
-                                        <h5 class="_abprf_color_theme"><?php echo esc_html( $name ); ?></h5>
+                                        <h5 class="_abp_color_theme"><?php echo esc_html( $name ); ?></h5>
                                         <div class="_d_flex">
 											<?php if ( ! empty( $copy_post_id ) ) { ?>
                                                 <input type="hidden" name="copy_property_id[]" value="<?php echo esc_attr( $property_id ); ?>"/>
@@ -204,7 +204,7 @@
 								<?php if ( ( empty( $filter_post_id ) || is_string( $filter_post_id ) ) && empty( $copy_post_id ) ) { ?>
                                     <td>
 										<?php if ( ! empty( $post_id ) ) { ?>
-                                            <a href="<?php echo esc_url( get_edit_post_link( $post_id ) ); ?>" class="_abprf_fs_h5 _color_theme">
+                                            <a href="<?php echo esc_url( get_edit_post_link( $post_id ) ); ?>" class="_abp_fs_h5 _color_theme">
 												<?php if ( ABPRF_Function::on_off( 'post_icon' ) ) {
 													ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ) );
 												}
@@ -373,13 +373,13 @@
 				?>
                 <div class="setting_item full_width property_price_settings">
                     <div class=" _fj_between">
-                        <h5 class="_abprf_color_theme"><?php esc_html_e( 'Pricing and Quantity Configuration', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></h5>
+                        <h5 class="_abp_color_theme"><?php esc_html_e( 'Pricing and Quantity Configuration', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></h5>
                         <div class="custom_radio">
                             <input type="hidden" class="_form_control" name="rent_rule" value="<?php echo esc_attr( $rent_rule ); ?>"/>
 							<?php foreach ( $rent_rules as $key => $rule_label ) { ?>
                                 <div class="radio_item">
                                     <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $rent_rule == $key ? 'abp_active' : '' ); ?>" data-close-target="#<?php echo esc_attr( $key ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                        <i class="_abprf_fs_h6"><span data-icon class="_mar_r_xs <?php echo esc_attr( $rent_rule == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html( $rule_label ); ?></span>
+                                        <i class="_abp_fs_h6"><span data-icon class="_mar_r_xs <?php echo esc_attr( $rent_rule == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html( $rule_label ); ?></span>
                                     </button>
                                 </div>
 							<?php } ?>
@@ -400,7 +400,7 @@
 				$_price_info = ( $price_info[ $rent_rule ] ?? null ) ?: [];
 				?>
                 <div class=" _ov_auto">
-                    <table class="_abprf_fixed">
+                    <table class="_abp_fixed">
                         <thead>
                         <tr>
                             <th>
@@ -629,7 +629,7 @@
 				if ( ABPRF_Function::on_off( 'feature' ) ) {
 					?>
                     <div class="setting_item full_width property_feature">
-                        <h5 class="_abprf_color_theme"><?php esc_html_e( 'Feature Configuration', 'abp-rentalforge' ); ?></h5>
+                        <h5 class="_abp_color_theme"><?php esc_html_e( 'Feature Configuration', 'abp-rentalforge' ); ?></h5>
 						<?php ABPRF_Layout::info_text( 'property_feature' ); ?>
                         <div class="_divider_xs"></div>
                         <div class="_d_flex">
@@ -647,7 +647,7 @@
                         <div class="configuration_content _mar_t_xs">
                             <div class="form_area">
                                 <div class="hide_on_load">
-                                    <table class="_abprf ">
+                                    <table class="_abp ">
                                         <tbody class="insertable_area sortable_area">
                                         </tbody>
                                     </table>
@@ -659,7 +659,7 @@
                                 </div>
                             </div>
                             <div class="abprf_d_none">
-                                <table class="_abprf">
+                                <table class="_abp">
                                     <tbody class="hidden_content">
 									<?php ABPRF_Feature::form_feature(); ?>
                                     </tbody>
@@ -673,7 +673,7 @@
 			public function gallery( $property = [] ): void {
 				?>
                 <div class="setting_item full_width">
-                    <h5 class="_abprf_color_theme"><?php esc_html_e( 'Gallery Configuration', 'abp-rentalforge' ); ?></h5>
+                    <h5 class="_abp_color_theme"><?php esc_html_e( 'Gallery Configuration', 'abp-rentalforge' ); ?></h5>
 					<?php ABPRF_Layout::info_text( 'abprf_sliders' ); ?>
                     <div class="_divider_xs"></div>
 					<?php do_action( 'abprf_add_image_multiple', 'abprf_sliders', ( $property['gallery'] ?? '' ) ); ?>

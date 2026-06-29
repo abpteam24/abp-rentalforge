@@ -55,7 +55,7 @@
 				$all_locations = is_array( $all_locations ) ? $all_locations : [];
 				$count         = 1;
 				if ( count( $all_locations ) > 0 ) { ?>
-                    <table class="_abprf">
+                    <table class="_abp">
                         <thead>
                         <tr>
                             <th><?php esc_html_e( 'SI', 'abp-rentalforge' ) ?></th>
@@ -81,7 +81,7 @@
                             <tr>
                                 <th><?php echo esc_html( $count ); ?>.</th>
                                 <th><?php echo esc_html( $term_id ); ?></th>
-                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( (int) $term_id ) ); ?>" target="_blank" class="_abprf_fs_h5 _color_theme"><?php echo esc_html( $name ); ?></a></th>
+                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( (int) $term_id ) ); ?>" target="_blank" class="_abp_fs_h5_color_theme"><?php echo esc_html( $name ); ?></a></th>
                                 <th>
 									<?php if ( $display_pickup === 'on' && ! empty( $pick_info ) ) { ?>
 										<?php foreach ( $pick_info as $pick ) { ?>

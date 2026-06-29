@@ -12,7 +12,7 @@
 			$sub_title         = $abprf_infos['sub_title'] ?? ABPRF_Function::get_post_info( $post_id, 'sub_title' );
 			if ( $display_sub_title === 'on' && $sub_title !== '' ) {
 				?>
-                <p class="_abprf sub_title"><?php echo esc_html( $sub_title ); ?></p>
+                <p class="_abp sub_title"><?php echo esc_html( $sub_title ); ?></p>
 				<?php
 			}
 		}

@@ -1020,7 +1020,7 @@ function abprf_wp_editor_init(target) {
     }
     // ─── load input category ───────────
     function load_icon_category_list() {
-        let category_list = $('<ul>').addClass('_abprf');
+        let category_list = $('<ul>').addClass('_abp');
         $.each(abprf_json_icon, function (i, group) {
             let current_count = Object.keys(group.icons).length;
             if (i !== 0) {

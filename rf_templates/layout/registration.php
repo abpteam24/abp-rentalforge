@@ -31,7 +31,7 @@
 					if ( $template === 'grid' || empty( $template ) ) {
 						?>
                         <div class="post_top_filter">
-                            <h3 class="_abprf"><?php esc_html_e( 'Available Property', 'abp-rentalforge' ); ?></h3>
+                            <h3 class="_abp"><?php esc_html_e( 'Available Property', 'abp-rentalforge' ); ?></h3>
                             <div class="_group_content">
                                 <button type="button" class="_btn_light_info_xs_fs_h6 grid_view abp_active">
                                     <span class="fas fa-table-cells"></span>
@@ -54,7 +54,7 @@
 						} ?>
 					<?php } else { ?>
                         <div class="group_property item_box_1">
-                            <h5 class="_abprf_title"><?php esc_html_e( 'Available Property', 'abp-rentalforge' ); ?></h5>
+                            <h5 class="_abp_title"><?php esc_html_e( 'Available Property', 'abp-rentalforge' ); ?></h5>
                             <div class="property_item_area">
 								<?php if ( ! empty( $properties ) && is_array( $properties ) ) {
 									do_action( 'abprf_property_item_group', $abprf_infos, $properties );

@@ -147,7 +147,7 @@
                     <div class="popup_area">
                         <div class="popup_head _all_center">
                             <div class="abp_dropdown _max_400">
-                                <label class="_abprf_all_center">
+                                <label class="_abp_all_center">
                                     <input type="hidden" class="abp_icon_search_hidden" name="abp_icon_search" value=""/>
                                     <input type="text" class="_form_control_text_center validation_name abprf_allow abp_icon_search" name="" placeholder="<?php esc_attr_e( 'Search  icon', 'abp-rentalforge' ); ?>" value=""/>
                                 </label>
@@ -156,7 +156,7 @@
                             <span class="popup_close"><i class="fas fa-times"></i></span>
                         </div>
                         <div class="popup_body">
-                            <h4 class="_abprf_text_center item_icon_title"></h4>
+                            <h4 class="_abp_text_center item_icon_title"></h4>
                             <div class="item_icon_area"></div>
                         </div>
                     </div>
@@ -188,13 +188,13 @@
 			public static function layout_warning_info( $key ): void {
 				$data = ABPRF_Layout::array_info( $key );
 				if ( $data ) {
-					echo '<div class="_section_bg_warning_mar_zero"><h4 class="_abprf_text_center_color_white">' . esc_html( $data ) . '</h4></div>';
+					echo '<div class="_section_bg_warning_mar_zero"><h4 class="_abp_text_center_color_white">' . esc_html( $data ) . '</h4></div>';
 				}
 			}
 			public static function layout_warning_info_xs( $key ): void {
 				$data = ABPRF_Layout::array_info( $key );
 				if ( $data ) {
-					echo '<div class="_abprf_text_center_color_white_bg_warning_padding_xxs_fs_label">' . esc_html( $data ) . '</div>';
+					echo '<div class="_abp_text_center_color_white_bg_warning_padding_xxs_fs_label">' . esc_html( $data ) . '</div>';
 				}
 			}
 			public static function image( $post_id = '', $image_id = '', $url = '', $class = '' ): void {
@@ -229,14 +229,14 @@
 			public static function on(): bool|string {
 				ob_start();
 				?>
-                <strong class="_abprf_color_theme"> <?php esc_html_e( 'ON', 'abp-rentalforge' ); ?></strong>
+                <strong class="_abp_color_theme"> <?php esc_html_e( 'ON', 'abp-rentalforge' ); ?></strong>
 				<?php
 				return ob_get_clean();
 			}
 			public static function off(): bool|string {
 				ob_start();
 				?>
-                <strong class="_abprf_color_theme"> <?php esc_html_e( 'OFF', 'abp-rentalforge' ); ?></strong>
+                <strong class="_abp_color_theme"> <?php esc_html_e( 'OFF', 'abp-rentalforge' ); ?></strong>
 				<?php
 				return ob_get_clean();
 			}
@@ -246,7 +246,7 @@
 					asort( $infos );
 					?>
                     <div class="dropdown_list">
-                        <ul class="_abprf">
+                        <ul class="_abp">
 							<?php foreach ( $infos as $info ) { ?>
                                 <li data-value="<?php echo esc_attr( $info ); ?>"><span class="<?php echo esc_attr( $icon ); ?> _mar_r_xxs"></span><span data-text><?php echo esc_html( $info ); ?></span></li>
 							<?php } ?>
@@ -1029,9 +1029,9 @@
 					ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ) );
 				}
 				echo esc_html( get_the_title( $post_id ) ); ?>
-                <p class="_abprf">
+                <p class="_abp">
 					<?php if ( ! empty( $post_sku ) && ABPRF_Function::on_off( 'sku' ) ) { ?>
-                        <small class=" _abprf_color_gray"><?php echo esc_html__( 'SKU : ', 'abp-rentalforge' ) . esc_html( $post_sku ); ?></small>
+                        <small class=" _abp_color_gray"><?php echo esc_html__( 'SKU : ', 'abp-rentalforge' ) . esc_html( $post_sku ); ?></small>
 					<?php } ?>
                 </p>
 				<?php
@@ -1246,7 +1246,7 @@
                         <div class="custom_checkbox">
                             <input type="hidden" name="property_check[]" value="" data-id="<?php echo esc_attr( $collapse_id ); ?>"/>
                             <div class="checkbox_item _fa_center _fs_label" data-checked="1" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
-                                <h3 class="_abprf"><span data-icon class="_mar_r_xs far fa-square"></span></h3>
+                                <h3 class="_abp"><span data-icon class="_mar_r_xs far fa-square"></span></h3>
 								<?php echo esc_html__( 'Select ', 'abp-rentalforge' ) . ' ' . esc_html( $name ); ?>
                             </div>
                         </div>
@@ -1327,7 +1327,7 @@
 			//=============================//
 			public static function ticket_info( $ticket_infos ): void {
 				if ( ! empty( $ticket_infos ) && is_array( $ticket_infos ) ) { ?>
-                    <ul class=" _abprf">
+                    <ul class=" _abp">
 						<?php foreach ( $ticket_infos as $ticket_info ) {
 							if ( ! empty( $ticket_info ) && sizeof( $ticket_info ) > 0 ) {
 								$name  = $ticket_info['name'] ?? '';
@@ -1346,7 +1346,7 @@
 			}
 			public static function additional_info( $additional_infos ): void {
 				if ( ! empty( $additional_infos ) && is_array( $additional_infos ) ) { ?>
-                    <ul class=" _abprf">
+                    <ul class=" _abp">
 						<?php foreach ( $additional_infos as $ex_info ) {
 							if ( ! empty( $ex_info ) && sizeof( $ex_info ) > 0 ) {
 								$name       = $ex_info['name'] ?? '';
@@ -1371,7 +1371,7 @@
 			}
 			public static function client_info( $passenger_infos ): void {
 				if ( ! empty( $passenger_infos ) && is_array( $passenger_infos ) ) { ?>
-                    <ul class=" _abprf">
+                    <ul class=" _abp">
 						<?php foreach ( $passenger_infos as $pas_form ) {
 							if ( ! empty( $pas_form ) && sizeof( $pas_form ) > 0 ) {
 								$label = $pas_form['label'] ?? '';
@@ -1394,7 +1394,7 @@
 					$billing_phone   = $booking_list['billing_phone'] ?? '';
 					$billing_address = $booking_list['billing_address'] ?? '';
 					?>
-                    <ul class=" _abprf">
+                    <ul class=" _abp">
 						<?php if ( ! empty( $billing_name ) ) { ?>
                             <li><strong><?php esc_html_e( 'Name :', 'abp-rentalforge' ); ?></strong>&nbsp;<?php echo esc_html( $billing_name ); ?></li>
 						<?php } ?>
@@ -1427,7 +1427,7 @@
                     </label>
 					<?php if ( sizeof( $all_post_ids ) > 0 ) { ?>
                         <div class="dropdown_list">
-                            <ul class="_abprf ">
+                            <ul class="_abp ">
 								<?php foreach ( $all_post_ids as $all_post_id ) {
 									$sku      = ABPRF_Function::get_post_info( $all_post_id, 'post_sku' );
 									$category = ABPRF_Function::get_post_info( $all_post_id, 'category' );
@@ -1440,10 +1440,10 @@
 										} ?>
                                         <span class="_fs_label"><?php echo esc_html( $title ); ?></span>
 										<?php if ( ! empty( $category ) && ABPRF_Function::on_off( 'category' ) ) { ?>
-                                            <sub class="_abprf_color_gray"> - <?php echo esc_html( $category ); ?></sub>
+                                            <sub class="_abp_color_gray"> - <?php echo esc_html( $category ); ?></sub>
 										<?php } ?>
 										<?php if ( ! empty( $sku ) && ABPRF_Function::on_off( 'sku' ) ) { ?>
-                                            <sub class="_abprf_color_info"> - <?php echo esc_html( $sku ); ?></sub>
+                                            <sub class="_abp_color_info"> - <?php echo esc_html( $sku ); ?></sub>
 										<?php } ?>
                                     </li>
 								<?php } ?>
@@ -1536,7 +1536,7 @@
                     </label>
 					<?php if ( ! empty( $all_users ) ) { ?>
                         <div class="dropdown_list">
-                            <ul class="_abprf ">
+                            <ul class="_abp ">
 								<?php foreach ( $all_users as $user ) { ?>
                                     <li data-value="<?php echo esc_attr( $user->ID ); ?>" data-text="<?php echo esc_attr( $user->display_name ); ?>">
                                         <span class="_fs_label"><?php echo esc_html( $user->display_name ); ?></span>
@@ -1601,7 +1601,7 @@
                         <input type="text" class="_form_control_w_full" placeholder="<?php esc_attr_e( 'Location', 'abp-rentalforge' ); ?>" value=""/>
                     </label>
                     <div class="dropdown_list">
-                        <ul class="_abprf">
+                        <ul class="_abp">
 							<?php
 								foreach ( $all_locations as $key => $location ) {
 									$name = is_array( $location ) ? ( $location['name'] ?? '' ) : '';

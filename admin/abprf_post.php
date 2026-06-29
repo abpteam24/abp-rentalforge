@@ -29,7 +29,7 @@
 				?>
                 <div class="abprf_posts _abp_panel">
                     <div class="_panel_head _fj_between_f_wrap">
-                        <h4 class="_abprf_color_white"><?php ABPRF_Layout::image_icon( $brand_icon ); ?><?php esc_html_e( 'Post Lists', 'abp-rentalforge' ); ?></h4>
+                        <h4 class="_abp_color_white"><?php ABPRF_Layout::image_icon( $brand_icon ); ?><?php esc_html_e( 'Post Lists', 'abp-rentalforge' ); ?></h4>
                         <div class="_group_content">
                             <input type="hidden" name="select_hidden_post_status" value="<?php echo esc_attr( $status ); ?>"/>
                             <button type="button" class="_btn_white_xs <?php echo esc_attr( $status == 'all' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'all' ] ) ); ?>"><?php esc_html_e( 'All', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_posts ); ?> )</button>
@@ -72,7 +72,7 @@
 					$total_post   = sizeof( ABPRF_Query::get_post_id( [ 'status' => $status ] ) );
 					$new_post_url = admin_url( 'post-new.php?post_type=' . $cpt );
 					?>
-                    <table class="_abprf">
+                    <table class="_abp">
                         <thead>
                         <tr>
                             <th class="_w_50"><?php esc_html_e( 'SI', 'abp-rentalforge' ); ?></th>
@@ -99,14 +99,14 @@
                                     <td><?php ABPRF_Layout::image( $post_id ); ?></td>
                                     <td>
 										<?php if ( $post_status == 'trash' ) { ?>
-                                            <h5 class="_abprf_color_warning"><?php
+                                            <h5 class="_abp_color_warning"><?php
 													if ( ABPRF_Function::on_off( 'post_icon' ) ) {
 														ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ) );
 													}
 													echo esc_html( $title );
 												?></h5>
 										<?php } else { ?>
-                                            <a href="<?php echo esc_url( $edit_link ); ?>" class="_abprf_fs_h5 _color_theme">
+                                            <a href="<?php echo esc_url( $edit_link ); ?>" class="_abp_fs_h5 _color_theme">
 												<?php if ( ABPRF_Function::on_off( 'post_icon' ) ) {
 													ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ) );
 												}
@@ -122,18 +122,18 @@
                                     <th><?php echo esc_html( ! empty( $rent_rule ) ? ABPRF_Layout::rent_rules( $rent_rule ) : '' ); ?></th>
                                     <th><?php echo esc_html( ABPRF_Query::get_property( [ 'post_id' => $post_id ], true ) ); ?></th>
                                     <th>
-                                        <p class="_abprf"><code> [abprf-post post_id="<?php echo esc_attr( $post_id ); ?>"]</code></p>
-                                        <p class="_abprf"><code> [abprf-property post_id="<?php echo esc_attr( $post_id ); ?>"]</code></p>
+                                        <p class="_abp"><code> [abprf-post post_id="<?php echo esc_attr( $post_id ); ?>"]</code></p>
+                                        <p class="_abp"><code> [abprf-property post_id="<?php echo esc_attr( $post_id ); ?>"]</code></p>
                                     </th>
                                     <th>
-                                        <div class="_f_wrap">
-                                            <button type="button" class="_btn_light_navy_blue _mar_r_xxs" data-href="<?php echo esc_url( $new_post_url ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Copy/Clone : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">🔁</button>
+                                        <div class="_group_content">
+                                            <button type="button" class="_btn_light_navy_blue_xxs" data-href="<?php echo esc_url( $new_post_url ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Copy/Clone : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">🔁</button>
 											<?php if ( $post_status == 'trash' ) { ?>
-                                                <button type="button" class="_btn_light_success_mar_r_xxs post_restore" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Restore : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">♻️</button>
+                                                <button type="button" class="_btn_light_success_xxs post_restore" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Restore : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">♻️</button>
                                                 <button type="button" class="_btn_light_danger_xxs post_permanent_remove" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Permanent Remove : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">❌</button>
 											<?php } else { ?>
-                                                <button type="button" class="_btn_light_yellow_mar_r_xxs" data-href="<?php echo esc_url( $edit_link ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">✍️</button>
-                                                <button type="button" class="_btn_light_theme_mar_r_xxs" data-href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'View : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">👁️</button>
+                                                <button type="button" class="_btn_light_yellow_xxs" data-href="<?php echo esc_url( $edit_link ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">✍️</button>
+                                                <button type="button" class="_btn_light_theme_xxs" data-href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'View : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">👁️</button>
                                                 <button type="button" class="_btn_light_danger_xxs post_move_trash" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Move to Trash : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>"><span class="fas fa-trash"></span></button>
 											<?php } ?>
                                         </div>
@@ -171,7 +171,7 @@
                     <div class="_abp_panel">
                         <div class="abprf_tabs tab_top">
                             <div class="_panel_head">
-                                <ul class="_abprf tab_lists">
+                                <ul class="_abp tab_lists">
                                     <li data-tabs-target="#abprf_general"><span class="fas fa-rainbow"></span><?php esc_html_e( 'General', 'abp-rentalforge' ); ?></li>
                                     <li data-tabs-target="#abprf_equipment_price"><span>🏠</span><?php esc_html_e( 'Properties and Price', 'abp-rentalforge' ); ?></li>
                                     <li data-tabs-target="#abprf_dates"><span>🗓️</span><?php esc_html_e( 'Date', 'abp-rentalforge' ); ?></li>
@@ -202,7 +202,7 @@
 				$display_sub_title = $abprf_infos['display_sub_title'] ?? 'off';
 				?>
                 <div class="tab_item" data-tabs="#abprf_general">
-                    <h4 class="_abprf_color_theme"><?php esc_html_e( 'General Configuration', 'abp-rentalforge' ); ?></h4>
+                    <h4 class="_abp_color_theme"><?php esc_html_e( 'General Configuration', 'abp-rentalforge' ); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="group_setting">
                         <div class="setting_item">

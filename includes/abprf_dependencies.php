@@ -215,45 +215,42 @@
 				}
 			}
 			public function register_cpt(): void {
-				$cpt    = ABPRF_Function::get_cpt();
-				$label  = ABPRF_Function::label();
-				$slug   = ABPRF_Function::slug();
-				$icon   = ABPRF_Function::icon_wp();
-				$labels = [
-					'name' => esc_html( $label ),
-					'singular_name' => esc_html( $label ),
-					'menu_name' => esc_html( $label ),
-					'name_admin_bar' => esc_html( $label ),
-					'archives' => __( 'Post List', 'abp-rentalforge' ),
-					'attributes' => __( 'Post List', 'abp-rentalforge' ),
-					'parent_item_colon' => __( 'Post Item:', 'abp-rentalforge' ),
-					'all_items' => __( 'Post', 'abp-rentalforge' ),
-					'add_new_item' => __( 'Add Post', 'abp-rentalforge' ),
-					'add_new' => __( 'Add Post', 'abp-rentalforge' ),
-					'new_item' => __( 'Add Post', 'abp-rentalforge' ),
-					'edit_item' => __( 'Edit Post', 'abp-rentalforge' ),
-					'update_item' => __( 'Update Post', 'abp-rentalforge' ),
-					'view_item' => __( 'View Post', 'abp-rentalforge' ),
-					'view_items' => __( 'View Post', 'abp-rentalforge' ),
-					'search_items' => __( 'Search Post', 'abp-rentalforge' ),
-					'not_found' => __( 'Post Not Found', 'abp-rentalforge' ),
-					'not_found_in_trash' => __( 'Post Not found in Trash', 'abp-rentalforge' ),
-					'featured_image' => __( 'Post Image', 'abp-rentalforge' ),
-					'set_featured_image' => __( 'Post Image', 'abp-rentalforge' ),
-					'remove_featured_image' => __( 'Remove Post Image', 'abp-rentalforge' ),
-					'use_featured_image' => __( 'Use image Post as featured image', 'abp-rentalforge' ),
-					'insert_into_item' => __( 'Insert  Post', 'abp-rentalforge' ),
-					'uploaded_to_this_item' => __( 'Uploaded  Post', 'abp-rentalforge' ),
-					'items_list' => __( 'Post List', 'abp-rentalforge' ),
-					'items_list_navigation' => __( 'Category list navigation', 'abp-rentalforge' ),
-					'filter_items_list' => __( 'Filter Post List', 'abp-rentalforge' )
-				];
-				$args   = [
+				$cpt   = ABPRF_Function::get_cpt();
+				$label = ABPRF_Function::label();
+				register_post_type( $cpt, [
 					'public' => true,
-					'labels' => $labels,
-					'menu_icon' => esc_html( $icon ),
+					'labels' => [
+						'name' => esc_html( $label ),
+						'singular_name' => esc_html( $label ),
+						'menu_name' => esc_html( $label ),
+						'name_admin_bar' => esc_html( $label ),
+						'archives' => __( 'Post List', 'abp-rentalforge' ),
+						'attributes' => __( 'Post List', 'abp-rentalforge' ),
+						'parent_item_colon' => __( 'Post Item:', 'abp-rentalforge' ),
+						'all_items' => __( 'Post', 'abp-rentalforge' ),
+						'add_new_item' => __( 'Add Post', 'abp-rentalforge' ),
+						'add_new' => __( 'Add Post', 'abp-rentalforge' ),
+						'new_item' => __( 'Add Post', 'abp-rentalforge' ),
+						'edit_item' => __( 'Edit Post', 'abp-rentalforge' ),
+						'update_item' => __( 'Update Post', 'abp-rentalforge' ),
+						'view_item' => __( 'View Post', 'abp-rentalforge' ),
+						'view_items' => __( 'View Post', 'abp-rentalforge' ),
+						'search_items' => __( 'Search Post', 'abp-rentalforge' ),
+						'not_found' => __( 'Post Not Found', 'abp-rentalforge' ),
+						'not_found_in_trash' => __( 'Post Not found in Trash', 'abp-rentalforge' ),
+						'featured_image' => __( 'Post Image', 'abp-rentalforge' ),
+						'set_featured_image' => __( 'Post Image', 'abp-rentalforge' ),
+						'remove_featured_image' => __( 'Remove Post Image', 'abp-rentalforge' ),
+						'use_featured_image' => __( 'Use image Post as featured image', 'abp-rentalforge' ),
+						'insert_into_item' => __( 'Insert  Post', 'abp-rentalforge' ),
+						'uploaded_to_this_item' => __( 'Uploaded  Post', 'abp-rentalforge' ),
+						'items_list' => __( 'Post List', 'abp-rentalforge' ),
+						'items_list_navigation' => __( 'Category list navigation', 'abp-rentalforge' ),
+						'filter_items_list' => __( 'Filter Post List', 'abp-rentalforge' )
+					],
+					'menu_icon' => ABPRF_Function::icon_wp(),
 					'supports' => [ 'title', 'editor', 'thumbnail' ],
-					'rewrite' => [ 'slug' => esc_html( $slug ), 'with_front' => true, 'pages' => true, 'feeds' => true, ],
+					'rewrite' => [ 'slug' => ABPRF_Function::slug(), 'with_front' => true, 'pages' => true, 'feeds' => true, ],
 					'show_in_rest' => true,
 					'rest_base' => 'abprf_post',
 					'capability_type' => 'post',
@@ -263,67 +260,55 @@
 					'exclude_from_search' => true,  // you should exclude it from search results
 					'show_in_nav_menus' => true,  // you should be able to add it to menus
 					'has_archive' => true,  // it should have archive page
-				];
-				register_post_type( $cpt, $args );
-				$category_label = ABPRF_Function::category_label();
-				$category_slug  = ABPRF_Function::category_slug();
-				$full_text      = $label . ' ' . $category_label;
-				$label_category = array(
-					'name' => $full_text,
-					'singular_name' => $full_text,
-				);
-				$args           = [
+				] );
+				register_taxonomy( 'abprf_category', $cpt, [
 					'hierarchical' => true,
 					"public" => true,
-					'labels' => $label_category,
+					'labels' => [
+						'name' => $label . ' ' . ABPRF_Function::category_label(),
+						'singular_name' => $label . ' ' . ABPRF_Function::category_label(),
+					],
 					'show_ui' => true,
 					'show_admin_column' => false,
 					'show_in_menu' => false,
 					'query_var' => true,
-					'rewrite' => [ 'slug' => $category_slug ],
+					'rewrite' => [ 'slug' => ABPRF_Function::category_slug() ],
 					'show_in_rest' => true,
 					'rest_base' => 'abprf_category',
 					'meta_box_cb' => false,
-				];
-				register_taxonomy( 'abprf_category', $cpt, $args );
-				$full_text      = $label . ' ' . __( 'Locations', 'abp-rentalforge' );
-				$label_location = array(
-					'name' => $full_text,
-					'singular_name' => $full_text,
-				);
-				$args           = [
+				] );
+				register_taxonomy( 'abprf_location', $cpt, [
 					'hierarchical' => true,
 					"public" => true,
-					'labels' => $label_location,
+					'labels' => [
+						'name' => $label . ' ' . ABPRF_Function::location_label(),
+						'singular_name' => $label . ' ' . ABPRF_Function::location_label()
+					],
 					'show_ui' => true,
 					'show_admin_column' => false,
 					'show_in_menu' => false,
 					'query_var' => true,
-					'rewrite' => [ 'slug' => 'location' ],
+					'rewrite' => [ 'slug' => ABPRF_Function::location_slug() ],
 					'show_in_rest' => true,
 					'rest_base' => 'abprf_location',
 					'meta_box_cb' => false,
-				];
-				register_taxonomy( 'abprf_location', $cpt, $args );
-				$full_text   = $label . ' ' . ABPRF_Function::brand_label();
-				$label_brand = array(
-					'name' => $full_text,
-					'singular_name' => $full_text,
-				);
-				$args        = [
+				] );
+				register_taxonomy( 'abprf_brand', $cpt, [
 					'hierarchical' => true,
 					"public" => true,
-					'labels' => $label_brand,
+					'labels' => [
+						'name' => $label . ' ' . ABPRF_Function::brand_label(),
+						'singular_name' => $label . ' ' . ABPRF_Function::brand_label()
+					],
 					'show_ui' => true,
 					'show_admin_column' => false,
 					'show_in_menu' => false,
 					'query_var' => true,
-					'rewrite' => [ 'slug' => 'brand' ],
+					'rewrite' => [ 'slug' => ABPRF_Function::brand_slug() ],
 					'show_in_rest' => true,
-					'rest_base' => 'abprf_feature',
+					'rest_base' => 'abprf_brand',
 					'meta_box_cb' => false,
-				];
-				register_taxonomy( 'abprf_brand', $cpt, $args );
+				] );
 				flush_rewrite_rules();
 			}
 			public static function activation(): void {
@@ -419,7 +404,7 @@
 			}
 			public function plugin_settings_link( $links_array, $plugin_file_name ) {
 				if ( strpos( $plugin_file_name, ABPRF_BASE ) ) {
-					array_unshift( $links_array, '<a class="_abprf" href="' . esc_url( admin_url() ) . 'admin.php?page=rental-forge&tab=configuration">' . __( 'Configuration', 'abp-rentalforge' ) . '</a>' );
+					array_unshift( $links_array, '<a class="_abp" href="' . esc_url( admin_url() ) . 'admin.php?page=rental-forge&tab=configuration">' . __( 'Configuration', 'abp-rentalforge' ) . '</a>' );
 				}
 
 				return $links_array;

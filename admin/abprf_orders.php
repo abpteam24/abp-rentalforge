@@ -13,7 +13,7 @@
 				?>
                 <div class="abprf_orders _abp_panel">
                     <div class="_panel_head_ov_auto">
-                        <h4 class="_abprf"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Order Filter', 'abp-rentalforge' ); ?></h4>
+                        <h4 class="_abp"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Order Filter', 'abp-rentalforge' ); ?></h4>
                     </div>
                     <div class="_panel_body_ov_initial">
                         <form class="load_order_list" method="post" action="">
@@ -110,7 +110,7 @@
                 </div>
                 <div class="_panel_body">
 					<?php if ( ! empty( $booking_lists ) && is_array( $booking_lists ) ) { ?>
-                        <table class=" _abprf">
+                        <table class=" _abp">
                             <thead>
                             <tr>
                                 <th><?php esc_html_e( 'Action', 'abp-rentalforge' ); ?></th>
@@ -183,15 +183,15 @@
                                         </div>
                                     </th>
                                     <th class="_text_left">
-                                        <p class="_abprf"><?php echo esc_html( $si . '. #' . $order_id ); ?></p>
-                                        <p class="_abprf_fs_label_color_theme"><?php echo esc_html( ABPRF_Function::date_format( $order_time ) ); ?></p>
+                                        <p class="_abp"><?php echo esc_html( $si . '. #' . $order_id ); ?></p>
+                                        <p class="_abp_fs_label_color_theme"><?php echo esc_html( ABPRF_Function::date_format( $order_time ) ); ?></p>
                                     </th>
 									<?php if ( $post_id === 0 ) { ?>
                                         <th class="_text_left"><?php ABPRF_Layout::title( $_post_id ); ?></th>
 									<?php } ?>
                                     <td>
 										<?php echo esc_html( ABPRF_Function::date_format( $start_time, 'full' ) . '-' . ABPRF_Function::date_format( $end_time, $end_time_format ) ); ?>
-                                        <p class="_abprf_fs_label_color_theme"><?php echo esc_html( $others['duration'] ?? '' ) . '-' . esc_html( ABPRF_Layout::rent_rules( $others['rent_rule'] ?? '' ) ); ?></p>
+                                        <p class="_abp_fs_label_color_theme"><?php echo esc_html( $others['duration'] ?? '' ) . '-' . esc_html( ABPRF_Layout::rent_rules( $others['rent_rule'] ?? '' ) ); ?></p>
                                     </td>
 									<?php if ( ABPRF_Function::on_off( 'location' ) ) { ?>
                                         <td><?php echo esc_html( ABPRF_Function::location_value( $booking_list['location'] ?? '' ) ); ?></td>
@@ -209,8 +209,8 @@
 									<?php } ?>
                                     <th><?php echo $total_price > 0 ? wp_kses_post( wc_price( $total_price ) ) : esc_html__( 'FREE', 'abp-rentalforge' ); ?></th>
                                     <th class="_text_capitalize">
-                                        <p class="_abprf <?php echo esc_attr( ABPRF_Layout::status_text( $status ) ); ?>"> <?php echo esc_html( ABPRF_Layout::status_text( $status ) ); ?></p>
-                                        <p class="_abprf <?php echo esc_attr( $booking_list['book_status'] ?? '' ); ?>">
+                                        <p class="_abp <?php echo esc_attr( ABPRF_Layout::status_text( $status ) ); ?>"> <?php echo esc_html( ABPRF_Layout::status_text( $status ) ); ?></p>
+                                        <p class="_abp <?php echo esc_attr( $booking_list['book_status'] ?? '' ); ?>">
 											<?php
 												$book_status = $booking_list['book_status'] ?? '';
 												$book_status = ABPRF_Layout::get_book_status( $order_id, $start_time, $end_time, $book_status );

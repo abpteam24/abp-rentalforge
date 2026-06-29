@@ -22,7 +22,7 @@
                         <div class="configuration_content">
                             <div class="form_area">
                                 <div class="hide_on_load">
-                                    <table class="_abprf ">
+                                    <table class="_abp ">
                                         <thead>
                                         <tr>
                                             <th><?php esc_html_e( 'Icon', 'abp-rentalforge' ); ?></th>
@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                             <div class="abprf_d_none">
-                                <table class="_abprf">
+                                <table class="_abp">
                                     <tbody class="hidden_content">
 									<?php self::form_brand(); ?>
                                     </tbody>
@@ -81,7 +81,7 @@
 				$abprf_brands = ABPRF_Function::get_option( 'abprf_brand' );
 				$count        = 1;
 				if ( ! empty( $abprf_brands ) && is_array( $abprf_brands ) && sizeof( $abprf_brands ) > 0 ) { ?>
-                    <table class="_abprf">
+                    <table class="_abp">
                         <thead>
                         <tr>
                             <th><?php esc_html_e( 'SI', 'abp-rentalforge' ) ?></th>
@@ -100,7 +100,7 @@
 							?>
                             <tr>
                                 <th><?php echo esc_html( $count ); ?>.</th>
-                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( $term_id ) ); ?>" target="_blank" class="_abprf_fs_h5 _color_theme"><?php ABPRF_Layout::image_icon( $icon ); ?><?php echo esc_html( $name ); ?></a></th>
+                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( $term_id ) ); ?>" target="_blank" class="_abp_fs_h5 _color_theme"><?php ABPRF_Layout::image_icon( $icon ); ?><?php echo esc_html( $name ); ?></a></th>
                                 <th><?php echo esc_html( $term_id ); ?></th>
                                 <td><?php echo esc_html( $description ); ?></td>
                                 <th><code> [abprf-property brand_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
@@ -132,7 +132,7 @@
                         </select>
                     </label>
 				<?php } else { ?>
-                    <p class="_abprf"><?php echo esc_html( ABPRF_Layout::array_info( 'no_brand' ) ); ?></p>
+                    <p class="_abp"><?php echo esc_html( ABPRF_Layout::array_info( 'no_brand' ) ); ?></p>
 				<?php }
 			}
 			public static function form_brand( $brand = [], $id = '' ): void {
@@ -172,7 +172,7 @@
                 <div class="configuration_content">
                     <div class="form_area">
                         <div class="hide_on_load">
-                            <table class="_abprf ">
+                            <table class="_abp ">
                                 <tbody class="insertable_area sortable_area">
                                 </tbody>
                             </table>
@@ -184,7 +184,7 @@
                         </div>
                     </div>
                     <div class="abprf_d_none">
-                        <table class="_abprf">
+                        <table class="_abp">
                             <tbody class="hidden_content">
                             <tr class="delete_area">
                                 <th><?php do_action( 'abprf_add_icon', 'brand_icon[]', $icon ); ?></th>

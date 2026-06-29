@@ -34,7 +34,7 @@
 				if ( ! in_array( $active_tab, $allowed_tabs, true ) ) {
 					$active_tab = 'posts';
 				}
-				if(ABPRF_WC < 2){
+				if ( ABPRF_WC < 2 ) {
 					$active_tab = 'status';
 				}
 				?>
@@ -43,7 +43,7 @@
                         <div class="head_brand _d_flex">
                             <div class="brand_icon _all_center"><?php ABPRF_Layout::image_icon( $icon ); ?></div>
                             <div class="_fd_column">
-                                <h4 class="_abprf"><?php echo esc_html( $label ); ?></h4>
+                                <h4 class="_abp"><?php echo esc_html( $label ); ?></h4>
                                 <span class="brand_version"><?php echo esc_html( ABPRF_VERSION ); ?></span>
                             </div>
                         </div>
@@ -91,35 +91,33 @@
 				}
 				?>
                 <div class="_abp_panel_max_1200_mar_auto">
-                    <div class="abprf_tabs tab_top">
-                        <div class="_panel_head">
-                            <div class="tab_lists _group_content">
-                                <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'dates' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'dates' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Dates', 'abp-rentalforge' ); ?></a>
-								<?php if ( ABPRF_Function::on_off( 'additional_info' ) ) { ?>
-                                    <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'additional' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'additional' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Additional services', 'abp-rentalforge' ); ?></a>
-								<?php } ?>
-								<?php if ( ABPRF_Function::on_off( 'client_info' ) ) { ?>
-                                    <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'client_form' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'client_form' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Form', 'abp-rentalforge' ); ?></a>
-								<?php } ?>
-								<?php do_action( 'abprf_add_admin_global_tab', $active_tab ); ?>
-								<?php if ( ABPRF_Function::on_off( 'tc' ) || ABPRF_Function::on_off( 'faq' ) ) { ?>
-                                    <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'resource' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'resource' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">📚</span><?php esc_html_e( 'Resources', 'abp-rentalforge' ); ?></a>
-								<?php } ?>
-								<?php if ( ABPRF_Function::on_off( 'category' ) ) { ?>
-                                    <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'category' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'category' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">🏘️</span><?php echo esc_html( ABPRF_Function::category_label() ); ?></a>
-								<?php } ?>
-								<?php if ( ABPRF_Function::on_off( 'location' ) ) { ?>
-                                    <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'location' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'location' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">📍</span><?php echo esc_html( ABPRF_Function::location_label() ); ?></a>
-								<?php } ?>
-								<?php if ( ABPRF_Function::on_off( 'brand' ) ) { ?>
-                                    <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'brand' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'brand' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">🏷️</span><?php echo esc_html( ABPRF_Function::brand_label() ) ?></a>
-								<?php } ?>
-                                <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'feature' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'feature' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">🔗</span><?php esc_html_e( 'Feature', 'abp-rentalforge' ); ?></a>
-                            </div>
+                    <div class="_panel_head">
+                        <div class="_group_content_w_full">
+                            <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'dates' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'dates' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Dates', 'abp-rentalforge' ); ?></a>
+							<?php if ( ABPRF_Function::on_off( 'additional_info' ) ) { ?>
+                                <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'additional' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'additional' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">💰</span> <?php esc_html_e( 'Additional services', 'abp-rentalforge' ); ?></a>
+							<?php } ?>
+							<?php if ( ABPRF_Function::on_off( 'client_info' ) ) { ?>
+                                <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'client_form' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'client_form' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Form', 'abp-rentalforge' ); ?></a>
+							<?php } ?>
+							<?php do_action( 'abprf_add_admin_global_tab', $active_tab ); ?>
+							<?php if ( ABPRF_Function::on_off( 'tc' ) || ABPRF_Function::on_off( 'faq' ) ) { ?>
+                                <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'resource' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'resource' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">📚</span><?php esc_html_e( 'Resources', 'abp-rentalforge' ); ?></a>
+							<?php } ?>
+							<?php if ( ABPRF_Function::on_off( 'category' ) ) { ?>
+                                <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'category' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'category' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">🏘️</span><?php echo esc_html( ABPRF_Function::category_label() ); ?></a>
+							<?php } ?>
+							<?php if ( ABPRF_Function::on_off( 'location' ) ) { ?>
+                                <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'location' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'location' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">📍</span><?php echo esc_html( ABPRF_Function::location_label() ); ?></a>
+							<?php } ?>
+							<?php if ( ABPRF_Function::on_off( 'brand' ) ) { ?>
+                                <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'brand' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'brand' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">🏷️</span><?php echo esc_html( ABPRF_Function::brand_label() ) ?></a>
+							<?php } ?>
+                            <a href="<?php echo esc_url( ABPRF_Function::build_url( 'global', [ 'global' => 'feature' ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == 'feature' ? 'abp_active' : '' ); ?>"><span class="_mar_r_xxs">🔗</span><?php esc_html_e( 'Feature', 'abp-rentalforge' ); ?></a>
                         </div>
-                        <div class="_panel_body  _bg_white">
-							<?php do_action( 'abprf_global_' . $active_tab, $abprf_info ); ?>
-                        </div>
+                    </div>
+                    <div class="_panel_body_bg_white">
+						<?php do_action( 'abprf_global_' . $active_tab, $abprf_info ); ?>
                     </div>
                 </div>
 				<?php

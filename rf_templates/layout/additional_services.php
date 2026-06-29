@@ -20,7 +20,7 @@
 				?>
                 <div class="additional_service_area">
                     <div class="item_box_1 additional_service">
-                        <h5 class="_abprf_title"><?php esc_html_e( 'Additional services ( Optional ) : ', 'abp-rentalforge' ); ?></h5>
+                        <h5 class="_abp_title"><?php esc_html_e( 'Additional services ( Optional ) : ', 'abp-rentalforge' ); ?></h5>
 						<?php foreach ( $additional_services as $id => $service ) {
 							if ( ! is_array( $service ) ) {
 								continue;
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="_fd_column_w_full">
                                     <div class="_fj_between">
-                                        <h6 class="_abprf_fa_center"><?php echo esc_html( $name ); ?></h6>
+                                        <h6 class="_abp_fa_center"><?php echo esc_html( $name ); ?></h6>
 										<?php if ( $available > 0 ) { ?>
                                             <input type="hidden" name="name_<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $name ); ?>"/>
 											<?php
@@ -69,7 +69,7 @@
                                             <span class="_color_warning"><?php esc_html_e( 'Not Available !', 'abp-rentalforge' ); ?></span>
 										<?php } ?>
                                     </div>
-                                    <h5 class="_abprf_color_theme">
+                                    <h5 class="_abp_color_theme">
 										<?php
 											if ( $tax_price > 0 ) {
 												echo wp_kses_post( wc_price( $tax_price ) );
@@ -82,7 +82,7 @@
                                                 <span class="publish"><?php esc_html_e( 'Nor-Returnable', 'abp-rentalforge' ); ?></span>
 											<?php } ?>
                                     </h5>
-                                    <p class="_abprf"><?php echo esc_html( $description ); ?></p>
+                                    <p class="_abp"><?php echo esc_html( $description ); ?></p>
                                 </div>
                             </div>
 						<?php } ?>

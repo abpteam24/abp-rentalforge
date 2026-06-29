@@ -37,7 +37,7 @@
                         </div>
                         <div class="item_body">
                             <div>
-                                <a class="_abprf list_title" href="<?php echo esc_url( $url ); ?>" target="_blank">
+                                <a class="_abp list_title" href="<?php echo esc_url( $url ); ?>" target="_blank">
 									<?php if ( ABPRF_Function::on_off( 'post_icon' ) ) {
 										ABPRF_Layout::image_icon( ABPRF_Function::get_post_info( $post_id, 'post_icon' ) );
 									}

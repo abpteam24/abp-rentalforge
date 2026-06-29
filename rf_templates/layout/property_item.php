@@ -32,10 +32,10 @@
                     </div>
                     <div class="item_body">
                         <div>
-                            <h5 class="_abprf list_title">
+                            <h5 class="_abp list_title">
 								<?php echo esc_html( $property_name ); ?>
 								<?php if ( ($property['brand'] ?? '') && ABPRF_Function::on_off( 'brand' )  ) { ?>
-                                    <small class="_abprf_color_theme"><?php echo esc_html( ABPRF_Function::brand_value( $property['brand'] ?? '' ) ); ?></small>
+                                    <small class="_abp_color_theme"><?php echo esc_html( ABPRF_Function::brand_value( $property['brand'] ?? '' ) ); ?></small>
 								<?php } ?>
                             </h5>
 							<?php ABPRF_Layout::item_feature( $property['features'] ?? '' ); ?>

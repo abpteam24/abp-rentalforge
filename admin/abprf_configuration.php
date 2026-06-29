@@ -46,99 +46,111 @@
 				return sizeof( $new ) > 0 ? $new : $old;
 			}
 			public function load_configuration(): void {
+				$allowed_tabs = [];
+				$all_sections = $this->configuration_section();
+				foreach ( $all_sections as $tab ) {
+					$tab_id = $tab['id'] ?? '';
+					if ( ! empty( $tab_id ) ) {
+						$allowed_tabs[] = preg_replace( '/^abprf_/', '', $tab_id );
+					}
+				}
+				$active_tab = 'configuration';
+				if ( isset( $_GET['_abprf_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_abprf_nonce'] ) ), 'abprf_url_action' ) ) {
+					$active_tab = isset( $_GET['configuration'] ) ? sanitize_text_field( wp_unslash( $_GET['configuration'] ) ) : 'configuration';
+				}
+				if ( ! in_array( $active_tab, $allowed_tabs, true ) ) {
+					$active_tab = 'configuration';
+				}
+				$all_fields = $this->configuration_data();
+				$section_id = 'abprf_' . $active_tab;
+				$fields     = $all_fields[ $section_id ] ?? [];
+				$current_section=[];
 				?>
                 <div id="abprf_configuration">
                     <div class="_abp_panel_max_1200_mar_auto">
                         <div class="abprf_tabs tab_top">
                             <div class="_panel_head">
-                                <ul class="_abprf tab_lists">
-									<?php foreach ( $this->configuration_section() as $tab ) { ?>
-                                        <li data-tabs-target="#<?php echo esc_attr( $tab['id'] ); ?>"><?php ABPRF_Layout::image_icon( $tab['icon'] ?? '' ); ?><?php echo esc_html( $tab['menu'] ?? '' ); ?></li>
-									<?php } ?>
-                                </ul>
+                                <div class="_group_content_w_full">
+		                            <?php foreach ( $all_sections as $tab ) {
+			                            $tab_id = $tab['id'] ?? '';
+			                            if ( ! empty( $tab_id ) ) {
+				                            $key = preg_replace( '/^abprf_/', '', $tab_id );
+				                            $current_section=$key==$active_tab?$tab:$current_section; ?>
+                                            <a href="<?php echo esc_url( ABPRF_Function::build_url( 'configuration', [ 'configuration' => $key ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == $key ? 'abp_active' : '' ); ?>">
+					                            <?php ABPRF_Layout::image_icon( $tab['icon'] ?? '' );
+						                            echo esc_html( $tab['menu'] ?? '' ); ?>
+                                            </a>
+			                            <?php }
+		                            } ?>
+                                </div>
                             </div>
-                            <div class="_panel_body tab_content">
-								<?php
-									do_action( 'abprf_configuration_content' );
-									$this->show_tab_content();
-								?>
+                            <div class="_panel_body <?php echo esc_attr( $section_id ); ?>">
+		                        <?php if ( sizeof( $fields ) > 0 ) {
+			                        $title           = $current_section['menu'] ?? ''; ?>
+                                    <h4 class="_abp"><?php echo esc_html(  $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></h4>
+                                    <div class="_divider_xs"></div>
+                                    <form method="post" action="options.php">
+                                        <div class="group_setting">
+					                        <?php
+						                        settings_fields( $section_id );
+						                        $options = ABPRF_Function::get_option( $section_id );
+						                        foreach ( $fields as $option ) {
+							                        $on_off_key = $option['on_off_key'] ?? '';
+							                        $display    = empty( $on_off_key ) || ABPRF_Function::on_off( $on_off_key );
+							                        if ( $display ) {
+								                        $name  = $option['name'] ?? '';
+								                        $type  = $option['type'] ?? '';
+								                        $label = $option['label'] ?? '';
+								                        if ( $name && $type && $label ) {
+									                        $value          = isset( $options[ $name ] ) && $options[ $name ] ? $options[ $name ] : ( $option['default'] ?? '' );
+									                        $collapse       = $option['collapse_data'] ?? [];
+									                        $add_class      = $option['class'] ?? '';
+									                        $section_target = '';
+									                        if ( ! empty( $collapse ) ) {
+										                        $section        = $collapse['option'] ?? '';
+										                        $section_key    = $collapse['key'] ?? '';
+										                        $option_value   = $this->get_option_value( $section, $section_key );
+										                        $add_class      = $option_value == 'on' ? $add_class . ' ' . 'abp_active' : $add_class;
+										                        $section_target = $section . '[' . $section_key . ']';
+									                        }
+									                        $collapse_radio = $option['collapse_radio'] ?? [];
+									                        $radio_pass     = 0;
+									                        if ( ! empty( $collapse_radio ) ) {
+										                        $span_class         = $option['class'] ?? '';
+										                        $radio_section      = $collapse_radio['option'] ?? '';
+										                        $radio_key          = $collapse_radio['key'] ?? '';
+										                        $radio_value        = $collapse_radio['value'] ?? '';
+										                        $radio_option_value = ABPRF_Function::get_options( $radio_section, $radio_key, $value );
+										                        $radio_id           = $radio_section . '_' . $radio_key . '_' . $radio_value;
+										                        if ( ! empty( $radio_id ) ) {
+											                        $radio_pass ++;
+											                        ?><div class="<?php echo esc_attr( $radio_option_value == $radio_value ? $span_class . '  ' . 'abp_active' : $span_class ); ?>" data-close="<?php echo esc_attr( '#' . $radio_id ); ?>"><?php
+										                        }
+									                        }
+									                        $option['collapse_target'] = $section_target;
+									                        $option['class']           = $add_class;
+									                        $option['section']         = $section_id;
+									                        $option['key_name']        = $name;
+									                        $option['name']            = $section_id . '[' . $name . ']';
+									                        $option['value']           = $value;
+									                        $this->$type( $option );
+									                        if ( ! empty( $collapse_radio ) && $radio_pass > 0 ) {
+										                        ?></div><?php
+									                        }
+								                        }
+							                        }
+						                        }
+					                        ?>
+                                        </div>
+                                        <div class="_divider_xs"></div>
+                                        <button type="submit" class="_btn_theme" value="submit"><span class="_mar_r_xxs">💾</span><?php echo esc_html( __( 'Save', 'abp-rentalforge' ) . ' ' . $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></button>
+                                    </form>
+		                        <?php } ?>
                             </div>
                         </div>
                     </div>
                 </div>
 				<?php
-			}
-			public function show_tab_content(): void {
-				$plugin_label = ABPRF_Function::label();
-				$all_fields   = $this->configuration_data();
-				foreach ( $this->configuration_section() as $form ) {
-					$section_id = $form['id'];
-					$fields     = $all_fields[ $section_id ] ?? [];
-					if ( sizeof( $fields ) > 0 ) {
-						?>
-                        <div class="tab_item <?php echo esc_attr( $section_id ); ?>" data-tabs="#<?php echo esc_attr( $section_id ); ?>">
-                            <h3 class="_abprf"><?php echo esc_html( $plugin_label . __( ' : ', 'abp-rentalforge' ) . $form['menu'] . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></h3>
-                            <div class="_divider_xs"></div>
-                            <form method="post" action="options.php">
-                                <div class="group_setting">
-									<?php
-										settings_fields( $section_id );
-										$options = ABPRF_Function::get_option( $section_id );
-										foreach ( $fields as $option ) {
-											$on_off_key = $option['on_off_key'] ?? '';
-											$display    = empty( $on_off_key ) || ABPRF_Function::on_off( $on_off_key );
-											if ( $display ) {
-												$name  = $option['name'] ?? '';
-												$type  = $option['type'] ?? '';
-												$label = $option['label'] ?? '';
-												if ( $name && $type && $label ) {
-													$value          = isset( $options[ $name ] ) && $options[ $name ] ? $options[ $name ] : ( $option['default'] ?? '' );
-													$collapse       = $option['collapse_data'] ?? [];
-													$add_class      = $option['class'] ?? '';
-													$section_target = '';
-													if ( ! empty( $collapse ) ) {
-														$section        = $collapse['option'] ?? '';
-														$section_key    = $collapse['key'] ?? '';
-														$option_value   = $this->get_option_value( $section, $section_key );
-														$add_class      = $option_value == 'on' ? $add_class . ' ' . 'abp_active' : $add_class;
-														$section_target = $section . '[' . $section_key . ']';
-													}
-													$collapse_radio = $option['collapse_radio'] ?? [];
-													$radio_pass     = 0;
-													if ( ! empty( $collapse_radio ) ) {
-														$span_class         = $option['class'] ?? '';
-														$radio_section      = $collapse_radio['option'] ?? '';
-														$radio_key          = $collapse_radio['key'] ?? '';
-														$radio_value        = $collapse_radio['value'] ?? '';
-														$radio_option_value = ABPRF_Function::get_options( $radio_section, $radio_key, $value );
-														$radio_id           = $radio_section . '_' . $radio_key . '_' . $radio_value;
-														if ( ! empty( $radio_id ) ) {
-															$radio_pass ++;
-															?><div class="<?php echo esc_attr( $radio_option_value == $radio_value ? $span_class . '  ' . 'abp_active' : $span_class ); ?>" data-close="<?php echo esc_attr( '#' . $radio_id ); ?>"><?php
-														}
-													}
-													$option['collapse_target'] = $section_target;
-													$option['class']           = $add_class;
-													$option['section']         = $section_id;
-													$option['key_name']        = $name;
-													$option['name']            = $section_id . '[' . $name . ']';
-													$option['value']           = $value;
-													$this->$type( $option );
-													if ( ! empty( $collapse_radio ) && $radio_pass > 0 ) {
-														?></div><?php
-													}
-												}
-											}
-										}
-									?>
-                                </div>
-                                <div class="_divider_xs"></div>
-                                <button type="submit" class="_btn_theme" value="submit"><span class="_mar_r_xxs">💾</span><?php echo esc_html( __( 'Save', 'abp-rentalforge' ) . ' ' . $form['menu'] . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></button>
-                            </form>
-                        </div>
-						<?php
-					}
-				}
 			}
 			public function get_option_value( $section, $section_key ) {
 				$option_value = ABPRF_Function::get_options( $section, $section_key );
@@ -195,7 +207,7 @@
 							'desc' => sprintf(
 							/* translators: %s: Permalinks settings page link layout */
 								__( 'Define the primary URL slug for rentals. Important: After changing this, you must flush your permalinks by visiting %s and clicking Save Changes.', 'abp-rentalforge' ),
-								'<strong class="_abprf_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
+								'<strong class="_abp_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
 							),
 							'type' => 'text',
 							'default' => 'rental-forge'
@@ -206,7 +218,7 @@
 							'desc' => sprintf(
 							/* translators: %s: Dashicons library link */
 								__( 'Choose a custom admin menu icon. Please browse the %s, copy the desired icon class name, and paste it here.', 'abp-rentalforge' ),
-								'<a class="_abprf" href="https://developer.wordpress.org/resource/dashicons/" target="_blank">' . __( 'WordPress Dashicons Library', 'abp-rentalforge' ) . '</a>'
+								'<a class="_abp" href="https://developer.wordpress.org/resource/dashicons/" target="_blank">' . __( 'WordPress Dashicons Library', 'abp-rentalforge' ) . '</a>'
 							),
 							'type' => 'text',
 							'default' => 'dashicons-hammer'
@@ -231,7 +243,7 @@
 							'desc' => sprintf(
 							/* translators: %s: Permalinks settings page link layout */
 								__( 'Define the custom URL structure for category archives. Remember to update your rewrite rules under %s after any modifications.', 'abp-rentalforge' ),
-								'<strong class="_abprf_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
+								'<strong class="_abp_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
 							),
 							'type' => 'text',
 							'default' => 'category'

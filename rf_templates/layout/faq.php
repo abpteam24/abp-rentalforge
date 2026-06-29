@@ -22,7 +22,7 @@
 			?>
             <div class="_abp_panel faq_area">
                 <div class="_panel_head">
-                    <h4 class="_abprf">
+                    <h4 class="_abp">
                         <span class="_mar_r_xxs">❓</span>
 						<?php esc_html_e( 'Frequently Asked Questions', 'abp-rentalforge' ); ?>
                     </h4>
@@ -41,7 +41,7 @@
 							?>
                             <div class="faq_item">
                                 <div class="faq_question faq_target">
-                                    <h5 class="_abprf"><?php echo esc_html( $title ); ?></h5>
+                                    <h5 class="_abp"><?php echo esc_html( $title ); ?></h5>
                                     <span class="faq_icon"></span>
                                 </div>
                                 <div class="faq_answer">

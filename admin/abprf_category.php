@@ -39,7 +39,7 @@
 				$all_categories = ABPRF_Function::get_option( 'abprf_category' );
 				$count          = 1;
 				if ( ! empty( $all_categories ) && is_array( $all_categories ) && sizeof( $all_categories ) > 0 ) { ?>
-                    <table class="_abprf">
+                    <table class="_abp">
                         <thead>
                         <tr>
                             <th><?php esc_html_e( 'SI', 'abp-rentalforge' ) ?></th>
@@ -58,7 +58,7 @@
 							?>
                             <tr>
                                 <th><?php echo esc_html( $count ); ?>.</th>
-                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( $term_id ) ); ?>" target="_blank" class="_abprf_fs_h5 _color_theme"><?php echo esc_html( $name ); ?></a></th>
+                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( $term_id ) ); ?>" target="_blank" class="_abp_fs_h5_color_theme"><?php echo esc_html( $name ); ?></a></th>
                                 <th><?php echo esc_html( $term_id ); ?></th>
                                 <td><?php echo esc_html( $description ); ?></td>
                                 <th><code> [abprf-post cat_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>

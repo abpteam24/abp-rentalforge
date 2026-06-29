@@ -20,7 +20,7 @@
                     <div class="configuration_content">
                         <div class="form_area">
                             <div class="hide_on_load">
-                                <table class="_abprf ">
+                                <table class="_abp ">
                                     <thead>
                                     <tr>
                                         <th><?php esc_html_e( 'Icon', 'abp-rentalforge' ); ?></th>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="abprf_d_none">
-                            <table class="_abprf">
+                            <table class="_abp">
                                 <tbody class="hidden_content">
 								<?php self::form_feature(); ?>
                                 </tbody>
@@ -58,7 +58,7 @@
 						$label = $feature['label'] ?? '';
 						?>
                         <div class="_list_item">
-                            <h6 class="_abprf"> <?php ABPRF_Layout::image_icon( $feature['icon'] ?? '' ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $feature['value'] ?? '' ); ?></h6>
+                            <h6 class="_abp"> <?php ABPRF_Layout::image_icon( $feature['icon'] ?? '' ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $feature['value'] ?? '' ); ?></h6>
                             <div class="_d_flex">
                                 <button type="button" class="_btn_light_yellow_mar_r_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>">✍️</button>
                                 <button type="button" class="_btn_light_danger_xxs delete_feature" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>">❌</button>
