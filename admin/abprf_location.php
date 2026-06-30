@@ -100,8 +100,8 @@
                                 <th class="_text_nowrap"><code> [abprf-post loc_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th class="_text_nowrap"><code> [abprf-property loc_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <td>
-                                    <div class="_d_flex">
-                                        <button type="button" class="_btn_light_yellow_mar_r_xxs" data-id="<?php echo esc_attr( $term_id ); ?>" data-target-popup="#abprf_global_popup" data-type="location" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">✍️</button>
+                                    <div class="_group_content">
+                                        <button type="button" class="_btn_light_yellow_xxs" data-id="<?php echo esc_attr( $term_id ); ?>" data-target-popup="#abprf_global_popup" data-type="location" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">✍️</button>
                                         <button type="button" class="_btn_light_danger_xxs delete_location" data-loc_id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">❌</button>
                                     </div>
                                 </td>

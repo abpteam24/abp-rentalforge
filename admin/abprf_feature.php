@@ -59,8 +59,8 @@
 						?>
                         <div class="_list_item">
                             <h6 class="_abp"> <?php ABPRF_Layout::image_icon( $feature['icon'] ?? '' ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $feature['value'] ?? '' ); ?></h6>
-                            <div class="_d_flex">
-                                <button type="button" class="_btn_light_yellow_mar_r_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>">✍️</button>
+                            <div class="_group_content">
+                                <button type="button" class="_btn_light_yellow_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>">✍️</button>
                                 <button type="button" class="_btn_light_danger_xxs delete_feature" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>">❌</button>
                             </div>
                         </div>
@@ -200,6 +200,25 @@
 					}
 					update_option( 'abprf_feature_js', $feature_js );
 				}
+			}
+			public static function feature_selection_form(): void {
+				?>
+                <div class="form_area hide_on_load">
+                    <table class="_abp _mar_t_xs">
+                        <tbody class="insertable_area sortable_area">
+                        </tbody>
+                    </table>
+                    <div class="_divider_xs"></div>
+                    <button type="button" class="_btn_theme_xs save_feature"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
+                </div>
+                <div class="abprf_d_none">
+                    <table class="_abp">
+                        <tbody class="hidden_content">
+						<?php ABPRF_Feature::form_feature(); ?>
+                        </tbody>
+                    </table>
+                </div>
+				<?php
 			}
 		}
 		new ABPRF_Feature();

@@ -1069,6 +1069,7 @@
 /******************************************************************** Group Content ************************************************/
 @media only screen and (min-width: 10px) {
 	div.abprf_area [class*="_group_content"] { display: -webkit-inline-flex; display: inline-flex; font-size: var(--rf_fs); text-align: center; position: relative; -webkit-border-radius: var(--rf_br); border-radius: var(--rf_br); gap: 0;border: 1px solid var(--rf_color_border);}
+	div.abprf_area [class*="_group_content"] * {border: none;}
 	div.abprf_area [class*="_group_content"] > * {margin: 0;border-radius: 0; border: none;border-right: 1px solid var(--rf_color_border);}
 	div.abprf_area [class*="_group_content"] > :last-child {border: none;}
 	div.abprf_area [class*="_group_content"] [class*="_form_control"] { text-align: center; background-color: var(--rf_color_white); height: 100%; border-radius: 0;min-height: auto;min-width: 75px;width: max-content;border-top: none; border-bottom: none; }

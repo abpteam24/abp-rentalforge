@@ -343,9 +343,10 @@
 				$brand       = $property['brand'] ?? '';
 				if ( ABPRF_Function::on_off( 'brand' ) ) {
 					?>
-                    <div class="setting_item">
-                        <div class="_f_equal_f_wrap">
+                    <div class="setting_item configuration_content">
+                        <div class="_fj_between_fa_center">
                             <span class="_abp_label"><?php esc_html_e( 'Property Brand', 'abp-rentalforge' ); ?></span>
+							<?php ABPRF_Layout::button_add_xs( __( 'Add New Brand', 'abp-rentalforge' ) ); ?>
                             <div class="brand_selection"><?php ABPRF_Brand::brand_selection( $brand ); ?></div>
                         </div>
 						<?php ABPRF_Brand::brand_selection_form(); ?>
@@ -355,7 +356,7 @@
 				<?php }
 				if ( ABPRF_Function::on_off( 'property_des' ) ) { ?>
                     <div class="setting_item">
-                        <label class="_f_equal_f_wrap">
+                        <label class="_fj_between">
                             <span class="_abp_label"><?php esc_html_e( 'Property Short Description', 'abp-rentalforge' ); ?></span>
                             <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'EX: Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
                         </label>
@@ -374,7 +375,7 @@
                 <div class="setting_item full_width property_price_settings">
                     <div class=" _fj_between">
                         <h5 class="_abp_color_theme"><?php esc_html_e( 'Pricing and Quantity Configuration', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></h5>
-                        <div class="custom_radio">
+                        <div class="custom_radio _group_content">
                             <input type="hidden" class="_form_control" name="rent_rule" value="<?php echo esc_attr( $rent_rule ); ?>"/>
 							<?php foreach ( $rent_rules as $key => $rule_label ) { ?>
                                 <div class="radio_item">
@@ -628,44 +629,24 @@
 			public function features( $property = [] ): void {
 				if ( ABPRF_Function::on_off( 'feature' ) ) {
 					?>
-                    <div class="setting_item full_width property_feature">
-                        <h5 class="_abp_color_theme"><?php esc_html_e( 'Feature Configuration', 'abp-rentalforge' ); ?></h5>
-						<?php ABPRF_Layout::info_text( 'property_feature' ); ?>
-                        <div class="_divider_xs"></div>
-                        <div class="_d_flex">
+                    <div class="setting_item full_width property_feature configuration_content">
+                        <div class="_fj_between_fa_center">
+                            <h5 class="_abp_color_theme"><?php esc_html_e( 'Feature Configuration', 'abp-rentalforge' ); ?></h5>
+							<?php ABPRF_Layout::button_add_xs( __( 'Add New Feature', 'abp-rentalforge' ) ); ?>
                             <div class="selection_area">
                                 <label>
                                     <input class="_form_control item_search" type="text" placeholder="<?php esc_attr_e( 'Search feature ....', 'abp-rentalforge' ); ?>"/>
                                 </label>
                                 <div class="selection_list"></div>
                             </div>
-                            <div class="selected_area">
-                                <input type="hidden" name="feature" value="<?php echo esc_attr( $property['features'] ?? '' ); ?>"/>
-                                <div class="selected_list"></div>
-                            </div>
                         </div>
-                        <div class="configuration_content _mar_t_xs">
-                            <div class="form_area">
-                                <div class="hide_on_load">
-                                    <table class="_abp ">
-                                        <tbody class="insertable_area sortable_area">
-                                        </tbody>
-                                    </table>
-                                    <div class="_divider_xs"></div>
-                                </div>
-                                <div class="_fj_between">
-									<?php ABPRF_Layout::button_add_xs( __( 'Add New Feature', 'abp-rentalforge' ) ); ?>
-                                    <button type="button" class="_btn_theme_xs hide_on_load save_feature"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
-                                </div>
-                            </div>
-                            <div class="abprf_d_none">
-                                <table class="_abp">
-                                    <tbody class="hidden_content">
-									<?php ABPRF_Feature::form_feature(); ?>
-                                    </tbody>
-                                </table>
-                            </div>
+						<?php ABPRF_Layout::info_text( 'property_feature' ); ?>
+                        <div class="_divider_xs"></div>
+                        <div class="selected_area">
+                            <input type="hidden" name="feature" value="<?php echo esc_attr( $property['features'] ?? '' ); ?>"/>
+                            <div class="selected_list"></div>
                         </div>
+						<?php ABPRF_Feature::feature_selection_form(); ?>
                     </div>
 					<?php
 				}

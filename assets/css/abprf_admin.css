@@ -26,12 +26,13 @@
 	div.abprf_admin [class*="_form_control"][class*="_w_full"] {max-width: 100%;min-width: 100%;}
 	div.abprf_admin textarea[class*="_form_control"] {max-width: 100%;}
 	div.abprf_admin input[class*="_form_control"][type="time"] {max-width: 100px;text-align: center;min-width: 100px;}
-	div.abprf_admin [class*="_form_control"].abprf_color_picker {min-width: 60px; max-width:80px;height: 32px;padding: var(--rf_gap_xxs) var(--rf_gap_xs);}
+	div.abprf_admin [class*="_form_control"].abprf_color_picker {min-width: 60px; max-width: 80px;height: 32px;padding: var(--rf_gap_xxs) var(--rf_gap_xs);}
 	div.abprf_admin [class*="_form_control"][class*="_min_150"] {min-width: 150px;max-width: 100%;}
 	div.abprf_admin .abp_dropdown [class*="_form_control"] {max-width: 100%;}
 	div.abprf_admin .additional_service [class*="_form_control"],
 	div.abprf_admin .faq_configuration [class*="_form_control"],
 	div.abprf_admin .feature_area [class*="_form_control"] {min-width: auto;width: 100%;max-width: 100%;}
+	div.abprf_admin .property_price_settings [class*="_group_content"] [class*="_form_control"] {width: 100%;}
 	/*=============================*/
 	div.abprf_admin .multi_stock table {width: inherit;}
 	/*=============================*/
@@ -45,7 +46,7 @@
 	div.selection_area .selection_item span { color: #333; }
 	div.selection_area .selection_item .fs-add { color: #CCC;margin: 0 0 0 var(--rf_gap_xs); }
 	div.selection_area .selection_item:hover .fs-add { color: #378ADD; }
-	div.abprf_admin .selected_area { overflow: hidden;padding: 0 0 0 var(--rf_gap_xs); position: relative;width: 100%; }
+	div.abprf_admin .selected_area { overflow: hidden;position: relative;width: 100%; }
 	div.selected_area .selected_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	div.selected_area .selected_item { display: -webkit-flex;display: flex; align-items: center; -webkit-justify-content: space-between;justify-content: space-between; padding: var(--rf_gap_xs); border-bottom: 1px solid var(--rf_color_border); background: #FFF; width: max-content;min-width: 200px;max-width: max-content;height: 40px}
 	div.selected_area .selected_item:last-child { border-bottom: none; }
@@ -57,7 +58,7 @@
 	div.abprf_admin .wp-picker-holder {position: absolute;z-index: 1111;}
 	div.abprf_admin .wp-picker-input-wrap {display: -webkit-inline-flex;display: inline-flex;}
 	div.abprf_admin .wp-color-result-text {display: none;}
-	div.abprf_admin button.wp-color-result {width: 40px;height:32px;margin: 0 !important; border-right: none; border-radius: var(--rf_br) 0 0 var(--rf_br);border-color: var(--rf_color_border);}
+	div.abprf_admin button.wp-color-result {width: 40px;height: 32px;margin: 0 !important; border-right: none; border-radius: var(--rf_br) 0 0 var(--rf_br);border-color: var(--rf_color_border);}
 	div.abprf_admin .wp-picker-default {margin: 0 !important; border-left: none; border-radius: 0 var(--rf_br) var(--rf_br) 0;border-color: var(--rf_color_border);}
 	/*=============================*/
 	#abprf_configuration {border: none;background-color: transparent;}
@@ -121,6 +122,6 @@
 	div.abprf_admin .properties_list {overflow-x: auto;margin-top: var(--rf_gap_xs);}
 	div.abprf_admin .abprf_properties .properties_list {margin: 0;}
 	div.abprf_admin .category_list table {text-align: left;}
-	div.abprf_admin .dashboard_content [class*="_panel_head"] [class*="_group_content"] {white-space: nowrap;  -webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xxs);}
-	div.abprf_admin .dashboard_content [class*="_panel_head"] [class*="_group_content"] > * {-webkit-justify-content: center; justify-content: center; -webkit-flex: 1; flex: 1; min-width: max-content;  border: none;}
+	div.abprf_admin .dashboard_content [class*="_panel_head"] [class*="_group_content"] {white-space: nowrap; -webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xxs);}
+	div.abprf_admin .dashboard_content [class*="_panel_head"] [class*="_group_content"] > * {-webkit-justify-content: center; justify-content: center; -webkit-flex: 1; flex: 1; min-width: max-content; border: none;}
 }

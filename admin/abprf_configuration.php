@@ -61,91 +61,91 @@
 				if ( ! in_array( $active_tab, $allowed_tabs, true ) ) {
 					$active_tab = 'configuration';
 				}
-				$all_fields = $this->configuration_data();
-				$section_id = 'abprf_' . $active_tab;
-				$fields     = $all_fields[ $section_id ] ?? [];
-				$current_section=[];
+				$all_fields      = $this->configuration_data();
+				$section_id      = 'abprf_' . $active_tab;
+				$fields          = $all_fields[ $section_id ] ?? [];
+				$current_section = [];
 				?>
                 <div id="abprf_configuration">
                     <div class="_abp_panel_max_1200_mar_auto">
                         <div class="abprf_tabs tab_top">
                             <div class="_panel_head">
                                 <div class="_group_content_w_full">
-		                            <?php foreach ( $all_sections as $tab ) {
-			                            $tab_id = $tab['id'] ?? '';
-			                            if ( ! empty( $tab_id ) ) {
-				                            $key = preg_replace( '/^abprf_/', '', $tab_id );
-				                            $current_section=$key==$active_tab?$tab:$current_section; ?>
+									<?php foreach ( $all_sections as $tab ) {
+										$tab_id = $tab['id'] ?? '';
+										if ( ! empty( $tab_id ) ) {
+											$key             = preg_replace( '/^abprf_/', '', $tab_id );
+											$current_section = $key == $active_tab ? $tab : $current_section; ?>
                                             <a href="<?php echo esc_url( ABPRF_Function::build_url( 'configuration', [ 'configuration' => $key ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == $key ? 'abp_active' : '' ); ?>">
-					                            <?php ABPRF_Layout::image_icon( $tab['icon'] ?? '' );
-						                            echo esc_html( $tab['menu'] ?? '' ); ?>
+												<?php ABPRF_Layout::image_icon( $tab['icon'] ?? '' );
+													echo esc_html( $tab['menu'] ?? '' ); ?>
                                             </a>
-			                            <?php }
-		                            } ?>
+										<?php }
+									} ?>
                                 </div>
                             </div>
                             <div class="_panel_body <?php echo esc_attr( $section_id ); ?>">
-		                        <?php if ( sizeof( $fields ) > 0 ) {
-			                        $title           = $current_section['menu'] ?? ''; ?>
-                                    <h4 class="_abp"><?php echo esc_html(  $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></h4>
+								<?php if ( sizeof( $fields ) > 0 ) {
+									$title = $current_section['menu'] ?? ''; ?>
+                                    <h4 class="_abp"><?php echo esc_html( $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></h4>
                                     <div class="_divider_xs"></div>
                                     <form method="post" action="options.php">
                                         <div class="group_setting">
-					                        <?php
-						                        settings_fields( $section_id );
-						                        $options = ABPRF_Function::get_option( $section_id );
-						                        foreach ( $fields as $option ) {
-							                        $on_off_key = $option['on_off_key'] ?? '';
-							                        $display    = empty( $on_off_key ) || ABPRF_Function::on_off( $on_off_key );
-							                        if ( $display ) {
-								                        $name  = $option['name'] ?? '';
-								                        $type  = $option['type'] ?? '';
-								                        $label = $option['label'] ?? '';
-								                        if ( $name && $type && $label ) {
-									                        $value          = isset( $options[ $name ] ) && $options[ $name ] ? $options[ $name ] : ( $option['default'] ?? '' );
-									                        $collapse       = $option['collapse_data'] ?? [];
-									                        $add_class      = $option['class'] ?? '';
-									                        $section_target = '';
-									                        if ( ! empty( $collapse ) ) {
-										                        $section        = $collapse['option'] ?? '';
-										                        $section_key    = $collapse['key'] ?? '';
-										                        $option_value   = $this->get_option_value( $section, $section_key );
-										                        $add_class      = $option_value == 'on' ? $add_class . ' ' . 'abp_active' : $add_class;
-										                        $section_target = $section . '[' . $section_key . ']';
-									                        }
-									                        $collapse_radio = $option['collapse_radio'] ?? [];
-									                        $radio_pass     = 0;
-									                        if ( ! empty( $collapse_radio ) ) {
-										                        $span_class         = $option['class'] ?? '';
-										                        $radio_section      = $collapse_radio['option'] ?? '';
-										                        $radio_key          = $collapse_radio['key'] ?? '';
-										                        $radio_value        = $collapse_radio['value'] ?? '';
-										                        $radio_option_value = ABPRF_Function::get_options( $radio_section, $radio_key, $value );
-										                        $radio_id           = $radio_section . '_' . $radio_key . '_' . $radio_value;
-										                        if ( ! empty( $radio_id ) ) {
-											                        $radio_pass ++;
-											                        ?><div class="<?php echo esc_attr( $radio_option_value == $radio_value ? $span_class . '  ' . 'abp_active' : $span_class ); ?>" data-close="<?php echo esc_attr( '#' . $radio_id ); ?>"><?php
-										                        }
-									                        }
-									                        $option['collapse_target'] = $section_target;
-									                        $option['class']           = $add_class;
-									                        $option['section']         = $section_id;
-									                        $option['key_name']        = $name;
-									                        $option['name']            = $section_id . '[' . $name . ']';
-									                        $option['value']           = $value;
-									                        $this->$type( $option );
-									                        if ( ! empty( $collapse_radio ) && $radio_pass > 0 ) {
-										                        ?></div><?php
-									                        }
-								                        }
-							                        }
-						                        }
-					                        ?>
+											<?php
+												settings_fields( $section_id );
+												$options = ABPRF_Function::get_option( $section_id );
+												foreach ( $fields as $option ) {
+													$on_off_key = $option['on_off_key'] ?? '';
+													$display    = empty( $on_off_key ) || ABPRF_Function::on_off( $on_off_key );
+													if ( $display ) {
+														$name  = $option['name'] ?? '';
+														$type  = $option['type'] ?? '';
+														$label = $option['label'] ?? '';
+														if ( $name && $type && $label ) {
+															$value          = isset( $options[ $name ] ) && $options[ $name ] ? $options[ $name ] : ( $option['default'] ?? '' );
+															$collapse       = $option['collapse_data'] ?? [];
+															$add_class      = $option['class'] ?? '';
+															$section_target = '';
+															if ( ! empty( $collapse ) ) {
+																$section        = $collapse['option'] ?? '';
+																$section_key    = $collapse['key'] ?? '';
+																$option_value   = $this->get_option_value( $section, $section_key );
+																$add_class      = $option_value == 'on' ? $add_class . ' ' . 'abp_active' : $add_class;
+																$section_target = $section . '[' . $section_key . ']';
+															}
+															$collapse_radio = $option['collapse_radio'] ?? [];
+															$radio_pass     = 0;
+															if ( ! empty( $collapse_radio ) ) {
+																$span_class         = $option['class'] ?? '';
+																$radio_section      = $collapse_radio['option'] ?? '';
+																$radio_key          = $collapse_radio['key'] ?? '';
+																$radio_value        = $collapse_radio['value'] ?? '';
+																$radio_option_value = ABPRF_Function::get_options( $radio_section, $radio_key, $value );
+																$radio_id           = $radio_section . '_' . $radio_key . '_' . $radio_value;
+																if ( ! empty( $radio_id ) ) {
+																	$radio_pass ++;
+																	?><div class="<?php echo esc_attr( $radio_option_value == $radio_value ? $span_class . '  ' . 'abp_active' : $span_class ); ?>" data-close="<?php echo esc_attr( '#' . $radio_id ); ?>"><?php
+																}
+															}
+															$option['collapse_target'] = $section_target;
+															$option['class']           = $add_class;
+															$option['section']         = $section_id;
+															$option['key_name']        = $name;
+															$option['name']            = $section_id . '[' . $name . ']';
+															$option['value']           = $value;
+															$this->$type( $option );
+															if ( ! empty( $collapse_radio ) && $radio_pass > 0 ) {
+																?></div><?php
+															}
+														}
+													}
+												}
+											?>
                                         </div>
                                         <div class="_divider_xs"></div>
                                         <button type="submit" class="_btn_theme" value="submit"><span class="_mar_r_xxs">💾</span><?php echo esc_html( __( 'Save', 'abp-rentalforge' ) . ' ' . $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></button>
                                     </form>
-		                        <?php } ?>
+								<?php } ?>
                             </div>
                         </div>
                     </div>
@@ -811,7 +811,7 @@
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
                         <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
-                        <div class="custom_checkbox">
+                        <div class="custom_checkbox _group_content">
                             <input type="hidden" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $option_data as $key => $label ) { ?>
                                 <div class="checkbox_item">

@@ -218,7 +218,7 @@
                         <div class="setting_item full_width">
                             <div class="_fj_between _mar_t_xs">
                                 <h5 class="_abp_color_theme"><?php esc_html_e( 'Special On/Off Date Time(optional)', 'abp-rentalforge' ); ?></h5>
-                                <div class="custom_checkbox">
+                                <div class="custom_checkbox _group_content">
                                     <input type="hidden" name="date_rule" value="<?php echo esc_attr( $date_rule ); ?>"/>
 									<?php foreach ( $date_rules as $key => $rule ) { ?>
                                         <div class="checkbox_item _min_100">
@@ -251,7 +251,7 @@
                 <div class="setting_item full_width <?php echo esc_attr( in_array( 'weekend', $date_rule_array ) ? 'abp_active' : '' ); ?> " data-collapse="#weekend">
                     <div class="_f_wrap_fj_between_fa_center">
                         <span class="_abp_label"><?php esc_html_e( 'Weekend(optional)', 'abp-rentalforge' ); ?></span>
-                        <div class="custom_checkbox">
+                        <div class="custom_checkbox _group_content">
                             <input type="hidden" name="weekend" value="<?php echo esc_attr( $weekend ); ?>"/>
 							<?php foreach ( $days as $key => $day ) { ?>
                                 <div class="checkbox_item _min_100">
@@ -273,12 +273,12 @@
 				$specific_off_dates = $date_infos['specific_off_dates'] ?? [];
 				?>
                 <div class="setting_item full_width <?php echo esc_attr( in_array( 'specific_of_date', $date_rule_array ) ? 'abp_active' : '' ); ?>" data-collapse="#specific_of_date">
-                    <div class="configuration_content _d_flex">
-                        <div class="_fd_column">
-                            <span class="_abp_label_mar_b_xxs"><?php esc_html_e( 'Specific Off Dates(optional)', 'abp-rentalforge' ); ?></span>
+                    <div class="configuration_content">
+                        <div class="_fj_between_fa_conter">
+                            <span class="_abp_label"><?php esc_html_e( 'Specific Off Dates(optional)', 'abp-rentalforge' ); ?></span>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add Specific Off Date', 'abp-rentalforge' ) ); ?>
                         </div>
-                        <div class="insertable_area sortable_area _f_wrap_fj_end_gap_xs_w_full">
+                        <div class="insertable_area sortable_area _f_wrap_gap_xs">
 							<?php
 								if ( sizeof( $specific_off_dates ) ) {
 									foreach ( $specific_off_dates as $specific_date ) {
@@ -306,12 +306,12 @@
 				$off_date_range  = $date_infos['off_date_range'] ?? [];
 				?>
                 <div class="setting_item full_width <?php echo esc_attr( in_array( 'off_date_range', $date_rule_array ) ? 'abp_active' : '' ); ?>" data-collapse="#off_date_range">
-                    <div class="configuration_content _d_flex">
-                        <div class="_fd_column">
-                            <span class="_abp_label_mar_b_xxs"><?php esc_html_e( 'Off Date Range(optional)', 'abp-rentalforge' ); ?></span>
+                    <div class="configuration_content">
+                        <div class="_fj_between_fa_conter">
+                            <span class="_abp_label"><?php esc_html_e( 'Off Date Range(optional)', 'abp-rentalforge' ); ?></span>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add Off Date Range', 'abp-rentalforge' ) ); ?>
                         </div>
-                        <div class="insertable_area sortable_area _f_wrap_fj_end_gap_xs_w_full">
+                        <div class="insertable_area sortable_area _f_wrap_gap_xs_w">
 							<?php
 								if ( sizeof( $off_date_range ) ) {
 									foreach ( $off_date_range as $specific_date ) {
@@ -340,12 +340,12 @@
 				//echo '<pre>';print_r($special_dates);echo '</pre>';
 				?>
                 <div class="setting_item full_width  <?php echo esc_attr( in_array( 'special_on_dates', $date_rule_array ) ? 'abp_active' : '' ); ?>" data-collapse="#special_on_dates">
-                    <div class="configuration_content _d_flex">
-                        <div class="_fd_column">
-                            <span class="_abp_label_mar_b_xxs"><?php esc_html_e( 'Special On Dates (optional)', 'abp-rentalforge' ); ?></span>
+                    <div class="configuration_content">
+                        <div class="_fj_between_fa_conter">
+                            <span class="_abp_label"><?php esc_html_e( 'Special On Dates (optional)', 'abp-rentalforge' ); ?></span>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add Special On Dates', 'abp-rentalforge' ) ); ?>
                         </div>
-                        <div class="insertable_area sortable_area _f_wrap_fj_end_gap_xs_w_full">
+                        <div class="insertable_area sortable_area _f_wrap_gap_xs">
 							<?php
 								if ( sizeof( $special_dates ) ) {
 									foreach ( $special_dates as $specific_date ) {
@@ -382,7 +382,7 @@
 							$end   = $times['end'] ?? '';
 							?>
                             <div class="_fj_between_fa_center_min_500_max_600">
-                                <span class="_mar_lr_xs_fs_label"><?php echo esc_html( $day ); ?></span>
+                                <span class="_abp_label"><?php echo esc_html( $day ); ?></span>
                                 <div class="_group_content">
 									<?php ABPRF_Layout::input_time( $key . '_time_start', $start );
 										ABPRF_Layout::input_time( $key . '_time_end', $end ); ?>
@@ -515,42 +515,54 @@
 					$date_infos['periodic_start_date']  = $format_date( $post_val( 'periodic_start_date' ) );
 					$date_infos['periodic_end_date']    = $format_date( $post_val( 'periodic_end_date' ) );
 					$date_infos['periodic_after']       = $post_val( 'periodic_after', '1' );
+					$date_rule                          = $post_val( 'date_rule' );
 					$date_infos['date_rule']            = $post_val( 'date_rule' );
-					$date_infos['weekend']              = $post_val( 'weekend' );
-					$specific_off_dates                 = array_filter( $post_array( 'specific_off_dates' ) );
-					$date_infos['specific_off_dates']   = array_unique( array_map( fn( $d ) => gmdate( 'Y-m-d', strtotime( $d ) ), $specific_off_dates ) );
-					$off_schedules                      = [];
-					$from_dates                         = $post_array( 'abprf_off_from' );
-					$to_dates                           = $post_array( 'abprf_off_to' );
-					foreach ( $from_dates as $key => $from_date ) {
-						if ( $from_date && ! empty( $to_dates[ $key ] ) ) {
-							$off_schedules[] = [ 'from' => $from_date, 'to' => $to_dates[ $key ] ];
-						}
+					$date_rule_array                    = $date_rule ? explode( ',', $date_rule ) : [];
+					if ( in_array( 'weekend', $date_rule_array ) ) {
+						$date_infos['weekend'] = $post_val( 'weekend' );
 					}
-					$date_infos['off_date_range'] = $off_schedules;
-					$special_on_dates             = $post_array( 'special_on_dates' );
-					$on_start                     = $post_array( 'special_on_time_start' );
-					$on_end                       = $post_array( 'special_on_time_end' );
-					$specific_on                  = [];
-					foreach ( $special_on_dates as $key => $date ) {
-						if ( $date ) {
-							$specific_on[ $key ] = [ 'date' => $format_date( $date ), 'start' => $on_start[ $key ] ?? '', 'end' => $on_end[ $key ] ?? '' ];
-						}
+					if ( in_array( 'specific_off_dates', $date_rule_array ) ) {
+						$specific_off_dates               = array_filter( $post_array( 'specific_off_dates' ) );
+						$date_infos['specific_off_dates'] = array_unique( array_map( fn( $d ) => gmdate( 'Y-m-d', strtotime( $d ) ), $specific_off_dates ) );
 					}
-					$date_infos['special_on_dates'] = $specific_on;
-					$time_info                      = [];
-					foreach ( ABPRF_Layout::week_day() as $key => $day ) {
-						$start = $post_val( $key . '_time_start' );
-						$end   = $post_val( $key . '_time_end' );
-						if ( $start && $end ) {
-							$time_info[ $key ] = [ 'start' => $start, 'end' => $end ];
+					if ( in_array( 'off_date_range', $date_rule_array ) ) {
+						$off_schedules = [];
+						$from_dates    = $post_array( 'abprf_off_from' );
+						$to_dates      = $post_array( 'abprf_off_to' );
+						foreach ( $from_dates as $key => $from_date ) {
+							if ( $from_date && ! empty( $to_dates[ $key ] ) ) {
+								$off_schedules[] = [ 'from' => $from_date, 'to' => $to_dates[ $key ] ];
+							}
 						}
+						$date_infos['off_date_range'] = $off_schedules;
 					}
-					$date_infos['day_wise_time'] = $time_info;
-					$specific_dates              = $post_array( 'specific_dates' );
-					$spec_start                  = $post_array( 'specific_time_start' );
-					$spec_end                    = $post_array( 'specific_time_end' );
-					$specific                    = [];
+					if ( in_array( 'special_on_dates', $date_rule_array ) ) {
+						$special_on_dates = $post_array( 'special_on_dates' );
+						$on_start         = $post_array( 'special_on_time_start' );
+						$on_end           = $post_array( 'special_on_time_end' );
+						$specific_on      = [];
+						foreach ( $special_on_dates as $key => $date ) {
+							if ( $date ) {
+								$specific_on[ $key ] = [ 'date' => $format_date( $date ), 'start' => $on_start[ $key ] ?? '', 'end' => $on_end[ $key ] ?? '' ];
+							}
+						}
+						$date_infos['special_on_dates'] = $specific_on;
+					}
+					if ( in_array( 'day_wise_time', $date_rule_array ) ) {
+						$time_info = [];
+						foreach ( ABPRF_Layout::week_day() as $key => $day ) {
+							$start = $post_val( $key . '_time_start' );
+							$end   = $post_val( $key . '_time_end' );
+							if ( $start && $end ) {
+								$time_info[ $key ] = [ 'start' => $start, 'end' => $end ];
+							}
+						}
+						$date_infos['day_wise_time'] = $time_info;
+					}
+					$specific_dates = $post_array( 'specific_dates' );
+					$spec_start     = $post_array( 'specific_time_start' );
+					$spec_end       = $post_array( 'specific_time_end' );
+					$specific       = [];
 					foreach ( $specific_dates as $key => $date ) {
 						if ( $date ) {
 							$specific[ $key ] = [ 'date' => $format_date( $date ), 'start' => $spec_start[ $key ] ?? '', 'end' => $spec_end[ $key ] ?? '' ];

@@ -105,8 +105,8 @@
                                 <td><?php echo esc_html( $description ); ?></td>
                                 <th><code> [abprf-property brand_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th>
-                                    <div class="_f_wrap">
-                                        <button type="button" class="_btn_light_yellow_mar_r_xxs edit_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">✍️</button>
+                                    <div class="_group_content">
+                                        <button type="button" class="_btn_light_yellow_xxs edit_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">✍️</button>
                                         <button type="button" class="_btn_light_danger_xxs delete_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">❌</button>
                                     </div>
                                 </th>
@@ -169,45 +169,41 @@
 				$icon        = $brand['icon'] ?? '';
 				$description = $brand['description'] ?? '';
 				?>
-                <div class="configuration_content">
-                    <div class="form_area">
-                        <div class="hide_on_load">
-                            <table class="_abp ">
-                                <tbody class="insertable_area sortable_area">
-                                </tbody>
-                            </table>
-                            <div class="_divider_xs"></div>
-                        </div>
-                        <div class="_fj_between">
-							<?php ABPRF_Layout::button_add_xs( __( 'Add New Brand', 'abp-rentalforge' ) ); ?>
-                            <button type="button" class="_btn_theme_xs hide_on_load save_brand"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
-                        </div>
-                    </div>
-                    <div class="abprf_d_none">
-                        <table class="_abp">
-                            <tbody class="hidden_content">
-                            <tr class="delete_area">
-                                <th><?php do_action( 'abprf_add_icon', 'brand_icon[]', $icon ); ?></th>
-                                <th>
-                                    <label>
-                                        <input type="hidden" name="brand_id[]" value="<?php echo esc_attr( $id ); ?>"/>
-                                        <input class="_form_control_min_auto_w_full" name="brand_name[]" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" required/>
-                                    </label>
-                                </th>
-                                <th>
-                                    <label>
-                                        <input class="_form_control_min_auto_w_full" name="brand_slug[]" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abp-rentalforge' ); ?>"/>
-                                    </label>
-                                </th>
-                                <th>
-                                    <label>
-                                        <textarea class="_form_control_min_auto_w_full" name="brand_description[]" placeholder="<?php esc_attr_e( 'Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
-                                    </label>
-                                </th>
-                            </tr>
+                <div class="form_area">
+                    <div class="hide_on_load">
+                        <table class="_abp ">
+                            <tbody class="insertable_area sortable_area">
                             </tbody>
                         </table>
+                        <div class="_divider_xs"></div>
                     </div>
+                    <button type="button" class="_btn_theme_xs hide_on_load save_brand"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
+                </div>
+                <div class="abprf_d_none">
+                    <table class="_abp">
+                        <tbody class="hidden_content">
+                        <tr class="delete_area">
+                            <th><?php do_action( 'abprf_add_icon', 'brand_icon[]', $icon ); ?></th>
+                            <th>
+                                <label>
+                                    <input type="hidden" name="brand_id[]" value="<?php echo esc_attr( $id ); ?>"/>
+                                    <input class="_form_control_min_auto_w_full" name="brand_name[]" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" required/>
+                                </label>
+                            </th>
+                            <th>
+                                <label>
+                                    <input class="_form_control_min_auto_w_full" name="brand_slug[]" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abp-rentalforge' ); ?>"/>
+                                </label>
+                            </th>
+                            <th>
+                                <label>
+                                    <textarea class="_form_control_min_auto_w_full" name="brand_description[]" placeholder="<?php esc_attr_e( 'Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $description ); ?></textarea>
+                                </label>
+                            </th>
+                            <td><?php ABPRF_Layout::button_delete_sort(); ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
 				<?php
 			}
