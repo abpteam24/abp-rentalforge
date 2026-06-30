@@ -512,9 +512,6 @@
 	div.abprf_area .dropdown_list li { padding: var(--rf_gap_xs); cursor: pointer; border-bottom: 1px solid var(--rf_color_border); margin: 0; list-style-type: none; white-space: nowrap;color: var(--rf_color_black);background-color: var(--rf_color_white);}
 	div.abprf_area .dropdown_list li:last-child { border-bottom: none; }
 	div.abprf_area .dropdown_list li:hover { color: var(--rf_color_rose_dusty); }
-	/*****Form Qty inc dec*******/
-	div.abprf_area .qty_input { max-width: 120px; }
-	div.abprf_area [class*="_group_content"].qty_input [class*="_form_control"] {max-width: 60px;min-width: 60px;}
 	/**********Responsive*********/
 	@media only screen and (max-width: 1050px) {
 		div.abprf_area [class*="_form_inline"] [class*="_input_item"] { max-width: calc(33.33% - var(--rf_gap));}
@@ -1081,7 +1078,8 @@
 	div.abprf_area [class*="_group_content"] input[type="radio"]::after { position: absolute; content: ""; width: 20px; height: 20px; left: 0; top: 0; border: 1px solid var(--rf_color_border); border-radius: 50%;margin: 10px; }
 	div.abprf_area [class*="_group_content"] input[type="radio"]:checked::after { border-color: var(--rf_color_theme); }
 	div.abprf_area [class*="_group_content"] input[type="radio"]:checked::before { position: absolute; content: ""; width: 14px; height: 14px; left: 3px; top: 3px; border: 1px solid var(--rf_color_theme); border-radius: 50%; background-color: var(--rf_color_theme);margin: var(--rf_gap_xs); }
-	div.abprf_area [class*="_ag_content"] { min-width: 30px; cursor: pointer; background-color: #FFF; color: var(--rf_color_theme_88); display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;border: 1px solid var(--rf_color_border);}
+	div.abprf_area [class*="_ag_content"] { min-width: 30px; cursor: pointer; background-color: #FFF; color: var(--rf_color_theme_88); display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;}
+	div.abprf_area [class*="_group_content"].qty_input [class*="_form_control"] {max-width: 60px;min-width: 60px;}
 	@media only screen and (max-width: 450px) {
 		div.abprf_area [class*="_ag_content"] { min-width: 25px; }
 	}
