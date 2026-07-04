@@ -47,7 +47,7 @@
 												<?php echo esc_html( ABPRF_Layout::item_condition( $rent_rule, $price_info ) ); ?>
                                             </div>
 											<?php ABPRF_Layout::item_deposit( $price_info ); ?>
-											<?php if ( ABPRF_Function::on_off( 'property_des' ) && $others['description'] ?? '' ) { ?>
+											<?php if ( ABPRF_Function::on_off( 'property_des' ) && ($others['description'] ?? '') ) { ?>
                                                 <div class="item_condition"><?php ABPRF_Layout::load_more( $others['description'] ?? ''  );?></div>
 											<?php } ?>
                                         </div>
