@@ -220,7 +220,7 @@
                                     <th class="_text_capitalize"><?php echo esc_html( $booking_list['payment_method'] ?? '' ); ?></th>
                                     <td>
                                         <div class="info_text load_more">
-                                            <div class="load_more_content"><?php ABPRF_Layout::billing_info( $booking_list ); ?></div>
+                                            <?php ABPRF_Layout::billing_info( $booking_list ); ?>
                                             <span class="load_more_action" data-less="<?php esc_attr_e( '....Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_attr_e( '....More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '.... More', 'abp-rentalforge' ); ?></span>
                                         </div>
                                     </td>
@@ -228,7 +228,7 @@
                                         <td>
 											<?php if ( ! empty( $passenger_infos ) ) { ?>
                                                 <div class="info_text load_more">
-                                                    <div class="load_more_content"><?php ABPRF_Layout::client_info( $passenger_infos ); ?></div>
+                                                    <?php ABPRF_Layout::client_info( $passenger_infos ); ?>
                                                     <span class="load_more_action" data-less="<?php esc_html_e( '....Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '.... More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '.... More', 'abp-rentalforge' ); ?></span>
                                                 </div>
 											<?php } ?>

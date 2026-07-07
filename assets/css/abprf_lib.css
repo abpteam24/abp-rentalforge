@@ -490,9 +490,9 @@
 	div.abprf_area [class*="_form_column"] label span {margin: 0 0 var(--rf_gap_xxs) 0;}
 	/*************** Switch on/off*********/
 	div.abprf_area [data-switch] {width: 80px; height: 30px; min-width: auto;position: relative; background-color: var(--rf_color_white);border: 2px solid var(--rf_color_theme);margin: 0 var(--rf_gap_xs) 0 0;border-radius: var(--rf_br);}
-	div.abprf_area [data-switch]::before {position: absolute; content: var(--rf_text_off);height: 26px; width: 50%; left: 0; bottom: 0;top: 0; background-color: var(--rf_color_warning);color: var(--rf_color_white);opacity: 1; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center; -webkit-transition: var(--rf_transition); transition: var(--rf_transition);}
+	div.abprf_area [data-switch]::before {position: absolute; content: var(--rf_text_off);height: 100%; width: 50%; left: 0; bottom: 0;top: 0; background-color: var(--rf_color_warning);color: var(--rf_color_white);opacity: 1; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center; -webkit-transition: var(--rf_transition); transition: var(--rf_transition);}
 	div.abprf_area [data-switch].abp_active::before {opacity: 0.4;background-color: var(--rf_color_light);color: var(--rf_color_theme);}
-	div.abprf_area [data-switch]::after {position: absolute; content: var(--rf_text_on);height: 26px; width: 50%; right: 0; bottom: 0;top: 0; background-color: var(--rf_color_light);color: var(--rf_color_theme);border-left: 2px solid var(--rf_color_theme);opacity: 0.4; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;-webkit-transition: var(--rf_transition); transition: var(--rf_transition); }
+	div.abprf_area [data-switch]::after {position: absolute; content: var(--rf_text_on);height: 100%; width: 50%; right: 0; bottom: 0;top: 0; background-color: var(--rf_color_light);color: var(--rf_color_theme);opacity: 0.4; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;-webkit-transition: var(--rf_transition); transition: var(--rf_transition); }
 	div.abprf_area [data-switch].abp_active::after {background-color: var(--rf_color_success);color: var(--rf_color_white);opacity: 1;}
 	/*************** Custom Checkbox & radio*********/
 	div.abprf_area [data-checked] { -webkit-transition: var(--rf_transition); transition: var(--rf_transition); }
@@ -766,10 +766,9 @@
 }
 /******************************************************************** Load More************************************************/
 @media only screen and (min-width: 10px) {
-	div.abprf_area .load_more { text-align: left;line-height: 1.5;color: var(--rf_color_info);font-weight: normal;font-size: var(--rf_fs_small);position: relative;}
-	div.abprf_area .load_more .load_more_content { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-align: justify;transition: var(--rf_transition);position: relative;z-index: 1;}
-	div.abprf_area .load_more .load_more_content.expanded {display: block; overflow: visible;background-color: transparent;}
-	div.abprf_area .load_more_content.expanded + .load_more_action { position: relative; }
+	div.abprf_area .load_more { text-align: left;line-height: 1.5;color: var(--rf_color_info);font-weight: normal;font-size: var(--rf_fs_small);position: relative;display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: var(--rf_transition);position: relative;z-index: 1;}
+	div.abprf_area .load_more.expanded {display: block; overflow: visible;background-color: transparent;}
+	div.abprf_area .load_more.expanded .load_more_action { position: relative; }
 	div.abprf_area .load_more_action { color: #0073AA; padding: 0 var(--rf_gap_xxs); cursor: pointer; position: absolute; right: 0; bottom: 0; background: var(--rf_color_4);transition: var(--rf_transition);backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);z-index: 2;}
 	div.abprf_area .load_more_action:hover {opacity: 0.7;}
 }

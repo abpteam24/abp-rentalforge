@@ -192,9 +192,6 @@ RentalForge uses WooCommerce for payments, so all WooCommerce-supported gateways
 = Can I manage multiple properties? =
 Yes. You can create unlimited properties, each with individual pricing, availability, and settings.
 
-= Does it support automatic and manual booking approval? =
-Yes. You can choose between Instant Booking (auto-approved) or Manual Approval mode.
-
 = Is it translation ready? =
 Yes. The plugin is fully translation-ready and compatible with standard WordPress localization tools.
 

@@ -169,7 +169,7 @@
 				if ( $data ) {
 					?>
                     <div class="info_text load_more">
-                        <span class="load_more_content">ℹ️ &nbsp;<?php echo wp_kses_post( $data ); ?></span>
+                        ℹ️ &nbsp;<?php echo wp_kses_post( $data ); ?>
                         <span class="load_more_action" data-less="<?php esc_html_e( '.... Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '.... More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '.... More', 'abp-rentalforge' ); ?></span>
                     </div>
 					<?php
@@ -179,7 +179,7 @@
 				if ( $data ) {
 					?>
                     <div class="load_more">
-                        <span class="load_more_content"><?php echo wp_kses_post( $data ); ?></span>
+                        <?php echo wp_kses_post( $data ); ?>
                         <span class="load_more_action" data-less="<?php esc_html_e( '.... Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '.... More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '.... More', 'abp-rentalforge' ); ?></span>
                     </div>
 					<?php
@@ -1048,7 +1048,6 @@
 					}
 					?>
                     <div class="item_spec load_more">
-                        <div class="load_more_content ">
 							<?php
 								foreach ( $feature_ids as $fec_id ) {
 									$feature = $abprf_feature[ $fec_id ] ?? null;
@@ -1065,7 +1064,6 @@
 										echo '</span>';
 									}
 								} ?>
-                        </div>
                         <span class="load_more_action" data-less="<?php esc_html_e( '....Less ', 'abp-rentalforge' ); ?>" data-more="<?php esc_html_e( '.... More', 'abp-rentalforge' ); ?>"><?php esc_html_e( '.... More', 'abp-rentalforge' ); ?></span>
                     </div>
 					<?php

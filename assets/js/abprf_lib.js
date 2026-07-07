@@ -18,7 +18,7 @@
                 let current_notice = $(this);
                 let type = current_notice.attr('data-type') || 'info';
                 let msg = current_notice.html();
-                setTimeout(function() {
+                setTimeout(function () {
                     abprf_toast_msg(msg, type);
                 }, index * 600);
             });
@@ -922,27 +922,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-function abprf_load_more() {
-    const containers = document.querySelectorAll('div.abprf_area .load_more');
-    containers.forEach(container => {
-        const textContent = container.querySelector('.load_more_content');
-        const toggleBtn = container.querySelector('.load_more_action');
-        if (!textContent || !toggleBtn) return;
-        const textMore = toggleBtn.getAttribute('data-more') || '... Load More';
-        const textLess = toggleBtn.getAttribute('data-less') || ' ....Show Less';
-        if (textContent.scrollHeight <= textContent.clientHeight) {
-            toggleBtn.style.display = 'none';
+function abprf_load_more($searchScope = jQuery('div.abprf_area')) {
+    let $containers = $searchScope.find('.load_more');
+    if ($containers.length === 0) return;
+    $containers.each(function () {
+        let $container = jQuery(this);
+        let $toggleBtn = $container.find('.load_more_action');
+        if ($toggleBtn.length === 0) return;
+        let textMore = $toggleBtn.attr('data-more') || '...More';
+        let textLess = $toggleBtn.attr('data-less') || ' ....Less';
+        let rawElement = $container[0];
+        if (rawElement.scrollHeight <= rawElement.clientHeight) {
+            $toggleBtn.hide();
         } else {
-            toggleBtn.style.display = 'inline';
+            $toggleBtn.show();
         }
-        toggleBtn.replaceWith(toggleBtn.cloneNode(true));
-        const newToggleBtn = container.querySelector('.load_more_action');
-        newToggleBtn.addEventListener('click', function () {
-            textContent.classList.toggle('expanded');
-            if (textContent.classList.contains('expanded')) {
-                newToggleBtn.textContent = textLess;
+        $toggleBtn.off('click').on('click', function () {
+            $container.toggleClass('expanded');
+            if ($container.hasClass('expanded')) {
+                $toggleBtn.text(textLess);
             } else {
-                newToggleBtn.textContent = textMore;
+                $toggleBtn.text(textMore);
             }
         });
     });
