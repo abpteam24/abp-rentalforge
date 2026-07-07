@@ -1,6 +1,6 @@
 === ABP RentalForge ===
 Contributors: abpteam
-Tags: Rental, equipment rental,WC Rental, Booking,Woocommerce Reservation Booking
+Tags: rental, booking, property rental, equipment rental, woocommerce booking
 Requires at least: 6.2
 Stable tag: 1.0.0
 Tested up to: 7.0
@@ -8,7 +8,7 @@ Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-RentalForge is a WooCommerce WordPress rental plugin for property & equipment booking. Manage bookings, pricing, availability & orders.
+RentalForge is a WooCommerce rental plugin for WordPress that lets you manage property and equipment rentals, bookings, pricing, availability, and orders.
 
 == Description ==
 
@@ -89,7 +89,20 @@ You can easily configure booking rules, set minimum and maximum rental durations
 - Custom FAQ per post
 - Fully editable Terms & Conditions system
 
-###  Support and Suggestions:
+== Upgrade to Pro ==
+Take your rental business to the next level with ABP RentalForge Pro.
+
+✓ Export booking reports in PDF and CSV formats.
+✓ Generate professional PDF invoices.
+✓ Automatically send PDF invoices via email.
+✓ Resend booking emails with PDF attachment.
+✓ Create bookings directly from the admin dashboard.
+✓ Seasonal pricing and discount rules.
+✓ Early bird pricing and discount.
+✓ Premium support and future updates.
+
+
+== Need help or have suggestions? ==
 If you need any further assistance or support, do contact us at this [🎫 support form](https://abp-team.com/support-desk/). We are very open to your suggestions. So do feel free to tell us if there is anything we can do to improve the plugin.
 Need help or have suggestions?
 
@@ -205,17 +218,33 @@ Our team typically responds within 24–48 hours.
 
 == Screenshots ==
 
-1. RentalForge Post List Page — Overview of all posts.
-2. Property List Page — Overview of all properties.
-3. Order List Page — Overview of all orders.
-4. Global Data Configuration — Clean and flexible global settings panel.
-5. Configuration Panel — Centralized and flexible configuration options.
-6. Pricing Configuration Panel — Manage all rental pricing rules and options.
-7. Property Listings (Grid View) — Clean and filterable grid layout of rental properties.
-8. Property Listings (List View) — Clean and structured list layout of rental properties.
-9. Post Listings (Grid View) — Clean and filterable grid layout of rental posts.
-10. Post Listings (List View) — Clean and structured list layout of rental posts.
-11. Single Property Page — Full details page with gallery, amenities, and booking form.
+1. All Posts (Grid)
+2. All Posts (List)
+3. Properties (Grid)
+4. Properties (List)
+5. Booking Form
+6. Gallery
+7. Orders
+8. Global data
+9. Configuration
+10. Property Pricing/Configuration
+11. Property List
+12. Post List
+13. Post Configuration
+14. Client Form
+15. Additional Services
+
+
+== Why Choose RentalForge ==
+
+* Easy to use
+* Lightweight
+* WooCommerce Powered
+* Flexible Pricing
+* Unlimited Rentals
+* Developer Friendly
+* Responsive Design
+
 
 == Privacy Policy ==
 
