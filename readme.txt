@@ -8,7 +8,7 @@ Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-RentalForge is a WooCommerce rental plugin for WordPress that lets you manage property and equipment rentals, bookings, pricing, availability, and orders.
+WooCommerce rental and booking plugin for property and equipment rentals with flexible pricing and availability management.
 
 == Description ==
 
@@ -116,18 +116,18 @@ If you find RentalForge useful, please leave a ⭐⭐⭐⭐⭐ review on WordPre
 
 == Applications of RentalForge ==
 
-1. 🏡 Property Rental
-2. 🚗 Vehicle Rental
-3. 🚲 Bike Rental
-4. 🚙 Car Rental
-5. 🏨 Resort Booking System
-6. 📅 Doctor / Lawyer Appointment Booking
-7. 🛠️ Equipment Rental System
-8. 👗 Dress / Costume Rental
-9. ⛵ Yacht / Boat Rental
-10. 🏑 Sports Kit Rental
-11. 🏢 Office Space Rental
-12. 🏠 Any Type of Goods & Property Rental System
+ 🏡 Property Rental ✓
+🚗 Vehicle Rental ✓
+🚲 Bike Rental ✓
+🚙 Car Rental ✓
+🏨 Resort Booking System ✓
+📅 Doctor / Lawyer Appointment Booking ✓
+🛠️ Equipment Rental System ✓
+👗 Dress / Costume Rental ✓
+⛵ Yacht / Boat Rental ✓
+🏑 Sports Kit Rental ✓
+ 🏢 Office Space Rental ✓
+🏠 Any Type of Goods & Property Rental System ✓
 
 == Shortcodes ==
 
