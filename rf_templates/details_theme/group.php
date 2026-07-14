@@ -37,16 +37,16 @@
                         </div>
                     </div>
                     <div class="_abp_row">
-                        <div class="_col_12_mar_t"> <?php do_action( 'abprf_slider', ( $abprf_infos['abprf_sliders'] ?? [] ) ); ?></div>
+                        <div class="_col_12"> <?php do_action( 'abprf_slider', ( $abprf_infos['abprf_sliders'] ?? [] ) ); ?></div>
                     </div>
                     <div class="_abp_row">
-                        <div class="_col_12_mar_t"> <?php do_action( 'abprf_faq', $abprf_infos ); ?></div>
+                        <div class="_col_12"> <?php do_action( 'abprf_faq', $abprf_infos ); ?></div>
                     </div>
                     <div class="_abp_row">
-                        <div class="_col_12_mar_t"> <?php do_action( 'abprf_term_condition', $abprf_infos ); ?></div>
+                        <div class="_col_12"> <?php do_action( 'abprf_term_condition', $abprf_infos ); ?></div>
                     </div>
                     <div class="_abp_row">
-                        <div class="_col_12_mar_t"> <?php do_action( 'abprf_related_item', ( $abprf_infos['related_item'] ?? '' ) ); ?></div>
+                        <div class="_col_12"> <?php do_action( 'abprf_related_item', ( $abprf_infos['related_item'] ?? '' ) ); ?></div>
                     </div>
                 </div>
             </div>

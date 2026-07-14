@@ -31,9 +31,10 @@
 				$tax_classes = WC_Tax::get_tax_rate_classes();
 				$tax_class   = $abprf_infos['_tax_class'] ?? '';
 				?>
-                <div class="_abp_panel_xs">
-                    <div class="_panel_head_xs" data-collapse-target="#abprf_tax"><h5 class="_abp"><span class="_mar_r_xxs">🧾</span> <?php esc_html_e( 'Tax Configuration', 'abp-rentalforge' ); ?></h5></div>
-                    <div class="_panel_body_xs abp_active" data-collapse="#abprf_tax">
+                <div class="setting_item _mar_b_xs">
+                    <h5 class="_abp" data-collapse-target="#abprf_tax"><span class="_mar_r_xxs">🧾</span> <?php esc_html_e( 'Tax Configuration', 'abp-rentalforge' ); ?></h5>
+                    <div class="abp_active" data-collapse="#abprf_tax">
+                        <div class="_divider_xxs"></div>
 						<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) { ?>
                             <div class="group_setting">
                                 <div class="setting_item">
@@ -79,9 +80,10 @@
 					$faqs              = get_post_meta( $post_id, 'abprf_faqs', true );
 					$faqs              = is_array( $faqs ) ? $faqs : [];
 					?>
-                    <div class="_abp_panel_xs faq_configuration _mar_t_xs">
-                        <div class="_panel_head_xs" data-collapse-target="#abprf_faq"><h5 class="_abp"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'FAQs Configuration', 'abp-rentalforge' ); ?></h5></div>
-                        <div class="_panel_body_xs abp_active" data-collapse="#abprf_faq">
+                    <div class="setting_item _mar_b_xs faq_configuration">
+                        <h5 class="_abp" data-collapse-target="#abprf_faq"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'FAQs Configuration', 'abp-rentalforge' ); ?></h5>
+                        <div class="abp_active" data-collapse="#abprf_faq">
+                            <div class="_divider_xxs"></div>
                             <div class="group_setting">
                                 <div class="setting_item">
                                     <div class="_f_wrap_fj_between_fa_center">
@@ -125,9 +127,10 @@
 					$display          = $abprf_infos['display_tc'] ?? 'on';
 					$active_global_tc = $abprf_infos['active_global_tc'] ?? 'on';
 					?>
-                    <div class="_abp_panel_xs tc_configuration _mar_t_xs">
-                        <div class="_panel_head_xs" data-collapse-target="#abprf_tc"><h5 class="_abp"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Term & Conditions', 'abp-rentalforge' ); ?></h5></div>
-                        <div class="_panel_body_xs abp_active" data-collapse="#abprf_tc">
+                    <div class="setting_item tc_configuration">
+                        <h5 class="_abp" data-collapse-target="#abprf_tc"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Term & Conditions', 'abp-rentalforge' ); ?></h5>
+                        <div class="abp_active" data-collapse="#abprf_tc">
+                            <div class="_divider_xxs"></div>
                             <div class="group_setting">
                                 <div class="setting_item">
                                     <div class="_f_wrap_fj_between_fa_center">
@@ -169,12 +172,12 @@
 				if ( ABPRF_Function::on_off( 'tc' ) ) {
 					$tcs = ABPRF_Function::get_option( 'abprf_tc', '' );
 					?>
-                    <div class="_abp_panel_xs">
-                        <div class="_panel_head_xs _fd_column" data-collapse-target="#abprf_tc">
-                            <h5 class="_abp"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Global Term & Conditions Configuration', 'abp-rentalforge' ); ?></h5>
-							<?php ABPRF_Layout::info_text( 'abprf_tc' ); ?>
-                        </div>
-                        <div class="_panel_body_xs abp_active" data-collapse="#abprf_tc">
+                    <div class="setting_item _mar_b_xs">
+                        <h5 class="_abp" data-collapse-target="#abprf_tc"><span class="_mar_r_xxs">🤝</span><?php esc_html_e( 'Global Term & Conditions Configuration', 'abp-rentalforge' ); ?></h5>
+                        <div class="_divider_xxs"></div>
+                        <?php ABPRF_Layout::info_text( 'abprf_tc' ); ?>
+                        <div class="abp_active" data-collapse="#abprf_tc">
+                            <div class="_divider_xxs"></div>
                             <form class="save_tc" method="post" action="">
 								<?php $this->tc( $tcs ); ?>
                                 <div class="_divider_xs"></div>
@@ -189,12 +192,12 @@
 				if ( ABPRF_Function::on_off( 'faq' ) ) {
 					$faqs = ABPRF_Function::get_option( 'abprf_faqs' );
 					?>
-                    <div class="_abp_panel_xs faq_configuration _mar_b_xs">
-                        <div class="_panel_head_xs _fd_column" data-collapse-target="#abprf_faq">
-                            <h5 class="_abp"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'Global FAQ Configuration', 'abp-rentalforge' ); ?></h5>
-							<?php ABPRF_Layout::info_text( 'abprf_faqs' ); ?>
-                        </div>
+                    <div class="setting_item faq_configuration _mar_b_xs">
+                        <h5 class="_abp" data-collapse-target="#abprf_faq"><span class="_mar_r_xxs">❓</span><?php esc_html_e( 'Global FAQ Configuration', 'abp-rentalforge' ); ?></h5>
+                        <div class="_divider_xxs"></div>
+                        <?php ABPRF_Layout::info_text( 'abprf_faqs' ); ?>
                         <div class="_panel_body_xs abp_active" data-collapse="#abprf_faq">
+                            <div class="_divider_xxs"></div>
                             <form class=" save_faq " method="post" action="">
 								<?php $this->faq( $faqs ); ?>
                                 <div class="_divider_xs"></div>

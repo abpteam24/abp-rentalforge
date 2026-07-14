@@ -2,7 +2,7 @@
 Contributors: abpteam
 Tags: rental, booking, property rental, equipment rental, woocommerce booking
 Requires at least: 6.2
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Tested up to: 7.0
 Requires PHP: 7.4
 License: GPLv3
@@ -254,9 +254,21 @@ This plugin uses Appsero SDK for optional telemetry data collection. No data is 
 
 
 == Changelog ==
+
+= 1.0.1 =
+*Design improvements*
+*Code optimizations*
+*Query optimization*
+14 July 2026*
+
 = 1.0.0 =
 *Initial Release*
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Minor improvements and bug fixes.
+14 July 2026*
+
 = 1.0.0 =
 *Initial Release*

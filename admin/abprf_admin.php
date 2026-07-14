@@ -26,7 +26,7 @@
 				$total_post     = $abprf_info['total_post'] ?? 0;
 				$total_property = $abprf_info['total_property'] ?? 0;
 				$total_order    = $abprf_info['total_order'] ?? 0;
-				$allowed_tabs   = [ 'dashboard', 'posts', 'properties', 'orders', 'global', 'configuration', 'status', 'documentation', 'admin_order' ];
+				$allowed_tabs   = [ 'dashboard', 'posts', 'properties', 'orders', 'global', 'configuration', 'status', 'documentation', 'admin_order','license' ];
 				$active_tab     = 'posts';
 				if ( isset( $_GET['_abprf_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_abprf_nonce'] ) ), 'abprf_url_action' ) ) {
 					$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'posts';

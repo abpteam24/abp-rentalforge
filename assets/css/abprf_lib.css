@@ -243,7 +243,7 @@
 	div.abprf_area .abp_image { width: 100%; overflow: hidden; position: relative; height: auto;line-height: 1; }
 	div.abprf_area [data-href] { cursor: pointer; }
 	/**************** ABP Gallery **********************************************/
-	div.abprf_gallery { position: relative; width: 100%; height: auto;max-height: 400px; overflow: hidden auto; padding: var(--rf_gap_xs); scrollbar-width: thin; }
+	div.abprf_gallery { position: relative; width: 100%; height: auto;max-height: 600px; overflow: hidden auto; padding: var(--rf_gap_xs); scrollbar-width: thin;}
 	div.global_slider div.abprf_gallery {max-height: inherit;}
 	div.abprf_gallery .gallery_area { border-radius: var(--rf_br_xl); display: block;column-gap: var(--rf_gap_xs); }
 	div.abprf_gallery .gallery_item { break-inside: avoid; width: 100%; position: relative; background: #0D0A06; cursor: pointer; display: inline-block; margin-bottom: var(--rf_gap_xs); border-radius: var(--rf_br); overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
@@ -264,7 +264,7 @@
 	div.abprf_gallery .caption_label { font-size: var(--rf_fs); letter-spacing: 3px; text-transform: uppercase; color: var(--rf_color_primary); font-weight: 600; margin-bottom: 6px; }
 	div.abprf_gallery .caption_title { font-size: var(--rf_fs_h4); color: var(--rf_color_white); }
 	/**************** ABP slider **********************************************/
-	div.abprf_slider { overflow: hidden; display: -webkit-flex; display: flex; background-color: #FFF; position: relative;width: 100%;z-index: 11; -webkit-flex-direction: column;flex-direction: column;border-radius: var(--rf_br_xl);}
+	div.abprf_slider { overflow: hidden; display: -webkit-flex; display: flex; background-color: #FFF; position: relative;width: 100%;z-index: 11; -webkit-flex-direction: column;flex-direction: column;border-radius: var(--rf_br_xl);margin: var(--rf_gap_xs) 0 0 0;}
 	div.abprf_slider [data-slider] { position: relative; width: 100%; overflow: hidden; transition: height var(--rf_transition_slider); background: var(--rf_color_white); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); padding: 0;}
 	div.abprf_slider .slide_resize { display: block; width: 100%; height: auto; opacity: 0; pointer-events: none; user-select: none; }
 	div.abprf_slider .slider_item { position: absolute; inset: 0; opacity: 0; transform: scale(1.06) translateX(30px); transition: opacity var(--rf_transition_slider), transform var(--rf_transition_slider); pointer-events: none; }
@@ -362,7 +362,7 @@
 	div.abprf_area [class*="_section_admin"] td {text-align: left;font-size: var(--rf_fs_h5);}
 	div.abprf_area [class*="_section"][class*="_xs"] { padding: var(--rf_gap_xs); margin-bottom: var(--rf_gap_xs); }
 	div.abprf_area [class*="_section"][class*="_xxs"] { padding: var(--rf_gap_xxs); margin-bottom: var(--rf_gap_xxs); }
-	div.abprf_area [class*="_section_card"] {width: auto;border-radius: var(--rf_br_xl);display: inline-block;transition: transform .2s;margin: 0 var(--rf_gap_xs) var(--rf_gap_xxs) 0;}
+	div.abprf_area [class*="_section_card"] {width: auto;border-radius: var(--rf_br_xl);display: inline-block;transition: transform .2s;}
 	div.abprf_area [class*="_section_card"]:hover {transform: translateY(-2px);}
 	/*=============================*/
 	div.abprf_area [class*="_group_list"] {display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs); }
@@ -1085,12 +1085,12 @@
 }
 /******************************************************************** FAQ Section************************************************/
 @media only screen and (min-width: 10px) {
-	div.abprf_area .faq_area {}
+	div.abprf_area .faq_area {margin: var(--rf_gap_xs) 0 0 0;}
 	div.abprf_area .faq_area .faq_list {display: -webkit-flex; display: flex; -webkit-flex-flow: column; flex-flow: column;gap: var(--rf_gap_xs);}
-	div.abprf_area .faq_item { border: 5px solid var(--rf_color_wp_bg); overflow: hidden; transition: box-shadow 0.3s ease;}
-	div.abprf_area .faq_item:hover { border: 5px solid var(--rf_color_green_pale); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);}
+	div.abprf_area .faq_item { overflow: hidden; transition: box-shadow 0.3s ease;}
+	div.abprf_area .faq_item:hover { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);}
 	div.abprf_area .faq_question { width: 100%;background: var(--rf_color_wp_bg); padding: var(--rf_gap_xs) var(--rf_gap_xs); border: none; outline: none; color: var(--rf_color_info); cursor: pointer; transition: color 0.3s ease;display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between;-webkit-align-items: center;align-items: center;}
-	div.abprf_area .faq_item.active { border: 5px solid var(--rf_color_green_pale); }
+	div.abprf_area .faq_item.active { border: 1px solid var(--rf_color_green_pale); }
 	div.abprf_area .faq_item.active .faq_question { color: var(--rf_color_muted); }
 	div.abprf_area .faq_icon { position: relative; width: 16px; height: 16px; flex-shrink: 0;}
 	div.abprf_area .faq_icon::before,
@@ -1104,6 +1104,7 @@
 }
 /******************************************************************** slick************************************************/
 @media only screen and (min-width: 10px) {
+	div.abprf_area .related_item_area{margin: var(--rf_gap_xs) 0;}
 	div.abprf_area .slick-slider { position: relative; display: block; box-sizing: border-box; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; -ms-touch-action: pan-y; touch-action: pan-y; -webkit-tap-highlight-color: transparent;}
 	div.abprf_area .slick-list { position: relative; display: block; overflow: hidden; margin: 0; padding: 0;}
 	div.abprf_area .slick-list:focus { outline: none;}
