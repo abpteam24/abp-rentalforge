@@ -12,9 +12,14 @@
     });
     $(document).on('click', 'div.abprf_area .pagination_item .select_post', function (e) {
         e.preventDefault();
-        let post_id = $(this).attr('data-post_id');
-        let $this = $(this).closest('div.abprf_area').find('#abprf_search_area [name="post_id"]');
-        load_global_data(post_id, $this);
+        let post_id = parseInt($(this).attr('data-post_id'));
+        let target = $(this).closest('div.abprf_area').find('#abprf_search_area .post_selection .dropdown_list li');
+        target.each(function () {
+            if (parseInt($(this).attr('data-value')) === post_id) {
+                $(this).trigger('click');
+                return true;
+            }
+        });
     });
     $(document).on("change", "#abprf_search_area [name='rent_start_date']", function (e) {
         e.preventDefault();

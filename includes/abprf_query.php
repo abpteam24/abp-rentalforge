@@ -293,7 +293,7 @@
 					);
 				}
 				$results = $results ?: ( $count ? 0 : [] );
-				wp_cache_set( $cache_key, $results, $cache_group, 30 );
+				wp_cache_set( $cache_key, $results, $cache_group, 0 );
 
 				return $results;
 			}

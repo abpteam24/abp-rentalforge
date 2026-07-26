@@ -37,7 +37,7 @@
                             ?>
                             <div class="faq_item">
                                 <div class="faq_question faq_target">
-                                    <h5 class="_abp"><?php echo esc_html($title); ?></h5>
+                                    <h6 class="_abp"><?php echo esc_html($title); ?></h6>
                                     <span class="faq_icon"></span>
                                 </div>
                                 <div class="faq_answer">

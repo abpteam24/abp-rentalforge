@@ -67,7 +67,7 @@
 			}
 			public static function button_add_xs( $button_text, $class = '', $button_class = '' ): void {
 				$class        = $class ?: 'add_new_hook';
-				$button_class = $button_class ?: '_btn_default_xs';
+				$button_class = $button_class ?: '_btn_purple_xs';
 				?>
                 <button class="<?php echo esc_attr( $button_class . ' ' . $class ); ?>" type="button">
                     <span class="_mar_r_xxs">➕</span><?php echo esc_html( $button_text ); ?>
@@ -108,14 +108,14 @@
 			}
 			public static function button_delete( $class = 'delete_hook' ): void {
 				?>
-                <button class="_btn_danger_xs <?php echo esc_attr( $class ); ?>" type="button" title="<?php esc_attr_e( 'Delete This Item', 'abp-rentalforge' ); ?>">
+                <button class="_btn_light_danger_xs <?php echo esc_attr( $class ); ?>" type="button" title="<?php esc_attr_e( 'Delete This Item', 'abp-rentalforge' ); ?>">
                     <span class="fas fa-times"></span>
                 </button>
 				<?php
 			}
 			public static function button_sort(): void {
 				?>
-                <div class="_btn_warning_xs sortable_handle" type="button" title="<?php esc_attr_e( 'Move This Item', 'abp-rentalforge' ); ?>">
+                <div class="_btn_light_info_xs sortable_handle" type="button" title="<?php esc_attr_e( 'Move This Item', 'abp-rentalforge' ); ?>">
                     <span class="fas fa-arrows-alt"></span>
                 </div>
 				<?php
@@ -1410,18 +1410,19 @@
 				}
 			}
 			//=============================//
-			public static function filter_post_list( $post_id = 0 ): void {
+			public static function filter_post_list($post_id=0): void {
 				$label        = ABPRF_Function::label();
 				$all_post_ids = ABPRF_Query::get_post_id();
-				$value        = $post_id > 0 ? $post_id : '';
 				$brand_icon   = ABPRF_Function::icon();
+                $value=$post_id>0?$post_id:'';
+                $title=$post_id>0?get_the_title($post_id):'';
 				// echo '<pre>';print_r($configuration);echo '</pre>';
 				?>
-                <div class="_input_item abp_dropdown">
+                <div class="_input_item abp_dropdown post_selection">
                     <label>
                         <span><?php ABPRF_Layout::image_icon( $brand_icon ); ?><?php echo esc_html( $label ); ?></span>
-                        <input type="hidden" name="post_id" value="<?php echo esc_attr( $value ); ?>"/>
-                        <input type="text" class="_form_control_w_full" name="" placeholder="<?php echo esc_attr( $label ); ?>" value="<?php echo esc_attr( get_the_title( $post_id ) ); ?>"/>
+                        <input type="hidden" name="post_id" value="<?php echo esc_attr($value); ?>"/>
+                        <input type="text" class="_form_control_w_full" name="" placeholder="<?php echo esc_attr( $label ); ?>" value="<?php echo esc_attr( $title ); ?>"/>
                     </label>
 					<?php if ( sizeof( $all_post_ids ) > 0 ) { ?>
                         <div class="dropdown_list">

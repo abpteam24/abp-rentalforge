@@ -14,7 +14,6 @@
 				add_action( 'wp_ajax_abprf_reload_post_list', array( $this, 'reload_post_list' ) );
 			}
 			public function load_posts( $abprf_info = [] ): void {
-				$brand_icon    = ABPRF_Function::icon();
 				$total_posts   = $abprf_info['total_post'] ?? 0;
 				$total_publish = $abprf_info['total_publish'] ?? 0;
 				$total_draft   = $abprf_info['total_draft'] ?? 0;
@@ -27,20 +26,20 @@
 				$status                = $status ?? 'publish';
 				$filter_args['status'] = $status;
 				?>
-                <div class="abprf_posts _abp_panel">
-                    <div class="_panel_head _fj_between_f_wrap">
-                        <h4 class="_abp_color_white"><?php ABPRF_Layout::image_icon( $brand_icon ); ?><?php esc_html_e( 'Post Lists', 'abp-rentalforge' ); ?></h4>
+                <div class="abprf_posts">
+                    <div class="_fj_between_f_wrap">
                         <div class="_group_content">
                             <input type="hidden" name="select_hidden_post_status" value="<?php echo esc_attr( $status ); ?>"/>
-                            <button type="button" class="_btn_white_xs <?php echo esc_attr( $status == 'all' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'all' ] ) ); ?>"><?php esc_html_e( 'All', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_posts ); ?> )</button>
-                            <button type="button" class="_btn_white_xs <?php echo esc_attr( $status == 'publish' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'publish' ] ) ); ?>"><?php esc_html_e( 'Published', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_publish ); ?> )</button>
-                            <button type="button" class="_btn_white_xs <?php echo esc_attr( $status == 'private' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'private' ] ) ); ?>"><?php esc_html_e( 'Private', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_private ); ?> )</button>
-                            <button type="button" class="_btn_white_xs <?php echo esc_attr( $status == 'draft' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'draft' ] ) ); ?>"><?php esc_html_e( 'Draft', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_draft ); ?> )</button>
-                            <button type="button" class="_btn_white_xs <?php echo esc_attr( $status == 'trash' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'trash' ] ) ); ?>"><?php esc_html_e( 'Trash', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_trash ); ?> )</button>
+                            <button type="button" class="_btn_light_purple_xs <?php echo esc_attr( $status == 'all' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'all' ] ) ); ?>"><?php esc_html_e( 'All', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_posts ); ?> )</button>
+                            <button type="button" class="_btn_light_purple_xs <?php echo esc_attr( $status == 'publish' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'publish' ] ) ); ?>"><?php esc_html_e( 'Published', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_publish ); ?> )</button>
+                            <button type="button" class="_btn_light_purple_xs <?php echo esc_attr( $status == 'private' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'private' ] ) ); ?>"><?php esc_html_e( 'Private', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_private ); ?> )</button>
+                            <button type="button" class="_btn_light_purple_xs <?php echo esc_attr( $status == 'draft' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'draft' ] ) ); ?>"><?php esc_html_e( 'Draft', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_draft ); ?> )</button>
+                            <button type="button" class="_btn_light_purple_xs <?php echo esc_attr( $status == 'trash' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'trash' ] ) ); ?>"><?php esc_html_e( 'Trash', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_trash ); ?> )</button>
                         </div>
-                        <a class="_btn_light_white_xs" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=' . ABPRF_Function::get_cpt() ) ); ?>"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Post', 'abp-rentalforge' ); ?></a>
+                        <a class="_btn_purple_xs" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=' . ABPRF_Function::get_cpt() ) ); ?>"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Post', 'abp-rentalforge' ); ?></a>
                     </div>
-                    <div class="_panel_body post_list">
+                    <div class="_divider_xxs"></div>
+                    <div class="post_list">
 						<?php $this->post_table( $filter_args ); ?>
                     </div>
                 </div>
@@ -169,7 +168,7 @@
                 <div class="abprf_area abprf_admin abp_post_config">
                     <input type="hidden" name="abprf_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
                     <div class="_abp_panel">
-                        <div class="abprf_tabs tab_top">
+                        <div class="abp_tabs tab_top">
                             <div class="_panel_head">
                                 <ul class="_abp tab_lists">
                                     <li data-tabs-target="#abprf_general"><span class="fas fa-rainbow"></span><?php esc_html_e( 'General', 'abp-rentalforge' ); ?></li>

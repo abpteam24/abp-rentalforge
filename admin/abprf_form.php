@@ -19,16 +19,14 @@
                         <h4 class="_abp"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
                         <div class="_divider_xs"></div>
-						<?php $this->passenger_form_settings( $abprf_forms ); ?>
-                        <div class="_divider_xs"></div>
-                        <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Client Form Configuration', 'abp-rentalforge' ); ?></button>
+						<?php $this->passenger_form_settings( $abprf_forms,true ); ?>
                     </form>
 					<?php
 				}
 			}
 			public function post_client_form( $abprf_infos ): void {
 				if ( ABPRF_Function::on_off( 'client_info' ) ) {
-					$client_forms       = $abprf_infos['client_forms'] ?? [];
+					$client_forms       = $abprf_infos['abprf_forms'] ?? [];
 					$display            = $abprf_infos['display_client_form'] ?? 'off';
 					$active_global_form = $abprf_infos['active_global_form'] ?? 'on';
 					?>
@@ -69,7 +67,7 @@
 					<?php
 				}
 			}
-			public function passenger_form_settings( $passenger_forms ): void {
+			public function passenger_form_settings( $passenger_forms,$global=false ): void {
 				?>
                 <div class="configuration_content">
                     <div class="_ov_auto">
@@ -101,7 +99,10 @@
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fj_between">
-						<?php ABPRF_Layout::button_add( __( 'Add New Form', 'abp-rentalforge' ) ); ?>
+                        <?php ABPRF_Layout::button_add_xs( __( 'Add New Form', 'abp-rentalforge' ) ); ?>
+                        <?php if ($global) { ?>
+                            <button type="submit" class="_btn_theme_xs"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Global Client Form Configuration', 'abp-rentalforge' ); ?></button>
+                        <?php } ?>
                     </div>
                     <div class="abprf_d_none">
                         <table class=" _abp">

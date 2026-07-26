@@ -68,7 +68,7 @@
 				?>
                 <div id="abprf_configuration">
                     <div class="_abp_panel_max_1200_mar_auto">
-                        <div class="abprf_tabs tab_top">
+                        <div class="abp_tabs tab_top">
                             <div class="_panel_head">
                                 <div class="_group_content_w_full">
 									<?php foreach ( $all_sections as $tab ) {
@@ -76,7 +76,7 @@
 										if ( ! empty( $tab_id ) ) {
 											$key             = preg_replace( '/^abprf_/', '', $tab_id );
 											$current_section = $key == $active_tab ? $tab : $current_section; ?>
-                                            <a href="<?php echo esc_url( ABPRF_Function::build_url( 'configuration', [ 'configuration' => $key ] ) ); ?>" class="_btn_light_green_pale_xs  <?php echo esc_attr( $active_tab == $key ? 'abp_active' : '' ); ?>">
+                                            <a href="<?php echo esc_url( ABPRF_Function::build_url( 'configuration', [ 'configuration' => $key ] ) ); ?>" class="_btn_light_purple_xs  <?php echo esc_attr( $active_tab == $key ? 'abp_active' : '' ); ?>">
 												<?php ABPRF_Layout::image_icon( $tab['icon'] ?? '' );
 													echo esc_html( $tab['menu'] ?? '' ); ?>
                                             </a>
@@ -500,7 +500,7 @@
 							'label' => __( 'Default Border Radius', 'abp-rentalforge' ),
 							'desc' => __( 'Specify a global UI layout component corner sharpness curve boundary rounding threshold value in raw pixel units.', 'abp-rentalforge' ),
 							'type' => 'number',
-							'default' => '0',
+							'default' => '5',
 							'validation' => 'validation_number'
 						),
 						array(

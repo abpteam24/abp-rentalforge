@@ -61,8 +61,8 @@
                             <th><?php esc_html_e( 'SI', 'abp-rentalforge' ) ?></th>
                             <th><?php esc_html_e( 'ID', 'abp-rentalforge' ) ?></th>
                             <th class="_min_150"><?php esc_html_e( 'Location Title', 'abp-rentalforge' ) ?></th>
-                            <th><?php esc_html_e( 'Pickup Point', 'abp-rentalforge' ) ?></th>
-                            <th><?php esc_html_e( 'Drop-off Point', 'abp-rentalforge' ) ?></th>
+<!--                            <th>--><?php //esc_html_e( 'Pickup Point', 'abp-rentalforge' ) ?><!--</th>-->
+<!--                            <th>--><?php //esc_html_e( 'Drop-off Point', 'abp-rentalforge' ) ?><!--</th>-->
                             <th><?php esc_html_e( 'Location Full Address', 'abp-rentalforge' ) ?></th>
                             <th><?php esc_html_e( 'Shortcode Post', 'abp-rentalforge' ) ?></th>
                             <th><?php esc_html_e( 'Shortcode Property', 'abp-rentalforge' ) ?></th>
@@ -82,20 +82,20 @@
                                 <th><?php echo esc_html( $count ); ?>.</th>
                                 <th><?php echo esc_html( $term_id ); ?></th>
                                 <th class="_text_left"><a href="<?php echo esc_url( get_term_link( (int) $term_id ) ); ?>" target="_blank" class="_abp_fs_h5_color_theme"><?php echo esc_html( $name ); ?></a></th>
-                                <th>
-									<?php if ( $display_pickup === 'on' && ! empty( $pick_info ) ) { ?>
-										<?php foreach ( $pick_info as $pick ) { ?>
-                                            <div class="_section_xxs"> <?php echo esc_html( $pick ); ?></div>
-										<?php } ?>
-									<?php } ?>
-                                </th>
-                                <th>
-									<?php if ( $display_drop === 'on' && ! empty( $drop_info ) ) { ?>
-										<?php foreach ( $drop_info as $drop ) { ?>
-                                            <div class="_section_xxs"> <?php echo esc_html( $drop ); ?></div>
-										<?php } ?>
-									<?php } ?>
-                                </th>
+<!--                                <th>-->
+<!--									--><?php //if ( $display_pickup === 'on' && ! empty( $pick_info ) ) { ?>
+<!--										--><?php //foreach ( $pick_info as $pick ) { ?>
+<!--                                            <div class="_section_xxs"> --><?php //echo esc_html( $pick ); ?><!--</div>-->
+<!--										--><?php //} ?>
+<!--									--><?php //} ?>
+<!--                                </th>-->
+<!--                                <th>-->
+<!--									--><?php //if ( $display_drop === 'on' && ! empty( $drop_info ) ) { ?>
+<!--										--><?php //foreach ( $drop_info as $drop ) { ?>
+<!--                                            <div class="_section_xxs"> --><?php //echo esc_html( $drop ); ?><!--</div>-->
+<!--										--><?php //} ?>
+<!--									--><?php //} ?>
+<!--                                </th>-->
                                 <td><?php echo esc_html( $description ); ?></td>
                                 <th class="_text_nowrap"><code> [abprf-post loc_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th class="_text_nowrap"><code> [abprf-property loc_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>

@@ -34,7 +34,7 @@
 				<?php if ( $post_id > 0 && empty( $global_order ) ) { ?>
                     <input type="hidden" name="post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
 				<?php } else {
-					ABPRF_Layout::filter_post_list( $post_id );
+					ABPRF_Layout::filter_post_list($post_id);
 				}
 					ABPRF_Layout::location_select( $post_id, $location );
 					if ( $rent_rule === 'monthly' && ! empty( $all_dates ) ) {

@@ -225,6 +225,7 @@ function abprf_property_filter_arg($this) {
                 }, success: function (response) {
                     target.html(response.data.html);
                     abprf_toast_msg(response.data.msg, 'success');
+                    abprf_init(target);
                 }
             });
         } else {

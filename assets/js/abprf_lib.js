@@ -1,3 +1,69 @@
+window.abprf_parent = window.abprf_parent || jQuery('div.abprf_area');
+function abprf_init(target = abprf_parent) {
+    abprf_load_tabs(target);
+    abprf_load_more(target);
+    abprf_load_image(target);
+    // abptf_sortable(target);
+    // abptf_color_picker_init(target);
+    // abptf_wp_editor_init(target);
+    // abptf_location_selection(target);
+    // abptf_ticket_type_selection(target);
+    // abptf_toast_init(target);
+    // abptf_required(target);
+    // abptf_load_datepicker(target);
+    // abptf_init_dynamic_date_pickers();
+}
+function abprf_load_tabs(parent = abprf_parent) {
+    if (parent.find('.abp_tabs').length === 0) return;
+    parent.find('.abp_tabs').each(function () {
+        let tab_lists = jQuery(this).find('.tab_lists:first');
+        let activeTab = tab_lists.find('[data-tabs-target].abp_active');
+        let targetTab = activeTab.length > 0 ? activeTab : tab_lists.find('[data-tabs-target]').first();
+        targetTab.trigger('click');
+    });
+}
+function abprf_load_more(parent = abprf_parent) {
+    let $containers = parent.find('.load_more');
+    if ($containers.length === 0) return;
+    $containers.each(function () {
+        let $container = jQuery(this);
+        let $toggleBtn = $container.find('.load_more_action');
+        if ($toggleBtn.length === 0) return;
+        let textMore = $toggleBtn.attr('data-more') || '... More';
+        let textLess = $toggleBtn.attr('data-less') || ' ....Less';
+        let rawElement = $container[0];
+        if (rawElement.scrollHeight <= rawElement.clientHeight) {
+            $toggleBtn.hide();
+        } else {
+            $toggleBtn.show();
+        }
+        $toggleBtn.off('click').on('click', function () {
+            $container.toggleClass('expanded');
+            if ($container.hasClass('expanded')) {
+                $toggleBtn.text(textLess);
+            } else {
+                $toggleBtn.text(textMore);
+            }
+        });
+    });
+}
+function abprf_load_image(parent = abprf_parent) {
+    if (parent.find('[data-image-href]:visible').length === 0) return;
+    parent.find('[data-image-href]:visible').each(function () {
+        let target = jQuery(this);
+        let bg_url = target.data('image-href');
+        target.attr('data-image-href', '');
+        if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
+            bg_url = abptf_var.blank_image;
+        }
+        if (bg_url) {
+            target.find('img').attr('src', bg_url).promise().done(function () {
+                abprf_spinner_remove(target);
+            });
+        }
+    });
+    return true;
+}
 //=============================================================================Load initial=================//
 (function ($) {
     "use strict";
@@ -142,14 +208,6 @@ document.body.addEventListener('click', function (event) {
     }
 });
 //==============================================================================Collapse & Tabs & Modal / Popup=================//
-function abprf_load_tabs() {
-    jQuery('div.abprf_area .abprf_tabs').each(function () {
-        let tab_lists = jQuery(this).find('.tab_lists:first');
-        let activeTab = tab_lists.find('[data-tabs-target].abp_active');
-        let targetTab = activeTab.length > 0 ? activeTab : tab_lists.find('[data-tabs-target]').first();
-        targetTab.trigger('click');
-    });
-}
 function abprf_target_close(close_id, $this) {
     if ($this.closest('.rf_close_area').length > 0) {
         $this.closest('.rf_close_area').find('[data-close="' + close_id + '"]').slideUp(250);
@@ -178,7 +236,7 @@ function abprf_popup_close(target_id = '') {
     $(document).on('click', 'div.abprf_area [data-tabs-target]', function () {
         if (!$(this).hasClass('abp_active')) {
             let tabsTarget = $(this).data('tabs-target');
-            let parent = $(this).closest('.abprf_tabs');
+            let parent = $(this).closest('.abp_tabs');
             parent.height(parent.height());
             let tab_lists = $(this).closest('.tab_lists');
             let tab_content = parent.find('.tab_content:first');
@@ -631,23 +689,6 @@ function abprf_pagination_item(parent) {
         abprf_live_pagination(parent);
     });
 }(jQuery));
-//================================================================================Load Bg Image=================//
-function abprf_load_image(body = jQuery('body .abprf_area')) {
-    body.find('[data-image-href]:visible').each(function () {
-        let target = jQuery(this);
-        let bg_url = target.data('image-href');
-        target.attr('data-image-href', '');
-        if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
-            bg_url = abprf_var.blank_image;
-        }
-        if (bg_url) {
-            target.find('img').attr('src', bg_url).promise().done(function () {
-                abprf_spinner_remove(target);
-            });
-        }
-    });
-    return true;
-}
 //=================================================================================Date picker & Sticky & Price Format & Page Scroll==============//
 function abprf_load_datepicker(parent = jQuery('.abprf_area')) {
     parent.find(".abp_datepicker.hasDatepicker").each(function () {
@@ -922,34 +963,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-function abprf_load_more($searchScope = jQuery('div.abprf_area')) {
-    let $containers = $searchScope.find('.load_more');
-    if ($containers.length === 0) return;
-    $containers.each(function () {
-        let $container = jQuery(this);
-        let $toggleBtn = $container.find('.load_more_action');
-        if ($toggleBtn.length === 0) return;
-        let textMore = $toggleBtn.attr('data-more') || '...More';
-        let textLess = $toggleBtn.attr('data-less') || ' ....Less';
-        let rawElement = $container[0];
-        if (rawElement.scrollHeight <= rawElement.clientHeight) {
-            $toggleBtn.hide();
-        } else {
-            $toggleBtn.show();
-        }
-        $toggleBtn.off('click').on('click', function () {
-            $container.toggleClass('expanded');
-            if ($container.hasClass('expanded')) {
-                $toggleBtn.text(textLess);
-            } else {
-                $toggleBtn.text(textMore);
-            }
-        });
-    });
-}
-//
-// (function ($) {
-//     "use strict";
-//
-// }(jQuery));
-
