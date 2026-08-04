@@ -38,8 +38,8 @@
                                     <div class="_divider_xs"></div>
                                 </div>
                                 <div class="_fj_between">
-									<?php ABPRF_Layout::button_add( __( 'Add New Brand', 'abp-rentalforge' ) ); ?>
-                                    <button type="button" class="_btn_theme hide_on_load save_brand"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
+									<?php ABPRF_Layout::button_add_xs( __( 'Add New Brand', 'abp-rentalforge' ) ); ?>
+                                    <button type="button" class="_btn_theme_xs hide_on_load save_brand"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
                                 </div>
                             </div>
                             <div class="abprf_d_none">
@@ -106,8 +106,8 @@
                                 <th><code> [abprf-property brand_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th>
                                     <div class="_group_content">
-                                        <button type="button" class="_btn_light_yellow_xxs edit_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">✍️</button>
-                                        <button type="button" class="_btn_light_danger_xxs delete_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">❌</button>
+                                        <button type="button" class="_btn_light_yellow_xxs edit_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('edit');?></button>
+                                        <button type="button" class="_btn_light_danger_xxs delete_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('close_1');?></button>
                                     </div>
                                 </th>
                             </tr>
@@ -177,7 +177,7 @@
                         </table>
                         <div class="_divider_xs"></div>
                     </div>
-                    <button type="button" class="_btn_theme_xs hide_on_load save_brand"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
+                    <button type="button" class="_btn_theme_xs hide_on_load save_brand"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
                 </div>
                 <div class="abprf_d_none">
                     <table class="_abp">

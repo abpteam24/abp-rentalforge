@@ -35,8 +35,8 @@
                                 <div class="_divider_xs"></div>
                             </div>
                             <div class="_fj_between">
-								<?php ABPRF_Layout::button_add( __( 'Add New Feature', 'abp-rentalforge' ) ); ?>
-                                <button type="button" class="_btn_theme hide_on_load save_feature"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
+								<?php ABPRF_Layout::button_add_xs( __( 'Add New Feature', 'abp-rentalforge' ) ); ?>
+                                <button type="button" class="_btn_theme hide_on_load save_feature"><?php ABPRF_Layout::icon_svg('save');  esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
                             </div>
                         </div>
                         <div class="abprf_d_none">
@@ -60,8 +60,8 @@
                         <div class="_list_item">
                             <h6 class="_abp"> <?php ABPRF_Layout::image_icon( $feature['icon'] ?? '' ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $feature['value'] ?? '' ); ?></h6>
                             <div class="_group_content">
-                                <button type="button" class="_btn_light_yellow_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>">✍️</button>
-                                <button type="button" class="_btn_light_danger_xxs delete_feature" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>">❌</button>
+                                <button type="button" class="_btn_light_yellow_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>"><?php ABPRF_Layout::icon_svg('edit'); ?></button>
+                                <button type="button" class="_btn_light_danger_xxs delete_feature" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>"><?php ABPRF_Layout::icon_svg('close_1'); ?></button>
                             </div>
                         </div>
 						<?php

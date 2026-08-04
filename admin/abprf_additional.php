@@ -99,7 +99,7 @@
                     <div class="_fj_between">
                         <?php ABPRF_Layout::button_add_xs(__('Add New Additional services', 'abp-rentalforge')); ?>
                         <?php if ($global) { ?>
-                            <button type="submit" class="_btn_theme_xs"><span class="_mar_r_xxs">💾</span><?php esc_html_e('Save Global Additional services Configuration', 'abp-rentalforge'); ?></button>
+                            <button type="submit" class="_btn_theme_xs"><?php ABPRF_Layout::icon_svg('save'); esc_html_e('Save Global Additional services Configuration', 'abp-rentalforge'); ?></button>
                         <?php } ?>
                     </div>
                     <div class="abprf_d_none">

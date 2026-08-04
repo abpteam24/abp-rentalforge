@@ -26,7 +26,7 @@
 				$status                = $status ?? 'publish';
 				$filter_args['status'] = $status;
 				?>
-                <div class="abprf_posts">
+                <div class="abprf_posts _section_card">
                     <div class="_fj_between_f_wrap">
                         <div class="_group_content">
                             <input type="hidden" name="select_hidden_post_status" value="<?php echo esc_attr( $status ); ?>"/>
@@ -36,7 +36,7 @@
                             <button type="button" class="_btn_light_purple_xs <?php echo esc_attr( $status == 'draft' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'draft' ] ) ); ?>"><?php esc_html_e( 'Draft', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_draft ); ?> )</button>
                             <button type="button" class="_btn_light_purple_xs <?php echo esc_attr( $status == 'trash' ? 'abp_active' : '' ); ?>" data-href="<?php echo esc_url( ABPRF_Function::build_url( 'posts', [ 'status' => 'trash' ] ) ); ?>"><?php esc_html_e( 'Trash', 'abp-rentalforge' ); ?> ( <?php echo esc_html( $total_trash ); ?> )</button>
                         </div>
-                        <a class="_btn_purple_xs" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=' . ABPRF_Function::get_cpt() ) ); ?>"><span class="_mar_r_xs">➕</span><?php esc_html_e( 'Add New Post', 'abp-rentalforge' ); ?></a>
+                        <a class="_btn_purple_xs" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=' . ABPRF_Function::get_cpt() ) ); ?>"><?php ABPRF_Layout::icon_svg('plus'); esc_html_e( 'Add New Post', 'abp-rentalforge' ); ?></a>
                     </div>
                     <div class="_divider_xxs"></div>
                     <div class="post_list">
@@ -61,11 +61,10 @@
 				$page_number               = absint( $filter_args['page_number'] ?? 1 ) ?: 1;
 				$limit                     = absint( ( $filter_args['page_item'] ?? 0 ) ?: ABPRF_Function::get_option( 'abprf_per_page_item', 20 ) );
 				$count                     = ( $page_number - 1 ) * $limit + 1;
-				$offset                    = $count - 1;
 				$cpt                       = ABPRF_Function::get_cpt();
 				$filters['status']         = $status;
 				$filters['posts_per_page'] = $limit;
-				$filters['paged']          = $offset;
+				$filters['paged']          = $page_number-1;
 				$post_ids                  = ABPRF_Query::get_post_id( $filters );
 				if ( ! empty( $post_ids ) && sizeof( $post_ids ) > 0 ) {
 					$total_post   = sizeof( ABPRF_Query::get_post_id( [ 'status' => $status ] ) );
@@ -126,14 +125,14 @@
                                     </th>
                                     <th>
                                         <div class="_group_content">
-                                            <button type="button" class="_btn_light_navy_blue_xxs" data-href="<?php echo esc_url( $new_post_url ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Copy/Clone : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">🔁</button>
+                                            <button type="button" class="_btn_light_navy_blue_xxs" data-href="<?php echo esc_url( $new_post_url ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Copy/Clone : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>"><?php ABPRF_Layout::icon_svg('clone_1'); ?></button>
 											<?php if ( $post_status == 'trash' ) { ?>
                                                 <button type="button" class="_btn_light_success_xxs post_restore" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Restore : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">♻️</button>
-                                                <button type="button" class="_btn_light_danger_xxs post_permanent_remove" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Permanent Remove : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">❌</button>
+                                                <button type="button" class="_btn_light_danger_xxs post_permanent_remove" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Permanent Remove : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>"><?php ABPRF_Layout::icon_svg('close_2'); ?></button>
 											<?php } else { ?>
-                                                <button type="button" class="_btn_light_yellow_xxs" data-href="<?php echo esc_url( $edit_link ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">✍️</button>
-                                                <button type="button" class="_btn_light_theme_xxs" data-href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'View : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>">👁️</button>
-                                                <button type="button" class="_btn_light_danger_xxs post_move_trash" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Move to Trash : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>"><span class="fas fa-trash"></span></button>
+                                                <button type="button" class="_btn_light_yellow_xxs" data-href="<?php echo esc_url( $edit_link ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>"><?php ABPRF_Layout::icon_svg('edit'); ?></button>
+                                                <button type="button" class="_btn_light_theme_xxs" data-href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" data-blank="_blank" title="<?php echo esc_html__( 'View : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>"><?php ABPRF_Layout::icon_svg('view_1'); ?></button>
+                                                <button type="button" class="_btn_light_danger_xxs post_move_trash" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_html__( 'Move to Trash : ', 'abp-rentalforge' ) . ' ' . esc_html( $title ); ?>"><?php ABPRF_Layout::icon_svg('close_1'); ?></button>
 											<?php } ?>
                                         </div>
                                     </th>
@@ -529,10 +528,10 @@
 			}
 			public function reload_post_list(): void {
 				if ( ! check_ajax_referer( 'abprf_admin_ajax_nonce', 'nonce', false ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ) ], 403 );
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Invalid security token.', 'abp-rentalforge' ),'type' => 'warn' ], 403 );
 				}
 				if ( ! current_user_can( 'manage_options' ) ) {
-					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
+					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ),'type' => 'warn' ], 403 );
 				}
 				$post_array  = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ) : [];
 				$filter_args = $post_array( 'filter_args' );
@@ -540,7 +539,7 @@
 				$this->post_table( $filter_args );
 				$table_html = ob_get_clean();
 				wp_send_json_success( [
-					'html' => $table_html,
+					'html' => $table_html,'type' => 'success',
 					'msg' => __( 'Post List Loaded successfully...... !! ', 'abp-rentalforge' )
 				] );
 			}

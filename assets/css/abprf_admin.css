@@ -115,13 +115,14 @@
 /********************************************************************Custom ************************************************/
 @media only screen and (min-width: 10px) {
 	div.abprf_admin {margin: 0 0 0 -20px;max-width: calc(100% + 20px);width: calc(100% + 20px);}
-	div.abprf_admin .admin_head {background-color: var(--rf_color_dark);color: var(--rf_color_off_white);padding: var(--rf_gap_xs) var(--rf_gap); }
+	div.abprf_admin .admin_head {background-color: var(--rf_color_dark);color: var(--rf_color_off_white);padding: var(--rf_gap_xs) var(--rf_gap);display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xs);justify-content: space-between;align-items: center; overflow: auto;}
+	div.admin_head .head_brand {display: -webkit-flex; display: flex;gap: var(--rf_gap_xs); }
 	div.admin_head .brand_icon {color: var(--rf_color_off_white);font-size: var(--rf_fs_h3);}
 	div.admin_head .brand_version {color: var(--rf_color_5);}
+	div.abprf_admin div.admin_head .brand_icon img.emoji {height: var(--rf_fs_h3) !important;}
+
+
 	/********************/
-	div.abprf_admin .admin_menu {position: sticky; top: 32px; z-index: 100; background-color: var(--rf_color_info);}
-	div.abprf_admin .menu_list {padding: 0 var(--rf_gap);display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap;flex-wrap: wrap;}
-	div.abprf_admin .menu_list button {border: none; }
 	div.abprf_admin .dashboard_content {margin: var(--rf_gap);}
 	div.abprf_admin .dashboard_content .menu_list {padding: 0}
 	div.abprf_admin .properties_list {overflow-x: auto;margin-top: var(--rf_gap_xs);}

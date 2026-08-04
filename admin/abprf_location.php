@@ -19,7 +19,7 @@
                     </div>
                     <div class="_divider_xs"></div>
                     <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="location">
-                        <span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?>
+                        <?php ABPRF_Layout::icon_svg('plus'); echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?>
                     </button>
 					<?php
 				}
@@ -101,8 +101,8 @@
                                 <th class="_text_nowrap"><code> [abprf-property loc_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <td>
                                     <div class="_group_content">
-                                        <button type="button" class="_btn_light_yellow_xxs" data-id="<?php echo esc_attr( $term_id ); ?>" data-target-popup="#abprf_global_popup" data-type="location" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">✍️</button>
-                                        <button type="button" class="_btn_light_danger_xxs delete_location" data-loc_id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">❌</button>
+                                        <button type="button" class="_btn_light_yellow_xxs" data-id="<?php echo esc_attr( $term_id ); ?>" data-target-popup="#abprf_global_popup" data-type="location" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('edit');?></button>
+                                        <button type="button" class="_btn_light_danger_xxs delete_location" data-loc_id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('close_1');?></button>
                                     </div>
                                 </td>
                             </tr>
@@ -162,7 +162,7 @@
 									}
 								} ?>
                             </div>
-							<?php ABPRF_Layout::button_add( __( 'Add New Pickup Point', 'abp-rentalforge' ) ); ?>
+							<?php ABPRF_Layout::button_add_xs( __( 'Add New Pickup Point', 'abp-rentalforge' ) ); ?>
                             <div class="abprf_d_none">
                                 <div class="hidden_content">
 									<?php self::pickup_form(); ?>
@@ -187,7 +187,7 @@
 									}
 								} ?>
                             </div>
-							<?php ABPRF_Layout::button_add( __( 'Add New Drop Point', 'abp-rentalforge' ) ); ?>
+							<?php ABPRF_Layout::button_add_xs( __( 'Add New Drop Point', 'abp-rentalforge' ) ); ?>
                             <div class="abprf_d_none">
                                 <div class="hidden_content">
 									<?php self::drop_form(); ?>
@@ -199,7 +199,7 @@
 					<?php ABPRF_Layout::info_text( 'display_drop' ); ?>
                 </div>
                 <div class="_divider_xs"></div>
-                <button type="button" class="_btn_theme save_location"><span class="_mar_r_xxs">💾</span><?php echo( ! empty( $loc_id ) ? esc_html__( 'Update Location', 'abp-rentalforge' ) : esc_html__( 'Save Location', 'abp-rentalforge' ) ); ?></button>
+                <button type="button" class="_btn_theme save_location"><?php ABPRF_Layout::icon_svg('save'); echo( ! empty( $loc_id ) ? esc_html__( 'Update Location', 'abp-rentalforge' ) : esc_html__( 'Save Location', 'abp-rentalforge' ) ); ?></button>
 				<?php
 			}
 			public static function pickup_form( $point = '', $key = '' ): void {

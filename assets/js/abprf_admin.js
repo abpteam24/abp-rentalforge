@@ -132,7 +132,7 @@ function abprf_property_filter_arg($this) {
             }
         })
     });
-    $(document).on('click', 'div.abprf_admin .post_list .pagination_area button[data-page]', function () {
+    abprf_parent.on('click', '.post_list .pagination_area button[data-page]', function () {
         let $this = $(this);
         if (!$this.hasClass('abp_active')) {
             let parent = $(this).closest('.abprf_posts');
@@ -144,28 +144,29 @@ function abprf_property_filter_arg($this) {
             if (parent.find("[name='page_item']").length > 0) {
                 filter_args['page_item'] = parseInt(parent.find("[name='page_item']").val());
             }
-            abprf_load_post_list(parent, filter_args);
+            let target = parent.find('.post_list');
+            if (target.length > 0) {
+                $.ajax({
+                    type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                        "action": "abprf_reload_post_list", "filter_args": filter_args, 'nonce': abprf_admin_data.nonce
+                    }, beforeSend: function () {
+                        abprf_spinner(parent);
+                        abprf_toast_msg(abprf_admin_data.msg.post_loading);
+                    }, success: function (response) {
+                        if (response.data && response.data.hasOwnProperty('html')) {
+                            target.html(response.data.html);
+                        }
+                        abprf_spinner_remove(parent);
+                        abprf_toast_msg(response.data.msg, response.data.type);
+                    }, error: function (xhr) {
+                        abprf_ajx_error(xhr, parent);
+                    }
+                });
+            } else {
+                parent.find('.post_tab').trigger('click');
+            }
         }
     });
-    function abprf_load_post_list(parent, filter_args) {
-        let target = parent.find('.post_list');
-        if (target.length > 0) {
-            $.ajax({
-                type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                    "action": "abprf_reload_post_list", "filter_args": filter_args, 'nonce': abprf_admin_data.nonce
-                }, beforeSend: function () {
-                    abprf_spinner(parent);
-                    abprf_toast_msg(abprf_admin_data.msg.post_loading);
-                }, success: function (response) {
-                    target.html(response.data.html);
-                    abprf_spinner_remove(parent);
-                    abprf_toast_msg(response.data.html, 'success');
-                }
-            });
-        } else {
-            parent.find('.post_tab').trigger('click');
-        }
-    }
 }(jQuery));
 //==========Properties=================//
 (function ($) {
@@ -1208,5 +1209,3 @@ document.addEventListener('DOMContentLoaded', function () {
     new ABPRF_FeatureSelection('div.abprf_admin .related_item', abprf_related_info);
 });
 //=========== Feature selection end=================//
-
-

@@ -66,25 +66,24 @@
 				$fields          = $all_fields[ $section_id ] ?? [];
 				$current_section = [];
 				?>
-                <div id="abprf_configuration">
-                    <div class="_abp_panel_max_1200_mar_auto">
+                <div id="abprf_configuration" class="_max_1200_mar_auto">
+                    <div class="_section_card">
                         <div class="abp_tabs tab_top">
-                            <div class="_panel_head">
-                                <div class="_group_content_w_full">
-									<?php foreach ( $all_sections as $tab ) {
-										$tab_id = $tab['id'] ?? '';
-										if ( ! empty( $tab_id ) ) {
-											$key             = preg_replace( '/^abprf_/', '', $tab_id );
-											$current_section = $key == $active_tab ? $tab : $current_section; ?>
-                                            <a href="<?php echo esc_url( ABPRF_Function::build_url( 'configuration', [ 'configuration' => $key ] ) ); ?>" class="_btn_light_purple_xs  <?php echo esc_attr( $active_tab == $key ? 'abp_active' : '' ); ?>">
-												<?php ABPRF_Layout::image_icon( $tab['icon'] ?? '' );
-													echo esc_html( $tab['menu'] ?? '' ); ?>
-                                            </a>
-										<?php }
-									} ?>
-                                </div>
+                            <div class="_group_content_f_equal_f_wrap_w_full">
+                                <?php foreach ( $all_sections as $tab ) {
+                                    $tab_id = $tab['id'] ?? '';
+                                    if ( ! empty( $tab_id ) ) {
+                                        $key             = preg_replace( '/^abprf_/', '', $tab_id );
+                                        $current_section = $key == $active_tab ? $tab : $current_section; ?>
+                                        <a href="<?php echo esc_url( ABPRF_Function::build_url( 'configuration', [ 'configuration' => $key ] ) ); ?>" class="_btn_light_purple_xs  <?php echo esc_attr( $active_tab == $key ? 'abp_active' : '' ); ?>">
+                                            <?php ABPRF_Layout::image_icon( $tab['icon'] ?? '' );
+                                                echo esc_html( $tab['menu'] ?? '' ); ?>
+                                        </a>
+                                    <?php }
+                                } ?>
                             </div>
-                            <div class="_panel_body <?php echo esc_attr( $section_id ); ?>">
+                            <div class="_divider_xs"></div>
+                            <div class="<?php echo esc_attr( $section_id ); ?>">
 								<?php if ( sizeof( $fields ) > 0 ) {
 									$title = $current_section['menu'] ?? ''; ?>
                                     <h4 class="_abp"><?php echo esc_html( $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></h4>
@@ -143,7 +142,7 @@
 											?>
                                         </div>
                                         <div class="_divider_xs"></div>
-                                        <button type="submit" class="_btn_theme" value="submit"><span class="_mar_r_xxs">💾</span><?php echo esc_html( __( 'Save', 'abp-rentalforge' ) . ' ' . $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></button>
+                                        <button type="submit" class="_btn_theme" value="submit"><?php ABPRF_Layout::icon_svg('save');  echo esc_html( __( 'Save', 'abp-rentalforge' ) . ' ' . $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></button>
                                     </form>
 								<?php } ?>
                             </div>
@@ -816,7 +815,7 @@
 							<?php foreach ( $option_data as $key => $label ) { ?>
                                 <div class="checkbox_item">
                                     <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'abp_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
-                                        <span data-icon class="_mar_r_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $label ); ?>
+                                        <span data-icon class="<?php echo esc_attr( in_array( $key, $value_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $label ); ?>
                                     </button>
                                 </div>
 							<?php } ?>
@@ -854,7 +853,7 @@
 							<?php foreach ( $wp_roles->roles as $key => $label ) { ?>
                                 <div class="checkbox_item">
                                     <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'abp_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
-                                        <span data-icon class="_mar_r_xs <?php echo esc_attr( in_array( $key, $value_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $label['name'] ); ?>
+                                        <span data-icon class="<?php echo esc_attr( in_array( $key, $value_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $label['name'] ); ?>
                                     </button>
                                 </div>
 							<?php } ?>

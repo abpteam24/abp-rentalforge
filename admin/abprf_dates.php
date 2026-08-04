@@ -20,7 +20,7 @@
 					<?php $this->date_time_format( $date_infos );
 						$this->date_content( $date_infos ); ?>
                     <div class="_divider_xs"></div>
-                    <button type="submit" class="_btn_theme"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Date Configuration', 'abp-rentalforge' ); ?></button>
+                    <button type="submit" class="_btn_theme"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Date Configuration', 'abp-rentalforge' ); ?></button>
                 </form>
 				<?php
 			}
@@ -445,7 +445,7 @@
 									}
 								?>
                             </div>
-							<?php ABPRF_Layout::button_add( __( 'Add Specific Date', 'abp-rentalforge' ) ); ?>
+							<?php ABPRF_Layout::button_add_xs( __( 'Add Specific Date', 'abp-rentalforge' ) ); ?>
                             <div class="abprf_d_none">
                                 <div class="hidden_content">
 									<?php $this->specific_date_item(); ?>

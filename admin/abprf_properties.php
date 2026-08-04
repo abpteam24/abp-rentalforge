@@ -17,8 +17,8 @@
                 $post_ids = isset($abprf_info['post_ids']) && $abprf_info['post_ids'] ? $abprf_info['post_ids'] : [];
                 $filter_args['post_id'] = 'all';
                 ?>
-                <div class="abprf_properties ">
-                    <div class="_fj_between_f_wrap">
+                <div class="abprf_properties _section_card">
+                    <div class="_fj_between_f_wrap_gap_xs">
                         <div class="abp_dropdown _max_400">
                             <label class="_abp_all_center">
                                 <input type="hidden" name="select_property_hidden" value=""/>
@@ -40,7 +40,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <button type="button" class="_btn_purple_xs" data-target-popup="#abprf_global_popup" data-type="property"><span class="_mar_r_xs">➕</span><?php esc_html_e('Add New Property', 'abp-rentalforge'); ?></button>
+                        <button type="button" class="_btn_purple_xs" data-target-popup="#abprf_global_popup" data-type="property"><?php ABPRF_Layout::icon_svg('plus'); esc_html_e('Add New Property', 'abp-rentalforge'); ?></button>
                     </div>
                     <div class="_divider_xxs"></div>
                     <div class="properties_list">
@@ -145,7 +145,7 @@
                 $limit = is_numeric($filter_args['page_item'] ?? null) ? (int)$filter_args['page_item'] : ABPRF_Function::get_option('abprf_per_page_item', 20);
                 $count = ($page_number - 1) * $limit + 1;
                 $filter_args['limit'] = $limit;
-                $filter_args['offset'] = $count - 1;
+                $filter_args['offset'] = $page_number - 1;
                 $properties = ABPRF_Query::get_property($filter_args);
                 if (!empty($properties) && is_array($properties) && sizeof($properties) > 0) {
                     $filter_post_id = $filter_args['post_id'] ?? '';
@@ -262,9 +262,9 @@
                                 <th>
                                     <?php if (empty($copy_post_id)) { ?>
                                         <div class="_group_content">
-                                            <button type="button" class="_btn_light_info_xxs" data-id="<?php echo esc_attr($property_id); ?>" data-target-popup="#abprf_global_popup" data-type="property" title="<?php echo esc_html__('Edit : ', 'abp-rentalforge') . ' ' . esc_html($name); ?>">✍️</button>
-                                            <button type="button" class="_btn_light_info_xxs property_copy" data-id="<?php echo esc_attr($property_id); ?>" data-target-popup="#abprf_global_popup" data-type="property" title="<?php echo esc_html__('Copy/Clone : ', 'abp-rentalforge') . ' ' . esc_html($name); ?>">🔁</button>
-                                            <button type="button" class="_btn_light_info_xxs delete_property" data-property_id="<?php echo esc_attr($property_id); ?>" title="<?php echo esc_html__('Trash : ', 'abp-rentalforge') . ' ' . esc_html($name); ?>">❌</button>
+                                            <button type="button" class="_btn_light_navy_blue_xxs" data-id="<?php echo esc_attr($property_id); ?>" data-target-popup="#abprf_global_popup" data-type="property" title="<?php echo esc_html__('Edit : ', 'abp-rentalforge') . ' ' . esc_html($name); ?>"><?php ABPRF_Layout::icon_svg('edit'); ?></button>
+                                            <button type="button" class="_btn_light_info_xxs property_copy" data-id="<?php echo esc_attr($property_id); ?>" data-target-popup="#abprf_global_popup" data-type="property" title="<?php echo esc_html__('Copy/Clone : ', 'abp-rentalforge') . ' ' . esc_html($name); ?>"><?php ABPRF_Layout::icon_svg('clone_1'); ?></button>
+                                            <button type="button" class="_btn_light_danger_xxs delete_property" data-property_id="<?php echo esc_attr($property_id); ?>" title="<?php echo esc_html__('Trash : ', 'abp-rentalforge') . ' ' . esc_html($name); ?>"><?php ABPRF_Layout::icon_svg('close_1'); ?></button>
                                         </div>
                                     <?php } else { ?>
                                         <?php ABPRF_Layout::button_delete(); ?>

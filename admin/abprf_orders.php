@@ -11,10 +11,10 @@
             }
             public function load_orders(): void {
                 ?>
-                <div class="abprf_orders">
-                    <h4 class="_abp"><span class="_mar_r_xxs">📋</span> <?php esc_html_e('Order Filter', 'abp-rentalforge'); ?></h4>
+                <div class="abprf_orders _section_card">
+                    <h4 class="_abp_gap_xs"><span>📋</span> <?php esc_html_e('Order Filter', 'abp-rentalforge'); ?></h4>
                     <div class="_divider_xs"></div>
-                    <form class="load_order_list _section_card_xs" method="post" action="">
+                    <form class="load_order_list" method="post" action="">
                         <div class="_form_inline">
                             <?php
                                 ABPRF_Layout::filter_post_list();
@@ -47,7 +47,8 @@
                             </div>
                         </div>
                     </form>
-                    <div class="order_list">
+                    <div class="_divider_xs"></div>
+                    <div class="order_list _fd_column_gap_xa">
                         <?php $this->order_lists(); ?>
                     </div>
                 </div>
@@ -76,36 +77,34 @@
                 $count_foot_left_col = 5;
                 $count_foot_right_col = 3;
                 ?>
-                <div class="_section_card_xs _ov_auto">
-                    <div class="_fj_between">
-                        <div class="_group_content order_status_menu">
-                            <button class="_btn_navy_blue_xs_text_nowrap <?php echo esc_attr($data_status === 'all' ? 'abp_active' : ''); ?>" type="button" data-status="all" title="<?php esc_attr_e('All Booking', 'abp-rentalforge'); ?>">
-                                <?php echo esc_html(__('All Booking', 'abp-rentalforge') . ' (' . ABPRF_Query::get_booking_query($filter_args, 0, 0, true) . ' )') ?>
-                            </button>
-                            <button class="_btn_navy_blue_xs_text_nowrap <?php echo esc_attr(!$data_status ? 'abp_active' : ''); ?>" type="button" data-status="" title="<?php esc_attr_e('Booking Completed', 'abp-rentalforge'); ?>">
-                                <?php
-                                    $filter_args['status'] = '';
-                                    echo esc_html(__('Booking Completed', 'abp-rentalforge') . ' (' . ABPRF_Query::get_booking_query($filter_args, 0, 0, true) . ' )');
-                                ?>
-                            </button>
+                <div class="_fj_between _gap_xs_f_wrap">
+                    <div class="_group_content order_status_menu">
+                        <button class="_btn_navy_blue_xs_text_nowrap <?php echo esc_attr($data_status === 'all' ? 'abp_active' : ''); ?>" type="button" data-status="all" title="<?php esc_attr_e('All Booking', 'abp-rentalforge'); ?>">
+                            <?php echo esc_html(__('All Booking', 'abp-rentalforge') . ' (' . ABPRF_Query::get_booking_query($filter_args, 0, 0, true) . ' )') ?>
+                        </button>
+                        <button class="_btn_navy_blue_xs_text_nowrap <?php echo esc_attr(!$data_status ? 'abp_active' : ''); ?>" type="button" data-status="" title="<?php esc_attr_e('Booking Completed', 'abp-rentalforge'); ?>">
                             <?php
-                                $all_status = wc_get_order_statuses();
-                                if (!empty($all_status) && is_array($all_status)) {
-                                    foreach ($all_status as $key => $status) {
-                                        ?>
-                                        <button class="_btn_navy_blue_xs_text_nowrap <?php echo esc_attr($data_status === $key ? 'abp_active' : ''); ?>" type="button" data-status="<?php echo esc_attr($key); ?>">
-                                            <?php
-                                                $filter_args['status'] = sanitize_key($key);
-                                                echo esc_html($status . ' (' . ABPRF_Query::get_booking_query($filter_args, 0, 0, true) . ')');
-                                            ?>
-                                        </button>
-                                        <?php
-                                    }
-                                }
+                                $filter_args['status'] = '';
+                                echo esc_html(__('Booking Completed', 'abp-rentalforge') . ' (' . ABPRF_Query::get_booking_query($filter_args, 0, 0, true) . ' )');
                             ?>
-                        </div>
-                        <?php do_action('abprf_order_tab_action', $_filter_args); ?>
+                        </button>
+                        <?php
+                            $all_status = wc_get_order_statuses();
+                            if (!empty($all_status) && is_array($all_status)) {
+                                foreach ($all_status as $key => $status) {
+                                    ?>
+                                    <button class="_btn_navy_blue_xs_text_nowrap <?php echo esc_attr($data_status === $key ? 'abp_active' : ''); ?>" type="button" data-status="<?php echo esc_attr($key); ?>">
+                                        <?php
+                                            $filter_args['status'] = sanitize_key($key);
+                                            echo esc_html($status . ' (' . ABPRF_Query::get_booking_query($filter_args, 0, 0, true) . ')');
+                                        ?>
+                                    </button>
+                                    <?php
+                                }
+                            }
+                        ?>
                     </div>
+                    <?php do_action('abprf_order_tab_action', $_filter_args); ?>
                 </div>
                 <div class="_ov_auto">
                     <?php if (!empty($booking_lists) && is_array($booking_lists)) { ?>
@@ -177,7 +176,7 @@
                                         <div class="_group_content">
                                             <?php do_action('abprf_order_action', $item_id);
                                                 if (in_array($status, $booked_status, true)) { ?>
-                                                    <button class="_btn_light_danger_xxs abprf_item_cancel" data-item_id="<?php echo esc_attr($item_id); ?>" title="<?php esc_attr_e('Rent Cancel', 'abp-rentalforge'); ?>" type="button"><span class="fas fa-times"></span></button>
+                                                    <button class="_btn_light_danger_xxs abprf_item_cancel" data-item_id="<?php echo esc_attr($item_id); ?>" title="<?php esc_attr_e('Rent Cancel', 'abp-rentalforge'); ?>" type="button"><?php ABPRF_Layout::icon_svg('close_1'); ?></button>
                                                 <?php } ?>
                                         </div>
                                     </th>

@@ -64,6 +64,13 @@ function abprf_load_image(parent = abprf_parent) {
     });
     return true;
 }
+//==============================================================================================//
+function abprf_ajx_error(xhr, target) {
+    abprf_spinner_remove(target);
+    if (xhr.response && xhr.response.data) {
+        abprf_toast_msg(xhr.response.data.msg, xhr.response.data.type);
+    }
+}
 //=============================================================================Load initial=================//
 (function ($) {
     "use strict";
