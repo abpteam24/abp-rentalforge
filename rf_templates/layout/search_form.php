@@ -26,8 +26,8 @@
 		$upcoming_date = ! empty( $upcoming_date ) ? gmdate( 'Y-m-d', strtotime( $upcoming_date ) ) : '';
 		?>
         <div id="abprf_search_area">
-            <h2 class="_abp_mar_b_xs">
-                <span class="_mar_r_xxs">📅</span><?php esc_html_e( 'Select Rental Period', 'abp-rentalforge' ); ?>
+            <h2 class="_abp_mar_b_xs_gap_xs">
+                <span>📅</span><?php esc_html_e( 'Select Rental Period', 'abp-rentalforge' ); ?>
             </h2>
             <form class="abprf_property_form <?php echo esc_attr( $params_form === 'column' ? '_form_column' : '_form_inline' ); ?>" method="post" action="">
                 <input type="hidden" name="rent_rule" value="<?php echo esc_attr( $rent_rule ); ?>"/>
@@ -57,7 +57,7 @@
 					if ( $rent_rule === 'hourly' || $rent_rule === 'multi_day' ) { ?>
                         <div class="start_time _input_item">
                             <label>
-                                <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Pickup Time', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                                <span><i class="fas fa-calendar-check"></i><?php esc_html_e( 'Pickup Time', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
                                 <select class="_form_control" name="start_time"></select>
                             </label>
                         </div>
@@ -72,7 +72,7 @@
 					if ( $rent_rule === 'hourly' || $rent_rule === 'multi_day' ) { ?>
                         <div class="end_time _input_item">
                             <label>
-                                <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e( 'Drop-off Time', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                                <span><i class="fas fa-calendar-check"></i><?php esc_html_e( 'Drop-off Time', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
                                 <select class="_form_control" name="end_time"></select>
                             </label>
                         </div>

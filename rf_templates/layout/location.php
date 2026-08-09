@@ -34,7 +34,7 @@
 				if ( ! empty( $location ) ) {
 					if ( $ribbon === 'ribbon' ) {
 						?>
-                        <div class="ribbon publish"><span class="_mar_r_xxs">📍</span><?php echo esc_html( $location ); ?></div>
+                        <div class="ribbon publish _gap_xs"><span class="_mar_r_xxs">📍</span><?php echo esc_html( $location ); ?></div>
 						<?php
 					} else {
 						?>

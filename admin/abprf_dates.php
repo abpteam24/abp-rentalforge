@@ -14,7 +14,7 @@
 				$date_infos = ABPRF_Function::get_option( 'abprf_dates' );
 				?>
                 <form class="save_dates" method="post" action="">
-                    <h4 class="_abp"><span class="_mar_r_xxs">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abp-rentalforge' ); ?></h4>
+                    <h4 class="_abp_gap_xs"><span class="">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abp-rentalforge' ); ?></h4>
 					<?php ABPRF_Layout::info_text( 'abprf_dates' ); ?>
                     <div class="_divider_xs"></div>
 					<?php $this->date_time_format( $date_infos );
@@ -29,7 +29,7 @@
 				$active_global_dates = $post_infos['active_global_dates'] ?? 'on';
 				?>
                 <div class="tab_item" data-tabs="#abprf_dates">
-                    <h4 class="_abp_color_theme"><span class=" _mar_r_xs">🗓️</span> <?php esc_html_e( 'Date Configuration', 'abp-rentalforge' ); ?></h4>
+                    <h4 class="_abp_color_theme_gap_xs"><span>🗓️</span> <?php esc_html_e( 'Date Configuration', 'abp-rentalforge' ); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="group_setting">
                         <div class="setting_item">
@@ -70,7 +70,7 @@
                 <div class="group_setting">
                     <div class="setting_item">
                         <label class="_f_wrap_fj_between_fa_center">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Date Format', 'abp-rentalforge' ); ?></span>
+                            <span><?php esc_html_e( 'Date Format', 'abp-rentalforge' ); ?></span>
 							<?php if ( sizeof( $format_array ) > 0 ) { ?>
                                 <select class="_form_control " name="date_format">
 									<?php foreach ( $format_array as $key => $format ) { ?>
@@ -84,7 +84,7 @@
                     </div>
                     <div class="setting_item">
                         <label class="_f_equal_f_wrap">
-                            <span class="_mar_r_xs"><?php esc_html_e( 'Time Format', 'abp-rentalforge' ); ?></span>
+                            <span><?php esc_html_e( 'Time Format', 'abp-rentalforge' ); ?></span>
                             <input type="text" class="_form_control" name="time_format" placeholder="<?php echo esc_attr( ABPRF_Time_Format ); ?>" value="<?php echo esc_attr( $time_format ); ?>"/>
                         </label>
                         <div class="_divider_xs"></div>
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                     <label class="_f_equal_f_wrap">
-                        <span class="_mar_r_xs"><?php esc_html_e( 'Time Slot length in Min', 'abp-rentalforge' ); ?></span>
+                        <span><?php esc_html_e( 'Time Slot length in Min', 'abp-rentalforge' ); ?></span>
                         <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="time_slot_length" placeholder="Ex:30" value="<?php echo esc_attr( $time_slot_length ); ?>"/>
                     </label>
                     <div class="_divider_xs"></div>
@@ -122,11 +122,11 @@
 				?>
                 <div class="setting_item">
                     <label class="_f_equal_f_wrap">
-                        <span class="_mar_r_xs"><?php esc_html_e( 'Before Buffer time in MIN (Optional)', 'abp-rentalforge' ); ?></span>
+                        <span><?php esc_html_e( 'Before Buffer time in MIN (Optional)', 'abp-rentalforge' ); ?></span>
                         <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="sale_close_before" placeholder="Ex: 15" value="<?php echo esc_attr( $buffer_time_before ); ?>"/>
                     </label>
                     <label class="_f_equal_f_wrap">
-                        <span class="_mar_r_xs"><?php esc_html_e( 'After Buffer time in MIN (Optional)', 'abp-rentalforge' ); ?></span>
+                        <span><?php esc_html_e( 'After Buffer time in MIN (Optional)', 'abp-rentalforge' ); ?></span>
                         <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="sale_close_after" placeholder="Ex: 15" value="<?php echo esc_attr( $buffer_time_after ); ?>"/>
                     </label>
                     <div class="_divider_xs"></div>
@@ -145,12 +145,12 @@
                             <input type="hidden" class="_form_control" name="date_type" value="<?php echo esc_attr( $date_type ); ?>"/>
                             <div class="radio_item">
                                 <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $date_type == 'specific_date' ? 'abp_active' : '' ); ?>" data-close-target="#specific_date" data-radio="specific_date" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                    <span data-icon class="_mar_r_xs <?php echo esc_attr( $date_type == 'specific_date' ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php esc_html_e( 'Specific Dates', 'abp-rentalforge' ); ?>
+                                    <span data-icon class="<?php echo esc_attr( $date_type == 'specific_date' ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php esc_html_e( 'Specific Dates', 'abp-rentalforge' ); ?>
                                 </button>
                             </div>
                             <div class="radio_item">
                                 <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $date_type == 'periodic_date' ? 'abp_active' : '' ); ?>" data-close-target="#periodic_date" data-radio="periodic_date" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                    <span data-icon class="_mar_r_xs <?php echo esc_attr( $date_type == 'periodic_date' ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php esc_html_e( 'Periodic Dates', 'abp-rentalforge' ); ?>
+                                    <span data-icon class="<?php echo esc_attr( $date_type == 'periodic_date' ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php esc_html_e( 'Periodic Dates', 'abp-rentalforge' ); ?>
                                 </button>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
 				?>
                 <div class="setting_item">
                     <label class="_f_equal_f_wrap">
-                        <span class="_mar_r_xs"><?php esc_html_e( 'Number of advance booking date', 'abp-rentalforge' ); ?></span>
+                        <span><?php esc_html_e( 'Number of advance booking date', 'abp-rentalforge' ); ?></span>
                         <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="advance_date_number" placeholder="Ex: 28" value="<?php echo esc_attr( $advance_date_number ); ?>"/>
                     </label>
                     <div class="_divider_xs"></div>
@@ -199,7 +199,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $date_type == 'periodic_date' ? 'abp_active' : '' ); ?>" data-close="#periodic_date">
                     <label class="_f_wrap_fj_between_fa_center">
-                        <span class="_mar_r_xs"><?php esc_html_e( 'Periodic after', 'abp-rentalforge' ); ?></span>
+                        <span><?php esc_html_e( 'Periodic after', 'abp-rentalforge' ); ?></span>
                         <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="periodic_after" placeholder="Ex: 5" value="<?php echo esc_attr( $periodic_after ); ?>"/>
                     </label>
                     <div class="_divider_xs"></div>
@@ -223,7 +223,7 @@
 									<?php foreach ( $date_rules as $key => $rule ) { ?>
                                         <div class="checkbox_item _min_100">
                                             <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $date_rule_array ) ? 'abp_active' : '' ); ?>" data-collapse-target="#<?php echo esc_attr( $key ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
-                                                <span data-icon class="_mar_r_xs far <?php echo esc_attr( in_array( $key, $date_rule_array ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span><?php echo esc_html( $rule ); ?>
+                                                <span data-icon class="far <?php echo esc_attr( in_array( $key, $date_rule_array ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span><?php echo esc_html( $rule ); ?>
                                             </button>
                                         </div>
 									<?php } ?>
@@ -256,7 +256,7 @@
 							<?php foreach ( $days as $key => $day ) { ?>
                                 <div class="checkbox_item _min_100">
                                     <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( $key, $off_day_array ) ? 'abp_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
-                                        <span data-icon class="_mar_r_xs <?php echo esc_attr( in_array( $key, $off_day_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $day ); ?>
+                                        <span data-icon class="<?php echo esc_attr( in_array( $key, $off_day_array ) ? 'far fa-check-square' : 'far fa-square' ); ?>"></span><?php echo esc_html( $day ); ?>
                                     </button>
                                 </div>
 							<?php } ?>
@@ -289,7 +289,7 @@
 								}
 							?>
                         </div>
-                        <div class="abprf_d_none">
+                        <div class="abp_hidden_content">
                             <div class="hidden_content">
 								<?php $this->date_item( 'specific_off_dates[]' ); ?>
                             </div>
@@ -322,7 +322,7 @@
 								}
 							?>
                         </div>
-                        <div class="abprf_d_none">
+                        <div class="abp_hidden_content">
                             <div class="hidden_content">
 								<?php $this->off_day_range(); ?>
                             </div>
@@ -356,7 +356,7 @@
 								}
 							?>
                         </div>
-                        <div class="abprf_d_none">
+                        <div class="abp_hidden_content">
                             <div class="hidden_content">
 								<?php $this->special_on_date_item(); ?>
                             </div>
@@ -446,7 +446,7 @@
 								?>
                             </div>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add Specific Date', 'abp-rentalforge' ) ); ?>
-                            <div class="abprf_d_none">
+                            <div class="abp_hidden_content">
                                 <div class="hidden_content">
 									<?php $this->specific_date_item(); ?>
                                 </div>

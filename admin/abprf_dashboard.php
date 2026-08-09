@@ -15,8 +15,8 @@
                 <div class="abprf_dashboard">
                     <div class="dashboard_head _f_wrap">
                         <div class="_section_card" data-href="<?php echo esc_url( add_query_arg( 'rf_tab', 'posts' ) ); ?>">
-                            <div class="_d_flex">
-                                <h2 class="_abp_all_center_mar_r_xs">🏘️</h2>
+                            <div class="_gap_xs">
+                                <h2 class="_abp">🏘️</h2>
                                 <div class="_fd_column">
                                     <h5 class="_abp"><?php esc_html_e( 'Post', 'abp-rentalforge' ); ?></h5>
                                     <h4 class="_abp_color_theme"><?php echo esc_html( $total_post ); ?></h4>
@@ -24,8 +24,8 @@
                             </div>
                         </div>
                         <div class="_section_card" data-href="<?php echo esc_url( add_query_arg( 'rf_tab', 'properties' ) ); ?>">
-                            <div class="_d_flex">
-                                <h2 class="_abp_all_center_mar_r_xs">🏠</h2>
+                            <div class="_gap+xs">
+                                <h2 class="_abp">🏠</h2>
                                 <div class="_fd_column">
                                     <h5 class="_abp"><?php esc_html_e( 'Properties', 'abp-rentalforge' ); ?></h5>
                                     <h4 class="_abp_color_theme"><?php echo esc_html( $total_property ); ?></h4>

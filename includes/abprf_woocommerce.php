@@ -19,7 +19,7 @@
 			public function add_cart_item_data( $cart_item, $product_id ) {
 				$linked_id = ABPRF_Function::get_post_info( $product_id, 'abprf_link_id', $product_id );
 				$post_id   = is_string( get_post_status( $linked_id ) ) ? $linked_id : $product_id;
-				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() && isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
+				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() && (get_post_status($post_id)=='publish' || is_admin())  && isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'abprf_registration_nonce' ) ) {
 					$post_val                       = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
 					$start_time                     = $post_val( 'start_time' );
 					$end_time                       = $post_val( 'end_time' );
@@ -133,7 +133,7 @@
 								$property_id = $property_ids[ $key ] ?? '';
 								$qty         = $property_qty[ $key ] ?? '';
 								if ( ! empty( $check ) && ! empty( $property_id ) && ! empty( $qty ) ) {
-									$property = current( ABPRF_Query::get_property( [ 'property_id' => $property_id ] ) );
+									$property = current( ABPRF_Query::get_property( [ 'property_id' => $property_id,'post_id'=>$post_id] ) );
 									if ( ! empty( $property ) ) {
 										$abprf_infos['property_id']              = $property_id;
 										$abprf_infos['qty']                      = $qty;
@@ -321,7 +321,7 @@
 								if ( ! empty( $qty ) && $qty > 0 ) {
 									$abprf_infos['property_id'] = $id;
 									$sold_qty                   = ABPRF_Query::get_sold_qty( $abprf_infos );
-									$property                   = current( ABPRF_Query::get_property( [ 'property_id' => $id ] ) );
+									$property                   = current( ABPRF_Query::get_property( [ 'property_id' => $id , 'post_id'=>$post_id ] ) );
 									$price_qty_info             = json_decode( $property['price_qty_info'] ?? '', true ) ?: [];
 									$price_qty_info             = ( ! empty( $location ) && isset( $price_qty_info[ $location ] ) ) ? $price_qty_info[ $location ] : $price_qty_info;
 									$price_info                 = $price_qty_info[ $rent_rule ] ?? [];

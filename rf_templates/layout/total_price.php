@@ -39,9 +39,9 @@
                     </h5>
                 </div>
 				<?php if ( is_admin() && str_contains( wp_get_referer(), 'admin_order' ) ) { ?>
-                    <input type="submit" class="_d_none" name="add-admin-order" value="<?php echo esc_attr( $wc_link ); ?>"/>
+                    <input type="submit" class="abp_hidden" name="add-admin-order" value="<?php echo esc_attr( $wc_link ); ?>"/>
 				<?php } else { ?>
-                    <input type="submit" class="_d_none" name="add-to-cart" value="<?php echo esc_attr( $wc_link ); ?>"/>
+                    <input type="submit" class="abp_hidden" name="add-to-cart" value="<?php echo esc_attr( $wc_link ); ?>"/>
 				<?php } ?>
                 <button class="_btn_light_theme abprf_book_continue" type="button" data-alert="<?php esc_attr_e( 'No property Selected ! Please Select property', 'abp-rentalforge' ); ?>" data-msg="<?php esc_attr_e( 'Added to Cart Successfully', 'abp-rentalforge' ); ?>">
 					<?php esc_html_e( 'Continue', 'abp-rentalforge' ); ?>

@@ -64,7 +64,7 @@
                 //echo '<pre>';print_r( ABPRF_Layout::rent_rules_options());					echo '</pre>';
                 ?>
                 <div class="tab_item abprf_equipment_price" data-tabs="#abprf_equipment_price">
-                    <h4 class="_abp_color_theme"><span class="_mar_r_xxs">🏠</span> <?php esc_html_e('Properties and Price Configuration', 'abp-rentalforge'); ?></h4>
+                    <h4 class="_abp_color_theme_gap_xs"><span>🏠</span> <?php esc_html_e('Properties and Price Configuration', 'abp-rentalforge'); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="group_setting">
                         <div class="setting_item full_width">
@@ -75,7 +75,7 @@
                                     <?php foreach ($rent_rules as $key => $rule) { ?>
                                         <div class="radio_item">
                                             <button type="button" class="_btn_light_info_xs <?php echo esc_attr($rent_rule == $key ? 'abp_active' : ''); ?>" data-close-target="#<?php echo esc_attr($key); ?>" data-radio="<?php echo esc_attr($key); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                                <i class="_abp_fs_h5"><span data-icon class="_mar_r_xs <?php echo esc_attr($rent_rule == $key ? 'far fa-check-circle' : 'far fa-circle'); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html($rule); ?></span>
+                                                <i class="_abp_fs_h5"><span data-icon class=" <?php echo esc_attr($rent_rule == $key ? 'far fa-check-circle' : 'far fa-circle'); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html($rule); ?></span>
                                             </button>
                                         </div>
                                     <?php } ?>
@@ -133,7 +133,7 @@
                     </div>
                     <?php if (empty($copy_post_id)) { ?>
                         <div class="_divider_xs"></div>
-                        <button type="button" class="_btn_default" data-post_id="<?php echo esc_attr($post_id); ?>" data-target-popup="#abprf_global_popup" data-type="property"><span class="_mar_r_xs">➕</span><?php esc_html_e('Add New Property', 'abp-rentalforge'); ?></button>
+                        <button type="button" class="_btn_default" data-post_id="<?php echo esc_attr($post_id); ?>" data-target-popup="#abprf_global_popup" data-type="property"><?php ABPRF_Layout::icon_svg('plus'); ?><?php esc_html_e('Add New Property', 'abp-rentalforge'); ?></button>
                     <?php } ?>
                 </div>
                 <?php
@@ -190,14 +190,14 @@
                                 <td>
                                     <div class="_fd_column">
                                         <h5 class="_abp_color_theme"><?php echo esc_html($name); ?></h5>
-                                        <div class="_d_flex">
+                                        <div class="_gap_xs">
                                             <?php if (!empty($copy_post_id)) { ?>
                                                 <input type="hidden" name="copy_property_id[]" value="<?php echo esc_attr($property_id); ?>"/>
                                             <?php } else { ?>
-                                                <span class="_mar_r_xxs publish"><?php echo esc_html(__('Property Id : ', 'abp-rentalforge') . ' ' . $property_id); ?></span>
+                                                <span class=" publish"><?php echo esc_html(__('Property Id : ', 'abp-rentalforge') . ' ' . $property_id); ?></span>
                                             <?php } ?>
-                                            <span class="_mar_r_xxs <?php echo esc_attr($rent_continue == 'on' ? 'publish' : 'trash'); ?>"><?php echo esc_html($rent_continue == 'on' ? __('Rent On', 'abp-rentalforge') : __('Rent Off', 'abp-rentalforge')); ?></span>
-                                            <span class="_mar_r_xxs <?php echo esc_attr($status); ?>"><?php echo esc_html($status); ?></span>
+                                            <span class=" <?php echo esc_attr($rent_continue == 'on' ? 'publish' : 'trash'); ?>"><?php echo esc_html($rent_continue == 'on' ? __('Rent On', 'abp-rentalforge') : __('Rent Off', 'abp-rentalforge')); ?></span>
+                                            <span class=" <?php echo esc_attr($status); ?>"><?php echo esc_html($status); ?></span>
                                         </div>
                                     </div>
                                 </td>
@@ -210,10 +210,10 @@
                                                 }
                                                     echo esc_html(get_the_title($post_id)); ?>
                                             </a>
-                                            <div class="_d_flex">
-                                                <span class="_mar_r_xxs publish"><?php echo esc_html(__('Post Id : ', 'abp-rentalforge') . ' ' . $post_id); ?></span>
-                                                <span class="_mar_r_xxs <?php echo esc_attr($post_rent_continue == 'on' ? 'publish' : 'trash'); ?>"><?php echo esc_html($post_rent_continue == 'on' ? __('Rent On', 'abp-rentalforge') : __('Rent Off', 'abp-rentalforge')); ?></span>
-                                                <span class="_mar_r_xxs <?php echo esc_attr($post_status); ?>"><?php echo esc_html($post_status); ?></span>
+                                            <div class="_gap_xs">
+                                                <span class=" publish"><?php echo esc_html(__('Post Id : ', 'abp-rentalforge') . ' ' . $post_id); ?></span>
+                                                <span class=" <?php echo esc_attr($post_rent_continue == 'on' ? 'publish' : 'trash'); ?>"><?php echo esc_html($post_rent_continue == 'on' ? __('Rent On', 'abp-rentalforge') : __('Rent Off', 'abp-rentalforge')); ?></span>
+                                                <span class=" <?php echo esc_attr($post_status); ?>"><?php echo esc_html($post_status); ?></span>
                                             </div>
                                         <?php } else {
                                             echo esc_html('❌');
@@ -382,7 +382,7 @@
                             <?php foreach ($rent_rules as $key => $rule_label) { ?>
                                 <div class="radio_item">
                                     <button type="button" class="_btn_light_info_xs <?php echo esc_attr($rent_rule == $key ? 'abp_active' : ''); ?>" data-close-target="#<?php echo esc_attr($key); ?>" data-radio="<?php echo esc_attr($key); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                        <i class="_abp_fs_h6"><span data-icon class="_mar_r_xs <?php echo esc_attr($rent_rule == $key ? 'far fa-check-circle' : 'far fa-circle'); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html($rule_label); ?></span>
+                                        <i class="_abp_fs_h6"><span data-icon class=" <?php echo esc_attr($rent_rule == $key ? 'far fa-check-circle' : 'far fa-circle'); ?>"></span></i><span class="_text_left_fs_label"><?php echo esc_html($rule_label); ?></span>
                                     </button>
                                 </div>
                             <?php } ?>
@@ -808,7 +808,7 @@
                         ?>
                     </div>
                     <div class="_divider_xs"></div>
-                    <button type="button" class="_btn_theme save_property"><span class="_mar_r_xxs">💾</span><?php echo esc_html($save_text); ?></button>
+                    <button type="button" class="_btn_theme save_property"><?php ABPRF_Layout::icon_svg('save'); ?><?php echo esc_html($save_text); ?></button>
                 </div>
                 <?php
                 $html = ob_get_clean();

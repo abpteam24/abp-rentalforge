@@ -42,7 +42,7 @@
                                     <button type="button" class="_btn_theme_xs hide_on_load save_brand"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
                                 </div>
                             </div>
-                            <div class="abprf_d_none">
+                            <div class="abp_hidden_content">
                                 <table class="_abp">
                                     <tbody class="hidden_content">
 									<?php self::form_brand(); ?>
@@ -179,7 +179,7 @@
                     </div>
                     <button type="button" class="_btn_theme_xs hide_on_load save_brand"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
                 </div>
-                <div class="abprf_d_none">
+                <div class="abp_hidden_content">
                     <table class="_abp">
                         <tbody class="hidden_content">
                         <tr class="delete_area">

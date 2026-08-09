@@ -32,14 +32,14 @@
                 $tax_class = $abprf_infos['_tax_class'] ?? '';
                 ?>
                 <div class="setting_item _mar_b_xs">
-                    <h5 class="_abp" data-collapse-target="#abprf_tax"><span class="_mar_r_xxs">🧾</span> <?php esc_html_e('Tax Configuration', 'abp-rentalforge'); ?></h5>
+                    <h5 class="_abp_gap_xs" data-collapse-target="#abprf_tax"><span>🧾</span> <?php esc_html_e('Tax Configuration', 'abp-rentalforge'); ?></h5>
                     <div class="abp_active" data-collapse="#abprf_tax">
                         <div class="_divider_xxs"></div>
                         <?php if (get_option('woocommerce_calc_taxes') == 'yes') { ?>
                             <div class="group_setting">
                                 <div class="setting_item">
                                     <label class="_f_equal_f_wrap">
-                                        <span class="_mar_r_xs"><?php esc_html_e('Tax Status', 'abp-rentalforge'); ?></span>
+                                        <span><?php esc_html_e('Tax Status', 'abp-rentalforge'); ?></span>
                                         <select class="_form_control" name="_tax_status">
                                             <option disabled selected><?php esc_html_e('Please Select', 'abp-rentalforge'); ?></option>
                                             <option value="taxable" <?php echo esc_attr($tax_status == 'taxable' ? 'selected' : ''); ?>><?php esc_html_e('Taxable', 'abp-rentalforge'); ?></option>
@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="setting_item">
                                     <label class="_f_equal_f_wrap">
-                                        <span class="_mar_r_xs"><?php esc_html_e('Tax Class', 'abp-rentalforge'); ?></span>
+                                        <span><?php esc_html_e('Tax Class', 'abp-rentalforge'); ?></span>
                                         <select class="_form_control" name="_tax_class">
                                             <option disabled selected><?php esc_html_e('Please Select', 'abp-rentalforge'); ?></option>
                                             <option value="standard" <?php echo esc_attr($tax_class == 'standard' ? 'selected' : ''); ?>><?php esc_html_e('Standard', 'abp-rentalforge'); ?></option>
@@ -81,7 +81,7 @@
                     $faqs = is_array($faqs) ? $faqs : [];
                     ?>
                     <div class="setting_item _mar_b_xs faq_configuration">
-                        <h5 class="_abp" data-collapse-target="#abprf_faq"><span class="_mar_r_xxs">❓</span><?php esc_html_e('FAQs Configuration', 'abp-rentalforge'); ?></h5>
+                        <h5 class="_abp_gap_xs" data-collapse-target="#abprf_faq"><span>❓</span><?php esc_html_e('FAQs Configuration', 'abp-rentalforge'); ?></h5>
                         <div class="abp_active" data-collapse="#abprf_faq">
                             <div class="_divider_xxs"></div>
                             <div class="group_setting">
@@ -102,7 +102,7 @@
                                             <span class="_fs_label_mar_lr_xs"><?php esc_html_e('Use Global FAQ ?', 'abp-rentalforge'); ?></span>
                                         </div>
                                         <div data-collapse="#active_global_faq" class=" <?php echo esc_attr($active_global_faq == 'on' ? '' : 'abp_active'); ?>">
-                                            <button type="button" class="_btn_theme import_faq"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e('Import Global FAQ', 'abp-rentalforge'); ?></button>
+                                            <button type="button" class="_btn_theme import_faq"><span class="fas fa-file-upload "></span><?php esc_html_e('Import Global FAQ', 'abp-rentalforge'); ?></button>
                                         </div>
                                     </div>
                                     <div class="_divider_xs"></div>
@@ -128,7 +128,7 @@
                     $active_global_tc = $abprf_infos['active_global_tc'] ?? 'on';
                     ?>
                     <div class="setting_item tc_configuration">
-                        <h5 class="_abp" data-collapse-target="#abprf_tc"><span class="_mar_r_xxs">🤝</span><?php esc_html_e('Term & Conditions', 'abp-rentalforge'); ?></h5>
+                        <h5 class="_abp_gap_xs" data-collapse-target="#abprf_tc"><span>🤝</span><?php esc_html_e('Term & Conditions', 'abp-rentalforge'); ?></h5>
                         <div class="abp_active" data-collapse="#abprf_tc">
                             <div class="_divider_xxs"></div>
                             <div class="group_setting">
@@ -149,7 +149,7 @@
                                             <span class="_fs_label_mar_lr_xs"><?php esc_html_e('Use Global Term & Conditions ?', 'abp-rentalforge'); ?></span>
                                         </div>
                                         <div data-collapse="#active_global_tc" class=" <?php echo esc_attr($active_global_tc == 'on' ? '' : 'abp_active'); ?>">
-                                            <button type="button" class="_btn_theme import_tc"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e('Import Global Term & Conditions', 'abp-rentalforge'); ?></button>
+                                            <button type="button" class="_btn_theme import_tc"><span class="fas fa-file-upload"></span><?php esc_html_e('Import Global Term & Conditions', 'abp-rentalforge'); ?></button>
                                         </div>
                                     </div>
                                     <div class="_divider_xs"></div>
@@ -173,7 +173,7 @@
                     $tcs = ABPRF_Function::get_option('abprf_tc', '');
                     ?>
                     <div class="setting_item _mar_b_xs">
-                        <h5 class="_abp" data-collapse-target="#abprf_tc"><span class="_mar_r_xxs">🤝</span><?php esc_html_e('Global Term & Conditions Configuration', 'abp-rentalforge'); ?></h5>
+                        <h5 class="_abp_gap_xs" data-collapse-target="#abprf_tc"><span>🤝</span><?php esc_html_e('Global Term & Conditions Configuration', 'abp-rentalforge'); ?></h5>
                         <div class="_divider_xxs"></div>
                         <?php ABPRF_Layout::info_text('abprf_tc'); ?>
                         <div class="abp_active" data-collapse="#abprf_tc">
@@ -193,7 +193,7 @@
                     $faqs = ABPRF_Function::get_option('abprf_faqs');
                     ?>
                     <div class="setting_item faq_configuration _mar_b_xs">
-                        <h5 class="_abp" data-collapse-target="#abprf_faq"><span class="_mar_r_xxs">❓</span><?php esc_html_e('Global FAQ Configuration', 'abp-rentalforge'); ?></h5>
+                        <h5 class="_abp_gap_xs" data-collapse-target="#abprf_faq"><span>❓</span><?php esc_html_e('Global FAQ Configuration', 'abp-rentalforge'); ?></h5>
                         <div class="_divider_xxs"></div>
                         <?php ABPRF_Layout::info_text('abprf_faqs'); ?>
                         <div class="abp_active" data-collapse="#abprf_faq">
@@ -250,7 +250,7 @@
                             <button type="submit" class="_btn_theme_xs"><?php ABPRF_Layout::icon_svg('save'); esc_html_e('Save FAQs Configuration', 'abp-rentalforge'); ?></button>
                         <?php } ?>
                     </div>
-                    <div class="abprf_d_none">
+                    <div class="abp_hidden_content">
                         <div class="hidden_content">
                             <?php $this->faq_item(); ?>
                         </div>
@@ -274,7 +274,7 @@
                             <?php ABPRF_Layout::info_text('faq_item'); ?>
                             <div class="_divider_xs"></div>
                             <label class="_f_equal_f_wrap">
-                                <span class="_mar_r_xs"><?php esc_html_e('FAQ Title', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
+                                <span><?php esc_html_e('FAQ Title', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
                                 <input type="text" class="_form_control" name="faq_title[]" data-pass="#faq_title" placeholder="<?php esc_attr_e('EX: What is the check-in time?', 'abp-rentalforge'); ?>" value="<?php echo esc_attr($title); ?>"/>
                             </label>
                             <divl class="_fd_column_mar_t_xs">

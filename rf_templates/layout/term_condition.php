@@ -17,7 +17,7 @@
             if (!empty($infos) && is_string($infos)) {
                 ?>
                 <div class="_section_alert">
-                    <h4 class="_abp"><span class="_mar_r_xxs">🤝</span> <?php esc_html_e('Term & Conditions', 'abp-rentalforge'); ?></h4>
+                    <h4 class="_abp_gap_xs"><span>🤝</span> <?php esc_html_e('Term & Conditions', 'abp-rentalforge'); ?></h4>
                     <div class="_divider_xs"></div>
                     <?php
                         // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound

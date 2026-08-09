@@ -18,16 +18,16 @@
 				?>
                 <div class="_abp_panel_max_1200_mar_auto abprf_status">
                     <div class="_panel_head">
-                        <h3 class="_abp"><span class="_mar_r_xxs">🛡️</span> <?php esc_html_e( 'Status  & Information', 'abp-rentalforge' ); ?></h3>
+                        <h3 class="_abp_gap_xs"><span>🛡️</span> <?php esc_html_e( 'Status  & Information', 'abp-rentalforge' ); ?></h3>
                     </div>
                     <div class="_panel_body">
 						<?php
 							if ( ABPRF_WC < 2 ) {
 								ABPRF_Layout::layout_warning_info_xs( 'must_wc' );
 								if ( ABPRF_WC == 1 ) { ?>
-                                    <button class="_btn_navy_blue_mar_t active_wc" type="button"><span class="fas fa-tasks _mar_r_xxs"></span><?php esc_html_e( 'Active Now', 'abp-rentalforge' ); ?></button>
+                                    <button class="_btn_navy_blue_mar_t active_wc" type="button"><span class="fas fa-tasks"></span><?php esc_html_e( 'Active Now', 'abp-rentalforge' ); ?></button>
 								<?php } else { ?>
-                                    <button class="_btn_navy_blue_mar_t _mar_t install_and_active_wc" type="button"><span class="fas fa-file-download _mar_r_xxs"></span><?php esc_html_e( 'Install & Active Now', 'abp-rentalforge' ); ?></button>
+                                    <button class="_btn_navy_blue_mar_t _mar_t install_and_active_wc" type="button"><span class="fas fa-file-download"></span><?php esc_html_e( 'Install & Active Now', 'abp-rentalforge' ); ?></button>
 								<?php }
 							}
 							$this->version();
@@ -48,7 +48,7 @@
                 <div class="_section_xs_mar_t_xs">
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"> <?php esc_html_e( 'RentalForge Version', 'abp-rentalforge' ) ?> </h6>
-                        <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( ABPRF_VERSION ); ?></button>
+                        <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check"></span><?php echo esc_html( ABPRF_VERSION ); ?></button>
                     </div>
                 </div>
 				<?php
@@ -60,9 +60,9 @@
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"> <?php esc_html_e( 'WordPress Version', 'abp-rentalforge' ); ?> </h6>
 						<?php if ( $version > 5.5 ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check "></span><?php echo esc_html( $version ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle "></span><?php echo esc_html( $version ); ?></button>
 						<?php } ?>
                     </div>
                 </div>
@@ -75,9 +75,9 @@
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"> <?php esc_html_e( 'Php Version', 'abp-rentalforge' ); ?> </h6>
 						<?php if ( $version > 7.4 ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check "></span><?php echo esc_html( $version ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php echo esc_html( $version ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle "></span><?php echo esc_html( $version ); ?></button>
 						<?php } ?>
                     </div>
                 </div>
@@ -93,11 +93,11 @@
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"> <?php echo esc_html( $title ); ?></h6>
 						<?php if ( ABPRF_WC == 2 ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check "></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
 						<?php } elseif ( ABPRF_WC == 1 ) { ?>
-                            <button class="_btn_warning_xs_min_125 active_wc" type="button"><span class="fas fa-tasks _mar_r_xxs"></span><?php esc_html_e( 'Active Now', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 active_wc" type="button"><span class="fas fa-tasks "></span><?php esc_html_e( 'Active Now', 'abp-rentalforge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 install_and_active_wc" type="button"><span class="fas fa-file-download _mar_r_xxs"></span><?php esc_html_e( 'Install & Active Now', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 install_and_active_wc" type="button"><span class="fas fa-file-download "></span><?php esc_html_e( 'Install & Active Now', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
@@ -105,9 +105,9 @@
                         <div class="_fa_center_fj_between">
                             <h6 class="_abp"><?php esc_html_e( 'Woocommerce Version', 'abp-rentalforge' ); ?></h6>
 							<?php if ( version_compare( WC_VERSION, '8.0', '>' ) ) { ?>
-                                <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( WC_VERSION ); ?></button>
+                                <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check "></span><?php echo esc_html( WC_VERSION ); ?></button>
 							<?php } else { ?>
-                                <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php echo esc_html( WC_VERSION ); ?></button>
+                                <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle "></span><?php echo esc_html( WC_VERSION ); ?></button>
 							<?php } ?>
                         </div>
 						<?php if ( ! empty( $name ) ) { ?>
@@ -139,60 +139,60 @@
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"><?php echo esc_html( $label ) . ' ' . esc_html__( 'Booking Page', 'abp-rentalforge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'rf_booking' ) ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 create_page" data-page_type="rf_booking" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add RentalForge Booking Page', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 create_page" data-page_type="rf_booking" type="button"><span class="fas fa-plus"></span><?php esc_html_e( 'Add RentalForge Booking Page', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"><?php echo esc_html( $label ) . ' ' . esc_html__( 'Post List Page', 'abp-rentalforge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'rf_post' ) ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 create_page" data-page_type="rf_post" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add RentalForge List Page', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 create_page" data-page_type="rf_post" type="button"><span class="fas fa-plus"></span><?php esc_html_e( 'Add RentalForge List Page', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"><?php esc_html_e( 'Property List Page', 'abp-rentalforge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'rf_property' ) ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 create_page" data-page_type="rf_property" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Property List Page', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 create_page" data-page_type="rf_property" type="button"><span class="fas fa-plus "></span><?php esc_html_e( 'Add Property List Page', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"><?php esc_html_e( 'Gallery Page', 'abp-rentalforge' ); ?></h6>
 						<?php if ( ABPRF_Function::get_page_by_slug( 'rf_gallery' ) ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check "></span><?php esc_html_e( 'Activated', 'abp-rentalforge' ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_warning_xs_min_125 create_page" data-page_type="rf_gallery" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add Gallery Page', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_warning_xs_min_125 create_page" data-page_type="rf_gallery" type="button"><span class="fas fa-plus "></span><?php esc_html_e( 'Add Gallery Page', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"> <?php esc_html_e( 'Number of Post', 'abp-rentalforge' ); ?> </h6>
 						<?php if ( $total > 0 ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $total ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check "></span><?php echo esc_html( $total ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Post', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle "></span><?php esc_html_e( 'Can Not Find Post', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"> <?php esc_html_e( 'Number of Property', 'abp-rentalforge' ); ?> </h6>
 						<?php if ( $total_property > 0 ) { ?>
-                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check _mar_r_xxs"></span><?php echo esc_html( $total_property ); ?></button>
+                            <button class="_btn_light_success_xs_min_125" type="button"><span class="fas fa-check"></span><?php echo esc_html( $total_property ); ?></button>
 						<?php } else { ?>
-                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle _mar_r_xxs"></span><?php esc_html_e( 'Can Not Find Any Property', 'abp-rentalforge' ); ?></button>
+                            <button class="_btn_light_warning_xs_min_125" type="button"><span class="fas fa-exclamation-triangle "></span><?php esc_html_e( 'Can Not Find Any Property', 'abp-rentalforge' ); ?></button>
 						<?php } ?>
                     </div>
                     <div class="_divider_xs"></div>
                     <div class="_fa_center_fj_between">
                         <h6 class="_abp"> <?php esc_html_e( 'Dummy Import', 'abp-rentalforge' ); ?> </h6>
-                        <button class="<?php echo esc_attr( $total > 0 ? '_btn_light_success_xs' : '_btn_warning_xs' ); ?>_btn_theme_min_125 import_dummy" type="button"><span class="fas fa-plus _mar_r_xxs"></span><?php esc_html_e( 'Add New Dummy Post', 'abp-rentalforge' ); ?></button>
+                        <button class="<?php echo esc_attr( $total > 0 ? '_btn_light_success_xs' : '_btn_warning_xs' ); ?>_btn_theme_min_125 import_dummy" type="button"><span class="fas fa-plus"></span><?php esc_html_e( 'Add New Dummy Post', 'abp-rentalforge' ); ?></button>
                     </div>
                 </div>
 				<?php

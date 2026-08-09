@@ -65,8 +65,8 @@
                                 <th><code> [abprf-property cat_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th>
                                     <div class="_group_content">
-                                        <button type="button" class="_btn_light_yellow_xxs" data-id="<?php echo esc_attr( $term_id ); ?>" data-target-popup="#abprf_global_popup" data-type="category" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">✍️</button>
-                                        <button type="button" class="_btn_light_danger_xxs delete_category" data-cat_id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>">❌</button>
+                                        <button type="button" class="_btn_light_yellow_xxs" data-id="<?php echo esc_attr( $term_id ); ?>" data-target-popup="#abprf_global_popup" data-type="category" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('edit'); ?></button>
+                                        <button type="button" class="_btn_light_danger_xxs delete_category" data-cat_id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('close_1'); ?></button>
                                     </div>
                                 </th>
                             </tr>
@@ -128,7 +128,7 @@
 							$name = $category['name'] ?? ''; ?>
                             <div class="radio_item">
                                 <button type="button" class="_btn_light_info_xs <?php echo esc_attr( $_category == $key ? 'abp_active' : '' ); ?>" data-radio="<?php echo esc_attr( $key ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                    <span data-icon class="_mar_r_xs <?php echo esc_attr( $_category == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><span class="_text_left_fs_label"><?php echo esc_html( $name ); ?></span>
+                                    <span data-icon class="<?php echo esc_attr( $_category == $key ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><span class="_text_left_fs_label"><?php echo esc_html( $name ); ?></span>
                                 </button>
                             </div>
 						<?php } ?>

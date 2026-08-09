@@ -942,7 +942,7 @@
 				$qty         = $abprf_infos['qty'] ?? 1;
 				$property_id = $abprf_infos['property_id'] ?? 0;
 				if ( empty( $property ) ) {
-					$db_property = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+					$db_property = ABPRF_Query::get_property( [ 'property_id' => $property_id, 'post_id'=>$post_id] );
 					$property    = is_array( $db_property ) ? current( $db_property ) : [];
 				}
 				$property       = is_array( $property ) ? $property : [];
@@ -994,9 +994,10 @@
 				}
 				$property_id = $abprf_infos['property_id'] ?? 0;
 				$rent_rule   = $abprf_infos['rent_rule'] ?? '';
+				$post_id   = $abprf_infos['post_id'] ?? '';
 				$qty         = $abprf_infos['qty'] ?? 0;
 				if ( empty( $property ) ) {
-					$db_property = ABPRF_Query::get_property( [ 'property_id' => $property_id ] );
+					$db_property = ABPRF_Query::get_property( [ 'property_id' => $property_id, 'post_id'=>$post_id ] );
 					$property    = is_array( $db_property ) ? current( $db_property ) : [];
 				}
 				$property       = is_array( $property ) ? $property : [];

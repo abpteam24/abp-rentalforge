@@ -17,21 +17,21 @@
                     <h6 class="_abp _color_theme"><?php esc_html_e( 'Booking Information : ', 'abp-rentalforge' ); ?></h6>
                     <div class="_divider_xxs"></div>
                     <ul class="_abp cart_list">
-                        <li>
-                            <span class="fas fa-calendar-check _mar_r_xs"></span>
+                        <li class="_gap_xs">
+                            <span class="fas fa-calendar-check"></span>
                             <span class="_fs_label"><?php esc_html_e( 'Rent Start : ', 'abp-rentalforge' ); ?></span>&nbsp;<?php echo esc_html( ABPRF_Function::date_format( $start_time ) ); ?>
                         </li>
-                        <li>
-                            <span class="fas fa-calendar-check _mar_r_xs"></span>
+                        <li class="_gap_xs">
+                            <span class="fas fa-calendar-check"></span>
                             <span class="_fs_label"><?php esc_html_e( 'Rent End : ', 'abp-rentalforge' ); ?></span>&nbsp;<?php echo esc_html( ABPRF_Function::date_format( $end_time ) ); ?>
                         </li>
-                        <li>
-                            <span class="fas fa-business-time _mar_r_xs"></span>
+                        <li class="_gap_xs">
+                            <span class="fas fa-business-time"></span>
                             <span class="_fs_label"><?php esc_html_e( 'Duration : ', 'abp-rentalforge' ); ?></span>&nbsp;<?php echo esc_html( $duration ); ?>
                         </li>
 						<?php if ( ABPRF_Function::on_off( 'location' ) && ! empty( $location ) ) { ?>
-                            <li>
-                                <span class="fas fa-location _mar_r_xs"></span>
+                            <li class="_gap_xs">
+                                <span class="fas fa-location"></span>
                                 <span class="_fs_label"><?php esc_html_e( 'Location : ', 'abp-rentalforge' ); ?></span>&nbsp;<?php echo esc_html( ABPRF_Function::location_value( $location ) ); ?>
                             </li>
 						<?php } ?>

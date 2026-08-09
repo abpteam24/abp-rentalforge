@@ -901,10 +901,10 @@ function abprf_wp_editor_init(target) {
     });
     $(document).on('click', 'div.abprf_admin .add_new_hook', function () {
         let parent = $(this).closest('.configuration_content');
-        let hidden_target = $(this).next($('.abprf_d_none')).find(' .hidden_content');
+        let hidden_target = $(this).next($('.abp_hidden_content')).find(' .hidden_content');
         let item = hidden_target.html();
         if (!item || item === "undefined" || item === " ") {
-            item = parent.find('.abprf_d_none').first().find('.hidden_content').html();
+            item = parent.find('.abp_hidden_content').first().find('.hidden_content').html();
         }
         if (abprf_load_sortable_datepicker(parent, item)) {
             let target = parent.find('.insertable_area .delete_area').last();

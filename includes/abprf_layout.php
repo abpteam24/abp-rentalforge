@@ -238,7 +238,7 @@
                     <div class="dropdown_list">
                         <ul class="_abp">
                             <?php foreach ($infos as $info) { ?>
-                                <li data-value="<?php echo esc_attr($info); ?>"><span class="<?php echo esc_attr($icon); ?> _mar_r_xxs"></span><span data-text><?php echo esc_html($info); ?></span></li>
+                                <li data-value="<?php echo esc_attr($info); ?>" class="_gap_xs"><span class="<?php echo esc_attr($icon); ?>"></span><span data-text><?php echo esc_html($info); ?></span></li>
                             <?php } ?>
                         </ul>
                     </div>
@@ -348,7 +348,7 @@
                             <?php foreach ($options as $option) { ?>
                                 <div class="checkbox_item">
                                     <button type="button" class="_btn_white_xs <?php echo esc_attr($option == $value ? 'abp_active' : ''); ?>" data-checked="<?php echo esc_attr($option); ?>" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
-                                        <span data-icon class="_mar_r_xs <?php echo esc_attr($option == $value ? 'far fa-check-square' : 'far fa-square'); ?>"></span><?php echo esc_html($option); ?>
+                                        <span data-icon class="<?php echo esc_attr($option == $value ? 'far fa-check-square' : 'far fa-square'); ?>"></span><?php echo esc_html($option); ?>
                                     </button>
                                 </div>
                             <?php } ?>
@@ -367,7 +367,7 @@
                             <?php foreach ($options as $option) { ?>
                                 <div class="radio_item">
                                     <button type="button" class="_btn_white_xs <?php echo esc_attr($option == $value ? 'abp_active' : ''); ?>" data-radio="<?php echo esc_attr($option); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                        <span data-icon class="_mar_r_xs <?php echo esc_attr($option == $value ? 'far fa-check-circle' : 'far fa-circle'); ?>"></span><?php echo esc_html($option); ?>
+                                        <span data-icon class="<?php echo esc_attr($option == $value ? 'far fa-check-circle' : 'far fa-circle'); ?>"></span><?php echo esc_html($option); ?>
                                     </button>
                                 </div>
                             <?php } ?>
@@ -378,14 +378,14 @@
             }
             //=============Add  Image / Icon================//
             public function load_icon($name, $value = ''): void {
-                $button_active_class = $value ? '_d_none' : '';
+                $button_active_class = $value ? 'abp_hidden' : '';
                 $icon = $emoji = '';
                 if (preg_match('/\s/', $value)) {
                     $icon = $value;
                 } else {
                     $emoji = $value;
                 }
-                $icon_class = ($icon || $emoji) ? '' : '_d_none';
+                $icon_class = ($icon || $emoji) ? '' : 'abp_hidden';
                 ?>
                 <div class="icon_image_selection_area">
                     <input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($value); ?>"/>
@@ -409,8 +409,8 @@
                             <img class="_img_control" src="<?php echo esc_url(wp_get_attachment_image_url($image_id, 'medium')); ?>" alt="<?php echo esc_attr($image_id); ?>"/>
                         </div>
                     <?php } ?>
-                    <button type="button" class="_btn_default_xs_bg_color_5_w_full <?php echo esc_attr($image_id ? '_d_none' : ''); ?>">
-                        <span class="fas fa-image _mar_r_xs"></span><?php esc_html_e('Image', 'abp-rentalforge'); ?>
+                    <button type="button" class="_btn_default_xs_bg_color_5_w_full <?php echo esc_attr($image_id ? 'abp_hidden' : ''); ?>">
+                        <span class="fas fa-image"></span><?php esc_html_e('Image', 'abp-rentalforge'); ?>
                     </button>
                 </div>
                 <?php
@@ -449,9 +449,9 @@
                 } else {
                     $emoji = $value;
                 }
-                $icon_class = ($icon || $emoji) ? '' : '_d_none';
-                $image_class = $image ? '' : '_d_none';
-                $button_active_class = ($icon || $image || $emoji) ? '_d_none' : '';
+                $icon_class = ($icon || $emoji) ? '' : 'abp_hidden';
+                $image_class = $image ? '' : 'abp_hidden';
+                $button_active_class = ($icon || $image || $emoji) ? 'abp_hidden' : '';
                 ?>
                 <div class="icon_image_selection_area _fd_column">
                     <input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($value); ?>"/>
@@ -871,7 +871,7 @@
                                     ?>
                                     <div class="_input_item">
                                         <label>
-                                            <span><i class="fas fa-location _mar_r_xxs"></i><?php esc_html_e('Location', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
+                                            <span><i class="fas fa-location"></i><?php esc_html_e('Location', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
                                             <select class="_form_control" name="location">
                                                 <?php foreach ($location_array as $loc_id) {
                                                     if (in_array($loc_id, $location_array)) {
@@ -895,7 +895,7 @@
                 if (sizeof($all_dates) > 0) {
                     ?>
                     <label>
-                        <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e('Pickup Month', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
+                        <span><i class="fas fa-calendar-check"></i><?php esc_html_e('Pickup Month', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
                         <select name="rent_start_date" class="_form_control">
                             <option value=""><?php esc_html_e('Select Pickup Month', 'abp-rentalforge'); ?></option>
                             <?php foreach ($all_dates as $option) { ?>
@@ -916,7 +916,7 @@
                 if (sizeof($all_dates) > 0) {
                     ?>
                     <label>
-                        <span><i class="fas fa-calendar-check _mar_r_xxs"></i><?php esc_html_e('Drop-Off Month', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
+                        <span><i class="fas fa-calendar-check"></i><?php esc_html_e('Drop-Off Month', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
                         <select name="rent_end_date" class="_form_control">
                             <option value=""><?php esc_html_e('Select Drop-Off Month', 'abp-rentalforge'); ?></option>
                             <?php foreach ($all_dates as $option) { ?>
@@ -942,7 +942,7 @@
                     $visible_date = !empty($date) ? date_i18n($date_format, strtotime($date)) : '';
                     ?>
                     <label>
-                        <span>📆<i class="_mar_r_xxs"></i><?php esc_html_e('Pickup Date', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
+                        <span>📆<?php esc_html_e('Pickup Date', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
                         <input type="hidden" name="rent_start_date" value="<?php echo esc_attr($hidden_date); ?>" required/>
                         <input id="start_date" type="text" value="<?php echo esc_attr($visible_date); ?>" class="_form_control" placeholder="<?php echo esc_attr($now); ?>" data-alert="<?php esc_attr_e('Please Select Pickup Date', 'abp-rentalforge'); ?>" readonly required/>
                         <span class="fas fa-times date_close_icon" title="<?php esc_attr_e('Clear Date', 'abp-rentalforge'); ?>"></span>
@@ -958,7 +958,7 @@
                         $now = date_i18n($date_format, strtotime(current_time('Y-m-d')));
                         ?>
                         <label>
-                            <span>📆<i class="_mar_r_xxs"></i><?php esc_html_e('Pickup Date', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
+                            <span>📆<?php esc_html_e('Pickup Date', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
                             <input type="hidden" name="rent_start_date" value="" required/>
                             <input type="text" id="start_date" value="" class="_form_control abp_datepicker" placeholder="<?php echo esc_attr($now); ?>" readonly/>
                             <span class="fas fa-times date_close_icon" title="<?php esc_attr_e('Clear Date', 'abp-rentalforge'); ?>"></span>
@@ -977,7 +977,7 @@
                     $visible_date = !empty($date) ? date_i18n($date_format, strtotime($date)) : '';
                     ?>
                     <label>
-                        <span>🗓️<i class=" _mar_r_xxs"></i><?php esc_html_e('Drop-Off Date', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
+                        <span>🗓️<?php esc_html_e('Drop-Off Date', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
                         <input type="hidden" name="rent_end_date" value="<?php echo esc_attr($hidden_date); ?>" required/>
                         <input id="end_date" type="text" value="<?php echo esc_attr($visible_date); ?>" class="_form_control" placeholder="<?php echo esc_attr($now); ?>" data-alert="<?php esc_attr_e('Please Select Drop-Off  Date', 'abp-rentalforge'); ?>" readonly required/>
                         <span class="fas fa-times date_close_icon" title="<?php esc_attr_e('Clear Date', 'abp-rentalforge'); ?>"></span>
@@ -993,7 +993,7 @@
                         $now = date_i18n($date_format, strtotime(current_time('Y-m-d')));
                         ?>
                         <label>
-                            <span>🗓️<i class=" _mar_r_xxs"></i><?php esc_html_e('Drop-Off Date', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
+                            <span>🗓️<?php esc_html_e('Drop-Off Date', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
                             <input type="hidden" name="rent_end_date" value="" required/>
                             <input type="text" id="end_date" value="" class="_form_control abp_datepicker" placeholder="<?php echo esc_attr($now); ?>" readonly/>
                             <span class="fas fa-times date_close_icon" title="<?php esc_attr_e('Clear Date', 'abp-rentalforge'); ?>"></span>
@@ -1221,8 +1221,8 @@
                         <input type="hidden" name="deposit_value[]" value="<?php echo esc_attr($deposit_value); ?>"/>
                         <div class="custom_checkbox">
                             <input type="hidden" name="property_check[]" value="" data-id="<?php echo esc_attr($collapse_id); ?>"/>
-                            <div class="checkbox_item _fa_center _fs_label" data-checked="1" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
-                                <h3 class="_abp"><span data-icon class="_mar_r_xs far fa-square"></span></h3>
+                            <div class="checkbox_item _gap_xs_fs_label" data-checked="1" data-open-icon="far fa-check-square" data-close-icon="far fa-square">
+                                <h3 class="_abp"><span data-icon class="far fa-square"></span></h3>
                                 <?php echo esc_html__('Select ', 'abp-rentalforge') . ' ' . esc_html($name); ?>
                             </div>
                         </div>

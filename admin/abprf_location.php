@@ -148,7 +148,7 @@
                     <div class="_divider_xs"></div>
 					<?php ABPRF_Layout::info_text( 'loc_des' ); ?>
                 </div>
-                <div class="setting_item _d_none">
+                <div class="setting_item abp_hidden">
                     <div class="_fj_between">
                         <div class="_fa_start">
 							<?php ABPRF_Layout::switch_checkbox( 'display_pickup', $display_pickup ); ?>
@@ -163,7 +163,7 @@
 								} ?>
                             </div>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add New Pickup Point', 'abp-rentalforge' ) ); ?>
-                            <div class="abprf_d_none">
+                            <div class="abp_hidden_content">
                                 <div class="hidden_content">
 									<?php self::pickup_form(); ?>
                                 </div>
@@ -173,7 +173,7 @@
                     <div class="_divider_xs"></div>
 					<?php ABPRF_Layout::info_text( 'display_pickup' ); ?>
                 </div>
-                <div class="setting_item _d_none">
+                <div class="setting_item abp_hidden">
                     <div class="_fj_between">
                         <div class="_fa_start">
 							<?php ABPRF_Layout::switch_checkbox( 'display_drop', $display_drop ); ?>
@@ -188,7 +188,7 @@
 								} ?>
                             </div>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add New Drop Point', 'abp-rentalforge' ) ); ?>
-                            <div class="abprf_d_none">
+                            <div class="abp_hidden_content">
                                 <div class="hidden_content">
 									<?php self::drop_form(); ?>
                                 </div>
@@ -235,15 +235,15 @@
 							$name = $location['name'] ?? ''; ?>
                             <div class="checkbox_item _min_100">
                                 <button type="button" class="_btn_light_info_xs <?php echo esc_attr( in_array( (string) $key, $location_array, true ) ? 'abp_active' : '' ); ?>" data-checked="<?php echo esc_attr( $key ); ?>" data-open-icon="fa-check-square" data-close-icon="fa-square">
-                                    <span data-icon class="_mar_r_xs far <?php echo esc_attr( in_array( (string) $key, $location_array, true ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span><?php echo esc_html( $name ); ?>
+                                    <span data-icon class="far <?php echo esc_attr( in_array( (string) $key, $location_array, true ) ? 'far fa-check-square' : 'fa-square' ); ?>"></span><?php echo esc_html( $name ); ?>
                                 </button>
                             </div>
 						<?php } ?>
-                        <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="location"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?></button>
+                        <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="location"><?php ABPRF_Layout::icon_svg('plus'); ?><?php echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?></button>
                     </div>
 				<?php } else { ?>
                     <p><?php echo esc_html( ABPRF_Layout::array_info( 'no_location' ) ); ?></p>
-                    <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="location"><span class="_mar_r_xs">➕</span><?php echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?></button>
+                    <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="location"><?php ABPRF_Layout::icon_svg('plus'); ?><?php echo esc_html__( 'Add New Location', 'abp-rentalforge' ); ?></button>
 					<?php
 				}
 			}

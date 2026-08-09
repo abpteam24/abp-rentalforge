@@ -16,7 +16,7 @@
                     $additional_services = ABPRF_Function::get_option('abprf_additional', ABPRF_Layout::static_additional());
                     ?>
                     <form class=" save_additional_service" method="post" action="">
-                        <h4 class="_abp_color"><span class="_mar_r_xxs">💰</span> <?php esc_html_e('Global Additional services Configuration', 'abp-rentalforge'); ?></h4>
+                        <h4 class="_abp_color_gap_xxs"><span class="">💰</span> <?php esc_html_e('Global Additional services Configuration', 'abp-rentalforge'); ?></h4>
                         <?php ABPRF_Layout::info_text('additional_services'); ?>
                         <div class="_divider_xs"></div>
                         <?php $this->additional_service($additional_services, true); ?>
@@ -31,7 +31,7 @@
                     $active_global_additional = $abprf_infos['active_global_additional'] ?? 'on';
                     ?>
                     <div class="tab_item additional_configuration" data-tabs="#abprf_additional_service">
-                        <h4 class="_abp_color_theme"><span class="_mar_r_xxs">💰</span><?php esc_html_e('Additional services Configuration', 'abp-rentalforge'); ?></h4>
+                        <h4 class="_abp_color_theme_gap_xxs"><span class="">💰</span><?php esc_html_e('Additional services Configuration', 'abp-rentalforge'); ?></h4>
                         <div class="_divider_xs"></div>
                         <div class="group_setting">
                             <div class="setting_item">
@@ -51,7 +51,7 @@
                                         <span class="_fs_label_mar_lr_xs"><?php esc_html_e('Use Global Additional Service ?', 'abp-rentalforge'); ?></span>
                                     </div>
                                     <div data-collapse="#active_global_additional" class=" <?php echo esc_attr($active_global_additional == 'on' ? '' : 'abp_active'); ?>">
-                                        <button type="button" class="_btn_theme import_additional"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e('Import Additional Service', 'abp-rentalforge'); ?></button>
+                                        <button type="button" class="_btn_theme import_additional"><span class="fas fa-file-upload"></span><?php esc_html_e('Import Additional Service', 'abp-rentalforge'); ?></button>
                                     </div>
                                 </div>
                                 <div class="_divider_xs"></div>
@@ -102,7 +102,7 @@
                             <button type="submit" class="_btn_theme_xs"><?php ABPRF_Layout::icon_svg('save'); esc_html_e('Save Global Additional services Configuration', 'abp-rentalforge'); ?></button>
                         <?php } ?>
                     </div>
-                    <div class="abprf_d_none">
+                    <div class="abp_hidden_content">
                         <table class="_abp">
                             <tbody class="hidden_content">
                             <?php $this->service_item(); ?>

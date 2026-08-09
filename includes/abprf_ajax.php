@@ -30,22 +30,26 @@
 				$form_html = ob_get_clean();
 				ob_start();
 				if ( ! empty( $post_id ) ) {
-					$abprf_infos = ABPRF_Function::get_all_meta( $post_id );
-					$rent_rule   = $post_val( 'rent_rule' );
-					$rent_rule   = ! empty( $rent_rule ) ? $rent_rule : ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
-					if ( ! empty( $rent_rule ) && $rent_rule != 'monthly' ) {
-						$all_dates     = ABPRF_Function::get_start_dates( $post_id );
-						$upcoming_date = current( $all_dates );
-						$upcoming_date = ! empty( $upcoming_date ) ? gmdate( 'Y-m-d', strtotime( $upcoming_date ) ) : '';
-						$all_end_dates = ABPRF_Function::get_end_dates( $post_id, $upcoming_date, $all_dates );
-						$all_dates     = ABPRF_Layout::create_datepicker_array( $all_dates );
-						$all_end_dates = ABPRF_Layout::create_datepicker_array( $all_end_dates );
-					}
-					if ( $rent_rule == 'hourly' || $rent_rule == 'multi_day' ) {
-						$all_time = ABPRF_Function::get_time( $post_id, 'js' );
-					}
-					do_action( 'abprf_registration', $abprf_infos );
-					$msg = get_the_title( $post_id ) . ' ' . __( 'Loaded Successfully.....! ', 'abp-rentalforge' );
+                    if(get_post_type( $post_id ) == ABPRF_Function::get_cpt() && (get_post_status($post_id)=='publish' || is_admin()) ) {
+                        $abprf_infos = ABPRF_Function::get_all_meta($post_id);
+                        $rent_rule = $post_val('rent_rule');
+                        $rent_rule = !empty($rent_rule) ? $rent_rule : ABPRF_Function::get_post_info($post_id, 'rent_rule');
+                        if (!empty($rent_rule) && $rent_rule != 'monthly') {
+                            $all_dates = ABPRF_Function::get_start_dates($post_id);
+                            $upcoming_date = current($all_dates);
+                            $upcoming_date = !empty($upcoming_date) ? gmdate('Y-m-d', strtotime($upcoming_date)) : '';
+                            $all_end_dates = ABPRF_Function::get_end_dates($post_id, $upcoming_date, $all_dates);
+                            $all_dates = ABPRF_Layout::create_datepicker_array($all_dates);
+                            $all_end_dates = ABPRF_Layout::create_datepicker_array($all_end_dates);
+                        }
+                        if ($rent_rule == 'hourly' || $rent_rule == 'multi_day') {
+                            $all_time = ABPRF_Function::get_time($post_id, 'js');
+                        }
+                        do_action('abprf_registration', $abprf_infos);
+                        $msg = get_the_title($post_id) . ' ' . __('Loaded Successfully.....! ', 'abp-rentalforge');
+                    }else{
+                        $msg = get_the_title($post_id) . ' ' . __('can not permission to view this.....! ', 'abp-rentalforge');
+                    }
 				} else {
 					$params['all_post'] = ABPRF_Query::get_post_id( $params );
 					do_action( 'abprf_post_filter', $params );
@@ -64,6 +68,7 @@
 				$post_val                    = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
 				$abprf_infos                 = [];
 				$post_id                     = $post_int( 'post_id' );
+
 				$rent_start_date             = $post_val( 'rent_start_date' );
 				$rent_end_date               = $post_val( 'rent_end_date' );
 				$rent_rule                   = $post_val( 'rent_rule' );
@@ -113,7 +118,7 @@
 				$abprf_infos['date_info']  = $date_info;
 				$check_date                = ABPRF_Function::check_date_exit( $abprf_infos );
 				ob_start();
-				if ( ! empty( $post_id ) && ! empty( $properties ) && $check_date ) {
+				if ( ! empty( $post_id ) && ! empty( $properties ) && $check_date && (get_post_status($post_id)=='publish' || is_admin())  ) {
 					$template = ABPRF_Function::get_post_info( $post_id, 'abprf_template', 'grid' );
 					?>
                     <input type="hidden" name="start_time" value="<?php echo esc_attr( $start ); ?>"/>

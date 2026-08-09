@@ -2,7 +2,7 @@
 Contributors: abpteam
 Tags: rental, rent,booking, bike car,property equipment
 Requires at least: 6.2
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 Tested up to: 7.0
 Requires PHP: 7.4
 License: GPLv3
@@ -355,6 +355,17 @@ This plugin does not collect or transmit any personal data by itself. Any custom
 
 == Changelog ==
 
+= 1.0.4 =
+
+* Security hardening and validation improvements.
+* Improved booking integrity checks.
+* Strengthened AJAX permission validation.
+* Improved template-loading security.
+* Additional sanitization and validation improvements.
+* Various stability and performance improvements.
+
+Released: August 06, 2026
+
 = 1.0.3 =
 
 *Design improvements
@@ -385,8 +396,11 @@ Released: July 14, 2026
 
 == Upgrade Notice ==
 
-= 1.0.3 =
+= 1.0.4 =
 Released: July 26, 2026
+
+= 1.0.3 =
+Released: August 06, 2026
 
 = 1.0.2 =
 Released: July 19, 2026

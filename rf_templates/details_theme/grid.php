@@ -3,7 +3,7 @@
 		exit; // Exit if accessed directly
 	}
 	add_action( 'abprf_details_grid_template', function ( $post_id ) {
-		if ( $post_id > 0 ) {
+        if ( $post_id > 0 && get_post_type( $post_id ) == ABPRF_Function::get_cpt() && (get_post_status($post_id)=='publish' || is_admin())  ) {
 			$abprf_infos         = ABPRF_Function::get_all_meta( $post_id );
 			$rent_continue       = $abprf_infos['rent_continue'] ?? 'on';
 			$abprf_infos['form'] = 'inline';

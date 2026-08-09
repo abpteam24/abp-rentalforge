@@ -111,10 +111,10 @@
 													echo esc_html( $title ); ?>
                                             </a>
 										<?php } ?>
-                                        <div class="_d_flex">
-                                            <span class="_mar_r_xxs publish"><?php echo esc_html( __( 'ID : ', 'abp-rentalforge' ) . ' ' . $post_id ); ?></span>
-                                            <span class="_mar_r_xxs <?php echo esc_attr( $post_rent_continue == 'on' ? 'publish' : 'trash' ); ?>"><?php echo esc_html( $post_rent_continue == 'on' ? __( 'Rent On', 'abp-rentalforge' ) : __( 'Rent Off', 'abp-rentalforge' ) ); ?></span>
-                                            <span class="_mar_r_xxs <?php echo esc_attr( $post_status ); ?>"><?php echo esc_html( $post_status ); ?></span>
+                                        <div class="_gap_xs">
+                                            <span class=" publish"><?php echo esc_html( __( 'ID : ', 'abp-rentalforge' ) . ' ' . $post_id ); ?></span>
+                                            <span class=" <?php echo esc_attr( $post_rent_continue == 'on' ? 'publish' : 'trash' ); ?>"><?php echo esc_html( $post_rent_continue == 'on' ? __( 'Rent On', 'abp-rentalforge' ) : __( 'Rent Off', 'abp-rentalforge' ) ); ?></span>
+                                            <span class=" <?php echo esc_attr( $post_status ); ?>"><?php echo esc_html( $post_status ); ?></span>
                                         </div>
                                     </td>
                                     <th><?php echo esc_html( ! empty( $rent_rule ) ? ABPRF_Layout::rent_rules( $rent_rule ) : '' ); ?></th>
@@ -349,6 +349,8 @@
 					//$post_textarea_array = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST[ $key ] ) ) : [];
 					//$post_html_array     = fn( $key ) => ( isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ) ? array_map( 'wp_kses_post', wp_unslash( $_POST[ $key ] ) ) : [];
 					//$format_date         = fn( $date ) => $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : '';
+                    $templates = ['grid' , 'group' ];
+                    $abprf_template=$post_val( 'abprf_template', 'grid' );
 					$meta_info = [
 						'rent_continue' => $post_val( 'rent_continue', 'on' ),
 						'display_sub_title' => $post_val( 'display_sub_title', 'off' ),
@@ -357,7 +359,7 @@
 						'post_sku' => $post_val( 'post_sku' ),
 						'post_icon' => $post_val( 'post_icon' ),
 						'post_description' => $post_textarea( 'post_description' ),
-						'abprf_template' => $post_val( 'abprf_template', 'grid' ),
+						'abprf_template' => in_array($abprf_template,$templates) ? $abprf_template : 'grid',
 						'related_item' => $post_val( 'related_item' ),
 						'display_category' => $post_val( 'display_category', 'off' ),
 						'abprf_category' => $post_val( 'abprf_category' ),

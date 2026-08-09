@@ -466,7 +466,7 @@
 	div.abprf_area form[class*="_abp"] {margin: 0; padding: 0; line-height: 1.25;}
 	div.abprf_area label { position: relative;text-transform: capitalize;display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-flex-wrap: nowrap; flex-wrap: nowrap; gap: var(--rf_gap_xxs);}
 	div.abprf_area label[class*="_fd_column"] { -webkit-align-items: flex-start; align-items: flex-start;}
-	div.abprf_area label span { white-space: nowrap }
+	div.abprf_area label>span{display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center;gap:var(--rf_gap_xs);white-space: nowrap }
 	div.abprf_area [class*="_form_control"]:focus {outline: 1px solid var(--rf_color_theme);}
 	div.abprf_area [class*="_form_control"][class*="_w_min_auto"] {min-width: auto;}
 	div.abprf_area [class*="_abp_label"] {text-wrap: nowrap;margin-right: var(--rf_gap_xxs);font-size: var(--rf_fs_label); font-weight: var(--rf_fw-medium); padding: 0; color: inherit;}
@@ -613,15 +613,14 @@
 	div.abprf_popup { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 111111; overflow: hidden; background: #000C;-webkit-transition: var(--rf_transition); transition: var(--rf_transition); }
 	div.abprf_popup.in { display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center; }
 	div.abprf_popup .popup_area {
-		min-width: 500px; max-width: 1200px; width: auto; min-height: 250px; max-height: 100vh; height: auto; background-color: #FFF; border: 20px solid #444; position: relative;border-radius: var(--rf_br);
-		display: -webkit-flex; display: flex; -webkit-justify-content: space-between; justify-content: space-between; -webkit-flex-flow: column; flex-flow: column;
+		min-width: 500px; max-width: 1250px; width: auto; min-height: 250px; max-height: 95vh; height: auto; background-color: #FFF; position: relative;border-radius: var(--rf_br_xl);
+		display: -webkit-flex; display: flex; -webkit-justify-content: space-between; justify-content: space-between; -webkit-flex-flow: column; flex-flow: column;padding: var(--rf_gap);overflow: hidden;gap:var(--rf_gap);
 	}
-	div.abprf_popup .popup_area[class*="_w_full"] { max-width: 100vw; width: 100%; }
-	div.abprf_popup .popup_close { position: fixed; z-index: 1111; cursor: pointer; top: 50px; right: 50px; width: 50px; height: 50px; background-color: transparent;color: var(--rf_color_warning); font-size: var(--rf_fs_h4);border: 2px solid var(--rf_color_warning); border-radius: 50%;-webkit-transition: var(--rf_transition); transition: var(--rf_transition);display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;}
+	div.abprf_popup .popup_close { position: absolute; z-index: 1111; cursor: pointer; top: var(--rf_gap_xs); right:var(--rf_gap_xs); width: 40px; height: 40px; background-color: transparent;color: var(--rf_color_warning); font-size: var(--rf_fs_h4);border: 2px solid var(--rf_color_warning); border-radius: 50%;-webkit-transition: var(--rf_transition); transition: var(--rf_transition);display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;}
 	div.abprf_popup .popup_close:hover { color: var(--rf_color_white); background-color: var(--rf_color_warning); }
-	div.abprf_popup .popup_head { border-bottom: 4px double var(--rf_color_border); padding: var(--rf_gap_xs); }
-	div.abprf_popup .popup_body { padding: var(--rf_gap); overflow: auto; }
-	div.abprf_popup .popup_foot { border-top: 4px double var(--rf_color_border); padding: var(--rf_gap_xs); }
+	div.abprf_popup .popup_head { margin: 0 auto;width: 100%; }
+	div.abprf_popup .popup_body {  overflow: auto; position: relative;}
+	div.abprf_popup .popup_foot { border-top: 2px double var(--rf_color_border); padding: var(--rf_gap_xs); }
 	div.abprf_popup [class*="_section"] { margin: 0; }
 }
 /******************************************************************** Pagination section ************************************************/
@@ -842,7 +841,8 @@
 	div.abprf_area [data-collapse],
 	div.abprf_area [data-close],
 	div.abprf_area .hide_on_load,
-	div.abprf_area [class*="_d_none"] { display: none; }
+	div.abprf_area .abp_hidden,
+	div.abprf_area .abp_hidden_content { display: none; }
 	div.abprf_area [class*="_d_block"] { display: block; }
 	div.abprf_area [class*="_d_inline_block"] {display: inline-block;}
 	/*=============================*/
@@ -925,8 +925,8 @@
 	div.abprf_area [class*="_mar_tl_xs"] { margin: var(--rf_gap_xs) 0 0 var(--rf_gap_xs); }
 	/*******Mixture********/
 	div.abprf_area [class*="_gap"] { gap: var(--rf_gap);display: -webkit-flex;display: flex; }
-	div.abprf_area [class*="_gap_xs"] { gap: var(--rf_gap_xs); }
-	div.abprf_area [class*="_gap_xxs"] { gap: var(--rf_gap_xxs); }
+	div.abprf_area [class*="_gap_xs"] { gap: var(--rf_gap_xs);-webkit-align-items: center;align-items: center; }
+	div.abprf_area [class*="_gap_xxs"] { gap: var(--rf_gap_xxs); -webkit-align-items: center;align-items: center;}
 }
 /******************************************************************** Colour / Button Section ************************************************/
 @media only screen and (min-width: 10px) {
@@ -1193,7 +1193,6 @@
 	/*=============================*/
 	.configuration_content {}
 	.add_new_hook {}
-	.abprf_d_none {}
 	.hidden_content {}
 	.insertable_area {}
 	.sortable_area {}

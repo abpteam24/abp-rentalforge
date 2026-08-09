@@ -62,7 +62,7 @@
                                 <input type="hidden" name="cat_id" value=""/>
                                 <div class="radio_item">
                                     <button type="button" class="_btn_light_info_xs_fs_h6 abp_active" data-radio="" data-open-icon="fa-check-circle" data-close-icon="fa-circle">
-                                        <span data-icon class="_mar_r_xs far fa-check-circle"></span><?php echo esc_html__( 'All ', 'abp-rentalforge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?>
+                                        <span data-icon class="far fa-check-circle"></span><?php echo esc_html__( 'All ', 'abp-rentalforge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?>
                                     </button>
                                 </div>
 								<?php
@@ -72,7 +72,7 @@
 											?>
                                             <div class="radio_item">
                                                 <button type="button" class="_btn_light_info_xs_fs_h6" data-radio="<?php echo esc_attr( $current_cat_id ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                                    <span data-icon class="_mar_r_xxs far fa-circle"></span><?php echo esc_html( $name ); ?>
+                                                    <span data-icon class="far fa-circle"></span><?php echo esc_html( $name ); ?>
                                                 </button>
                                             </div>
 											<?php
@@ -108,7 +108,7 @@
                                 <input type="hidden" name="loc_id" value=""/>
                                 <div class="radio_item">
                                     <button type="button" class="_btn_light_info_xs_fs_h6 abp_active" data-radio="" data-open-icon="fa-check-circle" data-close-icon="fa-circle">
-                                        <span data-icon class="_mar_r_xs far fa-check-circle"></span><?php esc_html_e( 'All Location', 'abp-rentalforge' ); ?>
+                                        <span data-icon class="far fa-check-circle"></span><?php esc_html_e( 'All Location', 'abp-rentalforge' ); ?>
                                     </button>
                                 </div>
 								<?php
@@ -118,7 +118,7 @@
 											?>
                                             <div class="radio_item">
                                                 <button type="button" class="_btn_light_info_xs_fs_h6" data-radio="<?php echo esc_attr( $current_loc_id ); ?>" data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                                    <span data-icon class="_mar_r_xxs far fa-circle"></span><?php echo esc_html( $name ); ?>
+                                                    <span data-icon class="far fa-circle"></span><?php echo esc_html( $name ); ?>
                                                 </button>
                                             </div>
 											<?php

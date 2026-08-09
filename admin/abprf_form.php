@@ -16,7 +16,7 @@
 					$abprf_forms = ABPRF_Function::get_option( 'abprf_forms', ABPRF_Layout::static_form() );
 					?>
                     <form class="save_client_form" method="post" action="">
-                        <h4 class="_abp"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
+                        <h4 class="_abp_gap_xxs"><span>📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
                         <div class="_divider_xs"></div>
 						<?php $this->passenger_form_settings( $abprf_forms,true ); ?>
@@ -31,7 +31,7 @@
 					$active_global_form = $abprf_infos['active_global_form'] ?? 'on';
 					?>
                     <div class="tab_item abprf_client_form" data-tabs="#abprf_client_form">
-                        <h4 class=" _abp_color_theme"><span class="_mar_r_xxs">📋</span> <?php esc_html_e( 'Client Forms Configuration', 'abp-rentalforge' ); ?></h4>
+                        <h4 class=" _abp_color_theme_gap_xs"><span>📋</span> <?php esc_html_e( 'Client Forms Configuration', 'abp-rentalforge' ); ?></h4>
                         <div class="_divider_xs"></div>
                         <div class="group_setting">
                             <div class="setting_item">
@@ -51,7 +51,7 @@
                                         <span class="_fs_label_mar_lr_xs"><?php esc_html_e( 'Use Global Client Form ?', 'abp-rentalforge' ); ?></span>
                                     </div>
                                     <div data-collapse="#active_global_form" class=" <?php echo esc_attr( $active_global_form == 'on' ? '' : 'abp_active' ); ?>">
-                                        <button type="button" class="_btn_theme import_global_form"><span class="fas fa-file-upload _mar_r_xs"></span><?php esc_html_e( 'Import Global Client Form', 'abp-rentalforge' ); ?></button>
+                                        <button type="button" class="_btn_theme import_global_form"><span class="fas fa-file-upload"></span><?php esc_html_e( 'Import Global Client Form', 'abp-rentalforge' ); ?></button>
                                     </div>
                                 </div>
                                 <div class="_divider_xs"></div>
@@ -104,7 +104,7 @@
                             <button type="submit" class="_btn_theme_xs"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Global Client Form Configuration', 'abp-rentalforge' ); ?></button>
                         <?php } ?>
                     </div>
-                    <div class="abprf_d_none">
+                    <div class="abp_hidden_content">
                         <table class=" _abp">
                             <tbody class="hidden_content">
 							<?php $this->form_item(); ?>

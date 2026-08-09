@@ -35,7 +35,7 @@
                         <div class="_form_inline_mar_t_xs">
                             <div class="_input_item">
                                 <button type="submit" class="_btn_theme_xs_w_full">
-                                    <span class="_mar_r_xs">🔎</span><?php esc_html_e('Search', 'abp-rentalforge'); ?>
+                                    <span>🔎</span><?php esc_html_e('Search', 'abp-rentalforge'); ?>
                                 </button>
                             </div>
                             <div class="_input_item">

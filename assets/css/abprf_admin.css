@@ -9,7 +9,7 @@
 	div.abprf_admin .abprf_orders table[class*="_abp"] tbody th,
 	div.abprf_admin .abprf_orders table[class*="_abp"] tbody td {vertical-align: top;text-wrap: nowrap;padding: var(--rf_gap_xxs);}
 	/*=============================*/
-	div.abprf_admin .info_text {background: var(--rf_color_white); padding: var(--rf_gap_xxs) var(--rf_gap_xs); border-left: 4px solid var(--rf_color_navy_blue);}
+	div.abprf_admin .info_text {background: var(--rf_color_white); padding: var(--rf_gap_xxs) var(--rf_gap_xs); border-left: 4px solid var(--rf_color_navy_blue);border-radius: var(--rf_br);}
 	/*=============================*/
 	div.abprf_admin .group_setting {display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	div.abprf_admin .group_setting > * {-webkit-flex-grow: 1;flex-grow: 1; -webkit-flex-shrink: 1; flex-shrink: 1; -webkit-flex-basis: 45%; flex-basis: 45%;}
@@ -85,10 +85,9 @@
 	div.abprf_admin .icon_image_selection_area img.emoji {height: 35px !important;}
 	div.abprf_admin .icon_item:hover .icon_close,
 	div.abprf_admin .image_item:hover .icon_close {opacity: 1;}
-	div.abprf_admin .popup_icon .popup_area {max-width: 100vw;width: 100%;height: 100vh;}
-	div.abprf_admin .popup_icon .popup_head { color: #FFF;height: 60px; margin: 0 auto;width: 100%;background-color: #222;position: relative; border-bottom: 1px solid #FFF; }
-	div.abprf_admin .popup_icon .popup_head h2 { color: #FFF;text-align: center; font-size: 30px !important; font-weight: 500; }
-	div.abprf_admin .popup_icon .popup_body {height: 100%;}
+
+	div.abprf_admin .popup_icon .popup_head { }
+
 	div.abprf_admin .popup_icon .item_icon_area { width: 100%; display: -webkit-flex;display: flex; -webkit-flex-wrap: wrap;flex-wrap: wrap; }
 	div.abprf_admin .popup_icon .icon_item {
 		min-width: 100px;font-size: var(--rf_fs_h1);margin: var(--rf_gap_xxs);padding: var(--rf_gap_xxs);cursor: pointer; border: 2px solid #FFF;background-color: #F2F2F2;

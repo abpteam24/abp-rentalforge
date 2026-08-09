@@ -39,7 +39,7 @@
                                 <button type="button" class="_btn_theme hide_on_load save_feature"><?php ABPRF_Layout::icon_svg('save');  esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
                             </div>
                         </div>
-                        <div class="abprf_d_none">
+                        <div class="abp_hidden_content">
                             <table class="_abp">
                                 <tbody class="hidden_content">
 								<?php self::form_feature(); ?>
@@ -209,9 +209,9 @@
                         </tbody>
                     </table>
                     <div class="_divider_xs"></div>
-                    <button type="button" class="_btn_theme_xs save_feature"><span class="_mar_r_xxs">💾</span><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
+                    <button type="button" class="_btn_theme_xs save_feature"><?php ABPRF_Layout::icon_svg('save'); ?><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
                 </div>
-                <div class="abprf_d_none">
+                <div class="abp_hidden_content">
                     <table class="_abp">
                         <tbody class="hidden_content">
 						<?php ABPRF_Feature::form_feature(); ?>

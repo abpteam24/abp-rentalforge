@@ -763,7 +763,7 @@
 										<?php if ( ! empty( $collapse ) ) { ?> data-close-target="#<?php echo esc_attr( $section . '_' . $key_name . '_' . $key ); ?>" <?php } ?>
                                             data-radio="<?php echo esc_attr( $key ); ?>"
                                             data-open-icon="far fa-check-circle" data-close-icon="far fa-circle">
-                                        <span data-icon class="_mar_r_xs <?php echo esc_attr( $key == $value ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php echo esc_html( $data ); ?>
+                                        <span data-icon class="<?php echo esc_attr( $key == $value ? 'far fa-check-circle' : 'far fa-circle' ); ?>"></span><?php echo esc_html( $data ); ?>
                                     </button>
                                 </div>
 							<?php } ?>
