@@ -17,7 +17,7 @@
 			public function admin_enqueue($hook): void {
 				$screen = get_current_screen();
 				$post_type = $screen ? $screen->post_type : '';
-				if (!str_contains($hook, 'rental-forge') && $post_type !== 'abprf_post') {
+				if (!str_contains($hook, ABPRF_Function::slug()) && $post_type !== ABPRF_Function::get_cpt()) {
 					return;
 				}
 				$post_id = get_the_ID();
