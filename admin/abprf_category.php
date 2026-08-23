@@ -19,7 +19,7 @@
 						<?php $this->category_list(); ?>
                     </div>
                     <div class="_divider_xs"></div>
-                    <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="category"><?php ABPRF_Layout::icon_svg('plus'); echo  esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( $category_label ); ?></button>
+                    <button type="button" class="_btn_default" data-target-popup="#abprf_global_popup" data-type="category"><?php ABPRF_Static::svg('plus'); echo  esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( $category_label ); ?></button>
 					<?php
 				}
 			}
@@ -39,7 +39,7 @@
 				$all_categories = ABPRF_Function::get_option( 'abprf_category' );
 				$count          = 1;
 				if ( ! empty( $all_categories ) && is_array( $all_categories ) && sizeof( $all_categories ) > 0 ) { ?>
-                    <table class="_abp">
+                    <table class="abp">
                         <thead>
                         <tr>
                             <th><?php esc_html_e( 'SI', 'abp-rentalforge' ) ?></th>
@@ -58,15 +58,15 @@
 							?>
                             <tr>
                                 <th><?php echo esc_html( $count ); ?>.</th>
-                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( $term_id ) ); ?>" target="_blank" class="_abp_fs_h5_color_theme"><?php echo esc_html( $name ); ?></a></th>
+                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( $term_id ) ); ?>" target="_blank" class="abp_fs_h5_color_theme"><?php echo esc_html( $name ); ?></a></th>
                                 <th><?php echo esc_html( $term_id ); ?></th>
                                 <td><?php echo esc_html( $description ); ?></td>
                                 <th><code> [abprf-post cat_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th><code> [abprf-property cat_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th>
                                     <div class="_group_content">
-                                        <button type="button" class="_btn_light_yellow_xxs" data-id="<?php echo esc_attr( $term_id ); ?>" data-target-popup="#abprf_global_popup" data-type="category" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('edit'); ?></button>
-                                        <button type="button" class="_btn_light_danger_xxs delete_category" data-cat_id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('close_1'); ?></button>
+                                        <button type="button" class="_btn_light_yellow_xxs" data-id="<?php echo esc_attr( $term_id ); ?>" data-target-popup="#abprf_global_popup" data-type="category" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Static::svg('edit'); ?></button>
+                                        <button type="button" class="_btn_light_danger_xxs delete_category" data-cat_id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Static::svg('close_1'); ?></button>
                                     </div>
                                 </th>
                             </tr>
@@ -93,7 +93,7 @@
                 <input type="hidden" name="cat_term_id" value="<?php echo esc_attr( $term_id ); ?>"/>
                 <div class="setting_item _mar_b_xs">
                     <label class="_f_equal_f_wrap">
-                        <span class="_abp_label"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Name', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
+                        <span><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Name', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></span>
                         <input class="_form_control" name="name" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php esc_attr_e( 'Name', 'abp-rentalforge' ); ?>" required/>
                     </label>
                     <div class="_divider_xs"></div>
@@ -101,7 +101,7 @@
                 </div>
                 <div class="setting_item _mar_b_xs">
                     <label class="_f_equal_f_wrap">
-                        <span class="_abp_label"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Slug (Optional)', 'abp-rentalforge' ); ?></span>
+                        <span><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Slug (Optional)', 'abp-rentalforge' ); ?></span>
                         <input class="_form_control" name="slug" value="<?php echo esc_attr( $slug ); ?>" placeholder="<?php esc_attr_e( 'Slug', 'abp-rentalforge' ); ?>"/>
                     </label>
                     <div class="_divider_xs"></div>
@@ -109,14 +109,14 @@
                 </div>
                 <div class="setting_item">
                     <label class="_f_equal_f_wrap">
-                        <span class="_abp_label"><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Description', 'abp-rentalforge' ); ?></span>
+                        <span><?php echo esc_html( $category_label ) . ' ' . esc_html__( 'Description', 'abp-rentalforge' ); ?></span>
                         <textarea class="_form_control" name="description" placeholder="<?php esc_attr_e( 'Description', 'abp-rentalforge' ); ?>"><?php echo esc_html( $des ); ?></textarea>
                     </label>
                     <div class="_divider_xs"></div>
 					<?php ABPRF_Layout::info_text( 'cat_des' ); ?>
                 </div>
                 <div class="_divider_xs"></div>
-                <button type="button" class="_btn_theme save_category"><?php ABPRF_Layout::icon_svg('save'); echo ( ! empty( $term_id ) ? esc_html__( 'Update', 'abp-rentalforge' ) : esc_html__( 'Save', 'abp-rentalforge' ) ) . ' ' . esc_html( $category_label ); ?></button>
+                <button type="button" class="_btn_theme save_category"><?php ABPRF_Static::svg('save'); echo ( ! empty( $term_id ) ? esc_html__( 'Update', 'abp-rentalforge' ) : esc_html__( 'Save', 'abp-rentalforge' ) ) . ' ' . esc_html( $category_label ); ?></button>
 				<?php
 			}
 			public static function category_selection( $_category = '' ): void {
@@ -132,11 +132,11 @@
                                 </button>
                             </div>
 						<?php } ?>
-                        <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="category"><?php ABPRF_Layout::icon_svg('plus'); echo esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?></button>
+                        <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="category"><?php ABPRF_Static::svg('plus'); echo esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?></button>
                     </div>
 				<?php } else { ?>
-                    <p><?php echo esc_html( ABPRF_Layout::array_info( 'no_category' ) ); ?></p>
-                    <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="category"><?php ABPRF_Layout::icon_svg('plus'); echo esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?></button>
+                    <p><?php echo esc_html( ABPRF_Static::array_info( 'no_category' ) ); ?></p>
+                    <button type="button" class="_btn_default_xs" data-target-popup="#abprf_global_popup" data-type="category"><?php ABPRF_Static::svg('plus'); echo esc_html__( 'Add New', 'abp-rentalforge' ) . ' ' . esc_html( ABPRF_Function::category_label() ); ?></button>
 					<?php
 				}
 			}

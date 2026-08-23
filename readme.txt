@@ -2,8 +2,8 @@
 Contributors: abpteam
 Tags: rental, rent,booking, bike car,property equipment
 Requires at least: 6.2
-Stable tag: 1.0.4
-Tested up to: 7.0
+Stable tag: 1.0.5
+Tested up to: 7.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -355,6 +355,16 @@ This plugin does not collect or transmit any personal data by itself. Any custom
 
 == Changelog ==
 
+= 1.0.5 =
+
+* Added WordPress 7.1 compatibility testing.
+* Improved plugin UI and overall design.
+* Improved user experience and interface consistency.
+* Fixed several minor bugs and UI issues.
+* Improved overall stability and compatibility.
+
+Released: August 22, 2026
+
 = 1.0.4 =
 
 * Security hardening and validation improvements.
@@ -396,17 +406,20 @@ Released: July 14, 2026
 
 == Upgrade Notice ==
 
+= 1.0.5 =
+Released: August 22, 2026
+
 = 1.0.4 =
-Released: July 26, 2026
+Released: August 06, 2026
 
 = 1.0.3 =
-Released: August 06, 2026
+Released: July 26, 2026
 
 = 1.0.2 =
 Released: July 19, 2026
 
 = 1.0.1 =
-Released: July 1, 2026
+Released: July 14, 2026
 
 = 1.0.0 =
 *Initial Release*

@@ -13,10 +13,10 @@
             }
             public function global_additional(): void {
                 if (ABPRF_Function::on_off('additional_info')) {
-                    $additional_services = ABPRF_Function::get_option('abprf_additional', ABPRF_Layout::static_additional());
+                    $additional_services = ABPRF_Function::get_option('abprf_additional', ABPRF_Static::static_additional());
                     ?>
                     <form class=" save_additional_service" method="post" action="">
-                        <h4 class="_abp_color_gap_xxs"><span class="">💰</span> <?php esc_html_e('Global Additional services Configuration', 'abp-rentalforge'); ?></h4>
+                        <h4 class="abp_color_gap_xxs">💰 <?php esc_html_e('Global Additional services Configuration', 'abp-rentalforge'); ?></h4>
                         <?php ABPRF_Layout::info_text('additional_services'); ?>
                         <div class="_divider_xs"></div>
                         <?php $this->additional_service($additional_services, true); ?>
@@ -31,7 +31,7 @@
                     $active_global_additional = $abprf_infos['active_global_additional'] ?? 'on';
                     ?>
                     <div class="tab_item additional_configuration" data-tabs="#abprf_additional_service">
-                        <h4 class="_abp_color_theme_gap_xxs"><span class="">💰</span><?php esc_html_e('Additional services Configuration', 'abp-rentalforge'); ?></h4>
+                        <h4 class="abp_color_theme_gap_xxs">💰<?php esc_html_e('Additional services Configuration', 'abp-rentalforge'); ?></h4>
                         <div class="_divider_xs"></div>
                         <div class="group_setting">
                             <div class="setting_item">
@@ -71,7 +71,7 @@
                 ?>
                 <div class="configuration_content additional_service">
                     <div class="_ov_auto">
-                        <table class="_abp">
+                        <table class="abp">
                             <thead>
                             <tr>
                                 <th class="_w_125"><?php esc_html_e('Icon / Image', 'abp-rentalforge'); ?></th>
@@ -99,11 +99,11 @@
                     <div class="_fj_between">
                         <?php ABPRF_Layout::button_add_xs(__('Add New Additional services', 'abp-rentalforge')); ?>
                         <?php if ($global) { ?>
-                            <button type="submit" class="_btn_theme_xs"><?php ABPRF_Layout::icon_svg('save'); esc_html_e('Save Global Additional services Configuration', 'abp-rentalforge'); ?></button>
+                            <button type="submit" class="_btn_theme_xs"><?php ABPRF_Static::svg('save'); esc_html_e('Save Global Additional services Configuration', 'abp-rentalforge'); ?></button>
                         <?php } ?>
                     </div>
-                    <div class="abp_hidden_content">
-                        <table class="_abp">
+                    <div class="abp_hidden">
+                        <table class="abp">
                             <tbody class="hidden_content">
                             <?php $this->service_item(); ?>
                             </tbody>
@@ -214,7 +214,7 @@
                 if (!current_user_can('manage_options')) {
                     wp_send_json_error(['html' => '', 'msg' => __('Insufficient permissions.', 'abp-rentalforge')], 403);
                 }
-                $additional_services = ABPRF_Function::get_option('abprf_additional', ABPRF_Layout::static_additional());
+                $additional_services = ABPRF_Function::get_option('abprf_additional', ABPRF_Static::static_additional());
                 $additional_services = is_array($additional_services) ? $additional_services : [];
                 ob_start();
                 $this->additional_service($additional_services);

@@ -15,7 +15,7 @@
         $total_images = count($img_infos);
         ?>
         <div class="_section_card_mar_t">
-            <h4 class="_abp_gap_xs"><span class="far fa-image"></span> <?php esc_html_e('Gallery', 'abp-rentalforge'); ?></h4>
+            <h4 class="abp_gap_xs"><span class="far fa-image"></span> <?php esc_html_e('Gallery', 'abp-rentalforge'); ?></h4>
             <div class="_divider_xxs"></div>
             <div class="abprf_gallery">
                 <div class="gallery_area item_<?php echo esc_attr($image_column); ?>">

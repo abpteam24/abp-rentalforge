@@ -14,13 +14,13 @@
 				$date_infos = ABPRF_Function::get_option( 'abprf_dates' );
 				?>
                 <form class="save_dates" method="post" action="">
-                    <h4 class="_abp_gap_xs"><span class="">🗓️</span> <?php esc_html_e( 'Global Date Configuration', 'abp-rentalforge' ); ?></h4>
+                    <h4 class="abp_gap_xs">🗓️<?php esc_html_e( 'Global Date Configuration', 'abp-rentalforge' ); ?></h4>
 					<?php ABPRF_Layout::info_text( 'abprf_dates' ); ?>
                     <div class="_divider_xs"></div>
 					<?php $this->date_time_format( $date_infos );
 						$this->date_content( $date_infos ); ?>
                     <div class="_divider_xs"></div>
-                    <button type="submit" class="_btn_theme"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Date Configuration', 'abp-rentalforge' ); ?></button>
+                    <button type="submit" class="_btn_theme"><?php ABPRF_Static::svg('save'); esc_html_e( 'Save Date Configuration', 'abp-rentalforge' ); ?></button>
                 </form>
 				<?php
 			}
@@ -29,7 +29,7 @@
 				$active_global_dates = $post_infos['active_global_dates'] ?? 'on';
 				?>
                 <div class="tab_item" data-tabs="#abprf_dates">
-                    <h4 class="_abp_color_theme_gap_xs"><span>🗓️</span> <?php esc_html_e( 'Date Configuration', 'abp-rentalforge' ); ?></h4>
+                    <h4 class="abp_color_theme_gap_xs">🗓️ <?php esc_html_e( 'Date Configuration', 'abp-rentalforge' ); ?></h4>
                     <div class="_divider_xs"></div>
                     <div class="group_setting">
                         <div class="setting_item">
@@ -140,7 +140,7 @@
 				?>
                 <div class="setting_item">
                     <div class=" _fj_between">
-                        <h5 class="_abp"><?php esc_html_e( 'Operational Date Type', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></h5>
+                        <h5 class="abp"><?php esc_html_e( 'Operational Date Type', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></h5>
                         <div class="custom_radio">
                             <input type="hidden" class="_form_control" name="date_type" value="<?php echo esc_attr( $date_type ); ?>"/>
                             <div class="radio_item">
@@ -217,7 +217,7 @@
                     <div class="group_setting _mar_t_xs">
                         <div class="setting_item full_width">
                             <div class="_fj_between _mar_t_xs">
-                                <h5 class="_abp_color_theme"><?php esc_html_e( 'Special On/Off Date Time(optional)', 'abp-rentalforge' ); ?></h5>
+                                <h5 class="abp_color_theme"><?php esc_html_e( 'Special On/Off Date Time(optional)', 'abp-rentalforge' ); ?></h5>
                                 <div class="custom_checkbox _group_content">
                                     <input type="hidden" name="date_rule" value="<?php echo esc_attr( $date_rule ); ?>"/>
 									<?php foreach ( $date_rules as $key => $rule ) { ?>
@@ -250,7 +250,7 @@
 				$days            = ABPRF_Layout::week_day(); ?>
                 <div class="setting_item full_width <?php echo esc_attr( in_array( 'weekend', $date_rule_array ) ? 'abp_active' : '' ); ?> " data-collapse="#weekend">
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php esc_html_e( 'Weekend(optional)', 'abp-rentalforge' ); ?></span>
+                        <span class="abp_label"><?php esc_html_e( 'Weekend(optional)', 'abp-rentalforge' ); ?></span>
                         <div class="custom_checkbox _group_content">
                             <input type="hidden" name="weekend" value="<?php echo esc_attr( $weekend ); ?>"/>
 							<?php foreach ( $days as $key => $day ) { ?>
@@ -275,7 +275,7 @@
                 <div class="setting_item full_width <?php echo esc_attr( in_array( 'specific_of_date', $date_rule_array ) ? 'abp_active' : '' ); ?>" data-collapse="#specific_of_date">
                     <div class="configuration_content">
                         <div class="_fj_between_fa_conter">
-                            <span class="_abp_label"><?php esc_html_e( 'Specific Off Dates(optional)', 'abp-rentalforge' ); ?></span>
+                            <span class="abp_label"><?php esc_html_e( 'Specific Off Dates(optional)', 'abp-rentalforge' ); ?></span>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add Specific Off Date', 'abp-rentalforge' ) ); ?>
                         </div>
                         <div class="insertable_area sortable_area _f_wrap_gap_xs">
@@ -289,7 +289,7 @@
 								}
 							?>
                         </div>
-                        <div class="abp_hidden_content">
+                        <div class="abp_hidden">
                             <div class="hidden_content">
 								<?php $this->date_item( 'specific_off_dates[]' ); ?>
                             </div>
@@ -308,7 +308,7 @@
                 <div class="setting_item full_width <?php echo esc_attr( in_array( 'off_date_range', $date_rule_array ) ? 'abp_active' : '' ); ?>" data-collapse="#off_date_range">
                     <div class="configuration_content">
                         <div class="_fj_between_fa_conter">
-                            <span class="_abp_label"><?php esc_html_e( 'Off Date Range(optional)', 'abp-rentalforge' ); ?></span>
+                            <span class="abp_label"><?php esc_html_e( 'Off Date Range(optional)', 'abp-rentalforge' ); ?></span>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add Off Date Range', 'abp-rentalforge' ) ); ?>
                         </div>
                         <div class="insertable_area sortable_area _f_wrap_gap_xs_w">
@@ -322,7 +322,7 @@
 								}
 							?>
                         </div>
-                        <div class="abp_hidden_content">
+                        <div class="abp_hidden">
                             <div class="hidden_content">
 								<?php $this->off_day_range(); ?>
                             </div>
@@ -342,7 +342,7 @@
                 <div class="setting_item full_width  <?php echo esc_attr( in_array( 'special_on_dates', $date_rule_array ) ? 'abp_active' : '' ); ?>" data-collapse="#special_on_dates">
                     <div class="configuration_content">
                         <div class="_fj_between_fa_conter">
-                            <span class="_abp_label"><?php esc_html_e( 'Special On Dates (optional)', 'abp-rentalforge' ); ?></span>
+                            <span class="abp_label"><?php esc_html_e( 'Special On Dates (optional)', 'abp-rentalforge' ); ?></span>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add Special On Dates', 'abp-rentalforge' ) ); ?>
                         </div>
                         <div class="insertable_area sortable_area _f_wrap_gap_xs">
@@ -356,7 +356,7 @@
 								}
 							?>
                         </div>
-                        <div class="abp_hidden_content">
+                        <div class="abp_hidden">
                             <div class="hidden_content">
 								<?php $this->special_on_date_item(); ?>
                             </div>
@@ -382,7 +382,7 @@
 							$end   = $times['end'] ?? '';
 							?>
                             <div class="_fj_between_fa_center_min_500_max_600">
-                                <span class="_abp_label"><?php echo esc_html( $day ); ?></span>
+                                <span class="abp_label"><?php echo esc_html( $day ); ?></span>
                                 <div class="_group_content">
 									<?php ABPRF_Layout::input_time( $key . '_time_start', $start );
 										ABPRF_Layout::input_time( $key . '_time_end', $end ); ?>
@@ -432,7 +432,7 @@
 				?>
                 <div class="setting_item full_width  <?php echo esc_attr( $date_type == 'specific_date' ? 'abp_active' : '' ); ?>" data-close="#specific_date">
                     <div class="_f_wrap_fj_between">
-                        <span class="_abp_label"><?php esc_html_e( 'Specific Dates & Operation Times', 'abp-rentalforge' ); ?></span>
+                        <span class="abp_label"><?php esc_html_e( 'Specific Dates & Operation Times', 'abp-rentalforge' ); ?></span>
                         <div class="configuration_content">
                             <div class="insertable_area sortable_area">
 								<?php
@@ -446,7 +446,7 @@
 								?>
                             </div>
 							<?php ABPRF_Layout::button_add_xs( __( 'Add Specific Date', 'abp-rentalforge' ) ); ?>
-                            <div class="abp_hidden_content">
+                            <div class="abp_hidden">
                                 <div class="hidden_content">
 									<?php $this->specific_date_item(); ?>
                                 </div>

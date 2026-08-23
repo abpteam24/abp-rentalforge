@@ -13,10 +13,10 @@
 			}
 			public function global_client_form(): void {
 				if ( ABPRF_Function::on_off( 'client_info' ) ) {
-					$abprf_forms = ABPRF_Function::get_option( 'abprf_forms', ABPRF_Layout::static_form() );
+					$abprf_forms = ABPRF_Function::get_option( 'abprf_forms', ABPRF_Static::static_form() );
 					?>
                     <form class="save_client_form" method="post" action="">
-                        <h4 class="_abp_gap_xxs"><span>📋</span> <?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
+                        <h4 class="abp_gap_xxs">📋<?php esc_html_e( 'Global Client Form Configuration', 'abp-rentalforge' ); ?></h4>
 						<?php ABPRF_Layout::info_text( 'global_client_forms' ); ?>
                         <div class="_divider_xs"></div>
 						<?php $this->passenger_form_settings( $abprf_forms,true ); ?>
@@ -31,7 +31,7 @@
 					$active_global_form = $abprf_infos['active_global_form'] ?? 'on';
 					?>
                     <div class="tab_item abprf_client_form" data-tabs="#abprf_client_form">
-                        <h4 class=" _abp_color_theme_gap_xs"><span>📋</span> <?php esc_html_e( 'Client Forms Configuration', 'abp-rentalforge' ); ?></h4>
+                        <h4 class=" abp_color_theme_gap_xs">📋<?php esc_html_e( 'Client Forms Configuration', 'abp-rentalforge' ); ?></h4>
                         <div class="_divider_xs"></div>
                         <div class="group_setting">
                             <div class="setting_item">
@@ -71,7 +71,7 @@
 				?>
                 <div class="configuration_content">
                     <div class="_ov_auto">
-                        <table class=" _abp">
+                        <table class=" abp">
                             <thead>
                             <tr>
                                 <th class="_text_table_center"><?php esc_html_e( 'Form Title', 'abp-rentalforge' ); ?><sup class="_color_required">*</sup></th>
@@ -101,11 +101,11 @@
                     <div class="_fj_between">
                         <?php ABPRF_Layout::button_add_xs( __( 'Add New Form', 'abp-rentalforge' ) ); ?>
                         <?php if ($global) { ?>
-                            <button type="submit" class="_btn_theme_xs"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Global Client Form Configuration', 'abp-rentalforge' ); ?></button>
+                            <button type="submit" class="_btn_theme_xs"><?php ABPRF_Static::svg('save'); esc_html_e( 'Save Global Client Form Configuration', 'abp-rentalforge' ); ?></button>
                         <?php } ?>
                     </div>
-                    <div class="abp_hidden_content">
-                        <table class=" _abp">
+                    <div class="abp_hidden">
+                        <table class=" abp">
                             <tbody class="hidden_content">
 							<?php $this->form_item(); ?>
                             </tbody>
@@ -237,7 +237,7 @@
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( [ 'html' => '', 'msg' => __( 'Insufficient permissions.', 'abp-rentalforge' ) ], 403 );
 				}
-				$default_form = ABPRF_Layout::static_form();
+				$default_form = ABPRF_Static::static_form();
 				$forms        = ABPRF_Function::get_option( 'abprf_forms', $default_form ) ?? [];
 				$forms        = is_array( $forms ) ? $forms : [];
 				ob_start();

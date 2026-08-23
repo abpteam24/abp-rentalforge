@@ -2,7 +2,7 @@
 	/**
 	 * Plugin Name: ABP RentalForge
 	 * Description: RentalForge is a WooCommerce-based WordPress rental plugin that helps you manage Property and tool bookings, availability and rentals from a single dashboard.
-	 * Version: 1.0.4
+	 * Version: 1.0.5
 	 * Author: abpteam
 	 * Author URI: https://abp-team.com
 	 * Text Domain: abp-rentalforge
@@ -25,6 +25,18 @@
 						require_once ABSPATH . 'wp-admin/includes/plugin.php';
 					}
 				} );
+				add_action(
+					'before_woocommerce_init', // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+					function () {
+						if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+							\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+								'custom_order_tables',
+								__FILE__,
+								true
+							);
+						}
+					}
+				);
 				$this->load_plugin();
 			}
 			private function load_plugin(): void {
@@ -32,7 +44,7 @@
 					define( 'ABPRF_PLUGIN_FILE', __FILE__ );
 				}
 				if ( ! defined( 'ABPRF_VERSION' ) ) {
-					define( 'ABPRF_VERSION', '1.0.4');
+					define( 'ABPRF_VERSION', '1.0.5');
 				}
 				if ( ! defined( 'ABPRF_DIR' ) ) {
 					define( 'ABPRF_DIR', plugin_dir_path( __FILE__ ) );

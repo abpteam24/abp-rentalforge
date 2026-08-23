@@ -22,7 +22,7 @@
                         <div class="configuration_content">
                             <div class="form_area">
                                 <div class="hide_on_load">
-                                    <table class="_abp ">
+                                    <table class="abp ">
                                         <thead>
                                         <tr>
                                             <th><?php esc_html_e( 'Icon', 'abp-rentalforge' ); ?></th>
@@ -39,11 +39,11 @@
                                 </div>
                                 <div class="_fj_between">
 									<?php ABPRF_Layout::button_add_xs( __( 'Add New Brand', 'abp-rentalforge' ) ); ?>
-                                    <button type="button" class="_btn_theme_xs hide_on_load save_brand"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
+                                    <button type="button" class="_btn_theme_xs hide_on_load save_brand"><?php ABPRF_Static::svg('save'); esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
                                 </div>
                             </div>
-                            <div class="abp_hidden_content">
-                                <table class="_abp">
+                            <div class="abp_hidden">
+                                <table class="abp">
                                     <tbody class="hidden_content">
 									<?php self::form_brand(); ?>
                                     </tbody>
@@ -81,7 +81,7 @@
 				$abprf_brands = ABPRF_Function::get_option( 'abprf_brand' );
 				$count        = 1;
 				if ( ! empty( $abprf_brands ) && is_array( $abprf_brands ) && sizeof( $abprf_brands ) > 0 ) { ?>
-                    <table class="_abp">
+                    <table class="abp">
                         <thead>
                         <tr>
                             <th><?php esc_html_e( 'SI', 'abp-rentalforge' ) ?></th>
@@ -100,14 +100,14 @@
 							?>
                             <tr>
                                 <th><?php echo esc_html( $count ); ?>.</th>
-                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( $term_id ) ); ?>" target="_blank" class="_abp_fs_h5 _color_theme"><?php ABPRF_Layout::image_icon( $icon ); ?><?php echo esc_html( $name ); ?></a></th>
+                                <th class="_text_left"><a href="<?php echo esc_url( get_term_link( $term_id ) ); ?>" target="_blank" class="abp_fs_h5_color_theme"><?php ABPRF_Layout::image_icon( $icon ); ?><?php echo esc_html( $name ); ?></a></th>
                                 <th><?php echo esc_html( $term_id ); ?></th>
                                 <td><?php echo esc_html( $description ); ?></td>
                                 <th><code> [abprf-property brand_id="<?php echo esc_attr( $term_id ); ?>"]</code></th>
                                 <th>
                                     <div class="_group_content">
-                                        <button type="button" class="_btn_light_yellow_xxs edit_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('edit');?></button>
-                                        <button type="button" class="_btn_light_danger_xxs delete_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Layout::icon_svg('close_1');?></button>
+                                        <button type="button" class="_btn_light_yellow_xxs edit_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Static::svg('edit');?></button>
+                                        <button type="button" class="_btn_light_danger_xxs delete_brand" data-id="<?php echo esc_attr( $term_id ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $name ); ?>"><?php ABPRF_Static::svg('close_1');?></button>
                                     </div>
                                 </th>
                             </tr>
@@ -132,7 +132,7 @@
                         </select>
                     </label>
 				<?php } else { ?>
-                    <p class="_abp"><?php echo esc_html( ABPRF_Layout::array_info( 'no_brand' ) ); ?></p>
+                    <p class="abp"><?php echo esc_html( ABPRF_Static::array_info( 'no_brand' ) ); ?></p>
 				<?php }
 			}
 			public static function form_brand( $brand = [], $id = '' ): void {
@@ -171,16 +171,16 @@
 				?>
                 <div class="form_area">
                     <div class="hide_on_load">
-                        <table class="_abp ">
+                        <table class="abp ">
                             <tbody class="insertable_area sortable_area">
                             </tbody>
                         </table>
                         <div class="_divider_xs"></div>
                     </div>
-                    <button type="button" class="_btn_theme_xs hide_on_load save_brand"><?php ABPRF_Layout::icon_svg('save'); esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
+                    <button type="button" class="_btn_theme_xs hide_on_load save_brand"><?php ABPRF_Static::svg('save'); esc_html_e( 'Save Brand', 'abp-rentalforge' ); ?></button>
                 </div>
-                <div class="abp_hidden_content">
-                    <table class="_abp">
+                <div class="abp_hidden">
+                    <table class="abp">
                         <tbody class="hidden_content">
                         <tr class="delete_area">
                             <th><?php do_action( 'abprf_add_icon', 'brand_icon[]', $icon ); ?></th>

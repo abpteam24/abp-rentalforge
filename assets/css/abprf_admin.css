@@ -6,14 +6,16 @@
 	div.abprf_admin table tfoot {background: var(--rf_color_muted_2);}
 	div.abprf_admin table tbody tr:nth-child(even) {background: var(--rf_color_green_light);}
 	div.abprf_admin table tbody tr:nth-child(odd) {background: #fff0;}
-	div.abprf_admin .abprf_orders table[class*="_abp"] tbody th,
-	div.abprf_admin .abprf_orders table[class*="_abp"] tbody td {vertical-align: top;text-wrap: nowrap;padding: var(--rf_gap_xxs);}
+	div.abprf_admin .abprf_orders table[class*="abp"] tbody th,
+	div.abprf_admin .abprf_orders table[class*="abp"] tbody td {vertical-align: top;text-wrap: nowrap;padding: var(--rf_gap_xxs);}
+	/*=============================*/
+	div.abprf_admin .abp_notice{margin: 0 auto;max-width: 1200px;display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between;align-items: center;}
 	/*=============================*/
 	div.abprf_admin .info_text {background: var(--rf_color_white); padding: var(--rf_gap_xxs) var(--rf_gap_xs); border-left: 4px solid var(--rf_color_navy_blue);border-radius: var(--rf_br);}
 	/*=============================*/
 	div.abprf_admin .group_setting {display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;gap: var(--rf_gap_xs);}
 	div.abprf_admin .group_setting > * {-webkit-flex-grow: 1;flex-grow: 1; -webkit-flex-shrink: 1; flex-shrink: 1; -webkit-flex-basis: 45%; flex-basis: 45%;}
-	div.abprf_admin .setting_item {padding: var(--rf_gap_xs); background: var(--rf_color_4); width: 100%;border: 2px solid var(--rf_color_green_pale); border-radius: var(--rf_br);min-width: 400px;}
+	div.abprf_admin .setting_item {padding: var(--rf_gap_xs); background: var(--rf_color_4); width: 100%;border-radius: var(--rf_br);min-width: 400px;}
 	div.abprf_admin .setting_item .setting_item {border-color: var(--rf_color_alert);background: var(--rf_color_alert);}
 	div.abprf_admin .setting_item .setting_item .setting_item {border-color: var(--rf_color_green_pale);background: var(--rf_color_green_pale)}
 	div.abprf_admin .group_setting > .full_width,

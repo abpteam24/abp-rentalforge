@@ -1,3 +1,6 @@
+if (!window.abprf_parent || !window.abprf_parent.length) {
+    window.abprf_parent = jQuery('div.abprf_area');
+}
 (function ($) {
     "use strict";
     let abprf_time_slot_infos = JSON.parse(abprf_infos.date_info);
@@ -112,13 +115,13 @@
         $.ajax({
             type: 'POST', url: abprf_infos.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(target);
-                abprf_spinner(form_area);
+                abp_spinner(target);
+                abp_spinner(form_area);
                 abprf_toast_msg(abprf_infos.msg.property_loading);
             },
             success: function (response) {
-                abprf_spinner_remove(target);
-                abprf_spinner_remove(form_area);
+                abp_spinner_remove(target);
+                abp_spinner_remove(form_area);
                 if (response.data && response.data.hasOwnProperty('property_info')) {
                     target.find('.property_item_area').html(response.data.property_info);
                     target.find('.property_others').html(response.data.property_others);
@@ -143,12 +146,12 @@
             type: 'POST', url: abprf_infos.ajax_url, data: {
                 "action": "abprf_get_global_booking", 'post_id': post_id, 'nonce': abprf_infos.nonce
             }, beforeSend: function () {
-                abprf_spinner(target_form);
-                abprf_spinner(target_area);
+                abp_spinner(target_form);
+                abp_spinner(target_area);
                 abprf_toast_msg(text_val);
             }, success: function (response) {
-                abprf_spinner_remove(target_form);
-                abprf_spinner_remove(target_area);
+                abp_spinner_remove(target_form);
+                abp_spinner_remove(target_area);
                 if (response.data && response.data.hasOwnProperty('form') && response.data.hasOwnProperty('details')) {
                     target_form.html(response.data.form).promise().done(function () {
                         if (response.data.hasOwnProperty('start_date') && $('#start_date').length > 0) {
@@ -219,11 +222,11 @@
         $.ajax({
             type: 'POST', url: abprf_infos.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_infos.msg.end_date_loading);
             },
             success: function (response) {
-                abprf_spinner_remove(target);
+                abp_spinner_remove(target);
                 if (response.data && response.data.hasOwnProperty('html')) {
                     target.html(response.data.html).promise().done(function () {
                         if (response.data.hasOwnProperty('picker_config') && response.data.picker_config) {

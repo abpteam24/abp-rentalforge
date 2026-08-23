@@ -1,3 +1,6 @@
+if (!window.abprf_parent || !window.abprf_parent.length) {
+    window.abprf_parent = jQuery('div.abprf_area');
+}
 let abprf_feature_data = JSON.parse(abprf_admin_data.feature_data);
 let abprf_related_info = JSON.parse(abprf_admin_data.related_info);
 function abprf_save_data(form_area, target, action) {
@@ -36,11 +39,11 @@ function abprf_save_data(form_area, target, action) {
     jQuery.ajax({
         type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
         beforeSend: function () {
-            abprf_spinner(form_area);
+            abp_spinner(form_area);
             abprf_toast_msg(abprf_admin_data.msg.saving);
         },
         success: function (response) {
-            abprf_spinner_remove(form_area);
+            abp_spinner_remove(form_area);
             abprf_toast_msg(response.data.msg, 'success');
             if (target && target.length > 0) {
                 target.html(response.data.html);
@@ -81,6 +84,26 @@ function abprf_property_filter_arg($this) {
     }
     return filter_args;
 }
+window.abprf_wc_config = function (page_type) {
+    if (page_type) {
+        let parent = abprf_parent.find('.abp_notice');
+        jQuery.ajax({
+            type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                "action": "abprf_wc_config", 'nonce': abprf_admin_data.nonce, 'type': page_type
+            }, beforeSend: function () {
+                abp_spinner(parent);
+                abprf_toast_msg((abprf_admin_data.msg[page_type] ? abprf_admin_data.msg[page_type] : abprf_admin_data.msg.loading));
+            }, success: function (response) {
+                if (response.data && response.data.hasOwnProperty('msg')) {
+                    abprf_toast_msg(response.data.msg, response.data.type);
+                }
+                //window.location.reload();
+            }, error: function (xhr) {
+                abprf_ajx_error(xhr, parent);
+            }
+        });
+    }
+};
 //==========Post=================//
 (function ($) {
     "use strict";
@@ -91,10 +114,10 @@ function abprf_property_filter_arg($this) {
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_post_permanent_remove", 'post_id': post_id, 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_deleting, 'error');
             }, success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 abprf_toast_msg(response.data.msg, 'warn');
                 window.location.reload();
             }
@@ -107,10 +130,10 @@ function abprf_property_filter_arg($this) {
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_post_move_trash", 'post_id': post_id, 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_trashing, 'error');
             }, success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 abprf_toast_msg(response.data.msg, 'warn');
                 window.location.reload();
             }
@@ -123,10 +146,10 @@ function abprf_property_filter_arg($this) {
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_post_restore", 'post_id': post_id, 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.post_restoring, 'info');
             }, success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 abprf_toast_msg(response.data.msg, 'success');
                 window.location.reload();
             }
@@ -150,13 +173,13 @@ function abprf_property_filter_arg($this) {
                     type: 'POST', url: abprf_admin_data.ajax_url, data: {
                         "action": "abprf_reload_post_list", "filter_args": filter_args, 'nonce': abprf_admin_data.nonce
                     }, beforeSend: function () {
-                        abprf_spinner(parent);
+                        abp_spinner(parent);
                         abprf_toast_msg(abprf_admin_data.msg.post_loading);
                     }, success: function (response) {
                         if (response.data && response.data.hasOwnProperty('html')) {
                             target.html(response.data.html);
                         }
-                        abprf_spinner_remove(parent);
+                        abp_spinner_remove(parent);
                         abprf_toast_msg(response.data.msg, response.data.type);
                     }, error: function (xhr) {
                         abprf_ajx_error(xhr, parent);
@@ -205,7 +228,7 @@ function abprf_property_filter_arg($this) {
                 type: 'POST', url: abprf_admin_data.ajax_url, data: {
                     "action": "abprf_property_delete", 'property_id': property_id, 'filter_args': filter_args, 'nonce': abprf_admin_data.nonce
                 }, beforeSend: function () {
-                    abprf_spinner(target);
+                    abp_spinner(target);
                     abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
                 }, success: function (response) {
                     abprf_toast_msg(response.data.msg);
@@ -221,7 +244,7 @@ function abprf_property_filter_arg($this) {
                 type: 'POST', url: abprf_admin_data.ajax_url, data: {
                     "action": "abprf_reload_property_list", "filter_args": filter_args, 'nonce': abprf_admin_data.nonce
                 }, beforeSend: function () {
-                    abprf_spinner(target);
+                    abp_spinner(target);
                     abprf_toast_msg(abprf_admin_data.msg.property_loading);
                 }, success: function (response) {
                     target.html(response.data.html);
@@ -252,11 +275,11 @@ function abprf_property_filter_arg($this) {
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.order_loading);
             },
             success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 target.html(response.data.html);
                 abprf_toast_msg(response.data.msg, 'success');
                 abprf_load_more();
@@ -282,10 +305,10 @@ function abprf_property_filter_arg($this) {
                 type: 'POST', url: abprf_admin_data.ajax_url, data: {
                     "action": "abprf_item_cancel", 'item_id': item_id, 'nonce': abprf_admin_data.nonce
                 }, beforeSend: function () {
-                    abprf_spinner(parent);
+                    abp_spinner(parent);
                     abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
                 }, success: function (response) {
-                    abprf_spinner_remove(parent);
+                    abp_spinner_remove(parent);
                     abprf_toast_msg(response.data.msg);
                     $this.closest('.abprf_orders').find('form.load_order_list').submit();
                 }
@@ -308,7 +331,7 @@ function abprf_property_filter_arg($this) {
 (function ($) {
     "use strict";
     $(document).on("abp_trigger", "div.abprf_admin [data-popup='#abprf_global_popup'] .popup_close", function () {
-        $(this).closest('.abprf_popup').find('.popup_body').html('');
+        $(this).closest('.abp_popup').find('.popup_body').html('');
     });
     $(document).on("abp_trigger", "div.abprf_admin [data-target-popup='#abprf_global_popup']", function () {
         let tax_id = $(this).attr('data-id');
@@ -332,10 +355,10 @@ function abprf_property_filter_arg($this) {
                 type: 'POST', url: abprf_admin_data.ajax_url, data: {
                     "action": action, 'tax_id': tax_id, 'property_copy': property_copy, 'post_id': post_id, 'nonce': abprf_admin_data.nonce
                 }, beforeSend: function () {
-                    abprf_spinner(parent);
+                    abp_spinner(parent);
                     abprf_toast_msg(abprf_admin_data.msg.loading);
                 }, success: function (response) {
-                    abprf_spinner_remove(parent);
+                    abp_spinner_remove(parent);
                     target.html(response.data.html).promise().done(function () {
                         abprf_toast_msg(response.data.msg, 'success');
                         abprf_load_more();
@@ -359,7 +382,7 @@ function abprf_property_filter_arg($this) {
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
@@ -379,7 +402,7 @@ function abprf_property_filter_arg($this) {
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
@@ -395,7 +418,7 @@ function abprf_property_filter_arg($this) {
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_import_additional", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.importing);
             }, success: function (response) {
                 target.html(response.data.html).promise().done(function () {
@@ -418,7 +441,7 @@ function abprf_property_filter_arg($this) {
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
@@ -434,7 +457,7 @@ function abprf_property_filter_arg($this) {
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_import_global_form", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.importing);
             }, success: function (response) {
                 target.html(response.data.html).promise().done(function () {
@@ -464,11 +487,11 @@ function abprf_property_filter_arg($this) {
                 "action": "abprf_delete_category", "cat_id": cat_id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
             },
             success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 abprf_toast_msg(response.data.msg);
                 parent.html(response.data.html);
             }
@@ -491,11 +514,11 @@ function abprf_property_filter_arg($this) {
                 "action": "abprf_delete_location", "loc_id": loc_id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
             },
             success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 abprf_toast_msg(response.data.msg);
                 parent.html(response.data.html);
             }
@@ -517,11 +540,11 @@ function abprf_property_filter_arg($this) {
                 "action": "abprf_delete_brand", "brand_id": brand_id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
             },
             success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 abprf_toast_msg(response.data.msg);
                 parent.html(response.data.html);
             }
@@ -537,11 +560,11 @@ function abprf_property_filter_arg($this) {
                 "action": "abprf_edit_brand", "id": id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.loading, 'error');
             },
             success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 abprf_toast_msg(response.data.msg);
                 parent.find('.insertable_area').html(response.data.html);
                 parent.find('.hide_on_load').slideDown();
@@ -565,11 +588,11 @@ function abprf_property_filter_arg($this) {
                 "action": "abprf_delete_feature", "fec_id": fec_id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
             },
             success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 abprf_toast_msg(response.data.msg);
                 parent.find('.feature_list').html(response.data.html);
                 parent.find('.hide_on_load').slideUp('fast');
@@ -586,11 +609,11 @@ function abprf_property_filter_arg($this) {
                 "action": "abprf_edit_feature", "fec_id": fec_id, 'nonce': abprf_admin_data.nonce
             },
             beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.loading, 'error');
             },
             success: function (response) {
-                abprf_spinner_remove(parent);
+                abp_spinner_remove(parent);
                 abprf_toast_msg(response.data.msg);
                 parent.find('.insertable_area').html(response.data.html);
                 parent.find('.hide_on_load').slideDown();
@@ -607,11 +630,11 @@ function abprf_property_filter_arg($this) {
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
-                abprf_spinner_remove(target);
+                abp_spinner_remove(target);
                 abprf_toast_msg(response.data.msg, 'success');
             }
         });
@@ -623,7 +646,7 @@ function abprf_property_filter_arg($this) {
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_import_faq", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.importing);
             }, success: function (response) {
                 target.html(response.data.html).promise().done(function () {
@@ -647,11 +670,11 @@ function abprf_property_filter_arg($this) {
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, contentType: false, processData: false, data: formData,
             beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.saving);
             },
             success: function (response) {
-                abprf_spinner_remove(target);
+                abp_spinner_remove(target);
                 abprf_toast_msg(response.data.msg, 'success');
             }
         });
@@ -663,7 +686,7 @@ function abprf_property_filter_arg($this) {
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_import_tc", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
-                abprf_spinner(target);
+                abp_spinner(target);
                 abprf_toast_msg(abprf_admin_data.msg.importing);
             }, success: function (response) {
                 target.html(response.data.html).promise().done(function () {
@@ -675,35 +698,7 @@ function abprf_property_filter_arg($this) {
             }
         });
     });
-    //==========WooCommerce configuration=================//
-    $(document).on('click', 'div.abprf_admin button.install_and_active_wc', function () {
-        let parent = $(this).closest('.abprf_status');
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_install_and_active_wc", 'nonce': abprf_admin_data.nonce
-            }, beforeSend: function () {
-                abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.wc_install);
-            }, success: function () {
-                abprf_toast_msg(abprf_admin_data.msg.wc_installed_success, 'success');
-                window.location.reload();
-            }
-        });
-    });
-    $(document).on('click', 'div.abprf_admin button.active_wc', function () {
-        let parent = $(this).closest('.abprf_status');
-        $.ajax({
-            type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                "action": "abprf_active_wc", 'nonce': abprf_admin_data.nonce
-            }, beforeSend: function () {
-                abprf_spinner(parent);
-                abprf_toast_msg(abprf_admin_data.msg.wc_installing);
-            }, success: function () {
-                abprf_toast_msg(abprf_admin_data.msg.wc_installed, 'success');
-                window.location.reload();
-            }
-        });
-    });
+
     //==========page create=================//
     $(document).on('click', 'div.abprf_admin button.create_page', function () {
         let type = $(this).attr('data-page_type');
@@ -712,7 +707,7 @@ function abprf_property_filter_arg($this) {
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_create_page", 'nonce': abprf_admin_data.nonce, 'type': type
             }, beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.create_page);
             }, success: function (response) {
                 abprf_toast_msg(response.data.msg, response.data.info_type);
@@ -727,7 +722,7 @@ function abprf_property_filter_arg($this) {
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_import_dummy", 'nonce': abprf_admin_data.nonce
             }, beforeSend: function () {
-                abprf_spinner(parent);
+                abp_spinner(parent);
                 abprf_toast_msg(abprf_admin_data.msg.importing);
             }, success: function (response) {
                 abprf_toast_msg(response.data.msg, 'success');
@@ -901,10 +896,10 @@ function abprf_wp_editor_init(target) {
     });
     $(document).on('click', 'div.abprf_admin .add_new_hook', function () {
         let parent = $(this).closest('.configuration_content');
-        let hidden_target = $(this).next($('.abp_hidden_content')).find(' .hidden_content');
+        let hidden_target = $(this).next($('.abp_hidden')).find(' .hidden_content');
         let item = hidden_target.html();
         if (!item || item === "undefined" || item === " ") {
-            item = parent.find('.abp_hidden_content').first().find('.hidden_content').html();
+            item = parent.find('.abp_hidden').first().find('.hidden_content').html();
         }
         if (abprf_load_sortable_datepicker(parent, item)) {
             let target = parent.find('.insertable_area .delete_area').last();
@@ -1022,7 +1017,7 @@ function abprf_wp_editor_init(target) {
     }
     // ─── load input category ───────────
     function load_icon_category_list() {
-        let category_list = $('<ul>').addClass('_abp');
+        let category_list = $('<ul>').addClass('abp');
         $.each(abprf_json_icon, function (i, group) {
             let current_count = Object.keys(group.icons).length;
             if (i !== 0) {
@@ -1036,7 +1031,7 @@ function abprf_wp_editor_init(target) {
             category_li.appendTo(category_list);
         });
         category_list.appendTo(abprf_category_list);
-        abprf_spinner(abprf_item_loader);
+        abp_spinner(abprf_item_loader);
     }
     function load_icon_list() {
         abprf_icon_area.empty();

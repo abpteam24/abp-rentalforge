@@ -21,7 +21,7 @@
             }
             ?>
             <div class="faq_area _section_alert">
-                <h4 class="_abp_gap_xs"><span>❓</span> <?php esc_html_e('Frequently Asked Questions', 'abp-rentalforge'); ?>                    </h4>
+                <h4 class="abp_gap_xs">❓<?php esc_html_e('Frequently Asked Questions', 'abp-rentalforge'); ?>                    </h4>
                 <div class="_divider_xs"></div>
                 <div class=" faq_list">
                     <?php
@@ -37,7 +37,7 @@
                             ?>
                             <div class="faq_item">
                                 <div class="faq_question faq_target">
-                                    <h6 class="_abp"><?php echo esc_html($title); ?></h6>
+                                    <h6 class="abp"><?php echo esc_html($title); ?></h6>
                                     <span class="faq_icon"></span>
                                 </div>
                                 <div class="faq_answer">

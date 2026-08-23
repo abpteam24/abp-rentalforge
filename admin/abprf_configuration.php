@@ -86,7 +86,7 @@
                             <div class="<?php echo esc_attr( $section_id ); ?>">
 								<?php if ( sizeof( $fields ) > 0 ) {
 									$title = $current_section['menu'] ?? ''; ?>
-                                    <h4 class="_abp"><?php echo esc_html( $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></h4>
+                                    <h4 class="abp"><?php echo esc_html( $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></h4>
                                     <div class="_divider_xs"></div>
                                     <form method="post" action="options.php">
                                         <div class="group_setting">
@@ -142,7 +142,7 @@
 											?>
                                         </div>
                                         <div class="_divider_xs"></div>
-                                        <button type="submit" class="_btn_theme" value="submit"><?php ABPRF_Layout::icon_svg('save');  echo esc_html( __( 'Save', 'abp-rentalforge' ) . ' ' . $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></button>
+                                        <button type="submit" class="_btn_theme" value="submit"><?php ABPRF_Static::svg('save');  echo esc_html( __( 'Save', 'abp-rentalforge' ) . ' ' . $title . ' ' . __( 'Configuration', 'abp-rentalforge' ) ); ?></button>
                                     </form>
 								<?php } ?>
                             </div>
@@ -206,7 +206,7 @@
 							'desc' => sprintf(
 							/* translators: %s: Permalinks settings page link layout */
 								__( 'Define the primary URL slug for rentals. Important: After changing this, you must flush your permalinks by visiting %s and clicking Save Changes.', 'abp-rentalforge' ),
-								'<strong class="_abp_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
+								'<strong class="abp_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
 							),
 							'type' => 'text',
 							'default' => 'rental-forge'
@@ -217,7 +217,7 @@
 							'desc' => sprintf(
 							/* translators: %s: Dashicons library link */
 								__( 'Choose a custom admin menu icon. Please browse the %s, copy the desired icon class name, and paste it here.', 'abp-rentalforge' ),
-								'<a class="_abp" href="https://developer.wordpress.org/resource/dashicons/" target="_blank">' . __( 'WordPress Dashicons Library', 'abp-rentalforge' ) . '</a>'
+								'<a class="abp" href="https://developer.wordpress.org/resource/dashicons/" target="_blank">' . __( 'WordPress Dashicons Library', 'abp-rentalforge' ) . '</a>'
 							),
 							'type' => 'text',
 							'default' => 'dashicons-hammer'
@@ -242,7 +242,7 @@
 							'desc' => sprintf(
 							/* translators: %s: Permalinks settings page link layout */
 								__( 'Define the custom URL structure for category archives. Remember to update your rewrite rules under %s after any modifications.', 'abp-rentalforge' ),
-								'<strong class="_abp_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
+								'<strong class="abp_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
 							),
 							'type' => 'text',
 							'default' => 'category'
@@ -617,8 +617,8 @@
 				$section_target = $option['collapse_target'] ?? [];
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
-                    <label class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                    <label class="_f_wrap_fj_between">
+                        <span><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <input type="text" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" class="_form_control <?php echo esc_attr( $option['validation'] ?? '' ); ?>" value="<?php echo esc_attr( $option['value'] ?? '' ); ?>" placeholder="<?php echo esc_attr( $option['placeholder'] ?? '' ); ?>"/>
                     </label>
 					<?php self::description( $option ); ?>
@@ -633,7 +633,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <label class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <input type="number" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" class="_form_control  <?php echo esc_attr( $option['validation'] ?? '' ); ?>" value="<?php echo esc_attr( $option['value'] ?? '' ); ?>" placeholder="<?php echo esc_attr( $option['placeholder'] ?? '' ); ?>"
 							<?php echo esc_attr( empty( $option['min'] ) ? '' : 'data-min=' . $option['min'] ); ?>
 							<?php echo esc_attr( empty( $option['max'] ) ? '' : 'data-max=' . $option['max'] ); ?>
@@ -647,8 +647,8 @@
 				$section_target = $option['collapse_target'] ?? [];
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
-                    <label class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                    <label class="_f_wrap_fj_between">
+                        <span><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <input type="password" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" class="_form_control <?php echo esc_attr( $option['validation'] ?? '' ); ?>" value="<?php echo esc_attr( $option['value'] ?? '' ); ?>" placeholder="<?php echo esc_attr( $option['placeholder'] ?? '' ); ?>"/>
                     </label>
 					<?php self::description( $option ); ?>
@@ -662,7 +662,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <div><?php do_action( 'abprf_add_image', $name, $value ); ?></div>
                     </div>
 					<?php self::description( $option ); ?>
@@ -677,7 +677,7 @@
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_d_flex">
                         <div class="_f_wrap_fj_between_fa_center">
-                            <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                            <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
 							<?php self::description( $option ); ?>
                         </div>
 						<?php do_action( 'abprf_add_icon', $name, $value, 1 ); ?>
@@ -692,7 +692,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <div><?php do_action( 'abprf_add_icon', $name, $value ); ?></div>
                     </div>
 					<?php self::description( $option ); ?>
@@ -706,7 +706,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
 						<?php ABPRF_Layout::input_date( $name, $value ); ?>
                     </div>
 					<?php self::description( $option ); ?>
@@ -717,8 +717,8 @@
 				$section_target = $option['collapse_target'] ?? [];
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
-                    <label class="_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                    <label class="_fj_between">
+                        <span ><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <textarea name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" rows="5" cols="55" class="_form_control <?php echo esc_attr( $option['validation'] ?? '' ); ?>" placeholder="<?php echo esc_attr( $option['placeholder'] ?? '' ); ?>"><?php echo esc_html( $option['value'] ?? '' ); ?></textarea>
                     </label>
 					<?php self::description( $option ); ?>
@@ -731,8 +731,8 @@
 				$section_target = $option['collapse_target'] ?? [];
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
-                    <label class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                    <label class="_f_wrap_fj_between">
+                        <span><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <select name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" class="_form_control">
 							<?php foreach ( $option_data as $key => $label ) { ?>
                                 <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $key == $value ? 'selected' : '' ); ?>><?php echo esc_html( $label ); ?></option>
@@ -754,7 +754,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <div class="custom_radio">
                             <input type="hidden" class="_form_control" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $option_data as $key => $data ) { ?>
@@ -780,7 +780,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <label>
                             <input type="hidden" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="off"/>
                             <input type="checkbox" class="checkbox" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="on" <?php echo esc_attr( $checked ); ?> />
@@ -796,7 +796,7 @@
 				$section_target = $option['collapse_target'] ?? [];
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
-                    <label><?php ABPRF_Layout::switch_checkbox( $name, $value ); ?><span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span></label>
+                    <label><?php ABPRF_Layout::switch_checkbox( $name, $value ); ?><span><?php echo esc_html( $option['label'] ?? '' ); ?></span></label>
 					<?php self::description( $option ); ?>
                 </div>
 				<?php
@@ -809,7 +809,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <div class="custom_checkbox _group_content">
                             <input type="hidden" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 							<?php foreach ( $option_data as $key => $label ) { ?>
@@ -830,7 +830,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <label>
                             <input type="text" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" disabled class="_form_control abprf_color_picker" value="<?php echo esc_attr( $option['value'] ?? '' ); ?>" data-default-color="<?php echo esc_html( $option['default'] ?? '' ); ?>"/>
                         </label>
@@ -847,7 +847,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
                         <div class="custom_checkbox">
                             <input type="hidden" name="<?php echo esc_attr( $option['name'] ?? '' ); ?>" value="<?php echo esc_attr( $option['value'] ?? '' ); ?>"/>
 							<?php foreach ( $wp_roles->roles as $key => $label ) { ?>
@@ -875,7 +875,7 @@
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
                     <div class="_fd_column">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                        <span class="abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
 						<?php self::description( $option ); ?>
 						<?php
 							$editor_settings = array(
@@ -898,8 +898,8 @@
 				$section_target = $option['collapse_target'] ?? [];
 				?>
                 <div class="setting_item <?php echo esc_attr( $option['class'] ?? '' ); ?>" <?php if ( ! empty( $section_target ) ) { ?> data-collapse="#<?php echo esc_attr( $section_target ); ?>"  <?php } ?>>
-                    <label class="_f_wrap_fj_between_fa_center">
-                        <span class="_abp_label"><?php echo esc_html( $option['label'] ?? '' ); ?></span>
+                    <label class="_f_wrap_fj_between">
+                        <span><?php echo esc_html( $option['label'] ?? '' ); ?></span>
 						<?php
 							$dropdown = wp_dropdown_pages( array(
 								'selected' => esc_attr( $value ),

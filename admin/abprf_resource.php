@@ -32,7 +32,7 @@
                 $tax_class = $abprf_infos['_tax_class'] ?? '';
                 ?>
                 <div class="setting_item _mar_b_xs">
-                    <h5 class="_abp_gap_xs" data-collapse-target="#abprf_tax"><span>🧾</span> <?php esc_html_e('Tax Configuration', 'abp-rentalforge'); ?></h5>
+                    <h5 class="abp_gap_xs" data-collapse-target="#abprf_tax">🧾 <?php esc_html_e('Tax Configuration', 'abp-rentalforge'); ?></h5>
                     <div class="abp_active" data-collapse="#abprf_tax">
                         <div class="_divider_xxs"></div>
                         <?php if (get_option('woocommerce_calc_taxes') == 'yes') { ?>
@@ -81,7 +81,7 @@
                     $faqs = is_array($faqs) ? $faqs : [];
                     ?>
                     <div class="setting_item _mar_b_xs faq_configuration">
-                        <h5 class="_abp_gap_xs" data-collapse-target="#abprf_faq"><span>❓</span><?php esc_html_e('FAQs Configuration', 'abp-rentalforge'); ?></h5>
+                        <h5 class="abp_gap_xs" data-collapse-target="#abprf_faq">❓<?php esc_html_e('FAQs Configuration', 'abp-rentalforge'); ?></h5>
                         <div class="abp_active" data-collapse="#abprf_faq">
                             <div class="_divider_xxs"></div>
                             <div class="group_setting">
@@ -128,7 +128,7 @@
                     $active_global_tc = $abprf_infos['active_global_tc'] ?? 'on';
                     ?>
                     <div class="setting_item tc_configuration">
-                        <h5 class="_abp_gap_xs" data-collapse-target="#abprf_tc"><span>🤝</span><?php esc_html_e('Term & Conditions', 'abp-rentalforge'); ?></h5>
+                        <h5 class="abp_gap_xs" data-collapse-target="#abprf_tc">🤝<?php esc_html_e('Term & Conditions', 'abp-rentalforge'); ?></h5>
                         <div class="abp_active" data-collapse="#abprf_tc">
                             <div class="_divider_xxs"></div>
                             <div class="group_setting">
@@ -173,7 +173,7 @@
                     $tcs = ABPRF_Function::get_option('abprf_tc', '');
                     ?>
                     <div class="setting_item _mar_b_xs">
-                        <h5 class="_abp_gap_xs" data-collapse-target="#abprf_tc"><span>🤝</span><?php esc_html_e('Global Term & Conditions Configuration', 'abp-rentalforge'); ?></h5>
+                        <h5 class="abp_gap_xs" data-collapse-target="#abprf_tc">🤝<?php esc_html_e('Global Term & Conditions Configuration', 'abp-rentalforge'); ?></h5>
                         <div class="_divider_xxs"></div>
                         <?php ABPRF_Layout::info_text('abprf_tc'); ?>
                         <div class="abp_active" data-collapse="#abprf_tc">
@@ -181,7 +181,7 @@
                             <form class="save_tc" method="post" action="">
                                 <?php $this->tc($tcs); ?>
                                 <div class="_divider_xs"></div>
-                                <button type="submit" class="_btn_theme_xs"><?php ABPRF_Layout::icon_svg('save'); esc_html_e('Save Term & Conditions Configuration', 'abp-rentalforge'); ?></button>
+                                <button type="submit" class="_btn_theme_xs"><?php ABPRF_Static::svg('save'); esc_html_e('Save Term & Conditions Configuration', 'abp-rentalforge'); ?></button>
                             </form>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
                     $faqs = ABPRF_Function::get_option('abprf_faqs');
                     ?>
                     <div class="setting_item faq_configuration _mar_b_xs">
-                        <h5 class="_abp_gap_xs" data-collapse-target="#abprf_faq"><span>❓</span><?php esc_html_e('Global FAQ Configuration', 'abp-rentalforge'); ?></h5>
+                        <h5 class="abp_gap_xs" data-collapse-target="#abprf_faq">❓<?php esc_html_e('Global FAQ Configuration', 'abp-rentalforge'); ?></h5>
                         <div class="_divider_xxs"></div>
                         <?php ABPRF_Layout::info_text('abprf_faqs'); ?>
                         <div class="abp_active" data-collapse="#abprf_faq">
@@ -247,10 +247,10 @@
                     <div class="_fj_between">
                         <?php ABPRF_Layout::button_add_xs(__('Add New FAQ Item', 'abp-rentalforge')); ?>
                         <?php if ($global) { ?>
-                            <button type="submit" class="_btn_theme_xs"><?php ABPRF_Layout::icon_svg('save'); esc_html_e('Save FAQs Configuration', 'abp-rentalforge'); ?></button>
+                            <button type="submit" class="_btn_theme_xs"><?php ABPRF_Static::svg('save'); esc_html_e('Save FAQs Configuration', 'abp-rentalforge'); ?></button>
                         <?php } ?>
                     </div>
-                    <div class="abp_hidden_content">
+                    <div class="abp_hidden">
                         <div class="hidden_content">
                             <?php $this->faq_item(); ?>
                         </div>
@@ -266,7 +266,7 @@
                 ?>
                 <div class="delete_area faq_item _mar_b_xs <?php echo esc_attr(empty($faq) ? 'active' : ''); ?>">
                     <div class="faq_question">
-                        <h6 class="_abp edit_hook" data-paste="#faq_title"><?php echo esc_html($title); ?></h6>
+                        <h6 class="abp edit_hook" data-paste="#faq_title"><?php echo esc_html($title); ?></h6>
                         <?php ABPRF_Layout::button_delete_sort_edit(); ?>
                     </div>
                     <div class="edit_area">

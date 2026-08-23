@@ -194,10 +194,11 @@
 				require_once ABPRF_DIR . 'includes/abprf_function.php';
 				require_once ABPRF_DIR . 'includes/abprf_query.php';
 				require_once ABPRF_DIR . 'includes/abprf_layout.php';
+				require_once ABPRF_DIR . 'includes/abprf_static.php';
 				if (is_admin()) {
 					require_once ABPRF_DIR . 'admin/abprf_admin.php';
 					require_once ABPRF_DIR . 'admin/abprf_post.php';
-					require_once ABPRF_DIR . 'admin/abprf_dashboard.php';
+
 					require_once ABPRF_DIR . 'admin/abprf_properties.php';
 					require_once ABPRF_DIR . 'admin/abprf_orders.php';
 					require_once ABPRF_DIR . 'admin/abprf_dates.php';
@@ -416,7 +417,7 @@
 			}
 			public function plugin_settings_link($links_array, $plugin_file_name) {
 				if (strpos($plugin_file_name, ABPRF_BASE)) {
-					array_unshift($links_array, '<a class="_abp" href="' . esc_url(ABPRF_Function::build_url('configuration')) . '">' . __('Configuration', 'abp-rentalforge') . '</a>');
+					array_unshift($links_array, '<a class="abp" href="' . esc_url(ABPRF_Function::build_url('configuration')) . '">' . __('Configuration', 'abp-rentalforge') . '</a>');
 				}
 				return $links_array;
 			}

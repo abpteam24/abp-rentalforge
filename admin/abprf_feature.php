@@ -20,7 +20,7 @@
                     <div class="configuration_content">
                         <div class="form_area">
                             <div class="hide_on_load">
-                                <table class="_abp ">
+                                <table class="abp ">
                                     <thead>
                                     <tr>
                                         <th><?php esc_html_e( 'Icon', 'abp-rentalforge' ); ?></th>
@@ -36,11 +36,11 @@
                             </div>
                             <div class="_fj_between">
 								<?php ABPRF_Layout::button_add_xs( __( 'Add New Feature', 'abp-rentalforge' ) ); ?>
-                                <button type="button" class="_btn_theme hide_on_load save_feature"><?php ABPRF_Layout::icon_svg('save');  esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
+                                <button type="button" class="_btn_theme hide_on_load save_feature"><?php ABPRF_Static::svg('save');  esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
                             </div>
                         </div>
-                        <div class="abp_hidden_content">
-                            <table class="_abp">
+                        <div class="abp_hidden">
+                            <table class="abp">
                                 <tbody class="hidden_content">
 								<?php self::form_feature(); ?>
                                 </tbody>
@@ -58,10 +58,10 @@
 						$label = $feature['label'] ?? '';
 						?>
                         <div class="_list_item">
-                            <h6 class="_abp"> <?php ABPRF_Layout::image_icon( $feature['icon'] ?? '' ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $feature['value'] ?? '' ); ?></h6>
+                            <h6 class="abp"> <?php ABPRF_Layout::image_icon( $feature['icon'] ?? '' ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $feature['value'] ?? '' ); ?></h6>
                             <div class="_group_content">
-                                <button type="button" class="_btn_light_yellow_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>"><?php ABPRF_Layout::icon_svg('edit'); ?></button>
-                                <button type="button" class="_btn_light_danger_xxs delete_feature" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>"><?php ABPRF_Layout::icon_svg('close_1'); ?></button>
+                                <button type="button" class="_btn_light_yellow_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>"><?php ABPRF_Static::svg('edit'); ?></button>
+                                <button type="button" class="_btn_light_danger_xxs delete_feature" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>"><?php ABPRF_Static::svg('close_1'); ?></button>
                             </div>
                         </div>
 						<?php
@@ -204,15 +204,15 @@
 			public static function feature_selection_form(): void {
 				?>
                 <div class="form_area hide_on_load">
-                    <table class="_abp _mar_t_xs">
+                    <table class="abp _mar_t_xs">
                         <tbody class="insertable_area sortable_area">
                         </tbody>
                     </table>
                     <div class="_divider_xs"></div>
-                    <button type="button" class="_btn_theme_xs save_feature"><?php ABPRF_Layout::icon_svg('save'); ?><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
+                    <button type="button" class="_btn_theme_xs save_feature"><?php ABPRF_Static::svg('save'); ?><?php esc_html_e( 'Save Feature', 'abp-rentalforge' ); ?></button>
                 </div>
-                <div class="abp_hidden_content">
-                    <table class="_abp">
+                <div class="abp_hidden">
+                    <table class="abp">
                         <tbody class="hidden_content">
 						<?php ABPRF_Feature::form_feature(); ?>
                         </tbody>
