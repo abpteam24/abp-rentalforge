@@ -25,7 +25,7 @@
                     $file = ABPRF_Function::template_path($templates[$style] ?? $templates['grid']);
                     ?>
                     <div class="abprf_area">
-                        <div class="abprf_container">
+                        <div class="abp_container">
                             <div class="global_form"><?php do_action('abprf_search_form', $params); ?></div>
                             <div class="abprf_global_registration rf_pagination">
                                 <?php
@@ -62,7 +62,7 @@
                     $file = ABPRF_Function::template_path($templates[$style] ?? $templates['grid']);
                     ?>
                     <div class="abprf_area">
-                        <div class="abprf_container rf_pagination">
+                        <div class="abp_container rf_pagination">
                             <?php
                                 do_action('abprf_post_filter', $params);
                                 if (is_file($file)) {
@@ -95,7 +95,7 @@
                     $file = ABPRF_Function::template_path('list/property_' . $style . '.php');
                     ?>
                     <div class="abprf_area">
-                        <div class="abprf_container rf_pagination ">
+                        <div class="abp_container rf_pagination ">
                             <?php
                                 do_action('abprf_post_filter', $params);
                                 if (is_file($file)) {
@@ -121,7 +121,7 @@
                 ob_start();
                 ?>
                 <div class="abprf_area">
-                    <div class="abprf_container global_slider rf_pagination">
+                    <div class="abp_container global_slider rf_pagination">
                         <?php
                             if (!empty($post_id)) {
                                 $img_infos = ABPRF_Function::get_post_info($post_id, 'abprf_sliders', []);

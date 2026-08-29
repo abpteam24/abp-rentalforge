@@ -126,40 +126,6 @@
 		--rf_color_11: #38BDF8;
 	}
 }
-@media only screen and (max-width: 1100px) {
-	:root {
-		--rf_fs_small: 10px;
-		--rf_fs: 12px;
-		--rf_fs_label: 14px;
-		--rf_button_fs: 14px;
-		--rf_fs_h6: 14px;
-		--rf_fs_h5: 16px;
-		--rf_fs_h4: 18px;
-		--rf_fs_h3: 22px;
-		--rf_fs_h2: 25px;
-		--rf_fs_h1: 30px;
-		--rf_gap: 16px;
-		--rf_negative: -16px;
-		--rf_gap_xs: 8px;
-		--rf_gap_xs_neg: -8px;
-	}
-}
-@media only screen and (max-width: 700px) {
-	:root {
-		--rf_fs: 11px;
-		--rf_fs_label: 12px;
-		--rf_button_fs: 12px;
-		--rf_fs_h6: 14px;
-		--rf_fs_h5: 15px;
-		--rf_fs_h4: 16px;
-		--rf_fs_h3: 18px;
-		--rf_fs_h2: 20px;
-		--rf_fs_h1: 24px;
-		--rf_gap: 10px;
-		--rf_gap_xs: 5px;
-		--rf_gap_xs_neg: -5px;
-	}
-}
 /******************************************************************** General ************************************************/
 @media only screen and (min-width: 10px) {
 	.abprf_area *:not(.abprf_area .wp-editor-wrap *,.abprf_area .wp-picker-container *),
@@ -169,7 +135,7 @@
 	body._stop_scroll { overflow: hidden; }
 	/*=============================*/
 	.abprf_area { font-size: var(--rf_fs); font-weight: var(--rf_fw); color: var(--rf_color_default); line-height: 1.4; }
-	div.abprf_area {width: 100%;max-width: 100%;}
+	div.abprf_area {width: calc(100% - 30px);max-width: 100%;margin: var(--rf_gap) auto;}
 	.abprf_area,
 	div.abprf_area [data-close].abp_active,
 	.abprf_area [data-collapse].abp_active { display: block; }
@@ -582,16 +548,6 @@
 	div.abprf_area .dropdown_list li { padding: var(--rf_gap_xs); cursor: pointer; border-bottom: 1px solid var(--rf_color_border); margin: 0; list-style-type: none; white-space: nowrap;color: var(--rf_color_black);background-color: var(--rf_color_white);}
 	div.abprf_area .dropdown_list li:last-child { border-bottom: none; }
 	div.abprf_area .dropdown_list li:hover { color: var(--rf_color_rose_dusty); }
-	/**********Responsive*********/
-	@media only screen and (max-width: 1050px) {
-		div.abprf_area [class*="_form_inline"] [class*="_input_item"] { max-width: calc(33.33% - var(--rf_gap));}
-	}
-	@media only screen and (max-width: 850px) {
-		div.abprf_area [class*="_form_inline"] [class*="_input_item"] { max-width: calc(50% - var(--rf_gap)); }
-	}
-	@media only screen and (max-width: 600px) {
-		div.abprf_area [class*="_form_inline"] [class*="_input_item"] { max-width: 100%; min-width: 100%; }
-	}
 }
 /******************************************************************** List section ************************************************/
 @media only screen and (min-width: 10px) {
@@ -793,6 +749,11 @@
 	div.abprf_area [class*="_col_10"] { width: 83.33333333%; }
 	div.abprf_area [class*="_col_11"] { width: 91.66666667%; }
 	div.abprf_area [class*="_col_12"] { width: 100%; }
+	/*=============================*/
+	div.abprf_area [class*="_grid_500"] {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap; flex-wrap: wrap;gap: var(--tb_gap);width: 100%;}
+	div.abprf_area [class*="_grid_600"] {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap; flex-wrap: wrap;gap: var(--tb_gap);width: 100%;}
+	div.abprf_area [class*="_grid_500"] > div {-webkit-flex: 1 1 500px;flex: 1 1 500px;}
+	div.abprf_area [class*="_grid_600"] > div {-webkit-flex: 1 1 500px;flex: 1 1 500px;}
 	/*=============================*/
 	@media only screen and (max-width: 1000px) {
 		div.abprf_area [class*="_1_1000"] { width: 8.3333333333%; }
@@ -1051,7 +1012,7 @@
 	div.abprf_area [class*="_bg_danger"] { background-color: var(--rf_color_danger); }
 	/*=============================*/
 	div.abprf_area [class*="_btn_purple"],
-	div.abprf_area [class*="_btn_light_purple"].abp_active{color: var(--rf_color_white); background-color: var(--rf_color_purple);border-color: var(--rf_color_purple); }
+	div.abprf_area [class*="_btn_light_purple"].abp_active {color: var(--rf_color_white); background-color: var(--rf_color_purple);border-color: var(--rf_color_purple); }
 	div.abprf_area [class*="_btn_purple"].abp_active,
 	div.abprf_area [class*="_btn_light_purple"] { color: var(--rf_color_purple);background-color: var(--rf_color_white);border-color: transparent;}
 	div.abprf_area [class*="_color_green_pale"] { color: var(--rf_color_purple); }

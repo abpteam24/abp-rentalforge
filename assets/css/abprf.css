@@ -22,8 +22,8 @@
 }
 /******************************************************************** List Grid Property item ************************************************/
 @media only screen and (min-width: 10px) {
-	.abprf_area .post_top_filter {display: -webkit-flex;display: flex;flex-wrap: wrap;-webkit-justify-content: space-between;justify-content: space-between; -webkit-align-items: center;align-items: center;border-radius: var(--rf_br);  margin: var(--rf_gap) 0;padding: var(--rf_gap_xs); background: var(--rf_color_4);}
-	.abprf_area .abprf_global_registration .post_top_filter { margin: var(--rf_gap) 0; }
+	.abprf_area .post_top_filter {display: -webkit-flex;display: flex;flex-wrap: wrap;-webkit-justify-content: space-between;justify-content: space-between; -webkit-align-items: center;align-items: center;border-radius: var(--rf_br);  padding: var(--rf_gap_xs); background: var(--rf_color_4);}
+	.abprf_area .abprf_global_registration .post_top_filter { margin: 0 0 var(--rf_gap) 0; }
 	/*********************************/
 	.abprf_area .item_head {background: var(--rf_color_4); padding: var(--rf_gap_xs); text-align: center; position: relative;width: 100%;min-height: auto;display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;line-height: 1;}
 	.abprf_area .item_head i {font-size: 75px;padding: var(--rf_gap);min-height: 150px;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;}
@@ -99,7 +99,9 @@
 		div.abprf_area .abprf_lists .item_head {width: 100%;min-width: 100%;max-width: 100%;}
 		div.abprf_area .abprf_lists .item_body {width: 100%;min-width: 100%;max-width: 100%;}
 		/********************/
-		div.abprf_area .group_property .item_head {min-width: 80px;max-width: 80px;}
+		div.abprf_area div.group_property div.property_item {display: -webkit-flex;display: flex; -webkit-flex-direction: column;}
+		div.abprf_area .group_property .property_details{border: none;background: var(--rf_color_4);}
+		div.abprf_area .group_property .item_head {min-width: 100%;max-width: 100%;}
 		div.abprf_area .group_property .property_title_price {-webkit-flex-direction: column;flex-direction: column;}
 		div.abprf_area .group_property .price_row { font-size: var(--rf_fs_h6);}
 		div.abprf_area .group_property .price_value {font-size: var(--rf_fs_h6);margin: 0 0 0 var(--rf_gap_xs);}
@@ -124,4 +126,5 @@
 @media only screen and (max-width: 800px) {
 }
 @media only screen and (max-width: 600px) {
+
 }

@@ -165,7 +165,41 @@
 						--rf_color_theme_77: {$color_theme_77};
 						--rf_color_theme_alter: {$alternate_color};
 						--rf_color_warning:{$color_warning};						
-					}";
+					}
+					@media only screen and (max-width: 1100px) {
+								:root {
+									--rf_fs_small: 10px;
+									--rf_fs: 12px;
+									--rf_fs_label: 14px;
+									--rf_button_fs: 14px;
+									--rf_fs_h6: 14px;
+									--rf_fs_h5: 16px;
+									--rf_fs_h4: 18px;
+									--rf_fs_h3: 22px;
+									--rf_fs_h2: 25px;
+									--rf_fs_h1: 30px;
+									--rf_gap: 16px;
+									--rf_negative: -16px;
+									--rf_gap_xs: 8px;
+									--rf_gap_xs_neg: -8px;
+								}
+							}
+							@media only screen and (max-width: 700px) {
+								:root {
+									--rf_fs: 11px;
+									--rf_fs_label: 12px;
+									--rf_button_fs: 12px;
+									--rf_fs_h6: 14px;
+									--rf_fs_h5: 15px;
+									--rf_fs_h4: 16px;
+									--rf_fs_h3: 18px;
+									--rf_fs_h2: 20px;
+									--rf_fs_h1: 24px;
+									--rf_gap: 10px;
+									--rf_gap_xs: 5px;
+									--rf_gap_xs_neg: -5px;
+								}
+							}";
 				wp_add_inline_style('abprf_lib', wp_kses_post($abprf_var));
 				wp_enqueue_style('abprf', ABPRF_URL . 'assets/css/abprf.css', array(), ABPRF_VERSION);
 				$all_time = ABPRF_Function::get_time(get_the_id(), 'js');

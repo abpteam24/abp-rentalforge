@@ -10,7 +10,7 @@
 			//echo '<pre>';print_r($abprf_infos);echo '</pre>';
 			?>
             <div id="abprf_area" class="abprf_area default_details_page">
-                <div class="abprf_container">
+                <div class="abp_container">
                     <div class="abp_row">
                         <div class="_fd_column_mar_b">
 							<?php do_action( 'abprf_title', $post_id, $abprf_infos );

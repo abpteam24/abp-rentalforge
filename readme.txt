@@ -2,7 +2,7 @@
 Contributors: abpteam
 Tags: rental, rent,booking, bike car,property equipment
 Requires at least: 6.2
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 Tested up to: 7.1
 Requires PHP: 7.4
 License: GPLv3
@@ -355,6 +355,15 @@ This plugin does not collect or transmit any personal data by itself. Any custom
 
 == Changelog ==
 
+= 1.0.6 =
+
+* Fixed responsive layout issues across different screen sizes and devices.
+* Improved mobile and tablet compatibility for booking related interfaces.
+* Fixed minor UI alignment and spacing issues on responsive layouts.
+* Improved overall responsive behavior and user interface consistency.
+
+Released: August 29, 2026
+
 = 1.0.5 =
 
 * Added WordPress 7.1 compatibility testing.
@@ -405,6 +414,9 @@ Released: July 14, 2026
 *Initial Release*
 
 == Upgrade Notice ==
+
+= 1.0.6 =
+Released: August 29, 2026
 
 = 1.0.5 =
 Released: August 22, 2026
