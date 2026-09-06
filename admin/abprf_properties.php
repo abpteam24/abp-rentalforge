@@ -328,10 +328,10 @@
                     <?php ABPRF_Layout::info_text('name'); ?>
                 </div>
                 <div class="setting_item">
-                    <divl class="_f_equal_f_wrap">
+                    <div class="_f_equal_f_wrap">
                         <span class="abp_label"><?php esc_html_e('Property Icon/Image', 'abp-rentalforge'); ?></span>
                         <?php do_action('abprf_add_image_icon', 'icon', $icon); ?>
-                    </divl>
+                    </div>
                     <div class="_divider_xs"></div>
                     <?php ABPRF_Layout::info_text('icon'); ?>
                 </div>
@@ -480,7 +480,7 @@
                                     $qty = $_price_info['qty'] ?? '';
                                     $qty_reserve = $_price_info['reserve'] ?? '';
                                     $qty_min = $_price_info['qty_min'] ?? '';
-                                    $qty_max = $_price_info['qty_min'] ?? ''; ?>
+                                    $qty_max = $_price_info['qty_max'] ?? ''; ?>
                                 <div class="_group_content">
                                     <label>
                                         <input type="number" pattern="[0-9]*" step="1" class="_form_control validation_number" name="qty<?php echo esc_attr(!empty($loc_id) ? '_' . $loc_id : ''); ?>" placeholder="<?php esc_attr_e('EX: 15', 'abp-rentalforge'); ?>" value="<?php echo esc_attr($qty); ?>" required/>

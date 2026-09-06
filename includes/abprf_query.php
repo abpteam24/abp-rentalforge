@@ -203,16 +203,16 @@
 					$params[]     = intval( $filters['order_id'] );
 				}
 				if ( ! empty( $filters['property_id'] ) ) {
-					$conditions[] = "JSON_CONTAINS(property_id, %s)";
-					$params[]     = wp_json_encode( intval( $filters['property_id'] ) );
+					$conditions[] = "JSON_SEARCH(property_id, 'one', %s, NULL, '$') IS NOT NULL";
+					$params[]     = (string) intval( $filters['property_id'] );
 				}
 				if ( ! empty( $filters['ex_id'] ) ) {
-					$conditions[] = "JSON_CONTAINS(ex_id, %s)";
-					$params[]     = wp_json_encode( sanitize_text_field( $filters['ex_id'] ) );
+					$conditions[] = "JSON_SEARCH(ex_id, 'one', %s, NULL, '$') IS NOT NULL";
+					$params[]     = (string) sanitize_text_field( $filters['ex_id'] );
 				}
 				if ( ! empty( $filters['location'] ) ) {
-					$conditions[] = "JSON_CONTAINS(location, %s)";
-					$params[]     = wp_json_encode( intval( $filters['location'] ) );
+					$conditions[] = "FIND_IN_SET(%s, location)";
+					$params[]     = (string) intval( $filters['location'] );
 				}
 				$start_time        = ! empty( $filters['start_time'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $filters['start_time'] ) ) : null;
 				$end_time          = ! empty( $filters['end_time'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $filters['end_time'] ) ) : null;

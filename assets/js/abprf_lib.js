@@ -56,7 +56,7 @@ function abprf_load_image(parent = abprf_parent) {
         let bg_url = target.data('image-href');
         target.attr('data-image-href', '');
         if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
-            bg_url = abptf_var.blank_image;
+            bg_url = abprf_var.blank_image;
         }
         if (bg_url) {
             target.find('img').attr('src', bg_url).promise().done(function () {

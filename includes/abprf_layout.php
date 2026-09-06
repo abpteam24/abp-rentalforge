@@ -1174,7 +1174,7 @@
                             <ul class="abp ">
                                 <?php foreach ($all_post_ids as $all_post_id) {
                                     $sku = ABPRF_Function::get_post_info($all_post_id, 'post_sku');
-                                    $category = ABPRF_Function::get_post_info($all_post_id, 'category');
+                                    $category = ABPRF_Function::get_post_info($all_post_id, 'abprf_category');
                                     $category = !empty($category) ? get_term($category)->name : '';
                                     $title = get_the_title($all_post_id);
                                     ?>

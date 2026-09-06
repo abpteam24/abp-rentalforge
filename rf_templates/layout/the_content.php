@@ -7,7 +7,7 @@
 		if ( $post_id > 0 && ! empty( $content ) ) {
 			?>
             <div class="the_post_content">
-				<?php  the_content(); ?>
+				<?php echo wp_kses_post( wpautop( $content ) ); ?>
             </div>
 			<?php
 		}

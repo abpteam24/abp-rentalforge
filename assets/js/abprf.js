@@ -307,8 +307,13 @@ if (!window.abprf_parent || !window.abprf_parent.length) {
         let parent = current.closest('div.abprf_booking');
         if (get_quantity(parent) > 0) {
             if (submit_validation(current) < 1) {
-                parent.find("[name='add-to-cart']").trigger('click');
-                parent.find("[name='add-admin-order']").trigger('click');
+                let cartBtn = parent.find("[name='add-to-cart']");
+                let adminBtn = parent.find("[name='add-admin-order']");
+                if (adminBtn.length > 0) {
+                    adminBtn.trigger('click');
+                } else if (cartBtn.length > 0) {
+                    cartBtn.trigger('click');
+                }
             }
         } else {
             abprf_alert(current);

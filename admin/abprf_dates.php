@@ -583,7 +583,7 @@
 				$post_val                  = fn( $key, $default = '' ) => isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : $default;
 				$date_infos                = $this->get_date_array();
 				$date_infos['date_format'] = $post_val( 'date_format' );
-				$date_infos['date_format'] = $post_val( 'time_format' );
+				$date_infos['time_format'] = $post_val( 'time_format' );
 				update_option( 'abprf_dates', $date_infos );
 				ABPRF_Function::update_dates( 'global' );
 				ABPRF_Function::update_time_slot();

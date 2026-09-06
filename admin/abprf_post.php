@@ -442,7 +442,7 @@
                             $data['location'] = $meta_info['abprf_location'];
                             $where = ['post_id' => $post_id];
                             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                            $wpdb->update($table_name, $data, $where, ['%s', '%s', '%s'], ['%d']);
+$wpdb->update($table_name, $data, $where, array_fill(0, count($data), '%s'), ['%d']);
                         }
                         //=============================//
                         ABPRF_Function::update_dates($post_id);

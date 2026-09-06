@@ -13,13 +13,8 @@
 		if ( empty( $rent_rule ) && $post_id > 0 ) {
 			$rent_rule = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
 		}
-		if ( isset( $_SESSION['abprf_cart_success'] ) && empty( $admin_order ) ) {
-			?>
-            <div class="toast_notice" data-type="success">
-				<?php echo esc_html( sanitize_text_field( wp_unslash( $_SESSION['abprf_cart_success'] ) ) ); ?>
-            </div>
-			<?php
-			unset( $_SESSION['abprf_cart_success'] );
+		if ( function_exists( 'wc_print_notices' ) && ! is_admin() ) {
+			wc_print_notices();
 		}
 		$all_dates = ABPRF_Function::get_start_dates( $post_id );
 		$upcoming_date = current( $all_dates );

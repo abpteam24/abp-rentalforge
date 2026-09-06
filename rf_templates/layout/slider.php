@@ -7,11 +7,11 @@
 			return;
 		}
 		$total_images        = count( $img_infos );
-		$slider_indicator    = ( $abprf_slider['indicator_visible'] ?? 'on' ) ?: 'on';
+		$slider_indicator    = ( $abprf_slider['indicator_visible'] ?? 'on' ) === 'on' ? 'on' : 'off';
 		$indication_position = ( $abprf_slider['indication_position'] ?? 'bottom' ) ?: 'bottom';
 		$indication_position = ( $slider_indicator === 'on' ) ? $indication_position : '';
 		$popup_id            = uniqid( '#abprf_slider_' );
-		$active_popup        = ( $abprf_slider['visible_popup'] ?? 'on' ) ?: 'on';
+		$active_popup        = ( $abprf_slider['visible_popup'] ?? 'on' ) === 'on' ? 'on' : 'off';
 		?>
         <div class="abprf_slider">
             <div class="<?php echo esc_attr( $indication_position ); ?>" data-slider>

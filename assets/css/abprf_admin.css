@@ -1,4 +1,30 @@
 @charset "utf-8";
+/******************************************************************** Responsive Admin ************************************************/
+@media only screen and (max-width: 1200px) {
+	div.abprf_admin .group_setting > * {-webkit-flex-basis: 100%; flex-basis: 100%;}
+	div.abprf_admin .setting_item {min-width: 100%;}
+	div.abprf_admin table {display: block;overflow-x: auto;white-space: nowrap;}
+	div.abprf_admin .abprf_orders table[class*="abp"] tbody th,
+	div.abprf_admin .abprf_orders table[class*="abp"] tbody td {text-wrap: normal;}
+	div.abprf_admin .admin_head {padding: var(--rf_gap_xs);}
+}
+@media only screen and (max-width: 782px) {
+	body.admin-bar div.abprf_admin {margin-left: 0;max-width: 100%;width: auto;}
+	div.abprf_admin .selection_area {max-width: 100%;width: 100%;}
+	div.abprf_admin [class*="_form_control"] {min-width: 100%;max-width: 100%;}
+	div.abprf_admin [class*="_form_control"][type="time"] {min-width: 90px;}
+	div.abprf_admin .group_setting > * {-webkit-flex-basis: 100%; flex-basis: 100%;}
+	div.abprf_admin .admin_head {flex-direction: column;align-items: flex-start;gap: var(--rf_gap_xxs);}
+	div.abprf_admin .dashboard_content {margin: var(--rf_gap_xs);}
+	div.abprf_admin .abp_notice {flex-direction: column;gap: var(--rf_gap_xxs);align-items: flex-start;}
+	div.abprf_admin .properties_list {overflow-x: auto;}
+}
+@media only screen and (max-width: 480px) {
+	div.abprf_admin .setting_item {padding: var(--rf_gap_xxs);}
+	div.abprf_admin [class*="_form_control"][class*="_min_150"] {min-width: 100%;}
+	div.abprf_admin .multiple_image_item {height: 80px;}
+	div.abprf_admin .popup_icon .icon_item {min-width: 70px;font-size: var(--rf_fs_h2);}
+}
 /******************************************************************** configuration ************************************************/
 @media only screen and (min-width: 10px) {
 	div.abprf_admin table {border: 2px solid var(--rf_color_muted_2);}

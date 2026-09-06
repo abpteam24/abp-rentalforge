@@ -450,7 +450,7 @@
 				}
 			}
 			public function plugin_settings_link($links_array, $plugin_file_name) {
-				if (strpos($plugin_file_name, ABPRF_BASE)) {
+				if (strpos($plugin_file_name, ABPRF_BASE) !== false) {
 					array_unshift($links_array, '<a class="abp" href="' . esc_url(ABPRF_Function::build_url('configuration')) . '">' . __('Configuration', 'abp-rentalforge') . '</a>');
 				}
 				return $links_array;

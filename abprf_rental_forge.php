@@ -9,7 +9,7 @@
 	 * Domain Path: /languages
 	 * WC requires at least: 8.0.0
 	 *  WC tested up to: latest
-	 *  Requires PHP: 7.4
+	 *  Requires PHP: 8.0
 	 *  Requires MySQL: 5.7+
 	 *  License: GPLv3
 	 *  License URI: https://www.gnu.org/licenses/gpl-3.0.html

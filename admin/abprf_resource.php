@@ -277,7 +277,7 @@
                                 <span><?php esc_html_e('FAQ Title', 'abp-rentalforge'); ?><sup class="_color_required">*</sup></span>
                                 <input type="text" class="_form_control" name="faq_title[]" data-pass="#faq_title" placeholder="<?php esc_attr_e('EX: What is the check-in time?', 'abp-rentalforge'); ?>" value="<?php echo esc_attr($title); ?>"/>
                             </label>
-                            <divl class="_fd_column_mar_t_xs">
+                            <div class="_fd_column_mar_t_xs">
                                 <span class="_fs_label_mar_b_xs"><?php esc_html_e('Description', 'abp-rentalforge'); ?></span>
                                 <?php
                                     wp_editor(
@@ -292,7 +292,7 @@
                                         )
                                     );
                                 ?>
-                            </divl>
+                            </div>
                         </div>
                     </div>
                 </div>

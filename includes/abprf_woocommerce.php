@@ -54,7 +54,9 @@
 					$cart_item['line_total']        = $total_price;
 					$cart_item['line_subtotal']     = $total_price;
 					$cart_item                      = apply_filters( 'abprf_add_cart_item_data', $cart_item, $post_id );
-					$_SESSION['abprf_cart_success'] = get_the_title( $post_id ) . ' ' . __( 'Add to cart successfully!', 'abp-rentalforge' );
+					if ( function_exists( 'wc_add_notice' ) && ! is_admin() ) {
+						wc_add_notice( get_the_title( $post_id ) . ' ' . __( 'Add to cart successfully!', 'abp-rentalforge' ), 'success' );
+					}
 				}
 
 				//echo '<pre>';print_r( $cart_item);					echo '</pre>';die();
@@ -410,15 +412,15 @@
 							}
 						}
 						//=============================//
-						$item_info = [
-							'post_id' => $post_id,
-							'user_id' => get_current_user_id(),
-							'start_time' => $start_time,
-							'end_time' => $end_time,
-							'book_from' => $book_from,
-							'book_to' => $book_to,
-							'duration' => $duration,
-							'location' => $location,
+					$item_info = [
+						'post_id' => $post_id,
+						'user_id' => get_current_user_id(),
+						'start_time' => $start_time,
+						'end_time' => $end_time,
+						'book_from' => $book_from,
+						'book_to' => $book_to,
+						'duration' => $duration,
+						'location' => $location,
 							'brand' => $all_brand,
 							'rent_rule' => $rent_rule,
 							'ticket_info' => $ticket_infos,
@@ -491,13 +493,11 @@
 												'user_id' => intval( $user_id ),
 												'property_id' => wp_json_encode( $property_id ),
 												'ex_id' => wp_json_encode( $ex_id ),
-												'pick_up' => sanitize_text_field( $item_info['pick_up'] ?? '' ),
 												'start_time' => sanitize_text_field( $start_time ),
-												'drop_off' => sanitize_text_field( $item_info['drop_off'] ?? '' ),
 												'end_time' => sanitize_text_field( $end_time ),
 												'book_from' => sanitize_text_field( $book_from ),
 												'book_to' => sanitize_text_field( $book_to ),
-												'category' => sanitize_text_field( get_post_meta( $post_id, 'category', true ) ),
+												'category' => sanitize_text_field( get_post_meta( $post_id, 'abprf_category', true ) ),
 												'location' => sanitize_text_field( $item_info['location'] ?? '' ),
 												'brand' => sanitize_text_field( $item_info['brand'] ?? '' ),
 												'price_info' => wp_json_encode( $price_info ),
