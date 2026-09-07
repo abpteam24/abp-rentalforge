@@ -19,6 +19,9 @@
                     'loc_name' => __('Note: Please enter a Location name — the field cannot be empty. ', 'abp-rentalforge'),
                     'loc_slug' => __('Note: Location slug is optional — leave it blank to auto-generate from the name. ', 'abp-rentalforge'),
                     'loc_des' => __('Note: Location Address is optional — you can add details to better explain this Location Full  Address. ', 'abp-rentalforge'),
+                    'loc_geo' => __('Note: Add the GPS coordinates of this location (optional). These are used for distance-based and polygon-based "Near Me" searches on the frontend. ', 'abp-rentalforge'),
+                    'loc_radius' => __('Note: Set a service radius in kilometers (optional). When a visitor searches near a point, locations whose coordinates fall inside this distance are matched. ', 'abp-rentalforge'),
+                    'loc_polygon' => __('Note: Define a custom service area (geo-fence) for this location (optional). Enter one "lat,lng" coordinate pair per line, at least 3 points. Points inside the polygon match this location for nearby searches. ', 'abp-rentalforge'),
                     'feature_name' => __('Note: Please enter a Feature Label — the field cannot be empty. ', 'abp-rentalforge'),
                     'feature_slug' => __('Note: Feature slug is optional — leave it blank to auto-generate from the name. ', 'abp-rentalforge'),
                     'feature_des' => __('Note: Please enter a Feature Value  — the field cannot be empty. ', 'abp-rentalforge'),
@@ -188,233 +191,233 @@
             }
             public static function static_additional(): array {
                 return [
-                    'additional_service_1' => ['icon' => 'fas fa-helmet-un', 'name' => 'Helmet', 'qty' => 50, 'max_qty' => 1, 'price' => 0, 'returnable' => 'yes', 'description' => '1x Safety Helmet per order. Keep your head protected at no extra cost. Your safety is our priority!',],
-                    'additional_service_2' => ['icon' => 'fas fa-suitcase', 'name' => 'Storage', 'qty' => 30, 'max_qty' => 3, 'price' => 2.99, 'returnable' => 'no', 'description' => 'Optional baggage support is available as a paid service to help carry your essentials with ease.',],
-                    'additional_service_3' => ['icon' => 'fas fa-user-tie', 'name' => 'Tie', 'qty' => 100, 'price' => 1.00, 'returnable' => 'no', 'description' => 'Multiple color available',],
-                    'additional_service_4' => ['icon' => 'fas fa-shoe-prints', 'name' => 'Shoes', 'qty' => 100, 'price' => 1.00, 'returnable' => 'yes', 'description' => 'Multiple Size available',]
+                    'additional_service_1' => ['icon' => 'fas fa-helmet-un', 'name' => __('Helmet', 'abp-rentalforge'), 'qty' => 50, 'max_qty' => 1, 'price' => 0, 'returnable' => 'yes', 'description' => __('1x Safety Helmet per order. Keep your head protected at no extra cost. Your safety is our priority!', 'abp-rentalforge'),],
+                    'additional_service_2' => ['icon' => 'fas fa-suitcase', 'name' => __('Storage', 'abp-rentalforge'), 'qty' => 30, 'max_qty' => 3, 'price' => 2.99, 'returnable' => 'no', 'description' => __('Optional baggage support is available as a paid service to help carry your essentials with ease.', 'abp-rentalforge'),],
+                    'additional_service_3' => ['icon' => 'fas fa-user-tie', 'name' => __('Tie', 'abp-rentalforge'), 'qty' => 100, 'price' => 1.00, 'returnable' => 'no', 'description' => __('Multiple color available', 'abp-rentalforge'),],
+                    'additional_service_4' => ['icon' => 'fas fa-shoe-prints', 'name' => __('Shoes', 'abp-rentalforge'), 'qty' => 100, 'price' => 1.00, 'returnable' => 'yes', 'description' => __('Multiple Size available', 'abp-rentalforge'),]
                 ];
             }
             public static function static_feature(): array {
                 return [
-                    'fec_id_1' => ['icon' => '⛽', 'label' => 'Fuel Type', 'value' => 'Electric'],
-                    'fec_id_2' => ['icon' => '⛽', 'label' => 'Fuel Type', 'value' => ' Hybrid'],
-                    'fec_id_3' => ['icon' => '⛽', 'label' => 'Fuel Type', 'value' => 'Diesel'],
-                    'fec_id_4' => ['icon' => '⛽', 'label' => 'Fuel Type', 'value' => 'Petrol'],
-                    'fec_id_5' => ['icon' => 'fas fa-cog', 'label' => 'Transmission', 'value' => 'Automatic'],
-                    'fec_id_6' => ['icon' => 'fas fa-tachometer-alt', 'label' => 'Mileage', 'value' => '15 km/L'],
-                    'fec_id_7' => ['icon' => 'fas fa-tachometer-alt', 'label' => 'Mileage', 'value' => '40 km/L'],
-                    'fec_id_8' => ['icon' => 'fas fa-tachometer-alt', 'label' => 'Mileage', 'value' => '10 km/L'],
-                    'fec_id_9' => ['icon' => '⚡', 'label' => 'Performance', 'value' => 'High efficiency & smooth driving systems'],
-                    'fec_id_10' => ['icon' => '🛡️', 'label' => 'Safety', 'value' => 'ABS, Airbags, ADAS systems'],
-                    'fec_id_11' => ['icon' => '🧭', 'label' => 'Navigation', 'value' => 'Smart GPS & route optimization'],
-                    'fec_id_12' => ['icon' => 'fas fa-users', 'label' => 'Capacity', 'value' => '4 Persons'],
-                    'fec_id_13' => ['icon' => 'fas fa-users', 'label' => 'Capacity', 'value' => '5 Seater'],
-                    'fec_id_14' => ['icon' => 'fas fa-suitcase', 'label' => 'Boot Space', 'value' => '400L'],
-                    'fec_id_15' => ['icon' => '📸', 'label' => 'Sensor Quality', 'value' => 'Full-frame / APS-C high resolution sensors'],
-                    'fec_id_16' => ['icon' => '🎥', 'label' => 'Resolution', 'value' => '4K / 8K cinematic recording'],
-                    'fec_id_17' => ['icon' => '🎥', 'label' => 'Resolution', 'value' => '24 MP'],
-                    'fec_id_18' => ['icon' => '🎥', 'label' => 'Resolution', 'value' => '4K UHD'],
-                    'fec_id_19' => ['icon' => '🔍', 'label' => 'Lens System', 'value' => 'Interchangeable professional lenses'],
-                    'fec_id_20' => ['icon' => '⚙️', 'label' => 'Autofocus', 'value' => 'Fast AI-based tracking focus system'],
-                    'fec_id_21' => ['icon' => '🔋', 'label' => 'Battery Life', 'value' => 'Long-lasting rechargeable battery system'],
-                    'fec_id_22' => ['icon' => 'fas fa-search-plus', 'label' => 'Zoom', 'value' => '30x Optical'],
-                    'fec_id_23' => ['icon' => 'fas fa-battery-full', 'label' => 'Battery Life', 'value' => '500 Shots'],
-                    'fec_id_24' => ['icon' => 'fas fa-wifi', 'label' => 'Connectivity', 'value' => 'Built-in Wi-Fi/NFC'],
-                    'fec_id_25' => ['icon' => '🔊', 'label' => 'Sound', 'value' => 'High-power bass boosted speakers'],
-                    'fec_id_26' => ['icon' => '🔊', 'label' => 'Sound', 'value' => '1000W'],
-                    'fec_id_27' => ['icon' => '🎚️', 'label' => 'DJ Control', 'value' => 'Professional mixers & controllers support'],
-                    'fec_id_28' => ['icon' => '💡', 'label' => 'Lighting', 'value' => 'RGB LED & stage lighting systems'],
-                    'fec_id_29' => ['icon' => '💡', 'label' => 'Lighting', 'value' => 'LED RGB'],
-                    'fec_id_30' => ['icon' => '📡', 'label' => 'Connectivity', 'value' => 'Bluetooth / USB / AUX / Wireless sync'],
-                    'fec_id_31' => ['icon' => '🔌', 'label' => 'Power Efficiency', 'value' => 'Energy-efficient high-output systems'],
-                    'fec_id_32' => ['icon' => 'fas fa-battery-full', 'label' => 'Battery Life', 'value' => 'Up to 12 Hours'],
-                    'fec_id_33' => ['icon' => 'fas fa-microphone', 'label' => 'Input', 'value' => 'Wireless Mic Support'],
-                    'fec_id_34' => ['icon' => 'fas fa-water', 'label' => 'Durability', 'value' => 'Splash Proof (IPX4)'],
-                    'fec_id_35' => ['icon' => '🚁', 'label' => 'Flight Stability', 'value' => 'GPS-based stable hovering system'],
-                    'fec_id_36' => ['icon' => '🧠', 'label' => 'AI Features', 'value' => 'Smart tracking & auto flight modes'],
-                    'fec_id_37' => ['icon' => '🔋', 'label' => 'Battery Range', 'value' => 'Extended flight time with fast charging'],
-                    'fec_id_38' => ['icon' => '📡', 'label' => 'Range', 'value' => '15KM'],
-                    'fec_id_39' => ['icon' => 'fas fa-clock', 'label' => 'Flight Time', 'value' => '30 Minutes'],
-                    'fec_id_40' => ['icon' => '📡', 'label' => 'Range', 'value' => '5 km'],
-                    'fec_id_41' => ['icon' => 'fas fa-camera', 'label' => 'Camera', 'value' => '4K / 12MP'],
-                    'fec_id_42' => ['icon' => 'fas fa-wind', 'label' => 'Wind Resistance', 'value' => 'Level 5'],
-                    'fec_id_43' => ['icon' => 'fas fa-weight-hanging', 'label' => 'Max Payload', 'value' => '500g'],
-                    'fec_id_44' => ['icon' => 'fas fa-clock', 'label' => 'Flight Time', 'value' => '30-40 Mins'],
-                    'fec_id_45' => ['icon' => 'fas fa-tachometer-alt', 'label' => 'Max Speed', 'value' => '70 KM/H'],
-                    'fec_id_46' => ['icon' => 'fas fa-eye', 'label' => 'Obstacle Avoidance', 'value' => 'Omnidirectional'],
-                    'fec_id_47' => ['icon' => 'fas fa-weight-hanging', 'label' => 'Takeoff Weight', 'value' => '249g'],
-                    'fec_id_48' => ['icon' => '🏝️', 'label' => 'Location', 'value' => 'Beachfront / Mountain / Island premium spots'],
-                    'fec_id_49' => ['icon' => '🏨', 'label' => 'Luxury Level', 'value' => '5-star ultra luxury hospitality service'],
-                    'fec_id_50' => ['icon' => '🍽️', 'label' => 'Dining', 'value' => 'International gourmet food experience'],
-                    'fec_id_51' => ['icon' => '🧖', 'label' => 'Facilities', 'value' => 'Spa, pool, gym, wellness center'],
-                    'fec_id_52' => ['icon' => '🌅', 'label' => 'Experience', 'value' => 'Scenic views & premium relaxation environment'],
-                    'fec_id_53' => ['icon' => 'fas fa-bed', 'label' => 'Room Type', 'value' => 'Deluxe Suite'],
-                    'fec_id_54' => ['icon' => 'fas fa-swimming-pool', 'label' => 'Pool', 'value' => 'Infinity Pool'],
-                    'fec_id_55' => ['icon' => 'fas fa-utensils', 'label' => 'Meals', 'value' => 'All Inclusive'],
-                    'fec_id_56' => ['icon' => 'fas fa-wifi', 'label' => 'WiFi', 'value' => 'Free / High Speed'],
-                    'fec_id_57' => ['icon' => 'fas fa-concierge-bell', 'label' => 'Service', 'value' => '24/7 Concierge'],
-                    'fec_id_58' => ['icon' => 'fas fa-swimming-pool', 'label' => 'Pool', 'value' => 'Private Infinity Pool'],
-                    'fec_id_59' => ['icon' => 'fas fa-utensils', 'label' => 'Dining', 'value' => 'Fine Dining Included'],
-                    'fec_id_60' => ['icon' => 'fas fa-spa', 'label' => 'Wellness', 'value' => 'Luxury Spa & Sauna'],
-                    'fec_id_61' => ['icon' => 'fas fa-mountain', 'label' => 'View', 'value' => 'Ocean Front'],
-                    'fec_id_62' => ['icon' => '🧳', 'label' => 'Durability', 'value' => 'Shock-resistant strong build quality'],
-                    'fec_id_63' => ['icon' => '🎒', 'label' => 'Portability', 'value' => 'Lightweight and easy carry design'],
-                    'fec_id_64' => ['icon' => '🔒', 'label' => 'Security', 'value' => 'TSA lock & anti-theft protection'],
-                    'fec_id_65' => ['icon' => '💼', 'label' => 'Storage Capacity', 'value' => 'Expandable smart packing space'],
-                    'fec_id_66' => ['icon' => '⚙️', 'label' => 'Build Material', 'value' => 'Polycarbonate / premium fabric construction'],
-                    'fec_id_67' => ['icon' => 'fas fa-weight', 'label' => 'Weight', 'value' => '2.5 kg'],
-                    'fec_id_68' => ['icon' => 'fas fa-box', 'label' => 'Storage Capacity', 'value' => '60 Liters'],
-                    'fec_id_69' => ['icon' => 'fas fa-tint-slash', 'label' => 'Waterproof', 'value' => 'IPX6 Rated'],
-                    'fec_id_70' => ['icon' => 'fas fa-expand-arrows-alt', 'label' => 'Dimensions', 'value' => '70×35×25 cm'],
-                    'fec_id_71' => ['icon' => 'fas fa-lock', 'label' => 'Security Lock', 'value' => 'TSA Approved'],
-                    'fec_id_72' => ['icon' => 'fas fa-feather', 'label' => 'Weight', 'value' => 'Ultra Lightweight'],
-                    'fec_id_73' => ['icon' => 'fas fa-shield-virus', 'label' => 'Material', 'value' => 'Waterproof Carbon Fiber'],
-                    'fec_id_74' => ['icon' => 'fas fa-lock', 'label' => 'Security', 'value' => 'TSA Approved Lock'],
-                    'fec_id_75' => ['icon' => 'fas fa-expand', 'label' => 'Space', 'value' => 'Expandable Capacity'],
-                    'fec_id_76' => ['icon' => 'fas fa-compass', 'label' => 'Utility', 'value' => 'Smart Tracking GPS'],
-                    'fec_id_77' => ['icon' => '🏅', 'label' => 'Performance', 'value' => 'Professional-grade sports efficiency'],
-                    'fec_id_78' => ['icon' => '⚽', 'label' => 'Multi-sport Use', 'value' => 'Suitable for multiple sports categories'],
-                    'fec_id_79' => ['icon' => '🛡️', 'label' => 'Safety', 'value' => 'Injury protection & ergonomic design'],
-                    'fec_id_80' => ['icon' => '🏋️', 'label' => 'Strength Build', 'value' => 'High durability & impact resistance'],
-                    'fec_id_81' => ['icon' => '🎯', 'label' => 'Precision', 'value' => 'Accurate control & performance tuning'],
-                    'fec_id_82' => ['icon' => 'fas fa-dumbbell', 'label' => 'Equipment Type', 'value' => 'Multi-Use'],
-                    'fec_id_83' => ['icon' => 'fas fa-weight-hanging', 'label' => 'Max Load', 'value' => '150 kg'],
-                    'fec_id_84' => ['icon' => 'fas fa-ruler', 'label' => 'Size', 'value' => 'Adjustable'],
-                    'fec_id_85' => ['icon' => 'fas fa-tools', 'label' => 'Material', 'value' => 'Steel Alloy'],
-                    'fec_id_86' => ['icon' => '🏅', 'label' => 'Skill Level', 'value' => 'All Levels'],
-                    'fec_id_87' => ['icon' => 'fas fa-running', 'label' => 'Performance', 'value' => 'Pro-Grade Grip'],
-                    'fec_id_88' => ['icon' => 'fas fa-heartbeat', 'label' => 'Tracking', 'value' => 'Built-in Heart Sensors'],
-                    'fec_id_89' => ['icon' => 'fas fa-dumbbell', 'label' => 'Strength', 'value' => 'Heavy-Duty Build'],
-                    'fec_id_90' => ['icon' => 'fas fa-wind', 'label' => 'Aerodynamics', 'value' => 'High Speed Optimized'],
-                    'fec_id_91' => ['icon' => 'fas fa-check-circle', 'label' => 'Certification', 'value' => 'FIFA/Olympic Standard'],
+                    'fec_id_1' => ['icon' => '⛽', 'label' => __('Fuel Type', 'abp-rentalforge'), 'value' => __('Electric', 'abp-rentalforge')],
+                    'fec_id_2' => ['icon' => '⛽', 'label' => __('Fuel Type', 'abp-rentalforge'), 'value' => __(' Hybrid', 'abp-rentalforge')],
+                    'fec_id_3' => ['icon' => '⛽', 'label' => __('Fuel Type', 'abp-rentalforge'), 'value' => __('Diesel', 'abp-rentalforge')],
+                    'fec_id_4' => ['icon' => '⛽', 'label' => __('Fuel Type', 'abp-rentalforge'), 'value' => __('Petrol', 'abp-rentalforge')],
+                    'fec_id_5' => ['icon' => 'fas fa-cog', 'label' => __('Transmission', 'abp-rentalforge'), 'value' => __('Automatic', 'abp-rentalforge')],
+                    'fec_id_6' => ['icon' => 'fas fa-tachometer-alt', 'label' => __('Mileage', 'abp-rentalforge'), 'value' => __('15 km/L', 'abp-rentalforge')],
+                    'fec_id_7' => ['icon' => 'fas fa-tachometer-alt', 'label' => __('Mileage', 'abp-rentalforge'), 'value' => __('40 km/L', 'abp-rentalforge')],
+                    'fec_id_8' => ['icon' => 'fas fa-tachometer-alt', 'label' => __('Mileage', 'abp-rentalforge'), 'value' => __('10 km/L', 'abp-rentalforge')],
+                    'fec_id_9' => ['icon' => '⚡', 'label' => __('Performance', 'abp-rentalforge'), 'value' => __('High efficiency & smooth driving systems', 'abp-rentalforge')],
+                    'fec_id_10' => ['icon' => '🛡️', 'label' => __('Safety', 'abp-rentalforge'), 'value' => __('ABS, Airbags, ADAS systems', 'abp-rentalforge')],
+                    'fec_id_11' => ['icon' => '🧭', 'label' => __('Navigation', 'abp-rentalforge'), 'value' => __('Smart GPS & route optimization', 'abp-rentalforge')],
+                    'fec_id_12' => ['icon' => 'fas fa-users', 'label' => __('Capacity', 'abp-rentalforge'), 'value' => __('4 Persons', 'abp-rentalforge')],
+                    'fec_id_13' => ['icon' => 'fas fa-users', 'label' => __('Capacity', 'abp-rentalforge'), 'value' => __('5 Seater', 'abp-rentalforge')],
+                    'fec_id_14' => ['icon' => 'fas fa-suitcase', 'label' => __('Boot Space', 'abp-rentalforge'), 'value' => __('400L', 'abp-rentalforge')],
+                    'fec_id_15' => ['icon' => '📸', 'label' => __('Sensor Quality', 'abp-rentalforge'), 'value' => __('Full-frame / APS-C high resolution sensors', 'abp-rentalforge')],
+                    'fec_id_16' => ['icon' => '🎥', 'label' => __('Resolution', 'abp-rentalforge'), 'value' => __('4K / 8K cinematic recording', 'abp-rentalforge')],
+                    'fec_id_17' => ['icon' => '🎥', 'label' => __('Resolution', 'abp-rentalforge'), 'value' => __('24 MP', 'abp-rentalforge')],
+                    'fec_id_18' => ['icon' => '🎥', 'label' => __('Resolution', 'abp-rentalforge'), 'value' => __('4K UHD', 'abp-rentalforge')],
+                    'fec_id_19' => ['icon' => '🔍', 'label' => __('Lens System', 'abp-rentalforge'), 'value' => __('Interchangeable professional lenses', 'abp-rentalforge')],
+                    'fec_id_20' => ['icon' => '⚙️', 'label' => __('Autofocus', 'abp-rentalforge'), 'value' => __('Fast AI-based tracking focus system', 'abp-rentalforge')],
+                    'fec_id_21' => ['icon' => '🔋', 'label' => __('Battery Life', 'abp-rentalforge'), 'value' => __('Long-lasting rechargeable battery system', 'abp-rentalforge')],
+                    'fec_id_22' => ['icon' => 'fas fa-search-plus', 'label' => __('Zoom', 'abp-rentalforge'), 'value' => __('30x Optical', 'abp-rentalforge')],
+                    'fec_id_23' => ['icon' => 'fas fa-battery-full', 'label' => __('Battery Life', 'abp-rentalforge'), 'value' => __('500 Shots', 'abp-rentalforge')],
+                    'fec_id_24' => ['icon' => 'fas fa-wifi', 'label' => __('Connectivity', 'abp-rentalforge'), 'value' => __('Built-in Wi-Fi/NFC', 'abp-rentalforge')],
+                    'fec_id_25' => ['icon' => '🔊', 'label' => __('Sound', 'abp-rentalforge'), 'value' => __('High-power bass boosted speakers', 'abp-rentalforge')],
+                    'fec_id_26' => ['icon' => '🔊', 'label' => __('Sound', 'abp-rentalforge'), 'value' => __('1000W', 'abp-rentalforge')],
+                    'fec_id_27' => ['icon' => '🎚️', 'label' => __('DJ Control', 'abp-rentalforge'), 'value' => __('Professional mixers & controllers support', 'abp-rentalforge')],
+                    'fec_id_28' => ['icon' => '💡', 'label' => __('Lighting', 'abp-rentalforge'), 'value' => __('RGB LED & stage lighting systems', 'abp-rentalforge')],
+                    'fec_id_29' => ['icon' => '💡', 'label' => __('Lighting', 'abp-rentalforge'), 'value' => __('LED RGB', 'abp-rentalforge')],
+                    'fec_id_30' => ['icon' => '📡', 'label' => __('Connectivity', 'abp-rentalforge'), 'value' => __('Bluetooth / USB / AUX / Wireless sync', 'abp-rentalforge')],
+                    'fec_id_31' => ['icon' => '🔌', 'label' => __('Power Efficiency', 'abp-rentalforge'), 'value' => __('Energy-efficient high-output systems', 'abp-rentalforge')],
+                    'fec_id_32' => ['icon' => 'fas fa-battery-full', 'label' => __('Battery Life', 'abp-rentalforge'), 'value' => __('Up to 12 Hours', 'abp-rentalforge')],
+                    'fec_id_33' => ['icon' => 'fas fa-microphone', 'label' => __('Input', 'abp-rentalforge'), 'value' => __('Wireless Mic Support', 'abp-rentalforge')],
+                    'fec_id_34' => ['icon' => 'fas fa-water', 'label' => __('Durability', 'abp-rentalforge'), 'value' => __('Splash Proof (IPX4)', 'abp-rentalforge')],
+                    'fec_id_35' => ['icon' => '🚁', 'label' => __('Flight Stability', 'abp-rentalforge'), 'value' => __('GPS-based stable hovering system', 'abp-rentalforge')],
+                    'fec_id_36' => ['icon' => '🧠', 'label' => __('AI Features', 'abp-rentalforge'), 'value' => __('Smart tracking & auto flight modes', 'abp-rentalforge')],
+                    'fec_id_37' => ['icon' => '🔋', 'label' => __('Battery Range', 'abp-rentalforge'), 'value' => __('Extended flight time with fast charging', 'abp-rentalforge')],
+                    'fec_id_38' => ['icon' => '📡', 'label' => __('Range', 'abp-rentalforge'), 'value' => __('15KM', 'abp-rentalforge')],
+                    'fec_id_39' => ['icon' => 'fas fa-clock', 'label' => __('Flight Time', 'abp-rentalforge'), 'value' => __('30 Minutes', 'abp-rentalforge')],
+                    'fec_id_40' => ['icon' => '📡', 'label' => __('Range', 'abp-rentalforge'), 'value' => __('5 km', 'abp-rentalforge')],
+                    'fec_id_41' => ['icon' => 'fas fa-camera', 'label' => __('Camera', 'abp-rentalforge'), 'value' => __('4K / 12MP', 'abp-rentalforge')],
+                    'fec_id_42' => ['icon' => 'fas fa-wind', 'label' => __('Wind Resistance', 'abp-rentalforge'), 'value' => __('Level 5', 'abp-rentalforge')],
+                    'fec_id_43' => ['icon' => 'fas fa-weight-hanging', 'label' => __('Max Payload', 'abp-rentalforge'), 'value' => __('500g', 'abp-rentalforge')],
+                    'fec_id_44' => ['icon' => 'fas fa-clock', 'label' => __('Flight Time', 'abp-rentalforge'), 'value' => __('30-40 Mins', 'abp-rentalforge')],
+                    'fec_id_45' => ['icon' => 'fas fa-tachometer-alt', 'label' => __('Max Speed', 'abp-rentalforge'), 'value' => __('70 KM/H', 'abp-rentalforge')],
+                    'fec_id_46' => ['icon' => 'fas fa-eye', 'label' => __('Obstacle Avoidance', 'abp-rentalforge'), 'value' => __('Omnidirectional', 'abp-rentalforge')],
+                    'fec_id_47' => ['icon' => 'fas fa-weight-hanging', 'label' => __('Takeoff Weight', 'abp-rentalforge'), 'value' => __('249g', 'abp-rentalforge')],
+                    'fec_id_48' => ['icon' => '🏝️', 'label' => __('Location', 'abp-rentalforge'), 'value' => __('Beachfront / Mountain / Island premium spots', 'abp-rentalforge')],
+                    'fec_id_49' => ['icon' => '🏨', 'label' => __('Luxury Level', 'abp-rentalforge'), 'value' => __('5-star ultra luxury hospitality service', 'abp-rentalforge')],
+                    'fec_id_50' => ['icon' => '🍽️', 'label' => __('Dining', 'abp-rentalforge'), 'value' => __('International gourmet food experience', 'abp-rentalforge')],
+                    'fec_id_51' => ['icon' => '🧖', 'label' => __('Facilities', 'abp-rentalforge'), 'value' => __('Spa, pool, gym, wellness center', 'abp-rentalforge')],
+                    'fec_id_52' => ['icon' => '🌅', 'label' => __('Experience', 'abp-rentalforge'), 'value' => __('Scenic views & premium relaxation environment', 'abp-rentalforge')],
+                    'fec_id_53' => ['icon' => 'fas fa-bed', 'label' => __('Room Type', 'abp-rentalforge'), 'value' => __('Deluxe Suite', 'abp-rentalforge')],
+                    'fec_id_54' => ['icon' => 'fas fa-swimming-pool', 'label' => __('Pool', 'abp-rentalforge'), 'value' => __('Infinity Pool', 'abp-rentalforge')],
+                    'fec_id_55' => ['icon' => 'fas fa-utensils', 'label' => __('Meals', 'abp-rentalforge'), 'value' => __('All Inclusive', 'abp-rentalforge')],
+                    'fec_id_56' => ['icon' => 'fas fa-wifi', 'label' => __('WiFi', 'abp-rentalforge'), 'value' => __('Free / High Speed', 'abp-rentalforge')],
+                    'fec_id_57' => ['icon' => 'fas fa-concierge-bell', 'label' => __('Service', 'abp-rentalforge'), 'value' => __('24/7 Concierge', 'abp-rentalforge')],
+                    'fec_id_58' => ['icon' => 'fas fa-swimming-pool', 'label' => __('Pool', 'abp-rentalforge'), 'value' => __('Private Infinity Pool', 'abp-rentalforge')],
+                    'fec_id_59' => ['icon' => 'fas fa-utensils', 'label' => __('Dining', 'abp-rentalforge'), 'value' => __('Fine Dining Included', 'abp-rentalforge')],
+                    'fec_id_60' => ['icon' => 'fas fa-spa', 'label' => __('Wellness', 'abp-rentalforge'), 'value' => __('Luxury Spa & Sauna', 'abp-rentalforge')],
+                    'fec_id_61' => ['icon' => 'fas fa-mountain', 'label' => __('View', 'abp-rentalforge'), 'value' => __('Ocean Front', 'abp-rentalforge')],
+                    'fec_id_62' => ['icon' => '🧳', 'label' => __('Durability', 'abp-rentalforge'), 'value' => __('Shock-resistant strong build quality', 'abp-rentalforge')],
+                    'fec_id_63' => ['icon' => '🎒', 'label' => __('Portability', 'abp-rentalforge'), 'value' => __('Lightweight and easy carry design', 'abp-rentalforge')],
+                    'fec_id_64' => ['icon' => '🔒', 'label' => __('Security', 'abp-rentalforge'), 'value' => __('TSA lock & anti-theft protection', 'abp-rentalforge')],
+                    'fec_id_65' => ['icon' => '💼', 'label' => __('Storage Capacity', 'abp-rentalforge'), 'value' => __('Expandable smart packing space', 'abp-rentalforge')],
+                    'fec_id_66' => ['icon' => '⚙️', 'label' => __('Build Material', 'abp-rentalforge'), 'value' => __('Polycarbonate / premium fabric construction', 'abp-rentalforge')],
+                    'fec_id_67' => ['icon' => 'fas fa-weight', 'label' => __('Weight', 'abp-rentalforge'), 'value' => __('2.5 kg', 'abp-rentalforge')],
+                    'fec_id_68' => ['icon' => 'fas fa-box', 'label' => __('Storage Capacity', 'abp-rentalforge'), 'value' => __('60 Liters', 'abp-rentalforge')],
+                    'fec_id_69' => ['icon' => 'fas fa-tint-slash', 'label' => __('Waterproof', 'abp-rentalforge'), 'value' => __('IPX6 Rated', 'abp-rentalforge')],
+                    'fec_id_70' => ['icon' => 'fas fa-expand-arrows-alt', 'label' => __('Dimensions', 'abp-rentalforge'), 'value' => __('70×35×25 cm', 'abp-rentalforge')],
+                    'fec_id_71' => ['icon' => 'fas fa-lock', 'label' => __('Security Lock', 'abp-rentalforge'), 'value' => __('TSA Approved', 'abp-rentalforge')],
+                    'fec_id_72' => ['icon' => 'fas fa-feather', 'label' => __('Weight', 'abp-rentalforge'), 'value' => __('Ultra Lightweight', 'abp-rentalforge')],
+                    'fec_id_73' => ['icon' => 'fas fa-shield-virus', 'label' => __('Material', 'abp-rentalforge'), 'value' => __('Waterproof Carbon Fiber', 'abp-rentalforge')],
+                    'fec_id_74' => ['icon' => 'fas fa-lock', 'label' => __('Security', 'abp-rentalforge'), 'value' => __('TSA Approved Lock', 'abp-rentalforge')],
+                    'fec_id_75' => ['icon' => 'fas fa-expand', 'label' => __('Space', 'abp-rentalforge'), 'value' => __('Expandable Capacity', 'abp-rentalforge')],
+                    'fec_id_76' => ['icon' => 'fas fa-compass', 'label' => __('Utility', 'abp-rentalforge'), 'value' => __('Smart Tracking GPS', 'abp-rentalforge')],
+                    'fec_id_77' => ['icon' => '🏅', 'label' => __('Performance', 'abp-rentalforge'), 'value' => __('Professional-grade sports efficiency', 'abp-rentalforge')],
+                    'fec_id_78' => ['icon' => '⚽', 'label' => __('Multi-sport Use', 'abp-rentalforge'), 'value' => __('Suitable for multiple sports categories', 'abp-rentalforge')],
+                    'fec_id_79' => ['icon' => '🛡️', 'label' => __('Safety', 'abp-rentalforge'), 'value' => __('Injury protection & ergonomic design', 'abp-rentalforge')],
+                    'fec_id_80' => ['icon' => '🏋️', 'label' => __('Strength Build', 'abp-rentalforge'), 'value' => __('High durability & impact resistance', 'abp-rentalforge')],
+                    'fec_id_81' => ['icon' => '🎯', 'label' => __('Precision', 'abp-rentalforge'), 'value' => __('Accurate control & performance tuning', 'abp-rentalforge')],
+                    'fec_id_82' => ['icon' => 'fas fa-dumbbell', 'label' => __('Equipment Type', 'abp-rentalforge'), 'value' => __('Multi-Use', 'abp-rentalforge')],
+                    'fec_id_83' => ['icon' => 'fas fa-weight-hanging', 'label' => __('Max Load', 'abp-rentalforge'), 'value' => __('150 kg', 'abp-rentalforge')],
+                    'fec_id_84' => ['icon' => 'fas fa-ruler', 'label' => __('Size', 'abp-rentalforge'), 'value' => __('Adjustable', 'abp-rentalforge')],
+                    'fec_id_85' => ['icon' => 'fas fa-tools', 'label' => __('Material', 'abp-rentalforge'), 'value' => __('Steel Alloy', 'abp-rentalforge')],
+                    'fec_id_86' => ['icon' => '🏅', 'label' => __('Skill Level', 'abp-rentalforge'), 'value' => __('All Levels', 'abp-rentalforge')],
+                    'fec_id_87' => ['icon' => 'fas fa-running', 'label' => __('Performance', 'abp-rentalforge'), 'value' => __('Pro-Grade Grip', 'abp-rentalforge')],
+                    'fec_id_88' => ['icon' => 'fas fa-heartbeat', 'label' => __('Tracking', 'abp-rentalforge'), 'value' => __('Built-in Heart Sensors', 'abp-rentalforge')],
+                    'fec_id_89' => ['icon' => 'fas fa-dumbbell', 'label' => __('Strength', 'abp-rentalforge'), 'value' => __('Heavy-Duty Build', 'abp-rentalforge')],
+                    'fec_id_90' => ['icon' => 'fas fa-wind', 'label' => __('Aerodynamics', 'abp-rentalforge'), 'value' => __('High Speed Optimized', 'abp-rentalforge')],
+                    'fec_id_91' => ['icon' => 'fas fa-check-circle', 'label' => __('Certification', 'abp-rentalforge'), 'value' => __('FIFA/Olympic Standard', 'abp-rentalforge')],
                 ];
             }
             public static function static_category(): array {
                 return [
-                    'transport' => ['name' => 'Transport'],
-                    'camera' => ['name' => 'Camera'],
-                    'party' => ['name' => 'Party Equipment'],
-                    'drone' => ['name' => 'Drone'],
-                    'resort' => ['name' => 'Resort'],
-                    'travel' => ['name' => 'Travel Equipment'],
-                    'sport' => ['name' => 'Sport Equipment'],
+                    'transport' => ['name' => __('Transport', 'abp-rentalforge')],
+                    'camera' => ['name' => __('Camera', 'abp-rentalforge')],
+                    'party' => ['name' => __('Party Equipment', 'abp-rentalforge')],
+                    'drone' => ['name' => __('Drone', 'abp-rentalforge')],
+                    'resort' => ['name' => __('Resort', 'abp-rentalforge')],
+                    'travel' => ['name' => __('Travel Equipment', 'abp-rentalforge')],
+                    'sport' => ['name' => __('Sport Equipment', 'abp-rentalforge')],
                 ];
             }
             public static function static_location(): array {
                 return [
-                    0 => ['name' => 'Washington, D.C'],
-                    1 => ['name' => 'New York City'],
-                    2 => ['name' => 'California'],
-                    3 => ['name' => 'Los Angeles'],
-                    4 => ['name' => 'Chicago'],
-                    5 => ['name' => 'San Francisco'],
+                    0 => ['name' => __('Washington, D.C', 'abp-rentalforge')],
+                    1 => ['name' => __('New York City', 'abp-rentalforge')],
+                    2 => ['name' => __('California', 'abp-rentalforge')],
+                    3 => ['name' => __('Los Angeles', 'abp-rentalforge')],
+                    4 => ['name' => __('Chicago', 'abp-rentalforge')],
+                    5 => ['name' => __('San Francisco', 'abp-rentalforge')],
                 ];
             }
             public static function static_brand(): array {
                 return [
-                    0 => ['name' => 'Mercedes-Benz'],
-                    1 => ['name' => 'Toyota Motor'],
-                    2 => ['name' => 'Tesla'],
-                    3 => ['name' => 'BMW'],
-                    4 => ['name' => 'Canon'],
-                    5 => ['name' => 'Nikon'],
-                    6 => ['name' => 'Sony'],
-                    7 => ['name' => 'Fujifilm'],
-                    8 => ['name' => 'Pioneer DJ'],
-                    9 => ['name' => 'Yamaha'],
-                    10 => ['name' => 'DJI'],
-                    11 => ['name' => 'Autel Robotics'],
-                    12 => ['name' => 'Marriott International'],
-                    13 => ['name' => 'Hilton Worldwide'],
-                    14 => ['name' => 'American Tourister'],
-                    15 => ['name' => 'Samsonite International'],
-                    16 => ['name' => 'Nike'],
-                    17 => ['name' => 'Adidas'],
-                    18 => ['name' => 'Puma'],
+                    0 => ['name' => __('Mercedes-Benz', 'abp-rentalforge')],
+                    1 => ['name' => __('Toyota Motor', 'abp-rentalforge')],
+                    2 => ['name' => __('Tesla', 'abp-rentalforge')],
+                    3 => ['name' => __('BMW', 'abp-rentalforge')],
+                    4 => ['name' => __('Canon', 'abp-rentalforge')],
+                    5 => ['name' => __('Nikon', 'abp-rentalforge')],
+                    6 => ['name' => __('Sony', 'abp-rentalforge')],
+                    7 => ['name' => __('Fujifilm', 'abp-rentalforge')],
+                    8 => ['name' => __('Pioneer DJ', 'abp-rentalforge')],
+                    9 => ['name' => __('Yamaha', 'abp-rentalforge')],
+                    10 => ['name' => __('DJI', 'abp-rentalforge')],
+                    11 => ['name' => __('Autel Robotics', 'abp-rentalforge')],
+                    12 => ['name' => __('Marriott International', 'abp-rentalforge')],
+                    13 => ['name' => __('Hilton Worldwide', 'abp-rentalforge')],
+                    14 => ['name' => __('American Tourister', 'abp-rentalforge')],
+                    15 => ['name' => __('Samsonite International', 'abp-rentalforge')],
+                    16 => ['name' => __('Nike', 'abp-rentalforge')],
+                    17 => ['name' => __('Adidas', 'abp-rentalforge')],
+                    18 => ['name' => __('Puma', 'abp-rentalforge')],
                 ];
             }
             public static function static_faq(): array {
                 return [
                     1 => [
-                        'title' => 'How do I book a rental?',
-                        'des' => '<p>You can book a rental by selecting your preferred property or equipment, rental duration, available dates, and required options. Complete the checkout process to confirm your rental.</p>',
+                        'title' => __('How do I book a rental?', 'abp-rentalforge'),
+                        'des' => __('<p>You can book a rental by selecting your preferred property or equipment, rental duration, available dates, and required options. Complete the checkout process to confirm your rental.</p>', 'abp-rentalforge'),
                     ],
                     2 => [
-                        'title' => 'Can I cancel my rental booking?',
-                        'des' => '<p>Yes, you can cancel your rental according to the cancellation policy configured by the rental provider. Refund eligibility may vary depending on the booking conditions.</p>',
+                        'title' => __('Can I cancel my rental booking?', 'abp-rentalforge'),
+                        'des' => __('<p>Yes, you can cancel your rental according to the cancellation policy configured by the rental provider. Refund eligibility may vary depending on the booking conditions.</p>', 'abp-rentalforge'),
                     ],
                     3 => [
-                        'title' => 'Can I change my rental dates?',
-                        'des' => '<p>Rental dates can be changed if the provider allows date modifications and the selected property or equipment is available for the new rental period.</p>',
+                        'title' => __('Can I change my rental dates?', 'abp-rentalforge'),
+                        'des' => __('<p>Rental dates can be changed if the provider allows date modifications and the selected property or equipment is available for the new rental period.</p>', 'abp-rentalforge'),
                     ],
                     4 => [
-                        'title' => 'What rental durations are available?',
-                        'des' => '<p>Available rental durations depend on the rental item. Depending on the configuration, you may be able to rent an item hourly, daily, monthly, or for a custom rental period.</p>',
+                        'title' => __('What rental durations are available?', 'abp-rentalforge'),
+                        'des' => __('<p>Available rental durations depend on the rental item. Depending on the configuration, you may be able to rent an item hourly, daily, monthly, or for a custom rental period.</p>', 'abp-rentalforge'),
                     ],
                     5 => [
-                        'title' => 'Will I receive a rental confirmation?',
-                        'des' => '<p>Yes, a rental confirmation will be provided after a successful booking and payment. Your rental details can also be reviewed from your account dashboard.</p>',
+                        'title' => __('Will I receive a rental confirmation?', 'abp-rentalforge'),
+                        'des' => __('<p>Yes, a rental confirmation will be provided after a successful booking and payment. Your rental details can also be reviewed from your account dashboard.</p>', 'abp-rentalforge'),
                     ],
                     6 => [
-                        'title' => 'What payment methods are supported?',
-                        'des' => '<p>Available payment methods depend on the payment gateways configured by the website administrator or rental provider.</p>',
+                        'title' => __('What payment methods are supported?', 'abp-rentalforge'),
+                        'des' => __('<p>Available payment methods depend on the payment gateways configured by the website administrator or rental provider.</p>', 'abp-rentalforge'),
                     ],
                     7 => [
-                        'title' => 'Is a security deposit required?',
-                        'des' => '<p>A security deposit may be required depending on the rental item and the provider’s configuration. Any applicable deposit amount will be shown during the booking process.</p>',
+                        'title' => __('Is a security deposit required?', 'abp-rentalforge'),
+                        'des' => __('<p>A security deposit may be required depending on the rental item and the provider’s configuration. Any applicable deposit amount will be shown during the booking process.</p>', 'abp-rentalforge'),
                     ],
                     8 => [
-                        'title' => 'What happens if the rental item is unavailable?',
-                        'des' => '<p>Rental items are subject to availability for the selected dates and duration. If an item is unavailable, you may need to select another date, location, or available rental item.</p>',
+                        'title' => __('What happens if the rental item is unavailable?', 'abp-rentalforge'),
+                        'des' => __('<p>Rental items are subject to availability for the selected dates and duration. If an item is unavailable, you may need to select another date, location, or available rental item.</p>', 'abp-rentalforge'),
                     ],
                     9 => [
-                        'title' => 'What happens if the rental item is damaged?',
-                        'des' => '<p>Customers are responsible for taking reasonable care of rented items. Damage or loss may result in additional charges according to the rental provider’s damage and liability policy.</p>',
+                        'title' => __('What happens if the rental item is damaged?', 'abp-rentalforge'),
+                        'des' => __('<p>Customers are responsible for taking reasonable care of rented items. Damage or loss may result in additional charges according to the rental provider’s damage and liability policy.</p>', 'abp-rentalforge'),
                     ],
                     10 => [
-                        'title' => 'Who should I contact for rental assistance?',
-                        'des' => '<p>If you need help with your rental, booking, payment, pickup, return, or other rental-related issues, please contact the rental provider using the contact information provided on the website.</p>',
+                        'title' => __('Who should I contact for rental assistance?', 'abp-rentalforge'),
+                        'des' => __('<p>If you need help with your rental, booking, payment, pickup, return, or other rental-related issues, please contact the rental provider using the contact information provided on the website.</p>', 'abp-rentalforge'),
                     ],
                 ];
             }
             public static function static_tc(): false|string {
                 ob_start(); ?>
-                <h6>1. Acceptance of Terms</h6>
-                By using our rental service, you agree to comply with these terms and conditions. If you do not agree with any part of these terms, please do not use this service.
-                <h6>2. Rental Booking</h6>
-                A rental booking is considered confirmed only after successful completion of the booking process and payment, where applicable. Customers are responsible for providing accurate information during the booking process.
-                <h6>3. Customer Information</h6>
-                Customers must provide accurate and valid information, including their name, contact details, billing information, and any other information required to complete the rental. Incorrect or misleading information may result in booking cancellation.
-                <h6>4. Rental Availability</h6>
-                All rental bookings are subject to availability. Availability may vary depending on the selected rental item, location, rental period, quantity, and other booking conditions.
-                <h6>5. Rental Period</h6>
-                The rental period begins and ends according to the dates and times specified during the booking process. Customers are responsible for returning or completing the rental within the agreed rental period.
-                <h6>6. Pickup and Return</h6>
-                Customers must follow the pickup and return instructions provided by the rental provider. Late pickup or return may result in additional charges according to the provider’s rental policy.
-                <h6>7. Cancellation and Refund Policy</h6>
-                Cancellation and refund eligibility may vary depending on the rental provider’s policy. Applicable processing fees, service charges, or other non-refundable amounts may be deducted from the refund.
-                <h6>8. Rental Charges and Payments</h6>
-                Customers are responsible for paying all applicable rental charges, taxes, fees, deposits, and other costs displayed during the booking process. The final amount may depend on the rental duration, quantity, location, and selected options.
-                <h6>9. Security Deposit</h6>
-                A security deposit may be required for certain rental items. The deposit may be refunded after the rental period if the item is returned according to the agreed conditions and no applicable damage, loss, or additional charges are identified.
-                <h6>10. Customer Responsibility</h6>
-                Customers are responsible for using rented properties or equipment properly and in accordance with the instructions provided by the rental provider. Customers must take reasonable care of all rented items during the rental period.
-                <h6>11. Damage or Loss</h6>
-                Customers may be responsible for costs associated with damage, loss, theft, or misuse of rented items during the rental period. Any applicable charges will be handled according to the rental provider’s policies.
-                <h6>12. Property and Equipment Usage</h6>
-                Rented properties and equipment must only be used for their intended purpose and in accordance with applicable rules, safety requirements, and instructions provided by the rental provider.
-                <h6>13. Late Return</h6>
-                Returning a rental item after the agreed rental period may result in additional rental charges or late fees. The applicable charges will depend on the rental provider’s configuration and policies.
-                <h6>14. Availability and Substitution</h6>
-                In exceptional circumstances, the rental provider may be unable to provide the originally selected item or property. Where necessary, the provider may offer an alternative item or arrangement subject to availability.
-                <h6>15. Limitation of Liability</h6>
-                The rental provider shall not be held responsible for delays, service interruptions, equipment failure, property issues, natural events, or other circumstances beyond reasonable control.
-                <h6>16. Privacy Policy</h6>
-                Personal information collected during the rental process will be used to process bookings, provide rental services, communicate with customers, and improve the service in accordance with the applicable privacy policy.
-                <h6>17. Changes to Terms</h6>
-                These terms and conditions may be updated from time to time without prior notice. Continued use of the rental service after changes are published indicates acceptance of the revised terms and conditions.
-                <h6>18. Contact Information</h6>
-                If you have any questions regarding these terms and conditions, rental bookings, payments, cancellations, or other rental-related matters, please contact the rental provider directly.
+                <h6>1. <?php esc_html_e('Acceptance of Terms', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('By using our rental service, you agree to comply with these terms and conditions. If you do not agree with any part of these terms, please do not use this service.', 'abp-rentalforge'); ?>
+                <h6>2. <?php esc_html_e('Rental Booking', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('A rental booking is considered confirmed only after successful completion of the booking process and payment, where applicable. Customers are responsible for providing accurate information during the booking process.', 'abp-rentalforge'); ?>
+                <h6>3. <?php esc_html_e('Customer Information', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('Customers must provide accurate and valid information, including their name, contact details, billing information, and any other information required to complete the rental. Incorrect or misleading information may result in booking cancellation.', 'abp-rentalforge'); ?>
+                <h6>4. <?php esc_html_e('Rental Availability', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('All rental bookings are subject to availability. Availability may vary depending on the selected rental item, location, rental period, quantity, and other booking conditions.', 'abp-rentalforge'); ?>
+                <h6>5. <?php esc_html_e('Rental Period', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('The rental period begins and ends according to the dates and times specified during the booking process. Customers are responsible for returning or completing the rental within the agreed rental period.', 'abp-rentalforge'); ?>
+                <h6>6. <?php esc_html_e('Pickup and Return', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('Customers must follow the pickup and return instructions provided by the rental provider. Late pickup or return may result in additional charges according to the provider’s rental policy.', 'abp-rentalforge'); ?>
+                <h6>7. <?php esc_html_e('Cancellation and Refund Policy', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('Cancellation and refund eligibility may vary depending on the rental provider’s policy. Applicable processing fees, service charges, or other non-refundable amounts may be deducted from the refund.', 'abp-rentalforge'); ?>
+                <h6>8. <?php esc_html_e('Rental Charges and Payments', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('Customers are responsible for paying all applicable rental charges, taxes, fees, deposits, and other costs displayed during the booking process. The final amount may depend on the rental duration, quantity, location, and selected options.', 'abp-rentalforge'); ?>
+                <h6>9. <?php esc_html_e('Security Deposit', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('A security deposit may be required for certain rental items. The deposit may be refunded after the rental period if the item is returned according to the agreed conditions and no applicable damage, loss, or additional charges are identified.', 'abp-rentalforge'); ?>
+                <h6>10. <?php esc_html_e('Customer Responsibility', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('Customers are responsible for using rented properties or equipment properly and in accordance with the instructions provided by the rental provider. Customers must take reasonable care of all rented items during the rental period.', 'abp-rentalforge'); ?>
+                <h6>11. <?php esc_html_e('Damage or Loss', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('Customers may be responsible for costs associated with damage, loss, theft, or misuse of rented items during the rental period. Any applicable charges will be handled according to the rental provider’s policies.', 'abp-rentalforge'); ?>
+                <h6>12. <?php esc_html_e('Property and Equipment Usage', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('Rented properties and equipment must only be used for their intended purpose and in accordance with applicable rules, safety requirements, and instructions provided by the rental provider.', 'abp-rentalforge'); ?>
+                <h6>13. <?php esc_html_e('Late Return', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('Returning a rental item after the agreed rental period may result in additional rental charges or late fees. The applicable charges will depend on the rental provider’s configuration and policies.', 'abp-rentalforge'); ?>
+                <h6>14. <?php esc_html_e('Availability and Substitution', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('In exceptional circumstances, the rental provider may be unable to provide the originally selected item or property. Where necessary, the provider may offer an alternative item or arrangement subject to availability.', 'abp-rentalforge'); ?>
+                <h6>15. <?php esc_html_e('Limitation of Liability', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('The rental provider shall not be held responsible for delays, service interruptions, equipment failure, property issues, natural events, or other circumstances beyond reasonable control.', 'abp-rentalforge'); ?>
+                <h6>16. <?php esc_html_e('Privacy Policy', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('Personal information collected during the rental process will be used to process bookings, provide rental services, communicate with customers, and improve the service in accordance with the applicable privacy policy.', 'abp-rentalforge'); ?>
+                <h6>17. <?php esc_html_e('Changes to Terms', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('These terms and conditions may be updated from time to time without prior notice. Continued use of the rental service after changes are published indicates acceptance of the revised terms and conditions.', 'abp-rentalforge'); ?>
+                <h6>18. <?php esc_html_e('Contact Information', 'abp-rentalforge'); ?></h6>
+                <?php esc_html_e('If you have any questions regarding these terms and conditions, rental bookings, payments, cancellations, or other rental-related matters, please contact the rental provider directly.', 'abp-rentalforge'); ?>
                 <?php return ob_get_clean();
             }
         }

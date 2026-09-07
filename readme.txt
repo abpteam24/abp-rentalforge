@@ -174,22 +174,46 @@ Use the following shortcodes to display rental content anywhere on your website.
 - Custom FAQ per post
 - Fully editable Terms & Conditions system
 
-==🎁 Included in the Free Version==
+== ✅ Free Features ==
 
+Everything below is included in the free plugin:
+
+✓ Unlimited rental posts, properties & bookings
+✓ WooCommerce Powered – payments, taxes, coupons & orders
+✓ Flexible Pricing Engine – hourly, daily, monthly & combined pricing
+✓ Automatic Dynamic Price Calculation
+✓ Advanced Deposit System – fixed amount, percentage & per-quantity deposits
+✓ Smart Booking Rules – min/max duration & time restrictions
+✓ Day-wise Availability & Special Date Configuration
+✓ Availability Override
+✓ Inventory Management – stock, min/max & reserved quantity
 ✓ Multiple Rental Locations
+✓ Location-based Search & Filtering – search properties by location with lat/lng coordinates, service radius & polygon areas
 ✓ Stock Across Multiple Locations
 ✓ Tax Configuration
 ✓ Search & Filter
-✓ Responsive Gallery
+✓ Responsive Gallery & Slider
+✓ Global Feature Toggle System
+✓ Global Configuration – booking, client forms, FAQs, services & T&C
+✓ Additional Services – global & per-post
+✓ Client Information Forms – global & per-post builder
+✓ FAQ & Terms & Conditions – global & per-post
+✓ Order Management – filters, pagination & status tracking
+✓ Property Duplication & Move
+✓ Shortcodes – [abprf-booking], [abprf-post], [abprf-property], [abprf-gallery]
+✓ Responsive Layout
+✓ Custom CSS Configuration
 ✓ Translation Ready
+✓ Developer Friendly – hooks, filters & templates
 
-== Upgrade to Pro ==
-Take your rental business to the next level with ABP RentalForge Pro and unlock powerful tools for advanced pricing, inventory management, reporting, and administration.
-Perfect for growing rental businesses that need advanced inventory control and professional booking management.
+== ⭐ Pro Features ==
+
+Everything in Free, plus:
 
 ✅ Seasonal Pricing & Discount Rules
 ✅ Early Bird Pricing & Discount
-✅ Location-wise Stock Management – Set different stock quantities for each rental location independently.
+✅ Location-wise Stock Management – set different stock quantities for each rental location independently
+✅ Check-in Management
 ✅ Export Orders to PDF
 ✅ Export Orders to CSV
 ✅ Professional PDF Invoice Generation

@@ -37,6 +37,9 @@
 						}
 					}
 				);
+				add_action( 'init', function () {
+					load_plugin_textdomain( 'abp-rentalforge', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+				} );
 				$this->load_plugin();
 			}
 			private function load_plugin(): void {

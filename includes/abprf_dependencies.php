@@ -4,6 +4,7 @@
 	}
 	if (!class_exists('ABPRF_Dependencies')) {
 		class ABPRF_Dependencies {
+			protected static ?bool $wc_active = null;
 			public function __construct() {
 				add_action('admin_enqueue_scripts', array($this, 'admin_enqueue'), 90);
 				add_action('wp_enqueue_scripts', array($this, 'frontend_enqueue'), 90);
@@ -71,7 +72,10 @@
 				do_action('abprf_admin_enqueue');
 			}
 			public function frontend_enqueue(): void {
-				if (in_array('woocommerce/woocommerce.php', get_option('active_plugins'))) {
+				if (!self::should_load_frontend_assets()) {
+					return;
+				}
+				if (self::wc_active()) {
 					wp_enqueue_script('wc-checkout');
 					wp_enqueue_style('select2');
 					wp_enqueue_script('select2');
@@ -81,6 +85,52 @@
 				$this->global_enqueue();
 				do_action('abprf_frontend_enqueue');
 			}
+			protected static function should_load_frontend_assets(): bool {
+				$cpt = ABPRF_Function::get_cpt();
+				$load = is_singular($cpt) || is_post_type_archive($cpt) || is_tax(['abprf_category', 'abprf_location', 'abprf_brand']);
+				if (!$load && function_exists('is_cart') && function_exists('is_checkout')) {
+					$load = is_cart() || is_checkout();
+				}
+				if (!$load && function_exists('WC') && is_object(WC()->cart)) {
+					foreach (WC()->cart->get_cart() as $cart_item) {
+						if (!empty($cart_item['post_id']) && get_post_type((int) $cart_item['post_id']) === $cpt) {
+							$load = true;
+							break;
+						}
+					}
+				}
+				$shortcodes = ['abprf-booking', 'abprf-post', 'abprf-property', 'abprf-gallery'];
+				$post = get_post();
+				if (!$load && $post instanceof WP_Post) {
+					$content = (string) $post->post_content;
+					foreach ($shortcodes as $shortcode) {
+						if (has_shortcode($content, $shortcode)) {
+							$load = true;
+							break;
+						}
+					}
+					if (!$load) {
+						$elementor_data = get_post_meta($post->ID, '_elementor_data', true);
+						if (is_string($elementor_data) && !empty($elementor_data)) {
+							foreach ($shortcodes as $shortcode) {
+								if (str_contains($elementor_data, $shortcode)) {
+									$load = true;
+									break;
+								}
+							}
+						}
+					}
+				}
+
+				return (bool) apply_filters('abprf_load_frontend_assets', $load);
+			}
+			protected static function wc_active(): bool {
+				if (null === self::$wc_active) {
+					self::$wc_active = in_array('woocommerce/woocommerce.php', (array) get_option('active_plugins', []), true);
+				}
+
+				return self::$wc_active;
+			}
 			public function global_enqueue(): void {
 				wp_enqueue_script('jquery');
 				wp_enqueue_script('jquery-ui-core');
@@ -89,7 +139,7 @@
 				wp_enqueue_style('abprf_font_awesome', ABPRF_URL . 'assets/css/font_awesome.min.css', array(), '5.15.4');
 				wp_enqueue_style('abprf_lib', ABPRF_URL . 'assets/css/abprf_lib.css', array(), ABPRF_VERSION);
 				wp_enqueue_script('abprf_lib', ABPRF_URL . 'assets/js/abprf_lib.js', array('jquery'), ABPRF_VERSION, true);
-				if (in_array('woocommerce/woocommerce.php', get_option('active_plugins'))) {
+				if (self::wc_active()) {
 					wp_localize_script('abprf_lib', 'abprf_var', [
 						'currency_symbol' => get_woocommerce_currency_symbol(),
 						'currency_position' => get_option('woocommerce_currency_pos'),
@@ -246,7 +296,7 @@
 					require_once ABPRF_DIR . 'admin/abprf_brand.php';
 					require_once ABPRF_DIR . 'admin/abprf_feature.php';
 				}
-				if (in_array('woocommerce/woocommerce.php', get_option('active_plugins'))) {
+				if (self::wc_active()) {
 					require_once ABPRF_DIR . 'includes/abprf_hooks.php';
 					require_once ABPRF_DIR . 'includes/abprf_ajax.php';
 					require_once ABPRF_DIR . 'includes/abprf_frontend.php';

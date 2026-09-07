@@ -35,6 +35,11 @@
                         $location[$term_id]['name'] = $taxonomy->name;
                         $location[$term_id]['description'] = $taxonomy->description;
                         $location[$term_id]['slug'] = $taxonomy->slug;
+                        $location[$term_id]['lat'] = get_term_meta((int)$term_id, 'abprf_loc_lat', true);
+                        $location[$term_id]['lng'] = get_term_meta((int)$term_id, 'abprf_loc_lng', true);
+                        $location[$term_id]['radius'] = get_term_meta((int)$term_id, 'abprf_loc_radius', true);
+                        $polygon = get_term_meta((int)$term_id, 'abprf_loc_polygon', true);
+                        $location[$term_id]['polygon'] = is_array($polygon) ? $polygon : [];
                     }
                 }
                 ksort($location);
@@ -61,13 +66,22 @@
                         <?php foreach ($all_locations as $term_id => $location) {
                             $name = $location['name'] ?? '';
                             $description = $location['description'] ?? '';
+                            $lat = $location['lat'] ?? '';
+                            $lng = $location['lng'] ?? '';
+                            $radius = $location['radius'] ?? '';
+                            $has_geo = $lat !== '' || $lng !== '' || $radius !== '' || !empty($location['polygon']);
                             ?>
                             <tr>
                                 <th><?php echo esc_html($count); ?>.</th>
                                 <th><?php echo esc_html($term_id); ?></th>
                                 <th class="_text_left"><a href="<?php echo esc_url(get_term_link((int)$term_id)); ?>" target="_blank" class="abp_fs_h5_color_theme"><?php echo esc_html($name); ?></a></th>
 
-                                <td><?php echo esc_html($description); ?></td>
+                                <td>
+                                    <?php if ($has_geo) { ?>
+                                        <span class="abp_color_info">📍 <?php echo esc_html($lat . ($lng ? ', ' . $lng : '')); ?><?php echo $radius !== '' ? ' · ' . esc_html($radius) . ' km' : ''; ?><?php echo !empty($location['polygon']) ? ' · ⛛ polygon' : ''; ?></span><br/>
+                                    <?php } ?>
+                                    <?php echo esc_html($description); ?>
+                                </td>
                                 <th class="_text_nowrap"><code> [abprf-post loc_id="<?php echo esc_attr($term_id); ?>"]</code></th>
                                 <th class="_text_nowrap"><code> [abprf-property loc_id="<?php echo esc_attr($term_id); ?>"]</code></th>
                                 <td>
@@ -89,6 +103,17 @@
                 $name = $location['name'] ?? '';
                 $des = $location['description'] ?? '';
                 $slug = $location['slug'] ?? '';
+                $lat = $location['lat'] ?? '';
+                $lng = $location['lng'] ?? '';
+                $radius = $location['radius'] ?? '';
+                $polygon = $location['polygon'] ?? [];
+                $polygon = is_array($polygon) ? $polygon : [];
+                $polygon_text = '';
+                foreach ($polygon as $point) {
+                    if (is_array($point) && isset($point['lat'], $point['lng'])) {
+                        $polygon_text .= esc_textarea($point['lat'] . ',' . $point['lng']) . "\n";
+                    }
+                }
                 ?>
                 <input type="hidden" name="loc_term_id" value="<?php echo esc_attr($loc_id); ?>"/>
                 <div class="setting_item _mar_b_xs">
@@ -114,6 +139,36 @@
                     </label>
                     <div class="_divider_xs"></div>
                     <?php ABPRF_Layout::info_text('loc_des'); ?>
+                </div>
+                <div class="setting_item _mar_b_xs">
+                    <div class="_f_equal">
+                        <label class="_f_equal_f_wrap _mar_r_xxs">
+                            <span><?php esc_html_e('Latitude (Optional)', 'abp-rentalforge'); ?></span>
+                            <input class="_form_control" name="lat" value="<?php echo esc_attr($lat); ?>" placeholder="23.8103" step="any"/>
+                        </label>
+                        <label class="_f_equal_f_wrap _mar_l_xxs">
+                            <span><?php esc_html_e('Longitude (Optional)', 'abp-rentalforge'); ?></span>
+                            <input class="_form_control" name="lng" value="<?php echo esc_attr($lng); ?>" placeholder="90.4125" step="any"/>
+                        </label>
+                    </div>
+                    <div class="_divider_xs"></div>
+                    <?php ABPRF_Layout::info_text('loc_geo'); ?>
+                </div>
+                <div class="setting_item _mar_b_xs">
+                    <label class="_f_equal_f_wrap">
+                        <span><?php esc_html_e('Service Radius (km)', 'abp-rentalforge'); ?></span>
+                        <input class="_form_control" name="radius" value="<?php echo esc_attr($radius); ?>" placeholder="<?php esc_attr_e('e.g. 10', 'abp-rentalforge'); ?>" step="any"/>
+                    </label>
+                    <div class="_divider_xs"></div>
+                    <?php ABPRF_Layout::info_text('loc_radius'); ?>
+                </div>
+                <div class="setting_item">
+                    <label class="_f_equal_f_wrap">
+                        <span><?php esc_html_e('Polygon Coordinates (Optional)', 'abp-rentalforge'); ?></span>
+                        <textarea class="_form_control" name="polygon" rows="4" placeholder="<?php esc_attr_e("One pair per line:\nlat,lng", 'abp-rentalforge'); ?>"><?php echo $polygon_text; // phpcs:ignore WordPress.Security.EscapeOutput ?></textarea>
+                    </label>
+                    <div class="_divider_xs"></div>
+                    <?php ABPRF_Layout::info_text('loc_polygon'); ?>
                 </div>
                 <div class="_divider_xs"></div>
                 <button type="button" class="_btn_theme save_location"><?php ABPRF_Static::svg('save');
@@ -173,6 +228,25 @@
                 $name = $post_val('name');
                 $slug = $post_slug('slug');
                 $description = $post_val('description');
+                $lat = $post_val('lat');
+                $lng = $post_val('lng');
+                $radius = $post_val('radius');
+                $polygon = [];
+                if (isset($_POST['polygon'])) {
+                    $polygon_lines = preg_split('/\r\n|\r|\n/', sanitize_textarea_field(wp_unslash($_POST['polygon'])));
+                    if (is_array($polygon_lines)) {
+                        foreach ($polygon_lines as $line) {
+                            $line = trim($line);
+                            if ($line === '') {
+                                continue;
+                            }
+                            $parts = array_map('trim', explode(',', $line));
+                            if (count($parts) >= 2 && is_numeric($parts[0]) && is_numeric($parts[1])) {
+                                $polygon[] = ['lat' => (float) $parts[0], 'lng' => (float) $parts[1]];
+                            }
+                        }
+                    }
+                }
                 $abprf_post_id = $post_int('abprf_post_id');
                 if (empty($name)) {
                     wp_send_json_error(['html' => '', 'msg' => __('Location Name cannot be blank!', 'abp-rentalforge')]);
@@ -196,6 +270,10 @@
                 if ($term_id <= 0) {
                     wp_send_json_error(['html' => '', 'msg' => __('Failed to resolve location context.', 'abp-rentalforge')]);
                 }
+                update_term_meta((int)$term_id, 'abprf_loc_lat', sanitize_text_field($lat));
+                update_term_meta((int)$term_id, 'abprf_loc_lng', sanitize_text_field($lng));
+                update_term_meta((int)$term_id, 'abprf_loc_radius', sanitize_text_field($radius));
+                update_term_meta((int)$term_id, 'abprf_loc_polygon', $polygon);
                 $this->update_location();
                 $msg = __('Location Saved Successfully !', 'abp-rentalforge');
                 ob_start();

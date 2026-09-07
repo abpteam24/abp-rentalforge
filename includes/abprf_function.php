@@ -230,8 +230,9 @@
 			public static function template_path( $file_name ): string {
 				$file_path   = wp_normalize_path( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '/rf_templates/' . $file_name );
 				$default_dir = wp_normalize_path( ABPRF_DIR . 'rf_templates/' . $file_name );
+				$resolved    = file_exists( $file_path ) ? $file_path : $default_dir;
 
-				return file_exists( $file_path ) ? $file_path : $default_dir;
+				return (string) apply_filters( 'abprf_template_path', $resolved, $file_name );
 			}
 			//============= Date function================//
 			public function modify_cart_date( $cart_item ) {
@@ -1146,10 +1147,21 @@
 					$all_post_ids = ABPRF_Query::get_post_id();
 					if ( ! empty( $all_post_ids ) ) {
 						$active_icon = ABPRF_Function::on_off( 'post_icon' );
-						foreach ( $all_post_ids as $post_id ) {
-							if ( $post_id !== $_post_id ) {
-								$icon       = $active_icon ? ABPRF_Function::get_post_info( $post_id, 'post_icon' ) : '';
-								$all_info[] = [ 'id' => $post_id, 'icon' => $icon, 'label' => get_the_title( $post_id ) ];
+						$related_ids = array_values( array_diff( array_map( 'absint', $all_post_ids ), [ (int) $_post_id ] ) );
+						if ( ! empty( $related_ids ) ) {
+							$related_posts = get_posts( [
+								'post_type' => ABPRF_Function::get_cpt(),
+								'post__in' => $related_ids,
+								'orderby' => 'post__in',
+								'post_status' => 'any',
+								'posts_per_page' => - 1,
+								'update_post_meta_cache' => true,
+								'update_post_term_cache' => false,
+								'no_found_rows' => true,
+							] );
+							foreach ( $related_posts as $related_post ) {
+								$icon       = $active_icon ? ABPRF_Function::get_post_info( $related_post->ID, 'post_icon' ) : '';
+								$all_info[] = [ 'id' => $related_post->ID, 'icon' => $icon, 'label' => get_the_title( $related_post->ID ) ];
 							}
 						}
 					}

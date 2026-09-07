@@ -68,6 +68,7 @@
                 $post_ids = ABPRF_Query::get_post_id($filters);
                 if (!empty($post_ids) && sizeof($post_ids) > 0) {
                     $total_post = sizeof(ABPRF_Query::get_post_id(['status' => $status]));
+                    $property_counts = ABPRF_Query::get_property_counts($post_ids);
                     $new_post_url = admin_url('post-new.php?post_type=' . $cpt);
                     ?>
                     <table class="abp">
@@ -118,7 +119,7 @@
                                         </div>
                                     </td>
                                     <th><?php echo esc_html(!empty($rent_rule) ? ABPRF_Layout::rent_rules($rent_rule) : ''); ?></th>
-                                    <th><?php echo esc_html(ABPRF_Query::get_property(['post_id' => $post_id], true)); ?></th>
+                                    <th><?php echo esc_html($property_counts[(int) $post_id] ?? 0); ?></th>
                                     <th>
                                         <p class="abp"><code> [abprf-post post_id="<?php echo esc_attr($post_id); ?>"]</code></p>
                                         <p class="abp"><code> [abprf-property post_id="<?php echo esc_attr($post_id); ?>"]</code></p>

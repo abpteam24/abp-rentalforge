@@ -80,7 +80,7 @@
 				if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
 					$url = ABPRF_Function::get_image_url( $post_id ) ?: ABPRF_BLANK_IMG_URL;
 					if ( ! empty( $url ) ) {
-						$thumbnail = '<div class="abprf_area"><img class="_img_control" src="' . $url . '" data-href="' . get_the_permalink( $post_id ) . '" alt="#"></div>';
+						$thumbnail = '<div class="abprf_area"><img class="_img_control" src="' . esc_url( $url ) . '" data-href="' . esc_url( get_the_permalink( $post_id ) ) . '" alt="#"></div>';
 					}
 				}
 
@@ -440,17 +440,16 @@
 				if ( $order_id ) {
 					$order               = wc_get_order( $order_id );
 					$order_status        = $order->get_status();
-					$order_meta          = get_post_meta( $order_id );
-					$payment_method      = $order_meta['_payment_method_title'][0] ?? '';
-					$user_id             = $order_meta['_customer_user'][0] ?? '';
-					$_billing_first_name = $order_meta['_billing_first_name'][0] ?? '';
-					$_billing_last_name  = $order_meta['_billing_last_name'][0] ?? '';
-					$billing_email       = $order_meta['_billing_email'][0] ?? '';
-					$billing_phone       = $order_meta['_billing_phone'][0] ?? '';
-					$_billing_address_1  = $order_meta['_billing_address_1'][0] ?? '';
-					$_billing_address_2  = $order_meta['_billing_address_2'][0] ?? '';
-					$billing_name        = $_billing_first_name . ' ' . $_billing_last_name;
-					$billing_address     = $_billing_address_1 . ' ' . $_billing_address_2;
+					$payment_method      = $order->get_payment_method_title();
+					$user_id             = $order->get_user_id();
+					$billing_first_name  = $order->get_billing_first_name();
+					$billing_last_name   = $order->get_billing_last_name();
+					$billing_email       = $order->get_billing_email();
+					$billing_phone       = $order->get_billing_phone();
+					$billing_address_1   = $order->get_billing_address_1();
+					$billing_address_2   = $order->get_billing_address_2();
+					$billing_name        = $billing_first_name . ' ' . $billing_last_name;
+					$billing_address     = $billing_address_1 . ' ' . $billing_address_2;
 					$booked_status       = ABPRF_Function::booking_status();
 					$booked_status       = $booked_status ? explode( ',', $booked_status ) : [];
 					if ( $order_status != 'failed' ) {

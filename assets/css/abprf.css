@@ -112,7 +112,7 @@
 @media only screen and (min-width: 10px) {
 	/*=============================*/
 	/*=============================*/
-	span[aria-hidden="true"] { display: none !important; }
+	div.abprf_area span[aria-hidden="true"], div.abprf_admin span[aria-hidden="true"] { display: none !important; }
 }
 /******************************************************************** shortcode ************************************************/
 @media only screen and (min-width: 10px) {

@@ -9,7 +9,7 @@
 			public static function get_info() {
 				global $wpdb;
 				$cache_key  = 'abprf_info';
-				$abprf_info = wp_cache_get( $cache_key );
+				$abprf_info = wp_cache_get( $cache_key, 'abprf_info' );
 				if ( false !== $abprf_info ) {
 					return $abprf_info;
 				}
@@ -38,7 +38,7 @@
 				$abprf_info['total_trash']    = $total_trash;
 				$abprf_info['total_property'] = $total_property;
 				$abprf_info['total_order']    = $total_order;
-				wp_cache_set( $cache_key, $abprf_info );
+				wp_cache_set( $cache_key, $abprf_info, 'abprf_info', 30 );
 
 				return $abprf_info;
 			}
@@ -60,20 +60,111 @@
 				//=====================//
 				$cat_id    = ( $filters['cat_id'] ?? null ) ?: null;
 				$loc_id    = ( $filters['loc_id'] ?? null ) ?: null;
+				$lat       = ( $filters['lat'] ?? null ) ?: null;
+				$lng       = ( $filters['lng'] ?? null ) ?: null;
+				$radius    = ( $filters['radius'] ?? null ) ?: null;
 				$rent_rule = ( $filters['rent_rule'] ?? null ) ?: null;
+				// Resolve geo coordinates into matching location ids first.
+				if ( $lat !== null && $lng !== null && is_numeric( $lat ) && is_numeric( $lng ) ) {
+					$geo_locations = self::get_geo_locations( (float) $lat, (float) $lng, $radius );
+					if ( empty( $geo_locations ) ) {
+						return [];
+					}
+					if ( $loc_id !== null ) {
+						$loc_id = array_values( array_intersect( is_array( $loc_id ) ? $loc_id : explode( ',', $loc_id ), $geo_locations ) );
+					} else {
+						$loc_id = $geo_locations;
+					}
+				}
+				$loc_query = '';
+				if ( ! empty( $loc_id ) ) {
+					$loc_ids = is_array( $loc_id ) ? $loc_id : explode( ',', $loc_id );
+					if ( count( $loc_ids ) === 1 ) {
+						$loc_query = [ 'key' => 'abprf_location', 'value' => $loc_ids[0], 'compare' => 'LIKE' ];
+					} else {
+						$or_clauses = [];
+						foreach ( $loc_ids as $loc_id_item ) {
+							if ( $loc_id_item !== '' ) {
+								$or_clauses[] = [ 'key' => 'abprf_location', 'value' => $loc_id_item, 'compare' => 'LIKE' ];
+							}
+						}
+						if ( ! empty( $or_clauses ) ) {
+							$loc_query = $or_clauses;
+							$loc_query['relation'] = 'OR';
+						}
+					}
+				}
 				$cat_query = ! empty( $cat_id ) ? [ 'key' => 'abprf_category', 'value' => $cat_id, 'compare' => '=' ] : '';
-				$loc_query = ! empty( $loc_id ) ? [ 'key' => 'abprf_location', 'value' => $loc_id, 'compare' => 'LIKE' ] : '';
-				$rent_rule = ! empty( $rent_rule ) ? [ 'key' => 'rent_rule', 'value' => $rent_rule, 'compare' => '=', 'type' => 'CHAR' ] : '';
-				$all_data  = get_posts( array(
+				$rent_query = ! empty( $rent_rule ) ? [ 'key' => 'rent_rule', 'value' => $rent_rule, 'compare' => '=', 'type' => 'CHAR' ] : '';
+				$args   = array(
 					'fields' => 'ids',
 					'post_type' => $post_type,
 					'posts_per_page' => $show,
 					'paged' => $page,
 					'post_status' => $status,
-					'meta_query' => array( 'relation' => 'AND', $cat_query, $loc_query, $rent_rule )
-				) );
+				);
+				$meta_query = array_values( array_filter( [ $cat_query, $loc_query, $rent_query ] ) );
+				if ( ! empty( $meta_query ) ) {
+					$args['meta_query'] = $meta_query;
+					if ( count( $meta_query ) > 1 ) {
+						$args['meta_query']['relation'] = 'AND';
+					}
+				}
+				$all_data = get_posts( $args );
 
 				return array_unique( $all_data );
+			}
+			public static function get_geo_locations( float $lat, float $lng, $radius = null ): array {
+				$all_locations = ABPRF_Function::get_option( 'abprf_location' );
+				$all_locations = is_array( $all_locations ) ? $all_locations : [];
+				$radius        = ( $radius !== null && is_numeric( $radius ) && $radius > 0 ) ? (float) $radius : null;
+				$matches       = [];
+				foreach ( $all_locations as $term_id => $location ) {
+					$loc_lat = isset( $location['lat'] ) ? (float) $location['lat'] : null;
+					$loc_lng = isset( $location['lng'] ) ? (float) $location['lng'] : null;
+					$polygon = isset( $location['polygon'] ) && is_array( $location['polygon'] ) ? $location['polygon'] : [];
+					if ( $loc_lat !== null && $loc_lng !== null ) {
+						$distance = self::geo_distance( $lat, $lng, $loc_lat, $loc_lng );
+						$match_radius = $radius;
+						if ( $match_radius === null && isset( $location['radius'] ) && is_numeric( $location['radius'] ) && $location['radius'] > 0 ) {
+							$match_radius = (float) $location['radius'];
+						}
+						if ( $match_radius !== null && $distance <= $match_radius ) {
+							$matches[] = (string) $term_id;
+							continue;
+						}
+					}
+					if ( count( $polygon ) >= 3 && self::point_in_polygon( $lat, $lng, $polygon ) ) {
+						$matches[] = (string) $term_id;
+					}
+				}
+
+				return array_unique( $matches );
+			}
+			public static function geo_distance( float $lat1, float $lng1, float $lat2, float $lng2 ): float {
+				$earth_radius = 6371.0088; // kilometers
+				$d_lat = deg2rad( $lat2 - $lat1 );
+				$d_lng = deg2rad( $lng2 - $lng1 );
+				$a = sin( $d_lat / 2 ) ** 2 + cos( deg2rad( $lat1 ) ) * cos( deg2rad( $lat2 ) ) * sin( $d_lng / 2 ) ** 2;
+
+				return round( $earth_radius * 2 * atan2( sqrt( $a ), sqrt( 1 - $a ) ), 3 );
+			}
+			public static function point_in_polygon( float $lat, float $lng, array $polygon ): bool {
+				$inside = false;
+				$count  = count( $polygon );
+				for ( $i = 0, $j = $count - 1; $i < $count; $j = $i++ ) {
+					$p1_lat = (float) ( $polygon[ $i ]['lat'] ?? $polygon[ $i ][0] ?? 0 );
+					$p1_lng = (float) ( $polygon[ $i ]['lng'] ?? $polygon[ $i ][1] ?? 0 );
+					$p2_lat = (float) ( $polygon[ $j ]['lat'] ?? $polygon[ $j ][0] ?? 0 );
+					$p2_lng = (float) ( $polygon[ $j ]['lng'] ?? $polygon[ $j ][1] ?? 0 );
+					$intersect = ( ( $p1_lat > $lat ) !== ( $p2_lat > $lat ) ) &&
+						( $lng < ( $p2_lng - $p1_lng ) * ( $lat - $p1_lat ) / ( max( ( $p2_lat - $p1_lat ), PHP_FLOAT_EPSILON ) ) + $p1_lng );
+					if ( $intersect ) {
+						$inside = ! $inside;
+					}
+				}
+
+				return $inside;
 			}
 			public static function get_property( $filters = array(), $count = false ) {
 				global $wpdb;
@@ -119,9 +210,29 @@
 					$params[]     = $category;
 				}
 				$location = ( $filters['loc_id'] ?? null ) ?: ( $filters['location'] ?? null );
+				$lat      = ( $filters['lat'] ?? null ) ?: null;
+				$lng      = ( $filters['lng'] ?? null ) ?: null;
+				if ( $lat !== null && $lng !== null && is_numeric( $lat ) && is_numeric( $lng ) ) {
+					$geo_locations = self::get_geo_locations( (float) $lat, (float) $lng, $filters['radius'] ?? null );
+					if ( empty( $geo_locations ) ) {
+						return $count ? 0 : [];
+					}
+					if ( ! empty( $location ) ) {
+						$geo_locations = array_values( array_intersect( is_array( $location ) ? $location : explode( ',', $location ), $geo_locations ) );
+					}
+					$location = $geo_locations;
+				}
 				if ( ! empty( $location ) ) {
-					$conditions[] = "FIND_IN_SET(%s, location)";
-					$params[]     = $location;
+					$loc_ids = is_array( $location ) ? $location : array_map( 'trim', explode( ',', $location ) );
+					$loc_ids = array_values( array_filter( $loc_ids, static fn( $id ) => $id !== '' ) );
+					if ( count( $loc_ids ) === 1 ) {
+						$conditions[] = "FIND_IN_SET(%s, location)";
+						$params[]     = $loc_ids[0];
+					} elseif ( count( $loc_ids ) > 1 ) {
+						$placeholders = implode( ' OR ', array_fill( 0, count( $loc_ids ), 'FIND_IN_SET(%s, location)' ) );
+						$conditions[] = "( " . $placeholders . " )";
+						$params       = array_merge( $params, $loc_ids );
+					}
 				}
 				if ( ! empty( $filters['status'] ) ) {
 					$conditions[] = "status = %s";
@@ -165,6 +276,33 @@
 				wp_cache_set( $cache_key, $results, $cache_group, 30 );
 
 				return $results;
+			}
+			public static function get_property_counts( array $post_ids ): array {
+				global $wpdb;
+				$ids = array_values( array_unique( array_map( 'absint', $post_ids ) ) );
+				if ( empty( $ids ) ) {
+					return [];
+				}
+				$cache_key   = 'abprf_prop_count_' . md5( wp_json_encode( $ids ) );
+				$cache_group = 'abprf_property';
+				$counts      = wp_cache_get( $cache_key, $cache_group );
+				if ( false !== $counts ) {
+					return $counts;
+				}
+				$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+				$table_name   = $wpdb->prefix . 'abprf_property';
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$rows = $wpdb->get_results(
+					$wpdb->prepare( "SELECT post_id, COUNT(*) AS c FROM %i WHERE post_id IN ($placeholders) GROUP BY post_id", array_merge( [ $table_name ], $ids ) ),
+					ARRAY_A
+				);
+				$counts = [];
+				foreach ( $rows as $row ) {
+					$counts[ (int) $row['post_id'] ] = (int) $row['c'];
+				}
+				wp_cache_set( $cache_key, $counts, $cache_group, 30 );
+
+				return $counts;
 			}
 			public static function get_booking_query( $filters = array(), $limit = 0, $offset = 0, $count = false ) {
 				global $wpdb;
@@ -293,7 +431,7 @@
 					);
 				}
 				$results = $results ?: ( $count ? 0 : [] );
-				wp_cache_set( $cache_key, $results, $cache_group, 0 );
+				wp_cache_set( $cache_key, $results, $cache_group, 30 );
 
 				return $results;
 			}
