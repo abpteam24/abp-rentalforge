@@ -2,7 +2,7 @@
 Contributors: abpteam
 Tags: rental, rent,booking, bike car,property equipment
 Requires at least: 6.2
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 Tested up to: 7.1
 Requires PHP: 8.0
 License: GPLv3
@@ -379,6 +379,20 @@ This plugin does not collect or transmit any personal data by itself. Any custom
 
 == Changelog ==
 
+= 1.0.7 =
+
+* New admin Dashboard tab (now the default screen) with revenue and rental KPIs, recent orders, quick actions, system status and content breakdown.
+* New Today’s Deliveries section: per-post booked, available and reserved stock with today’s total rent and deposit, plus a booking popup showing who booked what with full prices.
+* New Today’s Collections section: per-order due amounts, deposits and overdue tracking, with one-click Mark Received.
+* New rent status quick actions: move bookings from Waiting to In Rent and to Completed directly from the dashboard and popup.
+* New Documentation tab with a step-by-step rental setup guide and RentalForge Pro upgrade banner.
+* Booking popup stock now reads live property inventory; order data aligned with the rental orders table structure.
+* Fixed WooCommerce install flow now reloading the page after successful install and activation.
+* Fixed PHP 8.2 deprecated warnings on post and property lists.
+* Merged the old Status page into the Dashboard; no-WooCommerce redirect now lands on the Dashboard.
+
+Released: September 20, 2026
+
 = 1.0.6 =
 
 * Fixed responsive layout issues across different screen sizes and devices.
@@ -438,6 +452,9 @@ Released: July 14, 2026
 *Initial Release*
 
 == Upgrade Notice ==
+
+= 1.0.7 =
+Released: September 20, 2026
 
 = 1.0.6 =
 Released: August 29, 2026

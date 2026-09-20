@@ -519,7 +519,7 @@
                             ];
                             $where = ['order_id' => (int)$order_id];
                             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                            $wpdb->update($table_name, $data, $where, ['%s', '%s', '%s'], ['%d']);
+                            $wpdb->update($table_name, $data, $where, ['%d', '%s'], ['%d']);
                         }
                     }
                 }

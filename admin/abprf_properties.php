@@ -204,7 +204,7 @@
                                 <?php if ((empty($filter_post_id) || is_string($filter_post_id)) && empty($copy_post_id)) { ?>
                                     <td>
                                         <?php if (!empty($post_id)) { ?>
-                                            <a href="<?php echo esc_url(get_edit_post_link($post_id)); ?>" class="abp_fs_h5 _color_theme">
+                                            <a href="<?php echo esc_url(get_edit_post_link($post_id) ?: ''); ?>" class="abp_fs_h5 _color_theme">
                                                 <?php if (ABPRF_Function::on_off('post_icon')) {
                                                     ABPRF_Layout::image_icon(ABPRF_Function::get_post_info($post_id, 'post_icon'));
                                                 }

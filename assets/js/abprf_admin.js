@@ -86,7 +86,7 @@ function abprf_property_filter_arg($this) {
 }
 window.abprf_wc_config = function (page_type) {
     if (page_type) {
-        let parent = abprf_parent.find('.abp_notice');
+        let parent = abprf_parent.find('.abp_notice, .abprf_dashboard').first();
         jQuery.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_wc_config", 'nonce': abprf_admin_data.nonce, 'type': page_type
@@ -94,10 +94,13 @@ window.abprf_wc_config = function (page_type) {
                 abp_spinner(parent);
                 abprf_toast_msg((abprf_admin_data.msg[page_type] ? abprf_admin_data.msg[page_type] : abprf_admin_data.msg.loading));
             }, success: function (response) {
+                abp_spinner_remove(parent);
                 if (response.data && response.data.hasOwnProperty('msg')) {
                     abprf_toast_msg(response.data.msg, response.data.type);
                 }
-                //window.location.reload();
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1500);
             }, error: function (xhr) {
                 abprf_ajx_error(xhr, parent);
             }
@@ -702,7 +705,7 @@ window.abprf_wc_config = function (page_type) {
     //==========page create=================//
     $(document).on('click', 'div.abprf_admin button.create_page', function () {
         let type = $(this).attr('data-page_type');
-        let parent = $(this).closest('.abprf_status');
+        let parent = $(this).closest('.abprf_status, .abprf_dashboard');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_create_page", 'nonce': abprf_admin_data.nonce, 'type': type
@@ -717,7 +720,7 @@ window.abprf_wc_config = function (page_type) {
     });
     //==========Dummy data configuration=================//
     $(document).on('click', 'div.abprf_admin button.import_dummy', function () {
-        let parent = $(this).closest('.abprf_status');
+        let parent = $(this).closest('.abprf_status, .abprf_dashboard');
         $.ajax({
             type: 'POST', url: abprf_admin_data.ajax_url, data: {
                 "action": "abprf_import_dummy", 'nonce': abprf_admin_data.nonce
@@ -1204,3 +1207,95 @@ document.addEventListener('DOMContentLoaded', function () {
     new ABPRF_FeatureSelection('div.abprf_admin .related_item', abprf_related_info);
 });
 //=========== Feature selection end=================//
+//==========Dashboard Recent/Today Orders===========//
+(function ($) {
+    "use strict";
+    $(document).on('click', 'div.abprf_admin .dash_order_tab[data-dtab]', function () {
+        let $this = $(this);
+        let $card = $this.closest('.dash_orders_card');
+        if ($this.hasClass('abp_active')) {
+            return;
+        }
+        $card.find('.dash_order_tab.abp_active').removeClass('abp_active');
+        $this.addClass('abp_active');
+        let key = $this.attr('data-dtab');
+        $card.find('.dash_orders_pane.abp_active').removeClass('abp_active');
+        let $panel = $card.find('.dash_orders_pane[data-dpane="' + key + '"]');
+        $panel.addClass('abp_active');
+    });
+    $(document).on('click', 'div.abprf_admin button.dash_orders_loadmore', function () {
+        let $this = $(this);
+        let $pane = $this.closest('.dash_orders_pane');
+        let step = parseInt($this.attr('data-step'));
+        if (isNaN(step) || step < 1) {
+            step = 10;
+        }
+        let $hidden = $pane.find('.dash_row_hidden');
+        $hidden.slice(0, step).removeClass('dash_row_hidden');
+        if ($pane.find('.dash_row_hidden').length === 0) {
+            $this.remove();
+        }
+    });
+    //========== Today's bookings : click to open details popup ==========//
+    $(document).on('click', 'div.abprf_admin .dash_booking_row', function () {
+        let $this = $(this);
+        let post_id = $this.attr('data-post');
+        let start_time = $this.attr('data-start');
+        if (!post_id || !start_time) {
+            return;
+        }
+        jQuery('body').addClass('_stop_scroll').find('[data-popup="#abprf_global_popup"]').addClass('in').promise().done(function () {
+            let parent = jQuery('body').find('[data-popup="#abprf_global_popup"]').find('.popup_area').addClass('dash_booking_popup_area');
+            let target = parent.find('.popup_body');
+            jQuery.ajax({
+                type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                    "action": 'abprf_dashboard_booking_popup', 'post_id': post_id, 'start_time': start_time, 'nonce': abprf_admin_data.nonce
+                }, beforeSend: function () {
+                    abp_spinner(parent);
+                    abprf_toast_msg(abprf_admin_data.msg.loading);
+                }, success: function (response) {
+                    abp_spinner_remove(parent);
+                    if (response.data && response.data.hasOwnProperty('html')) {
+                        target.html(response.data.html).promise().done(function () {
+                            abprf_toast_msg(response.data.msg, response.data.type);
+                            abprf_init(target);
+                        });
+                    }
+                }, error: function (xhr) {
+                    abprf_ajx_error(xhr, parent);
+                }
+            });
+        });
+    });
+    //========== Dashboard : update book status (In Rent / Completed) ==========//
+    $(document).on('click', 'div.abprf_admin .dash_book_status_btn', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let $btn = $(this);
+        let item_id = $btn.attr('data-item');
+        let book_status = $btn.attr('data-status');
+        if (!item_id || !book_status) {
+            return;
+        }
+        let $row = $btn.closest('.dash_row, .dash_booking_item');
+        jQuery.ajax({
+            type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                "action": 'abprf_dashboard_book_status', 'item_id': item_id, 'book_status': book_status, 'nonce': abprf_admin_data.nonce
+            }, beforeSend: function () {
+                abp_spinner($row.length ? $row : $btn.parent());
+            }, success: function (response) {
+                abp_spinner_remove($row.length ? $row : $btn.parent());
+                if (response.success && response.data) {
+                    abprf_toast_msg(response.data.msg, response.data.type || 'success');
+                    if (response.data.book_status_text) {
+                        $btn.replaceWith('<span class="dash_book_status_text">' + response.data.book_status_text + '</span>');
+                    }
+                } else if (response.data) {
+                    abprf_toast_msg(response.data.msg, response.data.type || 'warn');
+                }
+            }, error: function (xhr) {
+                abprf_ajx_error(xhr, $row.length ? $row : $btn.parent());
+            }
+        });
+    });
+}(jQuery));

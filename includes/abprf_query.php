@@ -291,11 +291,13 @@
 				}
 				$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 				$table_name   = $wpdb->prefix . 'abprf_property';
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $placeholders is a generated %d list for absint IDs, passed via $wpdb->prepare().
 				$rows = $wpdb->get_results(
 					$wpdb->prepare( "SELECT post_id, COUNT(*) AS c FROM %i WHERE post_id IN ($placeholders) GROUP BY post_id", array_merge( [ $table_name ], $ids ) ),
 					ARRAY_A
 				);
+				// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$counts = [];
 				foreach ( $rows as $row ) {
 					$counts[ (int) $row['post_id'] ] = (int) $row['c'];

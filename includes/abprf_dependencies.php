@@ -281,6 +281,8 @@
 				require_once ABPRF_DIR . 'includes/abprf_static.php';
 				if (is_admin()) {
 					require_once ABPRF_DIR . 'admin/abprf_admin.php';
+					require_once ABPRF_DIR . 'admin/abprf_dashboard.php';
+					require_once ABPRF_DIR . 'admin/abprf_documentation.php';
 					require_once ABPRF_DIR . 'admin/abprf_post.php';
 
 					require_once ABPRF_DIR . 'admin/abprf_properties.php';
@@ -290,7 +292,6 @@
 					require_once ABPRF_DIR . 'admin/abprf_form.php';
 					require_once ABPRF_DIR . 'admin/abprf_resource.php';
 					require_once ABPRF_DIR . 'admin/abprf_configuration.php';
-					require_once ABPRF_DIR . 'admin/abprf_status.php';
 					require_once ABPRF_DIR . 'admin/abprf_category.php';
 					require_once ABPRF_DIR . 'admin/abprf_location.php';
 					require_once ABPRF_DIR . 'admin/abprf_brand.php';
@@ -518,11 +519,11 @@
 				$active_tab = '';
 				$page = '';
 				if (isset($_GET['_abprf_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_abprf_nonce'])), 'abprf_url_action')) {
-					$active_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'status';
+					$active_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'dashboard';
 					$page = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
 				}
-				if ($page === ABPRF_Function::slug() && ABPRF_WC < 2 && $active_tab != 'status') {
-					wp_safe_redirect(ABPRF_Function::build_url('status'));
+				if ($page === ABPRF_Function::slug() && ABPRF_WC < 2 && $active_tab != 'dashboard') {
+					wp_safe_redirect(ABPRF_Function::build_url('dashboard'));
 					exit;
 				}
 			}

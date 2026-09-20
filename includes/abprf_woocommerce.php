@@ -306,7 +306,7 @@
 			public function after_checkout_validation(): void {
 				global $woocommerce;
 				$cart_items = $woocommerce->cart->get_cart();
-				foreach ( $cart_items as $cart_item ) {
+				foreach ( $cart_items as $cart_item_key => $cart_item ) {
 					$post_id = $cart_item['post_id'] ?? 0;
 					if ( get_post_type( $post_id ) == ABPRF_Function::get_cpt() ) {
 						$location                  = $cart_item['location'] ?? '';
@@ -334,13 +334,13 @@
 									$available_qty              = $total_qty - $reserve_qty - $sold_qty;
 									$available_qty              = $max_qty > 0 ? min( $max_qty, $available_qty ) : $available_qty;
 									if ( $qty < $min_qty || $qty > $available_qty ) {
-										$woocommerce->cart->empty_cart();
+										$woocommerce->cart->remove_cart_item( $cart_item_key );
 										wc_add_notice( __( "Oh ! We are Sorry, Your Selected Item Already Booked by another . please Try another Item.", 'abp-rentalforge' ), 'error' );
 									}
 								}
 							}
 						} else {
-							$woocommerce->cart->empty_cart();
+							$woocommerce->cart->remove_cart_item( $cart_item_key );
 							wc_add_notice( __( "Oh ! We are Sorry, Something Wrong. please Try another Time.", 'abp-rentalforge' ), 'error' );
 						}
 					}

@@ -201,6 +201,9 @@
 				global $wp_roles;
 				$user_role_list = '';
 				$user_data      = get_userdata( $user_ID );
+				if ( ! $user_data || empty( $user_data->roles ) ) {
+					return $user_role_list;
+				}
 				$user_role_slug = $user_data->roles;
 				if ( is_array( $user_role_slug ) && sizeof( $user_role_slug ) > 0 ) {
 					$user_count = 0;
@@ -209,7 +212,7 @@
 						if ( $user_count > 1 ) {
 							$user_role_list .= ", ";
 						}
-						$user_role_list .= translate_user_role( $wp_roles->roles[ $user_role ]['name'] );
+						$user_role_list .= translate_user_role( $wp_roles->roles[ $user_role ]['name'] ?? '' );
 					}
 				}
 

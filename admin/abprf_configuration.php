@@ -35,9 +35,9 @@
 						if ( ! in_array( $name, $remove_name ) ) {
 							$type = $field_info['type'] ?? '';
 							if ( $type == 'wp_editor' ) {
-								$new[ $name ] = wp_kses_post( wp_unslash( $new[ $name ] ) );
+								$new[ $name ] = wp_kses_post( wp_unslash( $new[ $name ] ?? '' ) );
 							} else {
-								$new[ $name ] = sanitize_text_field( $new[ $name ] );
+								$new[ $name ] = sanitize_text_field( $new[ $name ] ?? '' );
 							}
 						}
 					}

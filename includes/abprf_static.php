@@ -340,43 +340,43 @@
                 return [
                     1 => [
                         'title' => __('How do I book a rental?', 'abp-rentalforge'),
-                        'des' => __('<p>You can book a rental by selecting your preferred property or equipment, rental duration, available dates, and required options. Complete the checkout process to confirm your rental.</p>', 'abp-rentalforge'),
+                        'des' => __('You can book a rental by selecting your preferred property or equipment, rental duration, available dates, and required options. Complete the checkout process to confirm your rental.', 'abp-rentalforge'),
                     ],
                     2 => [
                         'title' => __('Can I cancel my rental booking?', 'abp-rentalforge'),
-                        'des' => __('<p>Yes, you can cancel your rental according to the cancellation policy configured by the rental provider. Refund eligibility may vary depending on the booking conditions.</p>', 'abp-rentalforge'),
+                        'des' => __('Yes, you can cancel your rental according to the cancellation policy configured by the rental provider. Refund eligibility may vary depending on the booking conditions.', 'abp-rentalforge'),
                     ],
                     3 => [
                         'title' => __('Can I change my rental dates?', 'abp-rentalforge'),
-                        'des' => __('<p>Rental dates can be changed if the provider allows date modifications and the selected property or equipment is available for the new rental period.</p>', 'abp-rentalforge'),
+                        'des' => __('Rental dates can be changed if the provider allows date modifications and the selected property or equipment is available for the new rental period.', 'abp-rentalforge'),
                     ],
                     4 => [
                         'title' => __('What rental durations are available?', 'abp-rentalforge'),
-                        'des' => __('<p>Available rental durations depend on the rental item. Depending on the configuration, you may be able to rent an item hourly, daily, monthly, or for a custom rental period.</p>', 'abp-rentalforge'),
+                        'des' => __('Available rental durations depend on the rental item. Depending on the configuration, you may be able to rent an item hourly, daily, monthly, or for a custom rental period.', 'abp-rentalforge'),
                     ],
                     5 => [
                         'title' => __('Will I receive a rental confirmation?', 'abp-rentalforge'),
-                        'des' => __('<p>Yes, a rental confirmation will be provided after a successful booking and payment. Your rental details can also be reviewed from your account dashboard.</p>', 'abp-rentalforge'),
+                        'des' => __('Yes, a rental confirmation will be provided after a successful booking and payment. Your rental details can also be reviewed from your account dashboard.', 'abp-rentalforge'),
                     ],
                     6 => [
                         'title' => __('What payment methods are supported?', 'abp-rentalforge'),
-                        'des' => __('<p>Available payment methods depend on the payment gateways configured by the website administrator or rental provider.</p>', 'abp-rentalforge'),
+                        'des' => __('Available payment methods depend on the payment gateways configured by the website administrator or rental provider.', 'abp-rentalforge'),
                     ],
                     7 => [
                         'title' => __('Is a security deposit required?', 'abp-rentalforge'),
-                        'des' => __('<p>A security deposit may be required depending on the rental item and the provider’s configuration. Any applicable deposit amount will be shown during the booking process.</p>', 'abp-rentalforge'),
+                        'des' => __('A security deposit may be required depending on the rental item and the provider’s configuration. Any applicable deposit amount will be shown during the booking process.', 'abp-rentalforge'),
                     ],
                     8 => [
                         'title' => __('What happens if the rental item is unavailable?', 'abp-rentalforge'),
-                        'des' => __('<p>Rental items are subject to availability for the selected dates and duration. If an item is unavailable, you may need to select another date, location, or available rental item.</p>', 'abp-rentalforge'),
+                        'des' => __('Rental items are subject to availability for the selected dates and duration. If an item is unavailable, you may need to select another date, location, or available rental item.', 'abp-rentalforge'),
                     ],
                     9 => [
                         'title' => __('What happens if the rental item is damaged?', 'abp-rentalforge'),
-                        'des' => __('<p>Customers are responsible for taking reasonable care of rented items. Damage or loss may result in additional charges according to the rental provider’s damage and liability policy.</p>', 'abp-rentalforge'),
+                        'des' => __('Customers are responsible for taking reasonable care of rented items. Damage or loss may result in additional charges according to the rental provider’s damage and liability policy.', 'abp-rentalforge'),
                     ],
                     10 => [
                         'title' => __('Who should I contact for rental assistance?', 'abp-rentalforge'),
-                        'des' => __('<p>If you need help with your rental, booking, payment, pickup, return, or other rental-related issues, please contact the rental provider using the contact information provided on the website.</p>', 'abp-rentalforge'),
+                        'des' => __('If you need help with your rental, booking, payment, pickup, return, or other rental-related issues, please contact the rental provider using the contact information provided on the website.', 'abp-rentalforge'),
                     ],
                 ];
             }

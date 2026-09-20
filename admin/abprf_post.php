@@ -105,7 +105,7 @@
                                                     echo esc_html($title);
                                                 ?></h5>
                                         <?php } else { ?>
-                                            <a href="<?php echo esc_url($edit_link); ?>" class="abp_fs_h5_color_theme">
+                                            <a href="<?php echo esc_url($edit_link ?? ''); ?>" class="abp_fs_h5_color_theme">
                                                 <?php if (ABPRF_Function::on_off('post_icon')) {
                                                     ABPRF_Layout::image_icon(ABPRF_Function::get_post_info($post_id, 'post_icon'));
                                                 }
@@ -131,8 +131,8 @@
                                                 <button type="button" class="_btn_light_success_xxs post_restore" data-post_id="<?php echo esc_attr($post_id); ?>" title="<?php echo esc_html__('Restore : ', 'abp-rentalforge') . ' ' . esc_html($title); ?>">♻️</button>
                                                 <button type="button" class="_btn_light_danger_xxs post_permanent_remove" data-post_id="<?php echo esc_attr($post_id); ?>" title="<?php echo esc_html__('Permanent Remove : ', 'abp-rentalforge') . ' ' . esc_html($title); ?>"><?php ABPRF_Static::svg('close_2'); ?></button>
                                             <?php } else { ?>
-                                                <button type="button" class="_btn_light_yellow_xxs" data-href="<?php echo esc_url($edit_link); ?>" data-blank="_blank" title="<?php echo esc_html__('Edit : ', 'abp-rentalforge') . ' ' . esc_html($title); ?>"><?php ABPRF_Static::svg('edit'); ?></button>
-                                                <button type="button" class="_btn_light_theme_xxs" data-href="<?php echo esc_url(get_permalink($post_id)); ?>" data-blank="_blank" title="<?php echo esc_html__('View : ', 'abp-rentalforge') . ' ' . esc_html($title); ?>"><?php ABPRF_Static::svg('view_1'); ?></button>
+                                                <button type="button" class="_btn_light_yellow_xxs" data-href="<?php echo esc_url($edit_link ?? ''); ?>" data-blank="_blank" title="<?php echo esc_html__('Edit : ', 'abp-rentalforge') . ' ' . esc_html($title); ?>"><?php ABPRF_Static::svg('edit'); ?></button>
+                                                <button type="button" class="_btn_light_theme_xxs" data-href="<?php echo esc_url(get_permalink($post_id) ?: ''); ?>" data-blank="_blank" title="<?php echo esc_html__('View : ', 'abp-rentalforge') . ' ' . esc_html($title); ?>"><?php ABPRF_Static::svg('view_1'); ?></button>
                                                 <button type="button" class="_btn_light_danger_xxs post_move_trash" data-post_id="<?php echo esc_attr($post_id); ?>" title="<?php echo esc_html__('Move to Trash : ', 'abp-rentalforge') . ' ' . esc_html($title); ?>"><?php ABPRF_Static::svg('close_1'); ?></button>
                                             <?php } ?>
                                         </div>
