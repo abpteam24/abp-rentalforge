@@ -517,10 +517,10 @@
 	div.abprf_area [class*="_form_control"] :disabled { cursor: not-allowed; opacity: 0.7; background-color: #DDD5; pointer-events: none;}
 	/*=============================*/
 	/*div.abprf_area [class*="_form_inline"] {width: 100%;max-width: 100%;margin: 0; padding: 0; line-height: 1;display: -webkit-flex; display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap; gap: var(--rf_gap_xs);}*/
-	div.abprf_area [class*="_form_inline"] {width: 100%;max-width: 100%;margin: 0; padding: 0; line-height: 1; display: grid;gap: var(--rf_gap_xs);grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));}
+	div.abprf_area [class*="_form_inline"] {width: 100%;max-width: 100%;margin: 0; padding: 0; line-height: 1; display: grid;gap: var(--rf_gap_xs);grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));}
 	/*div.abprf_area [class*="_form_inline"] [class*="_input_item"] {width: 100%;max-width: calc(25% - var(--rf_gap));position: relative;}*/
 	div.abprf_area [class*="_form_inline"] [class*="_input_item"] {width: 100%;position: relative;gap: var(--rf_gap_xxs); }
-	div.abprf_area [class*="_form_inline"] [class*="_input_item"][class*="_g_input"] {grid-column: span 2;}
+	div.abprf_area [class*="_form_inline"] [class*="_input_item"][class*="_g_input"] {grid-column: 1 / -1;}
 	div.abprf_area [class*="_form_inline"] [class*="_input_item"] [class*="_form_control"] {min-width: 100%;max-width: 100%;}
 	div.abprf_area [class*="_form_inline"] label {-webkit-flex-direction: column; flex-direction: column;-webkit-align-items: flex-start;align-items: flex-start;gap: var(--rf_gap_xxs);}
 	/*=============================*/
@@ -1255,4 +1255,30 @@
 	.sortable_handle {cursor: move;}
 	/*=============================*/
 	.abprf_allow {}
+}
+/******************************************************************** Responsive Fixes************************************************/
+@media only screen and (max-width: 782px) {
+	/*******Popup must never exceed the viewport on small screens********/
+	div.abprf_area .abp_popup .popup_area {min-width: 0 !important;width: 100% !important;max-width: 100% !important;}
+	div.abprf_area .abp_popup .popup_head {padding-right: 64px;}
+	div.abprf_area .abp_popup .popup_body {padding: var(--rf_gap_xs);}
+	/*******Close button is fixed, so keep it small and inside the popup head********/
+	div.abprf_area .abp_popup .close_icon,
+	div.abprf_area .abp_popup .popup_close {top: 14px;right: 14px;width: 40px;height: 40px;font-size: var(--rf_fs_h6);}
+}
+@media only screen and (max-width: 600px) {
+	/*******Toast: stretch to the viewport instead of overflowing from the right********/
+	div.abprf_area .toast_msg_area {left: 12px;right: 12px;bottom: 12px;gap: 8px;}
+	div.abprf_area .toast_msg_box {min-width: 0;width: 100%;}
+}
+@media only screen and (max-width: 480px) {
+	div.abprf_area .abp_popup .popup_area {border-radius: 0;}
+}
+@media only screen and (hover: none), only screen and (pointer: coarse) {
+	/*******Touch devices have no hover state, so slider controls stay visible********/
+	div.abprf_slider .icon_direction,
+	div.abprf_slider .image_indicator {opacity: 1;}
+	div.abprf_slider .prev_item.icon_direction {left: 10px;}
+	div.abprf_slider .next_item.icon_direction {right: 10px;}
+	div.abprf_slider .image_indicator .thumb_item img {height: 46px;}
 }

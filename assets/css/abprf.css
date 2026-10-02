@@ -165,9 +165,10 @@
 	div.abprf_area .abprf_lists .item_head {width: 100%;max-width: 100%;min-height: 160px;}
 	div.abprf_area .item_body {-webkit-flex-direction: column;flex-direction: column;}
 	div.abprf_area .total_continue {-webkit-flex-direction: column;flex-direction: column;align-items: stretch;}
-	div.abprf_area .total_continue ._btn_theme,.abprf_area .total_continue ._btn_theme_xs {width: 100%;}
-	div.attendee_item [class*="_input_item"] {width: 100%;}
+	div.abprf_area .total_continue ._btn_theme,
+	div.abprf_area .total_continue ._btn_theme_xs {width: 100%;}
+	div.abprf_area .attendee_item [class*="_input_item"] {width: 100%;}
 	div.abprf_area .client_info_area div.attendee_item {padding: var(--rf_gap_xxs);}
 	div.abprf_area .additional_service_area .additional_service {padding: var(--rf_gap_xxs);}
-	.abprf_area item_head .list_title {position: relative;}
+	div.abprf_area .list_title {position: relative;}
 }

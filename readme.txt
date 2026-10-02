@@ -2,7 +2,7 @@
 Contributors: abpteam
 Tags: rental, rent,booking, bike car,property equipment
 Requires at least: 6.2
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 Tested up to: 7.1
 Requires PHP: 8.0
 License: GPLv3
@@ -243,13 +243,25 @@ Everything in Free, plus:
 == Need help or have suggestions? ==
 If you need any further assistance or support, do contact us at this [🎫 support form](https://abp-team.com/support-desk/). We are very open to your suggestions. So do feel free to tell us if there is anything we can do to improve the plugin.
 
-🌐 [Live Demo](https://rentalforge.abp-team.com/)
-📖 [Documentation](https://rentalforge.abp-team.com/documentation/)
+🌐 [Live Demo](https://demo-rf.abp-team.com/)
+📖 [Documentation](https://abp-team.com/documentation-rentalforge/)
 💬 [Support Forum](https://wordpress.org/support/plugin/abp-rentalforge/)
 🐛 [Bug Reports](https://github.com/abpteam24/abp-rentalforge/issues)
 📧 Email: support@abp-team.com
 
 If you find RentalForge useful, please leave a ⭐⭐⭐⭐⭐ review on WordPress.org — it really helps!
+
+== Demo ==
+
+🌐 [Live Demo](https://demo-rf.abp-team.com/)
+
+See rental listings, galleries and the complete booking flow in action.
+
+== Documentation ==
+
+📖 [Documentation](https://abp-team.com/documentation-rentalforge/)
+
+Step-by-step setup guides for pricing, availability, booking rules, client forms, FAQs and global configuration.
 
 == Payment Gateways ==
 
@@ -375,9 +387,23 @@ This plugin does not collect or transmit any personal data by itself. Any custom
 24. Post Additional Configuration
 25. Post Client Form Configuration
 26. Post Tax, FAQ and Term-Condition Configuration
+27. Well come Dashboard View
 
 
 == Changelog ==
+
+= 1.0.8 =
+
+* Responsive fixes: booking/search popups now fit the viewport on phones and tablets instead of forcing a 500px minimum width.
+* Responsive fixes: gallery and slider arrows plus image thumbnails now stay visible on touch devices, where there is no hover state.
+* Responsive fixes: notification toasts no longer overflow off the right edge on narrow screens.
+* Responsive fixes: single column booking forms no longer create an extra empty column and overflow horizontally.
+* Responsive fixes: admin documentation cards and the dashboard booking popup now adapt properly on small screens.
+* Fixed the list title style that was silently ignored on mobile because of an invalid selector.
+* Updated the plugin screenshots list.
+* Updated the live demo and documentation links.
+
+Released: October 02, 2026
 
 = 1.0.7 =
 
@@ -452,6 +478,9 @@ Released: July 14, 2026
 *Initial Release*
 
 == Upgrade Notice ==
+
+= 1.0.8 =
+Responsive and design fixes for small screens and touch devices.
 
 = 1.0.7 =
 Released: September 20, 2026
