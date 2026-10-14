@@ -13,6 +13,7 @@
 				add_filter('use_block_editor_for_post_type', [$this, 'disable_gutenberg'], 10, 2);
 				add_filter('plugin_action_links', array($this, 'plugin_settings_link'), 10, 2);
 				add_action('upgrader_process_complete', [$this, 'flush_rewrite']);
+				add_action('admin_init', array($this, 'maybe_upgrade_tables'));
 				add_action('admin_init', array($this, 'activation_redirect'));
 			}
 			public function admin_enqueue($hook): void {
@@ -80,7 +81,7 @@
 					wp_enqueue_style('select2');
 					wp_enqueue_script('select2');
 				}
-				wp_enqueue_script('abprf_frontend', ABPRF_URL . 'assets/js/abprf_frontend.js', array('jquery'), ABPRF_VERSION, true);
+				wp_enqueue_script('abprf_frontend', ABPRF_URL . 'assets/js/abprf_frontend.js', array('jquery'), time(), true);
 				wp_enqueue_script('abprf_slick', ABPRF_URL . 'assets/js/slick.min.js', array('jquery'), ABPRF_VERSION, true);
 				$this->global_enqueue();
 				do_action('abprf_frontend_enqueue');
@@ -90,6 +91,9 @@
 				$load = is_singular($cpt) || is_post_type_archive($cpt) || is_tax(['abprf_category', 'abprf_location', 'abprf_brand']);
 				if (!$load && function_exists('is_cart') && function_exists('is_checkout')) {
 					$load = is_cart() || is_checkout();
+				}
+				if (!$load && function_exists('is_account_page') && is_account_page()) {
+					$load = true;
 				}
 				if (!$load && function_exists('WC') && is_object(WC()->cart)) {
 					foreach (WC()->cart->get_cart() as $cart_item) {
@@ -137,8 +141,8 @@
 				wp_enqueue_script('jquery-ui-datepicker');
 				wp_enqueue_style('abprf_jquery_ui', ABPRF_URL . 'assets/css/jquery-ui.min.css', array(), '1.13.2');
 				wp_enqueue_style('abprf_font_awesome', ABPRF_URL . 'assets/css/font_awesome.min.css', array(), '5.15.4');
-				wp_enqueue_style('abprf_lib', ABPRF_URL . 'assets/css/abprf_lib.css', array(), ABPRF_VERSION);
-				wp_enqueue_script('abprf_lib', ABPRF_URL . 'assets/js/abprf_lib.js', array('jquery'), ABPRF_VERSION, true);
+				wp_enqueue_style('abprf_lib', ABPRF_URL . 'assets/css/abprf_lib.css', array(), time());
+				wp_enqueue_script('abprf_lib', ABPRF_URL . 'assets/js/abprf_lib.js', array('jquery'), time(), true);
 				if (self::wc_active()) {
 					wp_localize_script('abprf_lib', 'abprf_var', [
 						'currency_symbol' => get_woocommerce_currency_symbol(),
@@ -251,9 +255,9 @@
 								}
 							}";
 				wp_add_inline_style('abprf_lib', wp_kses_post($abprf_var));
-				wp_enqueue_style('abprf', ABPRF_URL . 'assets/css/abprf.css', array(), ABPRF_VERSION);
+				wp_enqueue_style('abprf', ABPRF_URL . 'assets/css/abprf.css', array(), time());
 				$all_time = ABPRF_Function::get_time(get_the_id(), 'js');
-				wp_enqueue_script('abprf_infos', ABPRF_URL . 'assets/js/abprf.js', array('jquery'), ABPRF_VERSION, true);
+				wp_enqueue_script('abprf_infos', ABPRF_URL . 'assets/js/abprf.js', array('jquery'), time(), true);
 				$rental_data = array(
 					'ajax_url' => admin_url('admin-ajax.php'),
 					'nonce' => wp_create_nonce('abprf_ajax_nonce'),
@@ -296,6 +300,7 @@
 					require_once ABPRF_DIR . 'admin/abprf_location.php';
 					require_once ABPRF_DIR . 'admin/abprf_brand.php';
 					require_once ABPRF_DIR . 'admin/abprf_feature.php';
+					require_once ABPRF_DIR . 'admin/abprf_dummy_import.php';
 				}
 				if (self::wc_active()) {
 					require_once ABPRF_DIR . 'includes/abprf_hooks.php';
@@ -303,6 +308,7 @@
 					require_once ABPRF_DIR . 'includes/abprf_frontend.php';
 					require_once ABPRF_DIR . 'includes/abprf_shortcodes.php';
 					require_once ABPRF_DIR . 'includes/abprf_woocommerce.php';
+					require_once ABPRF_DIR . 'includes/abprf_my_account.php';
 					require_once ABPRF_DIR . 'admin/abprf_hidden_post.php';
 				}
 			}
@@ -411,6 +417,7 @@
 			}
 			public static function activation(): void {
 				self::create_table();
+				update_option('abprf_db_version', self::db_version(), false);
 				flush_rewrite_rules();
 			}
 			public static function deactivate(): void {
@@ -451,6 +458,11 @@
         billing_email varchar(100) DEFAULT NULL,
         billing_phone varchar(20) DEFAULT NULL,
         billing_address varchar(255) DEFAULT NULL,
+        pp_choice varchar(20) DEFAULT NULL,
+        pp_full varchar(100) DEFAULT NULL,
+        pp_deposit varchar(100) DEFAULT NULL,
+        pp_balance varchar(100) DEFAULT NULL,
+        pp_date datetime DEFAULT NULL,	
         others longtext DEFAULT NULL,
         created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
         updated_at datetime DEFAULT NULL,
@@ -498,6 +510,47 @@
 					);
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					$wpdb->delete($property_table, array('id' => 99), array('%d'));
+				}
+			}
+			public static function db_version(): string {
+				return '1.0.9';
+			}
+			public function maybe_upgrade_tables(): void {
+				if ((string) get_option('abprf_db_version', '') === self::db_version()) {
+					return;
+				}
+				self::create_table();
+				self::upgrade_orders_table();
+				update_option('abprf_db_version', self::db_version(), false);
+			}
+			public static function upgrade_orders_table(): void {
+				global $wpdb;
+				$order_table = $wpdb->prefix . 'abprf_orders';
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				if (!$wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $order_table))) {
+					return;
+				}
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$existing = $wpdb->get_results($wpdb->prepare('SHOW COLUMNS FROM %i', $order_table));
+				$existing_fields = [];
+				if (!empty($existing)) {
+					foreach ($existing as $col) {
+						$existing_fields[] = $col->Field;
+					}
+				}
+				$fields = array(
+					'pp_choice'  => 'varchar(20) DEFAULT NULL',
+					'pp_full'    => 'varchar(100) DEFAULT NULL',
+					'pp_deposit' => 'varchar(100) DEFAULT NULL',
+					'pp_balance' => 'varchar(100) DEFAULT NULL',
+					'pp_date'    => 'datetime DEFAULT NULL',
+				);
+				foreach ($fields as $column => $definition) {
+					if (in_array($column, $existing_fields, true)) {
+						continue;
+					}
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					$wpdb->query($wpdb->prepare("ALTER TABLE %i ADD COLUMN %i {$definition}", $order_table, $column));
 				}
 			}
 			public function plugin_settings_link($links_array, $plugin_file_name) {

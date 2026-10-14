@@ -27,7 +27,6 @@
 }
 /******************************************************************** configuration ************************************************/
 @media only screen and (min-width: 10px) {
-	div.abprf_admin table {border: 2px solid var(--rf_color_muted_2);}
 	div.abprf_admin table thead,
 	div.abprf_admin table tfoot {background: var(--rf_color_muted_2);}
 	div.abprf_admin table tbody tr:nth-child(even) {background: var(--rf_color_green_light);}
@@ -162,7 +161,7 @@
 	div.abprf_admin .abprf_head_logo img.emoji {max-width: 22px;max-height: 22px;width: auto;height: 22px !important;}
 	div.abprf_admin .abprf_head_title {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;line-height: 1.3;}
 	div.abprf_admin .abprf_head_title b {font-size: 14px;font-weight: 700;color: var(--rf_color_dark);white-space: nowrap;}
-	div.abprf_admin .abprf_head_title small {font-size: 10.5px;font-weight: 600;letter-spacing: 0.3px;color: var(--rf_color_muted_2);}
+	div.abprf_admin .abprf_head_title small {font-size: 10px;font-weight: 600;letter-spacing: 0.3px;color: var(--rf_color_muted_2);}
 	/*=====Nav Pills=====*/
 	div.abprf_admin .abprf_nav {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 3px;-webkit-flex: 1;flex: 1;min-width: 0;padding: 2px;overflow-x: auto;overflow-y: hidden;scrollbar-width: thin;}
 	div.abprf_admin .abprf_nav::-webkit-scrollbar {height: 4px;}
@@ -175,11 +174,11 @@
 	div.abprf_admin .abprf_nav > a:focus,
 	div.abprf_admin .abprf_nav > button:focus {-webkit-box-shadow: none;box-shadow: none;outline: 2px solid var(--rf_color_theme);outline-offset: 1px;}
 	div.abprf_admin .abprf_nav > a i,
-	div.abprf_admin .abprf_nav > button i {font-size: 12.5px;line-height: 1;opacity: 0.8;}
+	div.abprf_admin .abprf_nav > button i {font-size: 12px;line-height: 1;opacity: 0.8;}
 	div.abprf_admin .abprf_nav > a svg,
 	div.abprf_admin .abprf_nav > button svg {width: 14px;height: 14px;-webkit-flex-shrink: 0;flex-shrink: 0;opacity: 0.8;}
 	div.abprf_admin .abprf_nav > a._btn_xs.abp_active,
-	div.abprf_admin .abprf_nav > button.abp_active {background: var(--rf_color_theme);border-color: var(--rf_color_theme);color: var(--rf_color_theme_alter);-webkit-box-shadow: 0 2px 8px var(--rf_color_theme);box-shadow: 0 2px 8px var(--rf_color_theme);}
+	div.abprf_admin .abprf_nav > button.abp_active {background: var(--rf_color_theme);border-color: var(--rf_color_theme);color: var(--rf_color_theme_alter);}
 	div.abprf_admin .abprf_nav > a.abp_active:hover,
 	div.abprf_admin .abprf_nav > button.abp_active:hover {background: var(--rf_color_theme);color: var(--rf_color_theme_alter);opacity: 1;}
 	div.abprf_admin .abprf_nav > a.abp_active i,
@@ -225,9 +224,9 @@
 	div.abprf_admin .dash_hero_side {position: relative;z-index: 2;}
 	div.abprf_admin .dash_hero_main {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 16px;min-width: 0;}
 	div.abprf_admin .dash_hero_text h2 {margin: 0 0 5px;font-size: 23px;line-height: 1.25;font-weight: 700;color: #FFF;text-transform: none;}
-	div.abprf_admin .dash_hero_text p {margin: 0;font-size: 13.5px;line-height: 1.55;color: rgba(255, 255, 255, 0.88);}
+	div.abprf_admin .dash_hero_text p {margin: 0;font-size: 13px;line-height: 1.55;color: rgba(255, 255, 255, 0.88);}
 	div.abprf_admin .dash_hero_side {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;-webkit-align-items: flex-end;align-items: flex-end;gap: 10px;}
-	div.abprf_admin .dash_hero_date {font-size: 12.5px;color: rgba(255, 255, 255, 0.9);}
+	div.abprf_admin .dash_hero_date {font-size: 12px;color: rgba(255, 255, 255, 0.9);}
 	div.abprf_admin .dash_hero_date i {margin-right: 5px;}
 	div.abprf_admin .dash_hero_actions {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;gap: 8px;-webkit-justify-content: flex-end;justify-content: flex-end;}
 	div.abprf_admin .dash_btn {display: -webkit-inline-flex;display: inline-flex;-webkit-align-items: center;align-items: center;gap: 7px;padding: 8px 16px;border-radius: 9px;font-size: var(--rf_button_fs);font-weight: 600;line-height: 1.4;-webkit-transition: var(--rf_transition);transition: var(--rf_transition);cursor: pointer;border: 1px solid transparent;}
@@ -240,7 +239,7 @@
 	div.abprf_admin .dash_wc_setup_icon {-webkit-flex-shrink: 0;flex-shrink: 0;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;width: 52px;height: 52px;border-radius: 13px;background: rgba(234, 88, 12, 0.14);color: #C2410C;font-size: 22px;}
 	div.abprf_admin .dash_wc_setup_body {-webkit-flex: 1;flex: 1;min-width: 0;}
 	div.abprf_admin .dash_wc_setup_body h4 {margin: 0 0 5px;font-size: 15px;font-weight: 700;color: var(--rf_color_dark);}
-	div.abprf_admin .dash_wc_setup_body p {margin: 0;font-size: 12.8px;line-height: 1.6;color: var(--rf_color_muted);}
+	div.abprf_admin .dash_wc_setup_body p {margin: 0;font-size: 13px;line-height: 1.6;color: var(--rf_color_muted);}
 	div.abprf_admin .dash_wc_setup .dash_btn_solid {background: var(--rf_color_warning);}
 	/*=====KPI Cards=====*/
 	div.abprf_admin .dash_kpi_grid {display: grid;grid-template-columns: repeat(5, minmax(0, 1fr));gap: 14px;}
@@ -249,7 +248,7 @@
 	div.abprf_admin .dash_kpi_icon {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;-webkit-flex-shrink: 0;flex-shrink: 0;width: 46px;height: 46px;border-radius: 12px;font-size: 19px;}
 	div.abprf_admin .dash_kpi_body {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;min-width: 0;}
 	div.abprf_admin .dash_kpi_value {font-size: 22px;font-weight: 700;line-height: 1.2;color: var(--rf_color_dark);white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
-	div.abprf_admin .dash_kpi_label {margin-top: 3px;font-size: 11.5px;font-weight: 600;letter-spacing: 0.3px;text-transform: uppercase;color: var(--rf_color_muted_2);}
+	div.abprf_admin .dash_kpi_label {margin-top: 3px;font-size: 12px;font-weight: 600;letter-spacing: 0.3px;text-transform: uppercase;color: var(--rf_color_muted_2);}
 	div.abprf_admin .dash_kpi_icon.theme {background: var(--rf_color_theme);color: var(--rf_color_theme_alter);}
 	div.abprf_admin .dash_kpi_icon.navy {background: rgba(0, 124, 186, 0.12);color: var(--rf_color_navy_blue);}
 	div.abprf_admin .dash_kpi_icon.success {background: rgba(0, 102, 7, 0.1);color: var(--rf_color_success);}
@@ -262,26 +261,29 @@
 	/*=====Card Base=====*/
 	div.abprf_admin .dash_card {background: #FFF;border: 1px solid rgba(15, 23, 42, 0.07);border-radius: 13px;-webkit-box-shadow: var(--rf_shadow_14);box-shadow: var(--rf_shadow_14);overflow: hidden;}
 	div.abprf_admin .dash_card_head {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: space-between;justify-content: space-between;gap: 10px;padding: 15px 18px;border-bottom: 1px solid rgba(15, 23, 42, 0.07);background: var(--rf_color_light);}
-	div.abprf_admin .dash_card_head h4 {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 9px;margin: 0;padding: 0;font-size: 14.5px;font-weight: 700;color: var(--rf_color_dark);text-transform: none;line-height: 1.4;}
+	div.abprf_admin .dash_card_head h4 {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 9px;margin: 0;padding: 0;font-size: 14px;font-weight: 700;color: var(--rf_color_dark);text-transform: none;line-height: 1.4;}
 	div.abprf_admin .dash_card_head h4 i {color: var(--rf_color_theme);font-size: 15px;}
-	div.abprf_admin .dash_card_link {font-size: 12.5px;font-weight: 600;color: var(--rf_color_theme);white-space: nowrap;}
+	div.abprf_admin .dash_card_link {font-size: 13px;font-weight: 600;color: var(--rf_color_theme);white-space: nowrap;}
 	div.abprf_admin .dash_card_link:hover {color: var(--rf_color_theme);text-decoration: underline;}
 	div.abprf_admin .dash_card_body {padding: 16px 18px;}
 	div.abprf_admin .dash_card_body_plain {padding: 6px 0;}
 	/*=====Documentation=====*/
+	div.abprf_admin .abp_documentation [class*="_panel_head"] {flex-wrap: wrap;row-gap: 8px;}
+	div.abprf_admin .abp_documentation .abp_doc_head_links {margin-left: auto;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 8px;flex-wrap: wrap;}
+	div.abprf_admin .abp_documentation .abp_doc_head_links a {white-space: nowrap;}
 	div.abprf_admin .abp_documentation .dash_card {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;width: 100%;}
 	div.abprf_admin .abp_documentation .dash_card_head h4 {gap: 10px;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
-	div.abprf_admin .abp_documentation .dash_step {-webkit-flex-shrink: 0;flex-shrink: 0;width: 24px;height: 24px;min-width: 24px;display: -webkit-inline-flex;display: inline-flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;border-radius: 50%;background: var(--rf_color_theme);color: var(--rf_color_theme_alter);font-size: 11.5px;font-weight: 700;line-height: 1;}
+	div.abprf_admin .abp_documentation .dash_step {-webkit-flex-shrink: 0;flex-shrink: 0;width: 24px;height: 24px;min-width: 24px;display: -webkit-inline-flex;display: inline-flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;border-radius: 50%;background: var(--rf_color_theme);color: var(--rf_color_theme_alter);font-size: 11px;font-weight: 700;line-height: 1;}
 	div.abprf_admin .abp_documentation .dash_card_body {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;gap: 8px;-webkit-flex: 1;flex: 1;}
-	div.abprf_admin .abp_documentation .dash_body_lead {margin: 0;font-size: 13.5px;font-weight: 600;line-height: 1.5;color: var(--rf_color_dark);}
-	div.abprf_admin .abp_documentation .dash_body_text {margin: 0;font-size: 12.8px;line-height: 1.65;color: var(--rf_color_muted);}
-	div.abprf_admin .abp_documentation .doc_grid {display: grid;grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr));gap: 14px;width: 100%;}
+	div.abprf_admin .abp_documentation .dash_body_lead {margin: 0;font-size: 13px;font-weight: 600;line-height: 1.5;color: var(--rf_color_dark);}
+	div.abprf_admin .abp_documentation .dash_body_text {margin: 0;font-size: 12px;line-height: 1.65;color: var(--rf_color_muted);}
+	div.abprf_admin .abp_documentation .doc_grid {display: grid;grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));gap: 14px;width: 100%;}
 	div.abprf_admin .abp_documentation .doc_pro_banner {border: none;background: linear-gradient(120deg, #1e1b4b 0%, #4c1d95 55%, #7c3aed 100%);overflow: hidden;}
 	div.abprf_admin .abp_documentation .doc_pro_banner .dash_card_body {gap: 8px;padding: 22px;}
 	div.abprf_admin .abp_documentation .doc_pro_kicker {margin: 0;font-size: 11px;font-weight: 800;letter-spacing: 1.5px;color: #fbbf24;}
 	div.abprf_admin .abp_documentation .doc_pro_title {margin: 0;font-size: 20px;font-weight: 800;color: #fff;line-height: 1.3;}
 	div.abprf_admin .abp_documentation .doc_pro_text {margin: 0;font-size: 13px;line-height: 1.6;color: rgba(255, 255, 255, 0.85);max-width: 640px;}
-	div.abprf_admin .abp_documentation .doc_pro_btn {display: -webkit-inline-flex;display: inline-flex;-webkit-align-items: center;align-items: center;gap: 8px;margin-top: 6px;padding: 10px 22px;border-radius: 999px;background: #fbbf24;color: #1e1b4b;font-size: 13.5px;font-weight: 800;text-decoration: none;-webkit-box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);-webkit-transition: transform 150ms ease, box-shadow 150ms ease;transition: transform 150ms ease, box-shadow 150ms ease;}
+	div.abprf_admin .abp_documentation .doc_pro_btn {display: -webkit-inline-flex;display: inline-flex;-webkit-align-items: center;align-items: center;gap: 8px;margin-top: 6px;padding: 10px 22px;border-radius: 999px;background: #fbbf24;color: #1e1b4b;font-size: 13px;font-weight: 800;text-decoration: none;-webkit-box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);-webkit-transition: transform 150ms ease, box-shadow 150ms ease;transition: transform 150ms ease, box-shadow 150ms ease;}
 	div.abprf_admin .abp_documentation .doc_pro_btn:hover {color: #1e1b4b;-webkit-transform: translateY(-1px);transform: translateY(-1px);-webkit-box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);}
 	/*=====Upcoming Journey Rows=====*/
 	div.abprf_admin .dash_rows {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;max-height: 500px; overflow: auto;}
@@ -289,8 +291,8 @@
 	div.abprf_admin .dash_row:last-child {border-bottom: none;}
 	div.abprf_admin .dash_row:hover {background: var(--rf_color_light);}
 	div.abprf_admin .dash_row_main {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;gap: 3px;-webkit-flex: 1;flex: 1;min-width: 0;}
-	div.abprf_admin .dash_row_main b {font-size: 13.5px;font-weight: 600;color: var(--rf_color_dark);overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-	div.abprf_admin .dash_row_main small {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 5px;font-size: 11.5px;color: var(--rf_color_muted);}
+	div.abprf_admin .dash_row_main b {font-size: 13px;font-weight: 600;color: var(--rf_color_dark);overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+	div.abprf_admin .dash_row_main small {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 5px;font-size: 12px;color: var(--rf_color_muted);}
 	div.abprf_admin .dash_row_main small i {font-size: 10px;color: var(--rf_color_muted_2);}
 	div.abprf_admin .dash_row_meta {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 7px;-webkit-flex-shrink: 0;flex-shrink: 0;}
 	div.abprf_admin .dash_chip {font-size: 11px;font-weight: 600;padding: 3px 9px;border-radius: 20px;background: var(--rf_color_light);border: 1px solid rgba(15, 23, 42, 0.08);color: var(--rf_color_muted);white-space: nowrap;}
@@ -304,11 +306,18 @@
 	div.abprf_admin .dash_pill.wc-failed {background: rgba(204, 0, 0, 0.1);color: var(--rf_color_danger);}
 	div.abprf_admin .dash_empty {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;-webkit-align-items: center;align-items: center;gap: 8px;padding: 30px 18px;text-align: center;}
 	div.abprf_admin .dash_empty i {font-size: 28px;color: rgba(15, 23, 42, 0.16);}
-	div.abprf_admin .dash_empty p {margin: 0;font-size: 12.5px;color: var(--rf_color_muted_2);}
+	div.abprf_admin .dash_empty p {margin: 0;font-size: 12px;color: var(--rf_color_muted_2);}
 	/*=====Upcoming Journeys=====*/
 	div.abprf_admin .dash_booking_row {cursor: pointer;}
 	div.abprf_admin .dash_booking_row:hover {background: var(--rf_color_light);}
-	div.abprf_admin .dash_booking_hint {padding: 9px 18px;background: rgba(59, 130, 246, 0.07);color: var(--rf_color_muted);font-size: 11.5px;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 6px;border-bottom: 1px solid rgba(15, 23, 42, 0.05);}
+	div.abprf_admin .dash_booking_hint {padding: 9px 18px;background: rgba(59, 130, 246, 0.07);color: var(--rf_color_muted);font-size: 11px;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 6px;border-bottom: 1px solid rgba(15, 23, 42, 0.05);}
+	div.abprf_admin .dash_deliver_group {border-bottom: 1px solid rgba(15, 23, 42, 0.06);}
+	div.abprf_admin .dash_deliver_group:last-child {border-bottom: none;}
+	div.abprf_admin .dash_deliver_group .dash_booking_row {border-bottom: none;}
+	div.abprf_admin .dash_deliver_orders {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;background: rgba(15, 23, 42, 0.015);border-left: 3px solid var(--rf_color_theme);margin: 0 18px 12px 30px;border-radius: 8px;overflow: hidden;}
+	div.abprf_admin .dash_deliver_orders .dash_row {padding: 10px 14px;gap: 10px;}
+	div.abprf_admin .dash_deliver_row {border-bottom: 1px solid rgba(15, 23, 42, 0.05);}
+	div.abprf_admin .dash_deliver_row:last-child {border-bottom: none;}
 	div.abprf_admin .dash_trip_badge {display: -webkit-inline-flex;display: inline-flex;-webkit-align-items: center;align-items: center;gap: 4px;font-size: 10px;font-weight: 700;padding: 2px 7px;border-radius: 20px;white-space: nowrap;text-transform: uppercase;letter-spacing: 0.3px;}
 	div.abprf_admin .dash_trip_badge_up {background: rgba(59, 130, 246, 0.12);color: #1D4ED8;}
 	div.abprf_admin .dash_trip_badge_return {background: rgba(147, 51, 234, 0.12);color: #7E22CE;}
@@ -321,7 +330,7 @@
 	div.abprf_admin .dash_chip_overdue {background: rgba(204, 0, 0, 0.12);color: var(--rf_color_danger);}
 	div.abprf_admin .dash_chip_due {background: rgba(254, 187, 2, 0.18);color: #96690A;}
 	div.abprf_admin .dash_book_status_btn {font-size: 11px;padding: 3px 10px;white-space: nowrap;}
-	div.abprf_admin .dash_book_status_text {font-size: 11.5px;color: var(--rf_color_muted);white-space: nowrap;text-transform: capitalize;}
+	div.abprf_admin .dash_book_status_text {font-size: 11px;color: var(--rf_color_muted);white-space: nowrap;text-transform: capitalize;}
 	div.abprf_admin .dash_booking_popup_area {max-width: 620px !important;}
 	div.abprf_admin .dash_booking_popup {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;gap: 16px;}
 	div.abprf_admin .dash_booking_pop_head {display: -webkit-flex;display: flex;-webkit-align-items: flex-start;align-items: flex-start;-webkit-justify-content: space-between;justify-content: space-between;gap: 12px;}
@@ -333,15 +342,15 @@
 	div.abprf_admin .dash_booking_section {border-top: 1px solid rgba(15, 23, 42, 0.07);padding-top: 14px;}
 	div.abprf_admin .dash_booking_section h5 {margin: 0 0 10px;font-size: 13px;font-weight: 700;color: var(--rf_color_dark);display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 7px;}
 	div.abprf_admin .dash_booking_section h5 i {color: var(--rf_color_theme);}
-	div.abprf_admin .dash_booking_table {width: 100%;border-collapse: collapse;font-size: 12.5px;}
+	div.abprf_admin .dash_booking_table {width: 100%;border-collapse: collapse;font-size: 12px;}
 	div.abprf_admin .dash_booking_table th {text-align: left;padding: 8px 10px;background: var(--rf_color_light);color: var(--rf_color_muted);font-weight: 700;border-bottom: 1px solid rgba(15, 23, 42, 0.06);}
 	div.abprf_admin .dash_booking_table td {padding: 9px 10px;border-bottom: 1px solid rgba(15, 23, 42, 0.05);color: var(--rf_color_dark);}
 	div.abprf_admin .dash_booking_table tr:last-child td {border-bottom: none;}
 	div.abprf_admin .dash_booking_bookings {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;gap: 8px;max-height: 240px;overflow: auto;}
 	div.abprf_admin .dash_booking_item {display: -webkit-flex;display: flex;-webkit-align-items: flex-start;align-items: flex-start;-webkit-justify-content: space-between;justify-content: space-between;gap: 12px;padding: 10px 12px;border: 1px solid rgba(15, 23, 42, 0.07);border-radius: 10px;background: #fff;}
 	div.abprf_admin .dash_booking_item_main {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;gap: 3px;-webkit-flex: 1;flex: 1;min-width: 0;}
-	div.abprf_admin .dash_booking_item_main strong {font-size: 13.5px;font-weight: 700;color: var(--rf_color_dark);}
-	div.abprf_admin .dash_booking_item_main small {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;-webkit-align-items: center;align-items: center;gap: 4px 8px;font-size: 11.5px;color: var(--rf_color_muted);}
+	div.abprf_admin .dash_booking_item_main strong {font-size: 13px;font-weight: 700;color: var(--rf_color_dark);}
+	div.abprf_admin .dash_booking_item_main small {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;-webkit-align-items: center;align-items: center;gap: 4px 8px;font-size: 11px;color: var(--rf_color_muted);}
 	div.abprf_admin .dash_booking_item_main small i {font-size: 10px;}
 	div.abprf_admin .dash_booking_prices span {white-space: nowrap;}
 	div.abprf_admin .dash_booking_item_side {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;-webkit-align-items: flex-end;align-items: flex-end;gap: 6px;-webkit-flex-shrink: 0;flex-shrink: 0;}
@@ -352,7 +361,7 @@
 	div.abprf_admin .dash_booking_booking_side {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 7px;-webkit-flex-shrink: 0;flex-shrink: 0;}
 	div.abprf_admin .dash_sp_block {margin-bottom: 12px;}
 	div.abprf_admin .dash_sp_block:last-child {margin-bottom: 0;}
-	div.abprf_admin .dash_sp_title {font-size: 12.5px;font-weight: 700;color: var(--rf_color_muted);margin-bottom: 8px;}
+	div.abprf_admin .dash_sp_title {font-size: 12px;font-weight: 700;color: var(--rf_color_muted);margin-bottom: 8px;}
 	div.abprf_admin .dash_sp_canvas {border: 1px solid rgba(15, 23, 42, 0.08);margin: 0 auto !important;}
 	div.abprf_admin .dash_booking_popup .sp_cell.available, div.abprf_admin .dash_booking_popup .sp_cell.available:hover {cursor: default;pointer-events: none;background: var(--rf_color_available);}
 	/*=====Quick Actions=====*/
@@ -373,7 +382,7 @@
 	div.abprf_admin .dash_action:hover .dash_action_arrow {color: var(--rf_color_theme);-webkit-transform: translateX(3px);transform: translateX(3px);}
 	/*=====Dashboard Orders Summary=====*/
 	div.abprf_admin .dash_orders_card {overflow: hidden;}
-	div.abprf_admin .dash_orders_body {padding: var(--rf_gap_xs);}
+	div.abprf_admin .dash_orders_body {padding: 0;}
 	div.abprf_admin .dash_orders_pane {display: none;}
 	div.abprf_admin .dash_orders_pane.abp_active {display: block;}
 	div.abprf_admin .dash_order_table {width: 100%;border-collapse: collapse;margin: 0;}
@@ -388,7 +397,7 @@
 	div.abprf_admin .dash_order_table .dash_order_total_row td {font-weight: 700;color: var(--rf_color_dark);background: var(--rf_color_light);}
 	div.abprf_admin .dash_order_table .dash_order_empty {text-align: center;padding: 24px 18px;color: var(--rf_color_muted_2);}
 	div.abprf_admin .dash_order_table .dash_route {display: inline-block;max-width: 200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-	div.abprf_admin .dash_order_table .dash_row_hidden {display: none;}
+	div.abprf_admin .dash_row_hidden {display: none;}
 	div.abprf_admin .dash_orders_meta {display: block;padding: 10px 18px;font-size: var(--rf_fs_small);font-weight: 700;text-transform: uppercase;letter-spacing: 0.3px;color: var(--rf_color_muted_2);border-bottom: 1px solid rgba(15, 23, 42, 0.07);}
 	div.abprf_admin .dash_pane_more {text-align: center;padding: 12px 18px;border-top: 1px solid rgba(15, 23, 42, 0.07);}
 	/*=====System Status Checklist=====*/
@@ -400,13 +409,16 @@
 	div.abprf_admin .dash_status_ready {font-size: var(--rf_fs_small);font-weight: 700;color: var(--rf_color_success);white-space: nowrap;}
 	div.abprf_admin .dash_status_fix {display: -webkit-inline-flex;display: inline-flex;-webkit-align-items: center;align-items: center;margin: 0;padding: 3px 11px;border: 0;border-radius: 20px;background: var(--rf_color_theme);color: var(--rf_color_theme_alter) !important;font-size: var(--rf_fs_small);font-weight: 700;white-space: nowrap;cursor: pointer;-webkit-transition: var(--rf_transition);transition: var(--rf_transition);}
 	div.abprf_admin .dash_status_fix:hover {background: var(--rf_color_theme);color: var(--rf_color_theme_alter) !important;-webkit-box-shadow: 0 2px 8px var(--rf_color_theme);box-shadow: 0 2px 8px var(--rf_color_theme);}
+	div.abprf_admin .dash_status_actions {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;-webkit-justify-content: flex-end;justify-content: flex-end;gap: 6px;}
+	div.abprf_admin .dash_status_fix.remove_dummy {background: var(--rf_color_danger);color: var(--rf_color_white) !important;}
+	div.abprf_admin .dash_status_fix.remove_dummy:hover {background: #900;-webkit-box-shadow: 0 4px 10px rgba(192, 0, 0, 0.3);box-shadow: 0 4px 10px rgba(192, 0, 0, 0.3);}
 	div.abprf_admin .dash_status_note {padding: 4px 18px 12px;font-size: var(--rf_fs_small);color: var(--rf_color_warning);line-height: 1.5;}
 	div.abprf_admin .dash_status_note a {color: var(--rf_color_theme);font-weight: 700;}
 	/*=====Sidebar Widgets=====*/
 	div.abprf_admin .dash_kv_list {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;}
 	div.abprf_admin .dash_kv {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: space-between;justify-content: space-between;gap: 10px;padding: 11px 18px;border-bottom: 1px solid rgba(15, 23, 42, 0.05);}
 	div.abprf_admin .dash_kv:last-child {border-bottom: none;}
-	div.abprf_admin .dash_kv b {font-size: 12.5px;font-weight: 700;color: var(--rf_color_dark);}
+	div.abprf_admin .dash_kv b {font-size: 12px;font-weight: 700;color: var(--rf_color_dark);}
 	div.abprf_admin .dash_kv b.dash_status_warn {color: var(--rf_color_warning);}
 	div.abprf_admin .dash_bar {display: -webkit-flex;display: flex;-webkit-flex-wrap: nowrap;flex-wrap: nowrap;height: 11px;border-radius: 20px;overflow: hidden;background: rgba(15, 23, 42, 0.06);margin-bottom: 13px;}
 	div.abprf_admin .dash_bar span {display: block;height: 100%;}
@@ -415,8 +427,8 @@
 	div.abprf_admin .dash_bar span.private {background: var(--rf_color_navy_blue);}
 	div.abprf_admin .dash_bar span.trash {background: rgba(204, 0, 0, 0.6);}
 	div.abprf_admin .dash_legend {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;gap: 8px;margin: 0;padding: 0;list-style: none;}
-	div.abprf_admin .dash_legend li {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 8px;font-size: 12.5px;color: var(--rf_color_muted);margin: 0;}
-	div.abprf_admin .dash_legend li b {margin-left: auto;font-size: 12.5px;font-weight: 700;color: var(--rf_color_dark);}
+	div.abprf_admin .dash_legend li {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;gap: 8px;font-size: 12px;color: var(--rf_color_muted);margin: 0;}
+	div.abprf_admin .dash_legend li b {margin-left: auto;font-size: 12px;font-weight: 700;color: var(--rf_color_dark);}
 	div.abprf_admin .dash_legend .dash_dot {width: 9px;height: 9px;border-radius: 50%;-webkit-flex-shrink: 0;flex-shrink: 0;}
 	div.abprf_admin .dash_legend .dash_dot.publish {background: var(--rf_color_theme);}
 	div.abprf_admin .dash_legend .dash_dot.draft {background: var(--rf_color_yellow);}

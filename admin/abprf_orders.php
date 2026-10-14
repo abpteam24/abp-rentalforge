@@ -61,6 +61,9 @@
                 $data_status = !empty($filter_args['status']) ? sanitize_text_field($filter_args['status']) : '';
                 $si = ($page_number - 1) * $limit + 1;
                 $offset = $si - 1;
+                $filter_args['order_by'] = 'order_id';
+                $filter_args['order_dir'] = 'DESC';
+                ABPRF_Layout::sync_book_status();
                 $booking_lists = ABPRF_Query::get_booking_query($filter_args, $limit, $offset);
                 $total_order = ABPRF_Query::get_booking_query($filter_args, 0, 0, true);
                 $filter_args['status'] = 'all';
@@ -76,6 +79,7 @@
                 //echo '<pre>';print_r($filter_args);echo '</pre>';
                 $count_foot_left_col = 5;
                 $count_foot_right_col = 3;
+                $now = current_time('Y-m-d H:i:s');
                 ?>
                 <div class="_fj_between _gap_xs_f_wrap">
                     <div class="_group_content order_status_menu">
@@ -170,6 +174,16 @@
                                 $end_time = $booking_list['end_time'] ?? '';
                                 $end_date = !empty($end_time) ? gmdate('Y-m-d', strtotime($end_time)) : '';
                                 $end_time_format = strtotime($start_date) === strtotime($end_date) ? 'time' : 'full';
+                                $book_status = (int)($booking_list['book_status'] ?? 0);
+                                $is_canceled = ($book_status === 5) || ($status === 'wc-cancelled');
+                                $is_overdue = !$is_canceled && $end_time !== '' && strtotime($end_time) < strtotime($now) && $book_status < 3;
+                                $overdue_label = '';
+                                if ($is_overdue) {
+                                    $late = ABPRF_Function::get_date_time_difference($end_time, $now, '');
+                                    $late_text = preg_replace('/\s+\d+\s+Seconds?/i', '', trim((string)($late['text'] ?? '')));
+                                    /* translators: %s: overdue duration. */
+                                    $overdue_label = $late_text !== '' ? sprintf(__('Overdue by %s', 'abp-rentalforge'), $late_text) : __('Overdue', 'abp-rentalforge');
+                                }
                                 ?>
                                 <tr>
                                     <th>
@@ -190,6 +204,9 @@
                                     <td>
                                         <?php echo esc_html(ABPRF_Function::date_format($start_time, 'full') . '-' . ABPRF_Function::date_format($end_time, $end_time_format)); ?>
                                         <p class="abp_fs_label_color_theme"><?php echo esc_html($others['duration'] ?? '') . '-' . esc_html(ABPRF_Layout::rent_rules($others['rent_rule'] ?? '')); ?></p>
+                                        <?php if ($is_overdue) { ?>
+                                            <p class="abp"><span class="dash_chip dash_chip_overdue"><i class="fas fa-exclamation-triangle"></i> <?php echo esc_html($overdue_label); ?></span></p>
+                                        <?php } ?>
                                     </td>
                                     <?php if (ABPRF_Function::on_off('location')) { ?>
                                         <td><?php echo esc_html(ABPRF_Function::location_value($booking_list['location'] ?? '')); ?></td>
@@ -205,15 +222,18 @@
                                     <?php if (ABPRF_Function::on_off('deposit')) { ?>
                                         <th><?php echo $deposit > 0 ? wp_kses_post(wc_price($deposit)) : esc_html__('FREE', 'abp-rentalforge'); ?></th>
                                     <?php } ?>
-                                    <th><?php echo $total_price > 0 ? wp_kses_post(wc_price($total_price)) : esc_html__('FREE', 'abp-rentalforge'); ?></th>
+                                    <th><?php echo $total_price > 0 ? wp_kses_post(wc_price($total_price)) : esc_html__('FREE', 'abp-rentalforge'); ?>
+                                        <?php do_action('abprf_order_list_partial_payment', $booking_list); ?>
+                                    </th>
                                     <th class="_text_capitalize">
                                         <p class="abp <?php echo esc_attr(ABPRF_Layout::status_text($status)); ?>"> <?php echo esc_html(ABPRF_Layout::status_text($status)); ?></p>
-                                        <p class="abp <?php echo esc_attr($booking_list['book_status'] ?? ''); ?>">
-                                            <?php
-                                                $book_status = $booking_list['book_status'] ?? '';
-                                                $book_status = ABPRF_Layout::get_book_status($order_id, $start_time, $end_time, $book_status);
-                                                echo esc_html(ABPRF_Layout::book_status_text($book_status)); ?>
-                                        </p>
+                                        <?php if ($is_canceled || $book_status >= 3) { ?>
+                                            <p class="abp <?php echo esc_attr($book_status); ?>"><?php echo esc_html(ABPRF_Layout::book_status_text($book_status)); ?></p>
+                                        <?php } elseif ($book_status < 2) { ?>
+                                            <button type="button" class="_btn_light_theme_xs dash_book_status_btn" data-item="<?php echo esc_attr($item_id); ?>" data-status="2"><?php esc_html_e('Mark Delivered', 'abp-rentalforge'); ?></button>
+                                        <?php } else { ?>
+                                            <button type="button" class="_btn_light_success_xs dash_book_status_btn" data-item="<?php echo esc_attr($item_id); ?>" data-status="3"><?php esc_html_e('Mark Received', 'abp-rentalforge'); ?></button>
+                                        <?php } ?>
                                     </th>
                                     <th class="_text_capitalize"><?php echo esc_html($booking_list['payment_method'] ?? ''); ?></th>
                                     <td>

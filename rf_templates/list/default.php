@@ -8,7 +8,8 @@
 		if ( ! empty( $post_ids ) && sizeof( $post_ids ) > 0 ) {
 			$global_order      = $params['global_order'] ?? '';
 			$style             = ( $params['style'] ?? 'grid' ) ?: 'grid';
-			$column            = $params['column'] ?? 3;
+			$column            = absint( $params['column'] ?? 3 );
+			$column            = $column > 0 ? $column : 3;
 			$related           = $params['related'] ?? '';
 			$show_post         = absint( ( $params['show'] ?? 0 ) ?: ( $column * 3 ) );
 			$class             = $style == 'grid' && $column > 1 ? 'abprf_grid item_' . $column : 'abprf_lists item_' . $column;
@@ -26,12 +27,13 @@
 					$rent_rule   = ABPRF_Function::get_post_info( $post_id, 'rent_rule' );
 					$cat_id      = ABPRF_Function::get_post_info( $post_id, 'abprf_category' );
 					$loc_id      = ABPRF_Function::get_post_info( $post_id, 'abprf_location' );
+					$brand_id    = ABPRF_Function::get_post_info( $post_id, 'abprf_brand' );
 					$description = ABPRF_Function::get_post_info( $post_id, 'post_description' );
 					$url         = get_the_permalink( $post_id );
 					$show_class  = $show_post >= $post_count ? '' : 'abp_close';
 					//echo '<pre>';print_r($filter_args);echo '</pre>';
 					?>
-                    <div class="pagination_item item_box_1 <?php echo esc_attr( $show_class ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>">
+                    <div class="pagination_item item_box_1 <?php echo esc_attr( $show_class ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>" data-brand_id="<?php echo esc_attr( $brand_id ); ?>">
                         <div class="item_head">
 							<?php ABPRF_Layout::image( $post_id ); ?>
                         </div>

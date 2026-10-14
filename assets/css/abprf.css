@@ -70,9 +70,11 @@
 	div.abprf_area .abprf_lists .item_body .price_value {font-size: var(--rf_fs_h5); font-weight: 500;}
 	div.abprf_area .abprf_lists .list_title img.emoji {height: var(--rf_fs_h4) !important;}
 	/***************************************/
-	div.abprf_area .abprf_missionary {border-radius: var(--rf_br_xl); display: block; column-gap: var(--rf_gap);}
-	div.abprf_area .abprf_missionary .item_head {padding: 0;}
-	div.abprf_area .abprf_missionary .item_box_1 {position: relative;margin-bottom: var(--rf_gap); break-inside: avoid; -webkit-column-break-inside: avoid; page-break-inside: avoid;}
+	div.abprf_area .abprf_masonry {border-radius: var(--rf_br_xl); display: block; column-gap: var(--rf_gap);}
+	div.abprf_area .abprf_masonry .item_head {padding: 0;-webkit-flex-direction: column;flex-direction: column;}
+	div.abprf_area .abprf_masonry .item_head i{font-size: var(--rf_button_fs); height: var(--rf_button_fs) !important;min-height: var(--rf_button_fs) !important;padding: 0;}
+	div.abprf_area .abprf_masonry .item_box_1 {position: relative;margin-bottom: var(--rf_gap); break-inside: avoid; -webkit-column-break-inside: avoid; page-break-inside: avoid;}
+	div.abprf_area .abprf_masonry .item_head *{border-radius: 0;}
 	/*******************Group property********************/
 	div.abprf_area .group_property {margin: var(--rf_gap) 0 0 0;padding: var(--rf_gap);}
 	div.abprf_area .group_property .property_item {display: -webkit-flex;display: flex;-webkit-align-items: stretch;align-items: stretch;}
@@ -123,14 +125,14 @@
 /*************************************************************/
 /************ Modern UI Polish *******************************/
 @media only screen and (min-width: 10px) {
-	#abprf_search_area {position: relative;overflow: hidden;}
+	#abprf_search_area {position: relative;}
 	#abprf_search_area::before {content: "";position: absolute;inset: 0;background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(52,211,153,0.08));pointer-events: none;border-radius: inherit;}
 	#abprf_search_area form {position: relative;}
 	div.abprf_area .item_box_1 {transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;}
 	div.abprf_area .item_box_1:hover {transform: translateY(-4px);box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);border-color: var(--rf_color_theme_cc, #c7d2fe);}
 	div.abprf_area .abprf_grid .item_head img,
 	div.abprf_area .abprf_lists .item_head img,
-	div.abprf_area .abprf_missionary .item_head img {transition: transform 0.45s ease;}
+	div.abprf_area .abprf_masonry .item_head img {transition: transform 0.45s ease;}
 	div.abprf_area .item_box_1:hover .item_head img {transform: scale(1.05);}
 	div.abprf_area .price_value {display: inline-flex;align-items: baseline;gap: 4px;flex-wrap: wrap;}
 	div.abprf_area ._btn_theme,

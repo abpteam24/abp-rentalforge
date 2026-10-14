@@ -499,12 +499,10 @@
             public static function get_book_status($order_id, $start_time, $end_time, $book_status): int {
                 $now = current_time('Y-m-d H:i:s');
                 if (!empty($book_status) && $book_status < 5 && $book_status > 0) {
-                    $_book_status = 0;
-                    if (strtotime($now) < strtotime($start_time)) {
-                        $_book_status = $book_status;
-                    } elseif (strtotime($now) > strtotime($start_time) && strtotime($now) < strtotime($end_time)) {
+                    $_book_status = (int)$book_status;
+                    if ($_book_status === 1 && ABPRF_Function::on_off('auto_delivery') && !empty($start_time) && strtotime($now) >= strtotime($start_time)) {
                         $_book_status = 2;
-                    } elseif (strtotime($now) > strtotime($start_time) && strtotime($now) > strtotime($end_time)) {
+                    } elseif ($_book_status === 2 && ABPRF_Function::on_off('auto_return') && !empty($end_time) && strtotime($now) >= strtotime($end_time)) {
                         $_book_status = 3;
                     }
                     if ($_book_status > $book_status) {
@@ -524,6 +522,49 @@
                     }
                 }
                 return $book_status;
+            }
+            public static function sync_book_status(): void {
+                global $wpdb;
+                $auto_delivery = ABPRF_Function::on_off('auto_delivery');
+                $auto_return   = ABPRF_Function::on_off('auto_return');
+                if (!$auto_delivery && !$auto_return) {
+                    return;
+                }
+                $statuses = array_filter(array_map('sanitize_text_field', explode(',', (string)ABPRF_Function::booking_status())));
+                if (empty($statuses) || current($statuses) === 'all') {
+                    return;
+                }
+                $table = $wpdb->prefix . 'abprf_orders';
+                $now   = current_time('Y-m-d H:i:s');
+                $in    = implode(',', array_fill(0, count($statuses), '%s'));
+                if ($auto_delivery) {
+                    $delivery_params = array_merge([$table, $now, $now], $statuses);
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+                    $wpdb->query($wpdb->prepare("UPDATE %i SET book_status = 2, updated_at = %s WHERE book_status = 1 AND start_time <> '' AND start_time <= %s AND order_status IN ($in)", ...$delivery_params));
+                }
+                if ($auto_return) {
+                    $return_params = array_merge([$table, $now], $statuses);
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+                    $rows = $wpdb->get_results($wpdb->prepare("SELECT item_id, price_info FROM %i WHERE book_status = 2 AND end_time <> '' AND end_time <= %s AND order_status IN ($in)", ...$return_params), ARRAY_A);
+                    if (!empty($rows) && is_array($rows)) {
+                        foreach ($rows as $row) {
+                            $update_data = ['book_status' => 3, 'updated_at' => $now];
+                            $formats     = ['%d', '%s'];
+                            $price_info  = json_decode($row['price_info'] ?? '', true);
+                            if (is_array($price_info) && !empty($price_info['deposit'])) {
+                                $deposit                   = (float)$price_info['deposit'];
+                                $price_info['deposit']     = 0;
+                                if (isset($price_info['item_total'])) {
+                                    $price_info['item_total'] = (float)$price_info['item_total'] - $deposit;
+                                }
+                                $update_data['price_info'] = wp_json_encode($price_info);
+                                $formats[]                 = '%s';
+                            }
+                            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                            $wpdb->update($table, $update_data, ['item_id' => (int)$row['item_id']], $formats, ['%d']);
+                        }
+                    }
+                }
             }
             public static function week_day(): array {
                 return [

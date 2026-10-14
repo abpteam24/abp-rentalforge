@@ -23,7 +23,10 @@
 		<?php
 	} else {
 		get_header();
-		the_post();
+		if ( have_posts() ) {
+			the_post();
+			rewind_posts();
+		}
 	}
 	printf('%s',  do_shortcode( "[abprf-post loc_id='".esc_attr(get_queried_object()->term_id)."']" ));
 	if ( wp_is_block_theme() ) {

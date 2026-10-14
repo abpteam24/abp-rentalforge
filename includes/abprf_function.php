@@ -82,10 +82,10 @@
 			public static function icon_wp() { return ( ABPRF_Configuration['icon'] ?? null ) ?: 'dashicons-hammer'; }
 			public static function icon() { return ( ABPRF_Configuration['brand_icon'] ?? null ) ?: 'fas fa-hammer'; }
 			public static function brand_label() { return ( ABPRF_Configuration['brand_label'] ?? null ) ?: __( 'Brand', 'abp-rentalforge' ); }
-			public static function brand_slug() { return ( ABPRF_Configuration['brand_slug'] ?? null ) ?: 'brand'; }
+			public static function brand_slug() { return ( ABPRF_Configuration['brand_slug'] ?? null ) ?: 'rf-brand'; }
 			public static function brand_value( $id ) { return ( ABPRF_Brands[ $id ]['name'] ?? null ) ?: $id; }
 			public static function category_label() { return ( ABPRF_Configuration['category_label'] ?? null ) ?: __( 'Category', 'abp-rentalforge' ); }
-			public static function category_slug() { return ( ABPRF_Configuration['cat_slug'] ?? null ) ?: 'category'; }
+			public static function category_slug() { return ( ABPRF_Configuration['cat_slug'] ?? null ) ?: 'rf-category'; }
 			public static function category_value( $id ) { return ( ABPRF_Category[ $id ]['name'] ?? null ) ?: $id; }
 			public static function location_label() { return ( ABPRF_Configuration['location_label'] ?? null ) ?: __( 'Location', 'abp-rentalforge' ); }
 			public static function location_slug() { return ( ABPRF_Configuration['location_slug'] ?? null ) ?: 'location'; }

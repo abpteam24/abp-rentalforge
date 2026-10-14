@@ -566,16 +566,21 @@ function abprf_filter(parent) {
     abp_spinner(parent);
     let cat_id = parent.find('[name="cat_id"]').val();
     let loc_id = parent.find('[name="loc_id"]').val();
+    let brand_id = parent.find('[name="brand_id"]').val();
     cat_id = cat_id ? cat_id.trim() : '';
     loc_id = loc_id ? loc_id.trim() : '';
+    brand_id = brand_id ? brand_id.trim() : '';
     parent.find('.pagination_item').each(function () {
         let item = jQuery(this);
         let itemCat = item.data('cat_id') ? String(item.data('cat_id')).trim() : '';
         let itemLocRaw = item.data('loc_id') ? String(item.data('loc_id')).trim() : '';
         let itemLocArray = itemLocRaw.split(',').map(id => id.trim());
+        let itemBrandRaw = item.data('brand_id') ? String(item.data('brand_id')).trim() : '';
+        let itemBrandArray = itemBrandRaw.split(',').map(id => id.trim());
         let isCatMatch = cat_id === '' || itemCat === cat_id;
         let isLocMatch = loc_id === '' || itemLocArray.includes(loc_id);
-        if (isCatMatch && isLocMatch) {
+        let isBrandMatch = brand_id === '' || itemBrandArray.includes(brand_id);
+        if (isCatMatch && isLocMatch && isBrandMatch) {
             item.removeClass('abp_off').addClass('abp_on abp_close');
         } else {
             item.addClass('abp_off').removeClass('abp_on abp_close');
@@ -659,6 +664,14 @@ function abprf_pagination_item(parent) {
         abprf_filter(parent);
     });
     $(document).on('abp_trigger', 'div.abprf_area .rf_pagination [name="loc_id"]', function () {
+        let parent = $(this).closest('div.rf_pagination');
+        abprf_filter(parent);
+    });
+    $(document).on('change', 'div.abprf_area .rf_pagination [name="brand_id"]', function () {
+        let parent = $(this).closest('div.rf_pagination');
+        abprf_filter(parent);
+    });
+    $(document).on('abp_trigger', 'div.abprf_area .rf_pagination [name="brand_id"]', function () {
         let parent = $(this).closest('div.rf_pagination');
         abprf_filter(parent);
     });

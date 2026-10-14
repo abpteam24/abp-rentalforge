@@ -515,12 +515,14 @@
 	div.abprf_area select[class*="_form_control"] :focus { background-color: var(--rf_color_theme_aa); }
 	div.abprf_area [class*="_form_control"].abp_required {border-color: var(--rf_color_required);}
 	div.abprf_area [class*="_form_control"] :disabled { cursor: not-allowed; opacity: 0.7; background-color: #DDD5; pointer-events: none;}
+
+
 	/*=============================*/
 	/*div.abprf_area [class*="_form_inline"] {width: 100%;max-width: 100%;margin: 0; padding: 0; line-height: 1;display: -webkit-flex; display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap; gap: var(--rf_gap_xs);}*/
 	div.abprf_area [class*="_form_inline"] {width: 100%;max-width: 100%;margin: 0; padding: 0; line-height: 1; display: grid;gap: var(--rf_gap_xs);grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));}
 	/*div.abprf_area [class*="_form_inline"] [class*="_input_item"] {width: 100%;max-width: calc(25% - var(--rf_gap));position: relative;}*/
 	div.abprf_area [class*="_form_inline"] [class*="_input_item"] {width: 100%;position: relative;gap: var(--rf_gap_xxs); }
-	div.abprf_area [class*="_form_inline"] [class*="_input_item"][class*="_g_input"] {grid-column: 1 / -1;}
+	div.abprf_area [class*="_form_inline"] [class*="_input_item"][class*="_g_input"] {grid-column: span 2;}
 	div.abprf_area [class*="_form_inline"] [class*="_input_item"] [class*="_form_control"] {min-width: 100%;max-width: 100%;}
 	div.abprf_area [class*="_form_inline"] label {-webkit-flex-direction: column; flex-direction: column;-webkit-align-items: flex-start;align-items: flex-start;gap: var(--rf_gap_xxs);}
 	/*=============================*/
@@ -624,8 +626,8 @@
 	div.abprf_area [class*="_panel_footer"][class*="_xs"] {padding: var(--rf_gap_xs);}
 	div.abprf_area [class*="abp_panel"] [class*="abp_panel"] {border: var(--rf_gap_xs) solid var(--rf_color_7);}
 	div.abprf_area [class*="abp_panel"] [class*="abp_panel"] [class*="_panel_head"] {background-color: var(--rf_color_7);}
-	div.abprf_area [class*="_panel_head"] img.emoji {height: 18px !important; }
-	div.abprf_area [class*="_panel_head_xs"] img.emoji {height: 15px !important;}
+	[class*="_panel_head"] img.emoji {height: 18px !important; }
+	[class*="_panel_head_xs"] img.emoji {height: 15px !important;}
 }
 /******************************************************************** Popup section ************************************************/
 @media only screen and (min-width: 10px) {

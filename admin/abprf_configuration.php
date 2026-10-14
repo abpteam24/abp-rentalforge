@@ -245,7 +245,43 @@
 								'<strong class="abp_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
 							),
 							'type' => 'text',
-							'default' => 'category'
+							'default' => 'rf-category'
+						),
+						array(
+							'name' => 'brand_label',
+							'label' => __( 'Brand Label', 'abp-rentalforge' ),
+							'desc' => __( 'Provide a custom singular or plural naming convention for your equipment and rental brands.', 'abp-rentalforge' ),
+							'type' => 'text',
+							'default' => __( 'Brand', 'abp-rentalforge' )
+						),
+						array(
+							'name' => 'brand_slug',
+							'label' => __( 'Brand Slug', 'abp-rentalforge' ),
+							'desc' => sprintf(
+							/* translators: %s: Permalinks settings page link layout */
+								__( 'Define the custom URL structure for brand archives. Remember to update your rewrite rules under %s after any modifications.', 'abp-rentalforge' ),
+								'<strong class="abp_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
+							),
+							'type' => 'text',
+							'default' => 'rf-brand'
+						),
+						array(
+							'name' => 'location_label',
+							'label' => __( 'Location Label', 'abp-rentalforge' ),
+							'desc' => __( 'Provide a custom singular or plural naming convention for your equipment and rental locations.', 'abp-rentalforge' ),
+							'type' => 'text',
+							'default' => __( 'Location', 'abp-rentalforge' )
+						),
+						array(
+							'name' => 'location_slug',
+							'label' => __( 'Location Slug', 'abp-rentalforge' ),
+							'desc' => sprintf(
+							/* translators: %s: Permalinks settings page link layout */
+								__( 'Define the custom URL structure for location archives. Remember to update your rewrite rules under %s after any modifications.', 'abp-rentalforge' ),
+								'<strong class="abp_color_theme">' . __( 'Settings → Permalinks', 'abp-rentalforge' ) . '</strong>'
+							),
+							'type' => 'text',
+							'default' => 'location'
 						),
 					) ),
 					'abprf_on_off' => apply_filters( 'abprf_on_off_filter', array(
@@ -257,6 +293,20 @@
 							'type' => 'multi_check',
 							'default' => ABPRF_Layout::rent_rules_string(),
 							'options' => ABPRF_Layout::rent_rules()
+						),
+						array(
+							'name' => 'auto_delivery',
+							'label' => __( 'Auto Delivery', 'abp-rentalforge' ),
+							'desc' => __( 'When ON, a booking automatically moves to "In Rent" as soon as its rent start time arrives. When OFF, the admin must press the "Mark Delivered" button manually.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
+						),
+						array(
+							'name' => 'auto_return',
+							'label' => __( 'Auto Return', 'abp-rentalforge' ),
+							'desc' => __( 'When ON, an in-rent booking automatically moves to "Completed" once its rent end time passes. When OFF, the admin must press the "Mark Received" button manually.', 'abp-rentalforge' ),
+							'type' => 'button_switch',
+							'default' => 'on',
 						),
 						array(
 							'name' => 'sku',

@@ -112,11 +112,13 @@
 			public function slider( $img_infos = [], $params = [] ): void {
 				if ( ! empty( $img_infos ) ) {
 					$style        = $params['slider_style'] ?? '';
-					$image_column = $params['column'] ?? '';
+					$column       = $params['column'] ?? '';
+					$image_column = is_numeric( $column ) ? (int) $column : '';
+					$show         = $params['show'] ?? null;
 					$abprf_slider = ABPRF_Function::get_option( 'abprf_slider' );
 					if ( ! empty( $image_column ) ) {
 						$abprf_slider['image_column'] = $image_column;
-						$abprf_slider['show_item']    = ( $params['show'] ?? null ) ?: $image_column * 3;
+						$abprf_slider['show_item']    = ! empty( $show ) ? $show : $image_column * 3;
 					}
 					if ( ! empty( $style ) ) {
 						$slider_style = $style == 'gallery' ? 'gallery' : 'slider';

@@ -1,8 +1,8 @@
 === ABP RentalForge ===
 Contributors: abpteam
-Tags: rental, rent,booking, bike car,property equipment
+Tags: rental, booking, woocommerce rental, equipment rental, property rental
 Requires at least: 6.2
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 Tested up to: 7.1
 Requires PHP: 8.0
 License: GPLv3
@@ -37,9 +37,12 @@ Whether you're managing a small rental business or a large inventory-based compa
 * **Advanced Inventory Management** – Manage stock, quantity limits, reservations, and rental availability with ease.
 * **Duplicate & Move Properties** – Duplicate complete properties, copy property settings, or move rental configurations between WordPress posts.
 * **Powerful Order Management** – Manage bookings with advanced filters, pagination, customer search, and booking status tracking.
+* **Rental Order Status Workflow** – Track every booking from Waiting to In Rent to Completed, with one-click Mark Delivered and Mark Received actions.
+* **Automatic Delivery & Return** – Optional global switches to automatically move rentals to In Rent and Completed based on their booking period.
 * **Global Configuration** – Control booking settings, client forms, FAQs, additional services, Terms & Conditions, and other options from one place.
 * **Responsive Property Listings** – Display beautiful rental listings with image galleries, sliders, and shortcode support.
 * **Guest Management** – Store customer details and complete booking history.
+* **Customer My Account Bookings** – Logged-in customers get a dedicated "My Bookings" tab inside the WooCommerce My Account page showing their own rentals with dates, items, prices, status and billing details.
 * **Frontend Customization** – Customize layouts with built-in CSS options and flexible slider settings.
 * **Developer Friendly** – Built with WordPress coding standards, hooks, filters, optimized database tables, and translation-ready architecture.
 * **Multi-Currency Ready** – Compatible with WooCommerce multi-currency solutions.
@@ -189,8 +192,11 @@ Everything below is included in the free plugin:
 ✓ Inventory Management – stock, min/max & reserved quantity
 ✓ Multiple Rental Locations
 ✓ Location-based Search & Filtering – search properties by location with lat/lng coordinates, service radius & polygon areas
-✓ Stock Across Multiple Locations
 ✓ Tax Configuration
+✓ Rental Order Status Workflow – Waiting → In Rent → Completed with Mark Delivered & Mark Received actions
+✓ Automatic Delivery & Return – global ON/OFF switches to auto-advance bookings
+✓ Delivery & Return Timestamps – records when each order was delivered and received
+✓ Security Deposit Auto-Refund – deposit is released and deducted from the total on return
 ✓ Search & Filter
 ✓ Responsive Gallery & Slider
 ✓ Global Feature Toggle System
@@ -199,6 +205,7 @@ Everything below is included in the free plugin:
 ✓ Client Information Forms – global & per-post builder
 ✓ FAQ & Terms & Conditions – global & per-post
 ✓ Order Management – filters, pagination & status tracking
+✓ Customer My Account Bookings – dedicated "My Bookings" tab in WooCommerce My Account
 ✓ Property Duplication & Move
 ✓ Shortcodes – [abprf-booking], [abprf-post], [abprf-property], [abprf-gallery]
 ✓ Responsive Layout
@@ -214,6 +221,7 @@ Everything in Free, plus:
 ✅ Early Bird Pricing & Discount
 ✅ Location-wise Stock Management – set different stock quantities for each rental location independently
 ✅ Check-in Management
+✅ Partial Payment / Advance Payment Support
 ✅ Export Orders to PDF
 ✅ Export Orders to CSV
 ✅ Professional PDF Invoice Generation
@@ -234,6 +242,8 @@ Everything in Free, plus:
 ✓ Multiple Pricing Models
 ✓ Deposit System
 ✓ Feature Toggle System
+✓ Order Status Workflow
+✓ Automatic Delivery & Return
 ✓ Global Configuration
 ✓ Property Duplication
 ✓ Responsive Layout
@@ -392,6 +402,20 @@ This plugin does not collect or transmit any personal data by itself. Any custom
 
 == Changelog ==
 
+= 1.0.9 =
+
+* New: rental order status workflow — bookings now move through Waiting → In Rent → Completed. Admins can deliver or return a rental with one-click "Mark Delivered" and "Mark Received" actions.
+* New: global "Auto Delivery" and "Auto Return" switches in the ON/OFF Configuration. When enabled, rentals are automatically moved to In Rent when the booking starts and to Completed when the booking ends.
+* New: "Mark Delivered" and "Mark Received" quick actions are now available on the Rental Orders list as well as the Dashboard order sections.
+* New: delivery and return timestamps are stored with every order (in the order data) when it is marked delivered or received.
+* New: Today's Deliveries and Today's Collections dashboard sections now list today's bookings plus any undelivered or not-collected orders, with clear "Due today", "Overdue" and "Upcoming" status chips.
+* Improved: on "Mark Received" (manual or automatic) the security deposit is released (set to 0) and automatically deducted from the order total.
+* New: dedicated "My Bookings" tab on the WooCommerce My Account page. Each logged-in customer can now see their own rental bookings — rental period, duration & rate rule, location, booked items, additional services, client & billing information, rent / additional / deposit / total prices, payment method and rent status.
+* New: the "My Bookings" list is paginated and matches the frontend rental design.
+* Improved: RentalForge frontend styles & scripts now also load on the WooCommerce My Account page.
+
+Released: October 13, 2026
+
 = 1.0.8 =
 
 * Responsive fixes: booking/search popups now fit the viewport on phones and tablets instead of forcing a 500px minimum width.
@@ -478,6 +502,9 @@ Released: July 14, 2026
 *Initial Release*
 
 == Upgrade Notice ==
+
+= 1.0.9 =
+Rental order status workflow (Waiting → In Rent → Completed) with Mark Delivered / Mark Received, optional Auto Delivery & Auto Return, delivery and return timestamps, automatic deposit release on return, and a new My Bookings tab in My Account.
 
 = 1.0.8 =
 Responsive and design fixes for small screens and touch devices.

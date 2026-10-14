@@ -11,6 +11,7 @@
 			$post_id        = $property['post_id'] ?? '';
 			$cat_id         = ABPRF_Function::get_post_info( $post_id, 'abprf_category' );
 			$loc_id         = ABPRF_Function::get_post_info( $post_id, 'abprf_location' );
+			$brand_id       = $property['brand'] ?? '';
 			$rent_rule      = $property['rent_rule'] ?? '';
 			$price_qty_info = json_decode( $property['price_qty_info'] ?? '', true ) ?: [];
 			if ( ! empty( $location ) && isset( $price_qty_info[ $location ] ) ) {
@@ -26,7 +27,7 @@
 				$abprf_infos['property_id']   = $property['id'] ?? '';
 				//echo '<pre>';print_r($property );echo '</pre>';
 				?>
-                <div class="property_item item_box_1 <?php echo esc_attr( $abprf_infos['add_class'] ?? '' ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>">
+                <div class="property_item item_box_1 <?php echo esc_attr( $abprf_infos['add_class'] ?? '' ); ?>" data-cat_id="<?php echo esc_attr( $cat_id ); ?>" data-loc_id="<?php echo esc_attr( $loc_id ); ?>" data-brand_id="<?php echo esc_attr( $brand_id ); ?>">
                     <div class="item_head">
 						<?php ABPRF_Layout::image_icon( ($others['icon'] ?? ''),'' ); ?>
                     </div>

@@ -60,6 +60,7 @@
 				//=====================//
 				$cat_id    = ( $filters['cat_id'] ?? null ) ?: null;
 				$loc_id    = ( $filters['loc_id'] ?? null ) ?: null;
+				$brand_id  = ( $filters['brand_id'] ?? null ) ?: null;
 				$lat       = ( $filters['lat'] ?? null ) ?: null;
 				$lng       = ( $filters['lng'] ?? null ) ?: null;
 				$radius    = ( $filters['radius'] ?? null ) ?: null;
@@ -96,6 +97,24 @@
 				}
 				$cat_query = ! empty( $cat_id ) ? [ 'key' => 'abprf_category', 'value' => $cat_id, 'compare' => '=' ] : '';
 				$rent_query = ! empty( $rent_rule ) ? [ 'key' => 'rent_rule', 'value' => $rent_rule, 'compare' => '=', 'type' => 'CHAR' ] : '';
+				$brand_query = '';
+				if ( ! empty( $brand_id ) ) {
+					$brand_ids = is_array( $brand_id ) ? $brand_id : explode( ',', $brand_id );
+					if ( count( $brand_ids ) === 1 ) {
+						$brand_query = [ 'key' => 'abprf_brand', 'value' => $brand_ids[0], 'compare' => 'LIKE' ];
+					} else {
+						$or_clauses = [];
+						foreach ( $brand_ids as $brand_id_item ) {
+							if ( $brand_id_item !== '' ) {
+								$or_clauses[] = [ 'key' => 'abprf_brand', 'value' => $brand_id_item, 'compare' => 'LIKE' ];
+							}
+						}
+						if ( ! empty( $or_clauses ) ) {
+							$brand_query = $or_clauses;
+							$brand_query['relation'] = 'OR';
+						}
+					}
+				}
 				$args   = array(
 					'fields' => 'ids',
 					'post_type' => $post_type,
@@ -103,7 +122,7 @@
 					'paged' => $page,
 					'post_status' => $status,
 				);
-				$meta_query = array_values( array_filter( [ $cat_query, $loc_query, $rent_query ] ) );
+				$meta_query = array_values( array_filter( [ $cat_query, $loc_query, $rent_query, $brand_query ] ) );
 				if ( ! empty( $meta_query ) ) {
 					$args['meta_query'] = $meta_query;
 					if ( count( $meta_query ) > 1 ) {
@@ -260,15 +279,15 @@
 					$query_args[] = $offset;
 				}
 				if ( $count ) {
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 					$results = $wpdb->get_var(
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+						// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 						$wpdb->prepare( $sql, ...$query_args )
 					);
 				} else {
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 					$results = $wpdb->get_results(
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+						// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 						$wpdb->prepare( $sql, ...$query_args ),
 						ARRAY_A
 					);
@@ -419,15 +438,15 @@
 					$query_args[] = (int) $offset;
 				}
 				if ( $count ) {
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 					$results = $wpdb->get_var(
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+						// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 						$wpdb->prepare( $sql, ...$query_args )
 					);
 				} else {
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 					$results = $wpdb->get_results(
-					// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+						// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 						$wpdb->prepare( $sql, ...$query_args ),
 						ARRAY_A
 					);

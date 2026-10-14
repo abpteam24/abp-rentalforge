@@ -58,7 +58,7 @@
 						$label = $feature['label'] ?? '';
 						?>
                         <div class="_list_item">
-                            <h6 class="abp"> <?php ABPRF_Layout::image_icon( $feature['icon'] ?? '' ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $feature['value'] ?? '' ); ?></h6>
+                            <h6 class="abp_gap_xs"> <?php ABPRF_Layout::image_icon( $feature['icon'] ?? '' ); ?> <?php echo esc_html( $label ); ?> - <?php echo esc_html( $feature['value'] ?? '' ); ?></h6>
                             <div class="_group_content">
                                 <button type="button" class="_btn_light_yellow_xxs edit_feature" data-id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Edit : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>"><?php ABPRF_Static::svg('edit'); ?></button>
                                 <button type="button" class="_btn_light_danger_xxs delete_feature" data-fec_id="<?php echo esc_attr( $key ); ?>" title="<?php echo esc_attr__( 'Trash : ', 'abp-rentalforge' ) . ' ' . esc_attr( $label ); ?>"><?php ABPRF_Static::svg('close_1'); ?></button>

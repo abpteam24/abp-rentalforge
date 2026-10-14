@@ -1,20 +1,24 @@
 <?php
-	if (!defined('ABSPATH')) {
-		exit; // Exit if accessed directly
-	}
-	if (!class_exists('ABPRF_Documentation')) {
-		class ABPRF_Documentation {
-			public function __construct() {
-				add_action('abprf_load_documentation', array($this, 'load_documentation'));
-			}
-			public function load_documentation(): void {
-				$label = ABPRF_Function::label();
-				/* translators: %s: plugin label. */
-				$doc_title = sprintf(__('Documentation — How to Use %s', 'abp-rentalforge'), $label);
-				?>
+    if (!defined('ABSPATH')) {
+        exit; // Exit if accessed directly
+    }
+    if (!class_exists('ABPRF_Documentation')) {
+        class ABPRF_Documentation {
+            public function __construct() {
+                add_action('abprf_load_documentation', array($this, 'load_documentation'));
+            }
+            public function load_documentation(): void {
+                $label = ABPRF_Function::label();
+                /* translators: %s: plugin label. */
+                $doc_title = sprintf(__('Documentation — How to Use %s', 'abp-rentalforge'), $label);
+                ?>
                 <div class="abp_panel_max_1200_mar_auto abp_documentation">
                     <div class="_panel_head">
-                        <h3 class="abp_gap_xs"><span>📘</span> <?php echo esc_html($doc_title); ?></h3>
+                        <h3 class="abp_gap_xs">📘<?php echo esc_html($doc_title); ?></h3>
+                        <div class="abp_doc_head_links">
+                            <a class="_btn_white_xs" href="https://abp-team.com/documentation-rentalforge/" target="_blank" rel="noopener"><?php esc_html_e('Full Documentation', 'abp-rentalforge'); ?> <i class="fas fa-book-open"></i></a>
+                            <a class="_btn_white_xs" href="https://demo-rf.abp-team.com/" target="_blank" rel="noopener"><?php esc_html_e('Live Demo', 'abp-rentalforge'); ?> <i class="fas fa-desktop"></i></a>
+                        </div>
                     </div>
                     <div class="_panel_body_fd_column_gap">
                         <div class="dash_card">
@@ -23,82 +27,82 @@
                                 <p class="dash_body_text"><?php esc_html_e('This guide walks you through the plugin step by step: what every menu does, in which order to set things up, how rental posts and properties work, and how daily deliveries and collections run your shop.', 'abp-rentalforge'); ?></p>
                             </div>
                         </div>
-						<?php if (!defined('ABPRF_DIR_PRO')) { ?>
+                        <?php if (!defined('ABPRF_DIR_PRO')) { ?>
                             <div class="dash_card doc_pro_banner">
                                 <div class="dash_card_body">
                                     <p class="doc_pro_kicker"><?php esc_html_e('NEED MORE POWER?', 'abp-rentalforge'); ?></p>
                                     <p class="doc_pro_title"><?php esc_html_e('Upgrade to RentalForge Pro', 'abp-rentalforge'); ?></p>
-                                    <p class="doc_pro_text"><?php esc_html_e('PDF invoices, CSV order export, automatic order emails, discounts & seasonal pricing, and an advanced deposit system.', 'abp-rentalforge'); ?></p>
+                                    <p class="doc_pro_text"><?php esc_html_e('PDF invoices, CSV order export, automatic order emails, discounts & seasonal pricing, partial payments, and an advanced deposit system.', 'abp-rentalforge'); ?></p>
                                     <div>
                                         <a class="doc_pro_btn" href="https://abp-team.com/downloads/abp-rentalforge-pro/" target="_blank" rel="noopener"><?php esc_html_e('Buy Now', 'abp-rentalforge'); ?> <i class="fas fa-arrow-right"></i></a>
                                     </div>
                                 </div>
                             </div>
-						<?php } ?>
+                        <?php } ?>
                         <div class="dash_card">
                             <div class="dash_card_head">
                                 <h4><span class="dash_step">🚀</span> <?php esc_html_e('Quick Start — Follow these steps in order', 'abp-rentalforge'); ?></h4>
                             </div>
                             <div class="dash_card_body">
                                 <div class="doc_grid">
-									<?php
-										$this->step_card(
-											'1',
-											__('Check Dashboard', 'abp-rentalforge'),
-											__('Verify everything is ready.', 'abp-rentalforge'),
-											__('The Dashboard shows your plugin, WordPress, PHP and WooCommerce versions. Everything green means you can continue. If WooCommerce is missing, install it from the System Status section — it is required for rental payments. The same section creates your Booking, List, Property and Gallery pages, and can import demo posts to explore safely.', 'abp-rentalforge'),
-											'dashboard',
-											__('Open Dashboard', 'abp-rentalforge')
-										);
-										$this->step_card(
-											'2',
-											__('Configuration ON/OFF', 'abp-rentalforge'),
-											__('Decide which features you need.', 'abp-rentalforge'),
-											__('Configuration → ON/OFF turns features on/off for the whole site (Brand, Deposit, Features, Additional Services, Client Info, FAQ, Terms, Category, Location…). The defaults work out of the box, so you can skip this step.', 'abp-rentalforge'),
-											'configuration',
-											__('Open Configuration', 'abp-rentalforge')
-										);
-										$this->step_card(
-											'3',
-											__('Create Global Lists', 'abp-rentalforge'),
-											__('Build the reusable lists every rental shares.', 'abp-rentalforge'),
-											__('Global Data holds Dates, Locations, and (if enabled) Categories, Brands, Features, Additional Services, Client Forms, and FAQ/Terms resources. Create them once — they appear as dropdowns when creating a rental post.', 'abp-rentalforge'),
-											'global',
-											__('Open Global Data', 'abp-rentalforge')
-										);
-										$this->step_card(
-											'4',
-											__('Create a Rental Post', 'abp-rentalforge'),
-											__('Add your first rentable item type.', 'abp-rentalforge'),
-											__('Press the + button, then add a title, image and description, pick a rent rule (hourly, daily, multi-day, monthly), set the schedule, category, location and brand. A post is the bookable listing customers see — e.g. Motor Bike, Car, Bicycle.', 'abp-rentalforge'),
-											'posts',
-											__('Open Post Lists', 'abp-rentalforge')
-										);
-										$this->step_card(
-											'5',
-											__('Add Properties', 'abp-rentalforge'),
-											__('Add the individual units customers actually rent.', 'abp-rentalforge'),
-											__('A property is one rentable unit — e.g. Ducati Panigale V4 under Motor Bike. Each property has its own stock quantity, reserved quantity, price per rent rule, deposit, gallery and features. Paid orders reduce this stock automatically.', 'abp-rentalforge'),
-											'properties',
-											__('Open Properties', 'abp-rentalforge')
-										);
-										$this->step_card(
-											'6',
-											__('Add Shortcodes & Pages', 'abp-rentalforge'),
-											__('Publish the booking and listing pages.', 'abp-rentalforge'),
-											__('The Dashboard creates Booking ([abprf-booking]), List ([abprf-post]), Property ([abprf-property]) and Gallery ([abprf-gallery]) pages for you via System Status. Put the list page in your menu so customers can browse everything; you can also insert the shortcodes into any page.', 'abp-rentalforge'),
-											'dashboard',
-											__('Open Dashboard', 'abp-rentalforge')
-										);
-										$this->step_card(
-											'7',
-											__('Test & Go Live', 'abp-rentalforge'),
-											__('Try it with demo data, then watch the orders.', 'abp-rentalforge'),
-											__('New to the plugin? Import the built-in demo data from the Dashboard’s System Status section to explore everything safely. When live, every purchase appears under Orders, and the Dashboard’s Deliveries and Collections sections run your daily handovers and returns.', 'abp-rentalforge'),
-											'orders',
-											__('Open Orders', 'abp-rentalforge')
-										);
-									?>
+                                    <?php
+                                        $this->step_card(
+                                            '1',
+                                            __('Check Dashboard', 'abp-rentalforge'),
+                                            __('Verify everything is ready.', 'abp-rentalforge'),
+                                            __('The Dashboard shows your plugin, WordPress, PHP and WooCommerce versions. Everything green means you can continue. If WooCommerce is missing, install it from the System Status section — it is required for rental payments. The same section creates your Booking, List, Property and Gallery pages, and can import demo posts to explore safely.', 'abp-rentalforge'),
+                                            'dashboard',
+                                            __('Open Dashboard', 'abp-rentalforge')
+                                        );
+                                        $this->step_card(
+                                            '2',
+                                            __('Configuration ON/OFF', 'abp-rentalforge'),
+                                            __('Decide which features you need.', 'abp-rentalforge'),
+                                            __('Configuration → ON/OFF turns features on/off for the whole site (Brand, Deposit, Features, Additional Services, Client Info, FAQ, Terms, Category, Location…). The defaults work out of the box, so you can skip this step.', 'abp-rentalforge'),
+                                            'configuration',
+                                            __('Open Configuration', 'abp-rentalforge')
+                                        );
+                                        $this->step_card(
+                                            '3',
+                                            __('Create Global Lists', 'abp-rentalforge'),
+                                            __('Build the reusable lists every rental shares.', 'abp-rentalforge'),
+                                            __('Global Data holds Dates, Locations, and (if enabled) Categories, Brands, Features, Additional Services, Client Forms, and FAQ/Terms resources. Create them once — they appear as dropdowns when creating a rental post.', 'abp-rentalforge'),
+                                            'global',
+                                            __('Open Global Data', 'abp-rentalforge')
+                                        );
+                                        $this->step_card(
+                                            '4',
+                                            __('Create a Rental Post', 'abp-rentalforge'),
+                                            __('Add your first rentable item type.', 'abp-rentalforge'),
+                                            __('Press the + button, then add a title, image and description, pick a rent rule (hourly, daily, multi-day, monthly), set the schedule, category, location and brand. A post is the bookable listing customers see — e.g. Motor Bike, Car, Bicycle.', 'abp-rentalforge'),
+                                            'posts',
+                                            __('Open Post Lists', 'abp-rentalforge')
+                                        );
+                                        $this->step_card(
+                                            '5',
+                                            __('Add Properties', 'abp-rentalforge'),
+                                            __('Add the individual units customers actually rent.', 'abp-rentalforge'),
+                                            __('A property is one rentable unit — e.g. Ducati Panigale V4 under Motor Bike. Each property has its own stock quantity, reserved quantity, price per rent rule, deposit, gallery and features. Paid orders reduce this stock automatically.', 'abp-rentalforge'),
+                                            'properties',
+                                            __('Open Properties', 'abp-rentalforge')
+                                        );
+                                        $this->step_card(
+                                            '6',
+                                            __('Add Shortcodes & Pages', 'abp-rentalforge'),
+                                            __('Publish the booking and listing pages.', 'abp-rentalforge'),
+                                            __('The Dashboard creates Booking ([abprf-booking]), List ([abprf-post]), Property ([abprf-property]) and Gallery ([abprf-gallery]) pages for you via System Status. Put the list page in your menu so customers can browse everything; you can also insert the shortcodes into any page.', 'abp-rentalforge'),
+                                            'dashboard',
+                                            __('Open Dashboard', 'abp-rentalforge')
+                                        );
+                                        $this->step_card(
+                                            '7',
+                                            __('Test & Go Live', 'abp-rentalforge'),
+                                            __('Try it with demo data, then watch the orders.', 'abp-rentalforge'),
+                                            __('New to the plugin? Import the built-in demo data from the Dashboard’s System Status section to explore everything safely. When live, every purchase appears under Orders, and the Dashboard’s Deliveries and Collections sections run your daily handovers and returns.', 'abp-rentalforge'),
+                                            'orders',
+                                            __('Open Orders', 'abp-rentalforge')
+                                        );
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -167,13 +171,81 @@
                                 <h4><span class="dash_step">🗂️</span> <?php esc_html_e('Every menu explained', 'abp-rentalforge'); ?></h4>
                             </div>
                             <div class="dash_card_body">
-                                <p class="dash_body_text">• <b><?php echo esc_html($label); ?> <?php esc_html_e('List', 'abp-rentalforge'); ?></b> — <?php esc_html_e('all your rental posts: create, edit, clone, trash, restore, and permanently delete them.', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text">• <b><?php echo esc_html($label); ?><?php esc_html_e('List', 'abp-rentalforge'); ?></b> — <?php esc_html_e('all your rental posts: create, edit, clone, trash, restore, and permanently delete them.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Properties', 'abp-rentalforge'); ?></b> — <?php esc_html_e('all individual units across every post, with stock, prices and deposits.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Orders', 'abp-rentalforge'); ?></b> — <?php esc_html_e('every customer booking with rent period, property info, prices, status, payment and billing details. You can cancel an item from here.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Global Data', 'abp-rentalforge'); ?></b> — <?php esc_html_e('shared reusable lists used by all posts (see the sub-tabs list below).', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Configuration', 'abp-rentalforge'); ?></b> — <?php esc_html_e('global settings: general (label, slug, booked status…), the ON/OFF switches, colors, fonts and CSS.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Dashboard', 'abp-rentalforge'); ?></b> — <?php esc_html_e('revenue and rental KPIs, today’s deliveries and collections, recent orders, and a System Status health check with quick tools: install WooCommerce, create pages, and import or add demo data.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Documentation', 'abp-rentalforge'); ?></b> — <?php esc_html_e('this guide.', 'abp-rentalforge'); ?></p>
+                            </div>
+                        </div>
+                        <div class="dash_card">
+                            <div class="dash_card_head">
+                                <h4><span class="dash_step">⚡</span> <?php esc_html_e('RentalForge Pro — advanced features', 'abp-rentalforge'); ?></h4>
+                                <?php if (!defined('ABPRF_DIR_PRO')) { ?>
+                                    <a class="doc_pro_btn" href="https://abp-team.com/downloads/abp-rentalforge-pro/" target="_blank" rel="noopener"><?php esc_html_e('Get RentalForge Pro', 'abp-rentalforge'); ?></a>
+                                <?php } ?>
+                            </div>
+                            <div class="dash_card_body">
+                                <p class="dash_body_text"><?php esc_html_e('Everything in the free plugin is included in RentalForge Pro, plus these advanced features:', 'abp-rentalforge'); ?></p>
+                                <div class="doc_grid">
+                                    <div class="dash_card">
+                                        <div class="dash_card_body">
+                                            <p class="dash_body_lead">💸 <?php esc_html_e('Pricing & Discounts', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Seasonal Pricing & Discount Rules', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Early Bird Pricing & Discount', 'abp-rentalforge'); ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="dash_card">
+                                        <div class="dash_card_body">
+                                            <p class="dash_body_lead">💳 <?php esc_html_e('Payments', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Partial Payment (deposit now, balance later)', 'abp-rentalforge'); ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="dash_card">
+                                        <div class="dash_card_body">
+                                            <p class="dash_body_lead">📍 <?php esc_html_e('Inventory & Operations', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Location-wise Stock Management', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Check-in Management', 'abp-rentalforge'); ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="dash_card">
+                                        <div class="dash_card_body">
+                                            <p class="dash_body_lead">🧾 <?php esc_html_e('Documents & Automation', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Export Orders to PDF & CSV', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Professional PDF Invoice Generation', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Automatically Send PDF Invoices by Email', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Resend Booking Emails with PDF Attachments', 'abp-rentalforge'); ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="dash_card">
+                                        <div class="dash_card_body">
+                                            <p class="dash_body_lead">🛠️ <?php esc_html_e('Admin & Support', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Create Bookings Directly from the Admin Dashboard', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Advanced Email Notifications', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Premium Support', 'abp-rentalforge'); ?></p>
+                                            <p class="dash_body_text">• <?php esc_html_e('Priority Updates & New Features', 'abp-rentalforge'); ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dash_card">
+                            <div class="dash_card_head">
+                                <h4><span class="dash_step">📦</span> <?php esc_html_e('Order List & My Account bookings', 'abp-rentalforge'); ?></h4>
+                            </div>
+                            <div class="dash_card_body">
+                                <p class="dash_body_lead">🗂️ <?php esc_html_e('Order List (admin → Orders)', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text"><?php esc_html_e('The Orders tab lists every booking placed on your site. Use the Order Filter to narrow it down — by post, booking date or date range, order date or range, customer, location, order ID, or billing name / e-mail / phone. Press Search to apply, or More Options to reveal the extra fields.', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text"><?php esc_html_e('Status tabs above the table instantly switch the list and show a live count: All Booking, Booking Completed, and each WooCommerce order status (Processing, Completed, On hold…).', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text"><?php esc_html_e('Each row shows the order and date, the rent period, the booked property info, the client information, the prices, the rent status, the payment method and the billing details. From the Action column you can cancel an item.', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text"><?php esc_html_e('With RentalForge Pro active you also get 📄 Download Booking PDF and 📧 Re-send Mail on every row, plus the Order Lists PDF / Order Lists CSV export buttons at the top (CSV needs no PDF add-on; the PDF export requires the ABP PDF Tools add-on).', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_lead">👤 <?php esc_html_e('My Account bookings (customer frontend)', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text"><?php esc_html_e('RentalForge adds a dedicated "My Bookings" tab to the WooCommerce My Account page, right after Orders. Each logged-in customer sees only their own bookings, shown with the same responsive rental design as the site.', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text"><?php esc_html_e('Every booking card shows the rental title, order ID and date, the rent period with its status badge (Waiting, In Rent, Completed, Delay…), the duration and rate rule, the location, the booked items, the additional services and client information (when enabled), a full price breakdown (Rent, Additional, Deposit, Total), the payment method and the order status.', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text"><?php esc_html_e('The list is paginated, and with the Pro plugin + ABP PDF Tools an extra Download PDF button is shown on each booking.', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text"><?php esc_html_e('Customers reach it from their account menu or directly at yoursite.com/my-account/abprf-bookings/. Guests are asked to log in first.', 'abp-rentalforge'); ?></p>
                             </div>
                         </div>
                         <div class="dash_card">
@@ -229,25 +301,25 @@
                         </div>
                     </div>
                 </div>
-				<?php
-			}
-			private function step_card(string $step, string $title, string $lead, string $text, string $tab = '', string $btn_label = ''): void {
-				$url = $tab ? ABPRF_Function::build_url($tab) : '';
-				?>
+                <?php
+            }
+            private function step_card(string $step, string $title, string $lead, string $text, string $tab = '', string $btn_label = ''): void {
+                $url = $tab ? ABPRF_Function::build_url($tab) : '';
+                ?>
                 <div class="dash_card">
                     <div class="dash_card_head">
                         <h4><span class="dash_step"><?php echo esc_html($step); ?></span><?php echo esc_html($title); ?></h4>
-						<?php if ($url && $btn_label) { ?>
+                        <?php if ($url && $btn_label) { ?>
                             <a class="_btn_light_active_xs" href="<?php echo esc_url($url); ?>"><?php echo esc_html($btn_label); ?></a>
-						<?php } ?>
+                        <?php } ?>
                     </div>
                     <div class="dash_card_body">
                         <p class="dash_body_lead"><?php echo esc_html($lead); ?></p>
                         <p class="dash_body_text"><?php echo esc_html($text); ?></p>
                     </div>
                 </div>
-				<?php
-			}
-		}
-		new ABPRF_Documentation();
-	}
+                <?php
+            }
+        }
+        new ABPRF_Documentation();
+    }

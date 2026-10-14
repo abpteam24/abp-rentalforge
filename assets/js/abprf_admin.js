@@ -733,6 +733,23 @@ window.abprf_wc_config = function (page_type) {
             }
         });
     });
+    //==========Remove dummy data=================//
+    $(document).on('click', 'div.abprf_admin button.remove_dummy', function () {
+        if (confirm(abprf_admin_data.msg.confirm_delete + ' \n\n' + abprf_admin_data.msg.confirm_ok + ' \n ' + abprf_admin_data.msg.confirm_cancel)) {
+            let parent = $(this).closest('.abprf_status, .abprf_dashboard');
+            $.ajax({
+                type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                    "action": "abprf_remove_dummy", 'nonce': abprf_admin_data.nonce
+                }, beforeSend: function () {
+                    abp_spinner(parent);
+                    abprf_toast_msg(abprf_admin_data.msg.deleting, 'error');
+                }, success: function (response) {
+                    abprf_toast_msg(response.data.msg, 'success');
+                    window.location.reload();
+                }
+            });
+        }
+    });
 }(jQuery));
 //==========================Global=======================//
 function abprf_load_sortable_datepicker(parent, item) {
@@ -1287,7 +1304,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 abp_spinner_remove($row.length ? $row : $btn.parent());
                 if (response.success && response.data) {
                     abprf_toast_msg(response.data.msg, response.data.type || 'success');
-                    if (response.data.book_status_text) {
+                    let $orders = $btn.closest('.abprf_orders');
+                    if ($orders.length) {
+                        $orders.find('form.load_order_list').submit();
+                    } else if ($row.hasClass('dash_deliver_row')) {
+                        let $body = $btn.closest('.dash_card_body');
+                        let $group = $row.closest('.dash_deliver_group');
+                        $row.slideUp(160, function () {
+                            $(this).remove();
+                            if ($group.length && $group.find('.dash_deliver_row').length === 0) {
+                                $group.remove();
+                            }
+                            if ($body.length && $body.find('.dash_deliver_row').length === 0) {
+                                $body.find('.dash_orders_meta, .dash_booking_hint').hide();
+                                $body.find('.dash_deliver_empty').show();
+                            }
+                        });
+                    } else if (response.data.book_status_text) {
+                        $btn.closest('.dash_booking_meta').find('.dash_book_status_chip').html('<i class="fas fa-clipboard-check"></i> ' + response.data.book_status_text);
                         $btn.replaceWith('<span class="dash_book_status_text">' + response.data.book_status_text + '</span>');
                     }
                 } else if (response.data) {
