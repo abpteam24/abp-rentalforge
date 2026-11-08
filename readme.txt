@@ -2,7 +2,7 @@
 Contributors: abpteam
 Tags: rental, booking, woocommerce rental, equipment rental, property rental
 Requires at least: 6.2
-Stable tag: 1.0.9
+Stable tag: 1.1.0
 Tested up to: 7.1
 Requires PHP: 8.0
 License: GPLv3
@@ -254,7 +254,7 @@ Everything in Free, plus:
 If you need any further assistance or support, do contact us at this [🎫 support form](https://abp-team.com/support-desk/). We are very open to your suggestions. So do feel free to tell us if there is anything we can do to improve the plugin.
 
 🌐 [Live Demo](https://demo-rf.abp-team.com/)
-📖 [Documentation](https://abp-team.com/documentation-rentalforge/)
+📖 [Documentation](https://demo-rf.abp-team.com/documentation/)
 💬 [Support Forum](https://wordpress.org/support/plugin/abp-rentalforge/)
 🐛 [Bug Reports](https://github.com/abpteam24/abp-rentalforge/issues)
 📧 Email: support@abp-team.com
@@ -269,7 +269,7 @@ See rental listings, galleries and the complete booking flow in action.
 
 == Documentation ==
 
-📖 [Documentation](https://abp-team.com/documentation-rentalforge/)
+📖 [Documentation](https://demo-rf.abp-team.com/documentation/)
 
 Step-by-step setup guides for pricing, availability, booking rules, client forms, FAQs and global configuration.
 
@@ -402,6 +402,15 @@ This plugin does not collect or transmit any personal data by itself. Any custom
 
 == Changelog ==
 
+== Changelog ==
+
+= 1.1.0 =
+
+* Improved: merged the separate "Global Data" and "Configuration" admin tabs into a single "Global Configuration" tab. All global settings are now organised as one vertical sub-tabs list on a single screen — general defaults, ON/OFF switches, dates, additional services, client form, Terms & Conditions / FAQ, category, location, brand, features, and (Pro) discounts, partial payment, PDF, order-list PDF/CSV, e-mail, slider, contact information and CSS property.
+* Improved: Dashboard quick-action links and the built-in Documentation now open the unified Global Configuration tab.
+
+Released: October 31, 2026
+
 = 1.0.9 =
 
 * New: rental order status workflow — bookings now move through Waiting → In Rent → Completed. Admins can deliver or return a rental with one-click "Mark Delivered" and "Mark Received" actions.
@@ -502,6 +511,9 @@ Released: July 14, 2026
 *Initial Release*
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Released: October 31, 2026
 
 = 1.0.9 =
 Rental order status workflow (Waiting → In Rent → Completed) with Mark Delivered / Mark Received, optional Auto Delivery & Auto Return, delivery and return timestamps, automatic deposit release on return, and a new My Bookings tab in My Account.

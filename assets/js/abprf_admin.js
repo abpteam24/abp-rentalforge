@@ -1333,3 +1333,37 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 }(jQuery));
+//=========== offfer js=================//
+(function($){
+    $(document).on('click', '.abprf-copy-offer-code', function(e){
+        e.preventDefault();
+        var btn = $(this);
+        var code = 'ABP50';
+        if(navigator.clipboard){
+            navigator.clipboard.writeText(code).then(function(){
+                var old = btn.html();
+                btn.html('<i class="fas fa-check"></i>Copied ');
+                setTimeout(function(){ btn.html(old); }, 1500);
+            });
+        }else{
+            var ta = document.createElement('textarea');
+            ta.value = code;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            var old = btn.html();
+            btn.html('<i class="fas fa-check"></i> ' + (window.abprfProOffer && abprfProOffer.copied ? abprfProOffer.copied : 'Copied'));
+            setTimeout(function(){ btn.html(old); }, 1500);
+        }
+    });
+    $(document).on('click', '.abprf-dismiss-pro-offer', function(e){
+        e.preventDefault();
+        var notice = $('#abprf-pro-offer-notice');
+        if(notice.length){ notice.hide(); }
+        var data = new FormData();
+        data.append('action','abprf_dismiss_pro_offer');
+        data.append('nonce', window.abprfProOffer && abprfProOffer.nonce ? abprfProOffer.nonce : '');
+        fetch(window.abprfProOffer && abprfProOffer.ajaxurl ? abprfProOffer.ajaxurl : ajaxurl, {method:'POST',credentials:'same-origin',body:data});
+    });
+})(jQuery);

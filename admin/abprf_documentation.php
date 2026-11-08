@@ -16,7 +16,7 @@
                     <div class="_panel_head">
                         <h3 class="abp_gap_xs">📘<?php echo esc_html($doc_title); ?></h3>
                         <div class="abp_doc_head_links">
-                            <a class="_btn_white_xs" href="https://abp-team.com/documentation-rentalforge/" target="_blank" rel="noopener"><?php esc_html_e('Full Documentation', 'abp-rentalforge'); ?> <i class="fas fa-book-open"></i></a>
+                            <a class="_btn_white_xs" href="https://demo-rf.abp-team.com/documentation/" target="_blank" rel="noopener"><?php esc_html_e('Full Documentation', 'abp-rentalforge'); ?> <i class="fas fa-book-open"></i></a>
                             <a class="_btn_white_xs" href="https://demo-rf.abp-team.com/" target="_blank" rel="noopener"><?php esc_html_e('Live Demo', 'abp-rentalforge'); ?> <i class="fas fa-desktop"></i></a>
                         </div>
                     </div>
@@ -56,19 +56,21 @@
                                         );
                                         $this->step_card(
                                             '2',
-                                            __('Configuration ON/OFF', 'abp-rentalforge'),
+                                            __('Global Configuration ON/OFF', 'abp-rentalforge'),
                                             __('Decide which features you need.', 'abp-rentalforge'),
-                                            __('Configuration → ON/OFF turns features on/off for the whole site (Brand, Deposit, Features, Additional Services, Client Info, FAQ, Terms, Category, Location…). The defaults work out of the box, so you can skip this step.', 'abp-rentalforge'),
+                                            __('Global Configuration → ON/OFF turns features on/off for the whole site (Brand, Deposit, Features, Additional Services, Client Info, FAQ, Terms, Category, Location…). The defaults work out of the box, so you can skip this step.', 'abp-rentalforge'),
                                             'configuration',
-                                            __('Open Configuration', 'abp-rentalforge')
+                                            __('Open Global Configuration', 'abp-rentalforge'),
+                                            ['configuration' => 'on_off']
                                         );
                                         $this->step_card(
                                             '3',
                                             __('Create Global Lists', 'abp-rentalforge'),
                                             __('Build the reusable lists every rental shares.', 'abp-rentalforge'),
-                                            __('Global Data holds Dates, Locations, and (if enabled) Categories, Brands, Features, Additional Services, Client Forms, and FAQ/Terms resources. Create them once — they appear as dropdowns when creating a rental post.', 'abp-rentalforge'),
-                                            'global',
-                                            __('Open Global Data', 'abp-rentalforge')
+                                            __('The Global Configuration tab holds the shared reusable lists — Dates, Location, and (if enabled) Category, Brand, Feature, Additional Services, Client Forms, and FAQ/Terms resources. Create them once — they appear as dropdowns when creating a rental post.', 'abp-rentalforge'),
+                                            'configuration',
+                                            __('Open Global Configuration', 'abp-rentalforge'),
+                                            ['configuration' => 'location']
                                         );
                                         $this->step_card(
                                             '4',
@@ -111,7 +113,7 @@
                                 <h4><span class="dash_step">🔛</span> <?php esc_html_e('The ON/OFF tab — what it is and why it matters', 'abp-rentalforge'); ?></h4>
                             </div>
                             <div class="dash_card_body">
-                                <p class="dash_body_text"><?php esc_html_e('Configuration → ON/OFF is the master control panel of the plugin. Every feature is listed there with a simple switch. Each switch controls a whole feature area of the site — not just one post.', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text"><?php esc_html_e('Global Configuration → ON/OFF is the master control panel of the plugin. Every feature is listed there with a simple switch. Each switch controls a whole feature area of the site — not just one post.', 'abp-rentalforge'); ?></p>
                                 <div class="doc_grid">
                                     <div class="dash_card">
                                         <div class="dash_card_body">
@@ -174,8 +176,7 @@
                                 <p class="dash_body_text">• <b><?php echo esc_html($label); ?><?php esc_html_e('List', 'abp-rentalforge'); ?></b> — <?php esc_html_e('all your rental posts: create, edit, clone, trash, restore, and permanently delete them.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Properties', 'abp-rentalforge'); ?></b> — <?php esc_html_e('all individual units across every post, with stock, prices and deposits.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Orders', 'abp-rentalforge'); ?></b> — <?php esc_html_e('every customer booking with rent period, property info, prices, status, payment and billing details. You can cancel an item from here.', 'abp-rentalforge'); ?></p>
-                                <p class="dash_body_text">• <b><?php esc_html_e('Global Data', 'abp-rentalforge'); ?></b> — <?php esc_html_e('shared reusable lists used by all posts (see the sub-tabs list below).', 'abp-rentalforge'); ?></p>
-                                <p class="dash_body_text">• <b><?php esc_html_e('Configuration', 'abp-rentalforge'); ?></b> — <?php esc_html_e('global settings: general (label, slug, booked status…), the ON/OFF switches, colors, fonts and CSS.', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text">• <b><?php esc_html_e('Global Configuration', 'abp-rentalforge'); ?></b> — <?php esc_html_e('one tab for all global settings and shared reusable lists: general (label, slug, booked status…), the ON/OFF switches, colors, fonts and CSS, plus Dates, Locations and the optional Category, Brand and Feature lists (see the sub-tabs list below).', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Dashboard', 'abp-rentalforge'); ?></b> — <?php esc_html_e('revenue and rental KPIs, today’s deliveries and collections, recent orders, and a System Status health check with quick tools: install WooCommerce, create pages, and import or add demo data.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <b><?php esc_html_e('Documentation', 'abp-rentalforge'); ?></b> — <?php esc_html_e('this guide.', 'abp-rentalforge'); ?></p>
                             </div>
@@ -250,7 +251,7 @@
                         </div>
                         <div class="dash_card">
                             <div class="dash_card_head">
-                                <h4><span class="dash_step">🌍</span> <?php esc_html_e('Inside Global Data', 'abp-rentalforge'); ?></h4>
+                                <h4><span class="dash_step">🌍</span> <?php esc_html_e('Inside Global Configuration', 'abp-rentalforge'); ?></h4>
                             </div>
                             <div class="dash_card_body">
                                 <p class="dash_body_text">• <b><?php esc_html_e('Dates', 'abp-rentalforge'); ?></b> — <?php esc_html_e('global date and time formatting, sale buffer before/after bookings, and how far ahead customers can book.', 'abp-rentalforge'); ?></p>
@@ -293,7 +294,7 @@
                                 <h4><span class="dash_step">✅</span> <?php esc_html_e('Good to know', 'abp-rentalforge'); ?></h4>
                             </div>
                             <div class="dash_card_body">
-                                <p class="dash_body_text">• <?php esc_html_e('The booked order status (Configuration → General → Booked Status) decides when stock is deducted from inventory. Set it to the statuses you consider “paid”.', 'abp-rentalforge'); ?></p>
+                                <p class="dash_body_text">• <?php esc_html_e('The booked order status (Global Configuration → General → Booked Status) decides when stock is deducted from inventory. Set it to the statuses you consider “paid”.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <?php esc_html_e('Customers pick a start and end date/time from the schedule shown on the rental page before choosing properties and quantities.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <?php esc_html_e('You can configure global additional services and client forms once, then use them on any post.', 'abp-rentalforge'); ?></p>
                                 <p class="dash_body_text">• <?php esc_html_e('Deactivating the plugin keeps your posts, properties and orders safe — nothing is deleted, so you can update or reinstall freely.', 'abp-rentalforge'); ?></p>
@@ -303,8 +304,8 @@
                 </div>
                 <?php
             }
-            private function step_card(string $step, string $title, string $lead, string $text, string $tab = '', string $btn_label = ''): void {
-                $url = $tab ? ABPRF_Function::build_url($tab) : '';
+            private function step_card(string $step, string $title, string $lead, string $text, string $tab = '', string $btn_label = '', array $extra_args = []): void {
+                $url = $tab ? ABPRF_Function::build_url($tab, $extra_args) : '';
                 ?>
                 <div class="dash_card">
                     <div class="dash_card_head">

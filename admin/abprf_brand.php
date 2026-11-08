@@ -14,7 +14,7 @@
 			public function global_brand(): void {
 				if ( ABPRF_Function::on_off( 'brand' ) ) {
 					?>
-                    <div class="tab_item brand_area" data-tabs="#abprf_global_brand">
+                    <div class="brand_area">
                         <div class="brand_list _ov_auto">
 							<?php $this->brand_list(); ?>
                         </div>

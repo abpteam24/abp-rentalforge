@@ -91,9 +91,6 @@
 	div.abprf_admin button.wp-color-result {width: 40px;height: 32px;margin: 0 !important; border-right: none; border-radius: var(--rf_br) 0 0 var(--rf_br);border-color: var(--rf_color_border);}
 	div.abprf_admin .wp-picker-default {margin: 0 !important; border-left: none; border-radius: 0 var(--rf_br) var(--rf_br) 0;border-color: var(--rf_color_border);}
 	/*=============================*/
-	#abprf_configuration {border: none;background-color: transparent;}
-	#abprf_configuration div.abprf_admin {max-width: 100%;width: 100%;border-radius: var(--rf_br_xl); margin: 0}
-	/*=============================*/
 	#abprf_configuration .inside,
 	#abprf_configuration .form-section {margin: 0;padding: 0;}
 	#abprf_configuration .postbox-header { display: none;}
@@ -203,7 +200,7 @@
 		div.abprf_admin .abprf_head_cta {padding: 8px 11px;}
 	}
 	div.abprf_admin .abp_notice {margin: 0 auto;max-width: 1200px;display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between;align-items: center;}
-	div.abprf_admin .dashboard_content {margin: var(--rf_gap);}
+	div.abprf_admin .dashboard_content {margin: var(--rf_gap);display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;gap: var(--rf_gap_xs);}
 	div.abprf_admin .dashboard_content .menu_list {padding: 0}
 	div.abprf_admin .abprf_posts {overflow-x: auto;width: 100%;}
 	div.abprf_admin .abprf_posts table {min-width: 1000px;}
@@ -211,7 +208,7 @@
 	div.abprf_admin .dashboard_content [class*="_panel_head"] [class*="_group_content"] {white-space: nowrap; -webkit-flex-wrap: wrap;flex-wrap: wrap;gap: var(--rf_gap_xxs);}
 	div.abprf_admin .dashboard_content [class*="_panel_head"] [class*="_group_content"] > * {-webkit-justify-content: center; justify-content: center; -webkit-flex: 1; flex: 1; min-width: max-content; border: none;}
 	/*=====Dashboard=====*/
-	div.abprf_admin .abprf_dashboard {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;gap: var(--rf_gap);}
+	div.abprf_admin .abprf_dashboard {display: -webkit-flex;display: flex;-webkit-flex-direction: column;flex-direction: column;gap: var(--rf_gap_xs);}
 	div.abprf_admin .abprf_dashboard * {-webkit-box-sizing: border-box;box-sizing: border-box;}
 	div.abprf_admin .abprf_dashboard a {text-decoration: none;-webkit-box-shadow: none;box-shadow: none;}
 	/*=====Hero=====*/
