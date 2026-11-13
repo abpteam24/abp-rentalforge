@@ -11,43 +11,20 @@
 			?>
             <div id="abprf_area" class="abprf_area default_details_page">
                 <div class="abp_container">
-                    <div class="abp_row">
-                        <div class="_fd_column_mar_b">
-							<?php do_action( 'abprf_title', $post_id, $abprf_infos );
-								do_action( 'abprf_sub_title', $post_id, $abprf_infos ); ?>
-                        </div>
-                    </div>
-                    <div class="abp_row">
-                        <div class="_col_12">
-							<?php if ( $rent_continue == 'on' ) {
-								do_action( 'abprf_search_form', $abprf_infos );
-							} else {
-								ABPRF_Layout::layout_warning_info( 'sale_close_msg' );
-							} ?>
-                        </div>
-                    </div>
-                    <div class="abp_row">
-                        <div class="_col_12">
-							<?php do_action( 'abprf_registration', $abprf_infos ); ?>
-                        </div>
-                    </div>
-                    <div class="abp_row">
-                        <div class="_col_12">
-							<?php do_action( 'abprf_content', $post_id ); ?>
-                        </div>
-                    </div>
-                    <div class="abp_row">
-                        <div class="_col_12"> <?php do_action( 'abprf_slider', ( $abprf_infos['abprf_sliders'] ?? [] ) ); ?></div>
-                    </div>
-                    <div class="abp_row">
-                        <div class="_col_12"> <?php do_action( 'abprf_faq', $abprf_infos ); ?></div>
-                    </div>
-                    <div class="abp_row">
-                        <div class="_col_12"> <?php do_action( 'abprf_term_condition', $abprf_infos ); ?></div>
-                    </div>
-                    <div class="abp_row">
-                        <div class="_col_12"> <?php do_action( 'abprf_related_item', ( $abprf_infos['related_item'] ?? '' ) ); ?></div>
-                    </div>
+                    <h1 class="abp_color_theme_gap_xs"><?php ABPRF_Layout::title($abprf_infos); ?></h1>
+	                <?php ABPRF_Layout::sub_title($abprf_infos); ?>
+	                <?php ABPRF_Layout::description($abprf_infos); ?>
+	                <?php if ( $rent_continue == 'on' ) {
+		                do_action( 'abprf_search_form', $abprf_infos );
+	                } else {
+		                ABPRF_Layout::layout_warning_info( 'sale_close_msg' );
+	                } ?>
+	                <?php do_action( 'abprf_registration', $abprf_infos ); ?>
+	                <?php ABPRF_Layout::the_content($post_id); ?>
+	                <?php do_action( 'abprf_slider', ( $abprf_infos['abprf_sliders'] ?? [] ) ); ?>
+	                <?php do_action( 'abprf_faq', $abprf_infos ); ?>
+	                <?php do_action( 'abprf_term_condition', $abprf_infos ); ?>
+	                <?php do_action( 'abprf_related_item', ( $abprf_infos['related_item'] ?? '' ) ); ?>
                 </div>
             </div>
 			<?php

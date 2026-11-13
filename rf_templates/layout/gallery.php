@@ -14,7 +14,7 @@
         $image_column = ($image_column > 0 && $image_column < 11) ? $image_column : 3;
         $total_images = count($img_infos);
         ?>
-        <div class="_section_card_mar_t">
+        <div class="_section_card">
             <h4 class="abp_gap_xs"><span class="far fa-image"></span> <?php esc_html_e('Gallery', 'abp-rentalforge'); ?></h4>
             <div class="_divider_xxs"></div>
             <div class="abprf_gallery">

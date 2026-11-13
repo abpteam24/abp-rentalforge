@@ -2,7 +2,7 @@
 Contributors: abpteam
 Tags: rental, booking, woocommerce rental, equipment rental, property rental
 Requires at least: 6.2
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Tested up to: 7.1
 Requires PHP: 8.0
 License: GPLv3
@@ -404,6 +404,12 @@ This plugin does not collect or transmit any personal data by itself. Any custom
 
 == Changelog ==
 
+= 1.1.1 =
+
+* New: Add Post filter in Post list.
+* Improved: RentalForge frontend styles & scripts now also load on the WooCommerce My Account page.
+Released: November 13, 2026
+
 = 1.1.0 =
 
 * Improved: merged the separate "Global Data" and "Configuration" admin tabs into a single "Global Configuration" tab. All global settings are now organised as one vertical sub-tabs list on a single screen — general defaults, ON/OFF switches, dates, additional services, client form, Terms & Conditions / FAQ, category, location, brand, features, and (Pro) discounts, partial payment, PDF, order-list PDF/CSV, e-mail, slider, contact information and CSS property.
@@ -511,6 +517,9 @@ Released: July 14, 2026
 *Initial Release*
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+Released: November 13, 2026
 
 = 1.1.0 =
 Released: October 31, 2026

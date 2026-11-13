@@ -12,15 +12,15 @@
             $params['related'] = 'yes';
             $brand_icon = ABPRF_Function::icon();
             ?>
-            <div class="related_item_area _section_light_xs">
+            <div class="related_item_area _section">
                 <div class="_fj_between">
-                    <h4 class="abp"><?php ABPRF_Layout::image_icon($brand_icon); ?><?php esc_html_e('Related', 'abp-rentalforge'); ?></h4>
+                    <h4 class="abp_gap_xs"><?php ABPRF_Layout::image_icon($brand_icon); ?><?php esc_html_e('Related', 'abp-rentalforge'); ?></h4>
                     <div class="_group_content">
                         <h3 class="related_prev">🔙</h3>
                         <h3 class="related_next">🔜</h3>
                     </div>
                 </div>
-                <div class="_divider_xxs "></div>
+                <div class="_divider_xs "></div>
                 <?php
                     include_once ABPRF_Function::template_path('list/default.php');
                     do_action('abprf_default_template', $params);

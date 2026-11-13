@@ -670,6 +670,55 @@
                 ];
             }
             //=============================//
+	        public static function title( $post_infos = [] ,$post_id=''): void {
+		        $post_id = absint( $post_infos['post_id'] ?? $post_id );
+		        if ( ! empty( $post_id ) && $post_id > 0 ) {
+			        $display_sku = $post_infos['display_sku'] ?? ABPRF_Function::get_post_info( $post_id, 'display_sku', 'off' );
+			        $post_sku    = $post_infos['post_sku'] ?? ABPRF_Function::get_post_info( $post_id, 'post_sku' );
+			        if ( ABPRF_Function::on_off( 'post_icon' ) ) {
+				        ABPRF_Layout::image_icon( ( $post_infos['post_icon'] ?? ABPRF_Function::get_post_info( $post_id, 'post_icon' ) ) );
+			        }
+			        echo esc_html( get_the_title( $post_id ) ); ?>
+			        <?php if ( ! empty( $post_sku ) && $display_sku == 'on' && ABPRF_Function::on_off( 'sku' ) ) { ?>
+                        <small class="abp_color_gray">&nbsp;(<?php echo esc_html( $post_sku ); ?>)</small>
+			        <?php }
+		        }
+	        }
+	        public static function sub_title( $post_infos = [], $post_id='' ): void {
+		        $post_id = absint( $post_infos['post_id'] ?? $post_id );
+		        if ( ABPRF_Function::on_off( 'sub_title' ) && $post_id > 0 ) {
+			        $value = $post_infos['sub_title'] ?? ABPRF_Function::get_post_info( $post_id, 'sub_title' );
+			        if ( ! empty( $value ) ) { ?>
+                        <p class="abp sub_title">
+					        <?php echo esc_html( $value ); ?>
+                        </p>
+				        <?php
+			        }
+		        }
+	        }
+	        public static function description( $post_infos = [] ): void {
+		        $post_id = absint( $post_infos['post_id'] ?? 0 );
+		        if ( ABPRF_Function::on_off( 'post_des' ) && $post_id > 0 ) {
+			        $value = $post_infos['post_description'] ?? ABPRF_Function::get_post_info( $post_id, 'post_description' );
+			        if ( ! empty( $value ) ) { ?>
+                        <div class="post_description">
+					        <?php self::load_more( $value ); ?>
+                        </div>
+				        <?php
+			        }
+		        }
+	        }
+	        public static function the_content($post_id): void {
+		        if (!empty($post_id) && $post_id > 0) {
+			        $content = get_post_field('post_content', $post_id);
+			        if (!empty($content)) { ?>
+                        <div class="the_post_content">
+					        <?php // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+					        echo wp_kses_post(apply_filters('the_content', $content)); ?>
+                        </div>
+			        <?php }
+		        }
+	        }
             public static function location_select($post_id = '', $location = ''): void {
                 if (ABPRF_Function::on_off('location') && ABPRF_Function::on_off('location_stock')) {
                     $all_locations = ABPRF_Locations;
@@ -812,19 +861,8 @@
                     }
                 }
             }
-            public static function title($post_id): void {
-                $post_sku = ABPRF_Function::get_post_info($post_id, 'post_sku');
-                if (ABPRF_Function::on_off('post_icon')) {
-                    ABPRF_Layout::image_icon(ABPRF_Function::get_post_info($post_id, 'post_icon'));
-                }
-                echo esc_html(get_the_title($post_id)); ?>
-                <p class="abp">
-                    <?php if (!empty($post_sku) && ABPRF_Function::on_off('sku')) { ?>
-                        <small class=" abp_color_gray"><?php echo esc_html__('SKU : ', 'abp-rentalforge') . esc_html($post_sku); ?></small>
-                    <?php } ?>
-                </p>
-                <?php
-            }
+
+
             public static function item_feature($features = ''): void {
                 if (ABPRF_Function::on_off('feature')) {
                     if (!is_string($features) || $features === '') {
@@ -1196,19 +1234,20 @@
                 }
             }
             //=============================//
-            public static function filter_post_list($post_id = 0): void {
+            public static function filter_post_list($post_id = 0, $allow = false): void {
                 $label = ABPRF_Function::label();
                 $all_post_ids = ABPRF_Query::get_post_id();
                 $brand_icon = ABPRF_Function::icon();
                 $value = $post_id > 0 ? $post_id : '';
                 $title = $post_id > 0 ? get_the_title($post_id) : '';
+	            $allow_class = $allow ? 'abprf_allow' : '';
                 // echo '<pre>';print_r($configuration);echo '</pre>';
                 ?>
                 <div class="_input_item abp_dropdown post_selection">
                     <label>
-                        <span class="_gap_xxs"><?php ABPRF_Layout::image_icon($brand_icon); ?><?php echo esc_html($label); ?></span>
+                        <span><?php ABPRF_Layout::image_icon($brand_icon); ?><?php echo esc_html($label); ?></span>
                         <input type="hidden" name="post_id" value="<?php echo esc_attr($value); ?>"/>
-                        <input type="text" class="_form_control_w_full" name="" placeholder="<?php echo esc_attr($label); ?>" value="<?php echo esc_attr($title); ?>"/>
+                        <input type="text" class="_form_control_w_full <?php echo esc_attr($allow_class); ?>" name="post_title" placeholder="<?php echo esc_attr($label); ?>" value="<?php echo esc_attr($title); ?>"/>
                     </label>
                     <?php if (sizeof($all_post_ids) > 0) { ?>
                         <div class="dropdown_list">

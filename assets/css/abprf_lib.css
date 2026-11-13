@@ -136,7 +136,7 @@
 	body._stop_scroll { overflow: hidden; }
 	/*=============================*/
 	.abprf_area { font-size: var(--rf_fs); font-weight: var(--rf_fw); color: var(--rf_color_default); line-height: 1.4; }
-	div.abprf_area {width: calc(100% - 30px);max-width: 100%;margin: var(--rf_gap) auto;}
+	div.abprf_area {width: 100%;max-width: 100%;margin: var(--rf_gap) auto;}
 	.abprf_area,
 	div.abprf_area [data-close].abp_active,
 	.abprf_area [data-collapse].abp_active { display: block; }
@@ -343,11 +343,11 @@
 }
 /******************************************************************** Layout Section ************************************************/
 @media only screen and (min-width: 10px) {
-	body.theme-astra div.abprf_area div.abp_container,
-	body.theme-twentytwenty div.abprf_area div.abp_container,
-	body.theme-twentytwentyone div.abprf_area div.abp_container,
-	body.theme-twentytwentytwo div.abprf_area div.abp_container,
-	div.abprf_area div.abp_container { max-width: var(--rf_container_max); width: 100%; margin: 0 auto; display: -webkit-flex; display: flex; -webkit-flex-direction: column;flex-direction: column;gap: var(--rf_gap);}
+	body.theme-astra div.abprf_area .abp_container,
+	body.theme-twentytwenty div.abprf_area .abp_container,
+	body.theme-twentytwentyone div.abprf_area .abp_container,
+	body.theme-twentytwentytwo div.abprf_area .abp_container,
+	div.abprf_area .abp_container { max-width: var(--rf_container_max); width: 100%; margin: 0 auto; display: -webkit-flex; display: flex; -webkit-flex-direction: column;flex-direction: column;gap: var(--rf_gap);}
 	div.abprf_area [class*="abp_row"] { min-height: 1px; display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;}
 	/*=============================*/
 	div.abprf_area pre {background: var(--rf_color_light); border: 1px solid var(--rf_color_border); padding: var(--rf_gap);display: block; font-size: var(--rf_fs_h5); word-break: break-all; word-wrap: break-word;white-space: pre-wrap;}
@@ -456,13 +456,6 @@
 	div.abprf_area [class*="abp_tag"].trash {background: var(--rf_color_danger); color: var(--rf_color_white);}
 	div.abprf_area [class*="abp_tag"].draft {background: var(--rf_color_yellow); color: var(--rf_color_white);}
 	div.abprf_area [class*="abp_tag"] svg {height: var(--rf_fs_label);width: auto;}
-	@media only screen and (max-width: 1200px) {
-		body.theme-astra div.abprf_area div.abp_container,
-		body.theme-twentytwenty div.abprf_area div.abp_container,
-		body.theme-twentytwentyone div.abprf_area div.abp_container,
-		body.theme-twentytwentytwo div.abprf_area div.abp_container,
-		div.abprf_area div.abp_container { max-width: 98%; }
-	}
 }
 /******************************************************************** position Section************************************************/
 @media only screen and (min-width: 10px) {

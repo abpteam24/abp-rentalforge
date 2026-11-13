@@ -24,7 +24,7 @@
 		$properties = ABPRF_Query::get_property( $filter_arg );
 		?>
         <div class="abprf_booking">
-            <form action="" method="post">
+            <form action="" method="post" class="abp_container">
 				<?php
 					wp_nonce_field( 'abprf_registration_nonce' );
 					do_action( 'abprf_admin_order', $post_id );

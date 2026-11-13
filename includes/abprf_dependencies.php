@@ -33,7 +33,7 @@
 				wp_enqueue_style('wp-codemirror');
 				wp_enqueue_script('wp-codemirror');
 				//=============================//
-				wp_enqueue_script('abprf_admin', ABPRF_URL . 'assets/js/abprf_admin.js', array('jquery'), ABPRF_VERSION, true);
+				wp_enqueue_script('abprf_admin', ABPRF_URL . 'assets/js/abprf_admin.js', array('jquery'), time(), true);
 				wp_localize_script('abprf_admin', 'abprf_admin_data', [
 					'ajax_url' => admin_url('admin-ajax.php'),
 					'nonce' => wp_create_nonce('abprf_admin_ajax_nonce'),
@@ -68,7 +68,7 @@
 						'no_item_selected' => __('No Item selected !', 'abp-rentalforge'),
 					],
 				]);
-				wp_enqueue_style('abprf_admin', ABPRF_URL . 'assets/css/abprf_admin.css', array(), ABPRF_VERSION);
+				wp_enqueue_style('abprf_admin', ABPRF_URL . 'assets/css/abprf_admin.css', array(), time());
 				//=============================//
 				do_action('abprf_admin_enqueue');
 			}

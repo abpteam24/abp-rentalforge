@@ -535,7 +535,7 @@ function abprf_popup_close(target_id = '') {
                     $('body').find('.dropdown_list').slideUp(250);
                     if ($this.hasClass('abprf_allow')) {
                         parent.find('input[type="hidden"]').val($this.val());
-                        parent.find('input[type="text"]').val($this.val());
+                        parent.find('input[type="text"]').val($this.val()).trigger('abp_trigger');
                     } else {
                         if (target.closest('.abp_dropdown').length === 0) {
                             let current_val = parent.find('input[type="text"]').val().toLowerCase();

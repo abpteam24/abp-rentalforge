@@ -116,7 +116,7 @@
                 <div class="_section_card _mar_b">
                     <div class="_fj_between">
                         <div>
-                            <h5 style="margin:0 0 4px;"><?php ABPRF_Layout::title($post_id); ?></h5>
+                            <h5 class="abp_color_theme_gap_xs"><?php ABPRF_Layout::title([],$post_id); ?></h5>
                             <p style="margin:0;" class="abp_color_gray">#<?php echo esc_html($order_id); ?> - <?php echo esc_html(ABPRF_Function::date_format($created_at)); ?></p>
                         </div>
                         <span class="abp_tag"><?php echo esc_html(ABPRF_Layout::status_text($order_status)); ?></span>

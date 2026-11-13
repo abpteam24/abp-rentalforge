@@ -1,4 +1,31 @@
 @charset "utf-8";
+/******************************************************************** common ************************************************/
+@media only screen and (min-width: 10px) {
+	div.abprf_area .post_title {color: var(--rf_color_theme); font-size: var(--rf_fs_h3);font-weight: var(--rf_fw-bold); letter-spacing: -0.03em; line-height: 1.1;;}
+	div.abprf_area .post_title small {font-size: var(--rf_fs_small);}
+	div.abprf_area .post_title > span,
+	div.abprf_area .post_title > .abp_image {display: inline-flex; font-size: inherit; height: 1em; margin-right: 0.2em; vertical-align: middle; width: 1em;}
+	div.abprf_area .post_title > span img.emoji,
+	div.abprf_area .post_title > span i {font-size: inherit; height: 1em !important; width: 1em;}
+	div.abprf_area .post_title > .abp_image img {height: 100%; object-fit: contain; width: 100%;}
+	div.abprf_area .sub_title {color: var(--rf_text_off); font-size: var(--rf_fs_h6); }
+	div.abprf_area .the_post_content {padding: var(--rf_gap_xs);}
+}
+/******************************************************************** Hero section ************************************************/
+@media only screen and (min-width: 10px) {
+	div.abprf_area .hero_area {align-items: start; background: var(--rf_color_white); border: 1px solid var(--rf_color_border); border-radius: var(--rf_br_xl); box-shadow: var(--rf_shadow_23); display: grid; gap: var(--rf_gap); grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); padding: var(--rf_gap);}
+	div.abprf_area.modern_theme .modern_banner {background: linear-gradient(135deg, #101322 0%, #171A2C 55%, #0F111F 100%); color: var(--rf_color_white); padding: clamp(28px, 6vw, 72px) 0;}
+	div.abprf_area .hero_area_body {display: flex; flex-direction: column; justify-content: flex-start; min-width: 0;gap: var(--rf_gap_xs); }
+	div.abprf_area .hero_area_kicker {align-items: center; display: flex; flex-wrap: wrap; gap: var(--rf_gap_xs);}
+	div.abprf_area .abpet_schedule_dropdown {background-color: var(--rf_color_white);}
+	div.abprf_area.modern_theme .hero_area {background-color: transparent;padding: 0;}
+	div.abprf_area.modern_theme .hero_area_body {padding: var(--rf_gap) var(--rf_gap) var(--rf_gap) 0;}
+	@media only screen and (max-width: 900px) {
+		div.abprf_area .hero_area {grid-template-columns: 1fr; padding: var(--rf_gap);}
+		div.abprf_area.modern_theme .hero_area_body {padding: 0 var(--rf_gap) var(--rf_gap) var(--rf_gap);}
+	}
+}
+
 /******************************************************************** Registration, Form  details************************************************/
 @media only screen and (min-width: 10px) {
 	#abprf_search_area {background: var(--rf_color_white); border-radius: var(--rf_br_xl); padding: var(--rf_gap); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); width: 100%;}
@@ -8,11 +35,11 @@
 	#abprf_search_area .duration_area h5 {color: var(--rf_color_light);}
 	#abprf_search_area .duration_area h6 {color: var(--rf_color_5);}
 	/**********************************/
+	div.abprf_area .property_others{display: grid;		gap: var(--rf_gap);		grid-template-columns: minmax(500px, 1fr) minmax(500px, 1fr);}
 	div.abprf_booking .client_info_area,
-	div.abprf_booking .total_continue_area,
-	div.abprf_booking .additional_service_area {width: 100%;margin-top: var(--rf_gap);display: none; }
+	div.abprf_booking .additional_service_area {width: 100%;display: none; }
 	div.additional_service_area .additional_service { padding: var(--rf_gap);}
-	div.abprf_booking .total_continue {display: -webkit-flex;display: flex;-webkit-justify-content: space-between;justify-content: space-between;-webkit-align-items: center;align-items: center;padding: var(--rf_gap);gap: var(--rf_gap);flex-wrap: wrap;}
+
 	div.client_info_area div.attendee_item {position: relative;display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap; flex-wrap: wrap;-webkit-justify-content: space-between; justify-content: space-between; padding: var(--rf_gap);}
 	div.attendee_item [class*="_input_item"] {display: inline-block;margin: var(--rf_gap_xs) 0 0 0;width: 50%;}
 	div.attendee_item [class*="_input_item"] [class*="_form_control"] {width: 100%;border-radius: 0;min-width: initial; max-width: initial;}
@@ -119,8 +146,10 @@
 /******************************************************************** shortcode ************************************************/
 @media only screen and (min-width: 10px) {
 }
-/******************************************************************** ************************************************/
+/********************************************************************total continue ************************************************/
 @media only screen and (min-width: 10px) {
+	div.abprf_area .total_continue_area{width: 100%;display: none; }
+	div.abprf_booking .total_continue {display: -webkit-flex;display: flex;padding: var(--rf_gap);gap: var(--rf_gap_xxs);flex-wrap: wrap;-webkit-flex-direction: column;flex-direction: column;}
 }
 /*************************************************************/
 /************ Modern UI Polish *******************************/

@@ -6,8 +6,6 @@
 		class ABPRF_Hooks {
 			public function __construct() {
 				add_action( 'abprf_load_details_template', [ $this, 'details_template' ] );
-				add_action( 'abprf_title', [ $this, 'title' ], 10, 2 );
-				add_action( 'abprf_sub_title', [ $this, 'sub_title' ], 10, 2 );
 				add_action( 'abprf_category', [ $this, 'category' ], 10, 3 );
 				add_action( 'abprf_location', [ $this, 'location' ], 10, 3 );
 				add_action( 'abprf_search_form', [ $this, 'search_form' ], 10, 2 );
@@ -19,7 +17,6 @@
 				add_action( 'abprf_additional', [ $this, 'additional' ], 10, 2 );
 				add_action( 'abprf_client_form', [ $this, 'client_form' ], 10, 2 );
 				add_action( 'abprf_total_price', [ $this, 'total_price' ] );
-				add_action( 'abprf_content', [ $this, 'the_content' ] );
 				add_action( 'abprf_pagination', [ $this, 'pagination' ] );
 				add_action( 'abprf_display_cart_item', [ $this, 'display_cart_item' ] );
 				add_action( 'abprf_faq', [ $this, 'faq' ], 10, 2 );
@@ -33,14 +30,8 @@
 				$template_name = ABPRF_Function::get_post_info( $post_id, 'abprf_template', 'grid' );
 				do_action( 'abprf_details_' . $template_name . '_template', $post_id );
 			}
-			public function title( $post_id, $abprf_infos = [] ): void {
-				include_once ABPRF_Function::template_path( 'layout/title.php' );
-				do_action( 'abprf_title_template', $post_id, $abprf_infos );
-			}
-			public function sub_title( $post_id, $abprf_infos = [] ): void {
-				include_once ABPRF_Function::template_path( 'layout/sub_title.php' );
-				do_action( 'abprf_sub_title_template', $post_id, $abprf_infos );
-			}
+
+
 			public function category( $post_id, $ribbon = '' ): void {
 				include_once ABPRF_Function::template_path( 'layout/category.php' );
 				do_action( 'abprf_category_template', $post_id, $ribbon );
@@ -85,10 +76,7 @@
 				include_once ABPRF_Function::template_path( 'layout/total_price.php' );
 				do_action( 'abprf_total_price_template', $abprf_infos );
 			}
-			public function the_content( $post_id ): void {
-				include_once ABPRF_Function::template_path( 'layout/the_content.php' );
-				do_action( 'abprf_content_template', $post_id );
-			}
+
 			public function pagination( $args ): void {
 				include_once ABPRF_Function::template_path( 'layout/pagination.php' );
 				do_action( 'abprf_pagination_template', $args );

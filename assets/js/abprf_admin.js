@@ -158,41 +158,52 @@ window.abprf_wc_config = function (page_type) {
             }
         })
     });
-    abprf_parent.on('click', '.post_list .pagination_area button[data-page]', function () {
+    $(document).on("click", "div.abprf_admin .post_list .pagination_area button[data-page]", function () {
         let $this = $(this);
         if (!$this.hasClass('abp_active')) {
-            let parent = $(this).closest('.abprf_posts');
             let filter_args = {};
-            if (parent.find("[name='select_hidden_post_status']").length > 0) {
-                filter_args['status'] = parent.find("[name='select_hidden_post_status']").val();
-            }
             filter_args['page_number'] = parseInt($this.attr('data-page'));
-            if (parent.find("[name='page_item']").length > 0) {
-                filter_args['page_item'] = parseInt(parent.find("[name='page_item']").val());
-            }
-            let target = parent.find('.post_list');
-            if (target.length > 0) {
-                $.ajax({
-                    type: 'POST', url: abprf_admin_data.ajax_url, data: {
-                        "action": "abprf_reload_post_list", "filter_args": filter_args, 'nonce': abprf_admin_data.nonce
-                    }, beforeSend: function () {
-                        abp_spinner(parent);
-                        abprf_toast_msg(abprf_admin_data.msg.post_loading);
-                    }, success: function (response) {
-                        if (response.data && response.data.hasOwnProperty('html')) {
-                            target.html(response.data.html);
-                        }
-                        abp_spinner_remove(parent);
-                        abprf_toast_msg(response.data.msg, response.data.type);
-                    }, error: function (xhr) {
-                        abprf_ajx_error(xhr, parent);
-                    }
-                });
-            } else {
-                parent.find('.post_tab').trigger('click');
-            }
+            abprf_load_post_list($this, filter_args);
         }
     });
+    $(document).on('abp_trigger', 'div.abprf_admin .abprf_posts [name="post_title"]', function () {
+        let $this = $(this);
+        let filter_args = {};
+        filter_args['post_title'] = $this.val();
+        abprf_load_post_list($this, filter_args);
+    });
+    function abprf_load_post_list($this, filter_args) {
+        let parent = $this.closest('.abprf_posts');
+        let target = parent.find('.post_list');
+        if (parent.find("[name='select_hidden_post_status']").length > 0) {
+            filter_args['status'] = parent.find("[name='select_hidden_post_status']").val();
+        }
+        if (parent.find("[name='page_item']").length > 0) {
+            filter_args['page_item'] = parseInt(parent.find("[name='page_item']").val());
+        }
+        if (target.length > 0) {
+            $.ajax({
+                type: 'POST', url: abprf_admin_data.ajax_url, data: {
+                    "action": "abprf_reload_post_list", "filter_args": filter_args, 'nonce': abprf_admin_data.nonce
+                }, beforeSend: function () {
+                    abp_spinner(parent);
+                    abprf_toast_msg(abprf_admin_data.msg.post_loading);
+                }, success: function (response) {
+                    if (response.data && response.data.hasOwnProperty('html')) {
+                        target.html(response.data.html).promise().done(function () {
+                            abprf_load_image(target);
+                        });
+                    }
+                    abp_spinner_remove(parent);
+                    abprf_toast_msg(response.data.msg, response.data.type);
+                }, error: function (xhr) {
+                    abprf_ajx_error(xhr, parent);
+                }
+            });
+        } else {
+            parent.find('.post_tab').trigger('click');
+        }
+    }
 }(jQuery));
 //==========Properties=================//
 (function ($) {
@@ -701,7 +712,6 @@ window.abprf_wc_config = function (page_type) {
             }
         });
     });
-
     //==========page create=================//
     $(document).on('click', 'div.abprf_admin button.create_page', function () {
         let type = $(this).attr('data-page_type');
@@ -1334,18 +1344,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 }(jQuery));
 //=========== offfer js=================//
-(function($){
-    $(document).on('click', '.abprf-copy-offer-code', function(e){
+(function ($) {
+    $(document).on('click', '.abprf-copy-offer-code', function (e) {
         e.preventDefault();
         var btn = $(this);
         var code = 'ABP50';
-        if(navigator.clipboard){
-            navigator.clipboard.writeText(code).then(function(){
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(code).then(function () {
                 var old = btn.html();
                 btn.html('<i class="fas fa-check"></i>Copied ');
-                setTimeout(function(){ btn.html(old); }, 1500);
+                setTimeout(function () {
+                    btn.html(old);
+                }, 1500);
             });
-        }else{
+        } else {
             var ta = document.createElement('textarea');
             ta.value = code;
             document.body.appendChild(ta);
@@ -1354,16 +1366,20 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.removeChild(ta);
             var old = btn.html();
             btn.html('<i class="fas fa-check"></i> ' + (window.abprfProOffer && abprfProOffer.copied ? abprfProOffer.copied : 'Copied'));
-            setTimeout(function(){ btn.html(old); }, 1500);
+            setTimeout(function () {
+                btn.html(old);
+            }, 1500);
         }
     });
-    $(document).on('click', '.abprf-dismiss-pro-offer', function(e){
+    $(document).on('click', '.abprf-dismiss-pro-offer', function (e) {
         e.preventDefault();
         var notice = $('#abprf-pro-offer-notice');
-        if(notice.length){ notice.hide(); }
+        if (notice.length) {
+            notice.hide();
+        }
         var data = new FormData();
-        data.append('action','abprf_dismiss_pro_offer');
+        data.append('action', 'abprf_dismiss_pro_offer');
         data.append('nonce', window.abprfProOffer && abprfProOffer.nonce ? abprfProOffer.nonce : '');
-        fetch(window.abprfProOffer && abprfProOffer.ajaxurl ? abprfProOffer.ajaxurl : ajaxurl, {method:'POST',credentials:'same-origin',body:data});
+        fetch(window.abprfProOffer && abprfProOffer.ajaxurl ? abprfProOffer.ajaxurl : ajaxurl, {method: 'POST', credentials: 'same-origin', body: data});
     });
 })(jQuery);

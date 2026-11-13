@@ -149,6 +149,17 @@
 
 				return 0;
 			}
+			public static function format_content( $content ): string {
+				if ( trim( $content ) === '' ) {
+					$content = html_entity_decode( $content );
+					$content     = (string) $content;
+					$content = wptexturize( $content );
+					$content = wpautop( $content );
+					$content = shortcode_unautop( $content );
+					$content = do_shortcode( $content );
+				}
+				return (string)  $content ;
+			}
 			public static function already_in_cart( $post_id, $bp, $dp, $bp_date, $seat_name ): int {
 				$count = 0;
 				if ( is_admin() && str_contains( wp_get_referer(), 'admin_order' ) ) {
